@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ziti.edge_ctrl.pb;
+package ztna.edge_ctrl.pb;
 
 import "google/protobuf/timestamp.proto";
 

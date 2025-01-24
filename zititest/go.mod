@@ -7,6 +7,7 @@ replace github.com/cosmic-cloak/ztna => ../
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.7.0
+	github.com/cosmic-cloak/ztna v0.28.3
 	github.com/go-openapi/runtime v0.28.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
@@ -14,13 +15,12 @@ require (
 	github.com/openziti/agent v1.0.23
 	github.com/openziti/channel/v3 v3.0.26
 	github.com/openziti/edge-api v0.26.38
-	github.com/openziti/fablab v0.5.83
+	github.com/openziti/fablab v0.5.84
 	github.com/openziti/foundation/v2 v2.0.56
 	github.com/openziti/identity v1.0.94
 	github.com/openziti/sdk-golang v0.23.44
 	github.com/openziti/storage v0.3.15
 	github.com/openziti/transport/v2 v2.0.159
-	github.com/cosmic-cloak/ztna v0.28.3
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/pkg/errors v0.9.1
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
@@ -44,7 +44,7 @@ require (
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
-	github.com/aws/aws-sdk-go v1.55.5 // indirect
+	github.com/aws/aws-sdk-go v1.55.6 // indirect
 	github.com/biogo/store v0.0.0-20200525035639-8c94ae1e7c9c // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/boltdb/bolt v1.3.1 // indirect

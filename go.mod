@@ -28,7 +28,7 @@ require (
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-openapi/swag v0.23.0
 	github.com/go-openapi/validate v0.24.0
-	github.com/go-resty/resty/v2 v2.16.3
+	github.com/go-resty/resty/v2 v2.16.4
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/go-cmp v0.6.0
 	github.com/google/gopacket v1.1.19
@@ -52,7 +52,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/openziti/agent v1.0.23
-	github.com/openziti/channel/v3 v3.0.26
+	github.com/openziti/channel/v3 v3.0.27
 	github.com/openziti/cobra-to-md v1.0.1
 	github.com/openziti/edge-api v0.26.38
 	github.com/openziti/foundation/v2 v2.0.56
@@ -60,10 +60,10 @@ require (
 	github.com/openziti/jwks v1.0.6
 	github.com/openziti/metrics v1.2.65
 	github.com/openziti/runzmd v1.0.59
-	github.com/openziti/sdk-golang v0.23.44
+	github.com/openziti/sdk-golang v0.24.0
 	github.com/openziti/secretstream v0.1.28
 	github.com/openziti/storage v0.3.15
-	github.com/openziti/transport/v2 v2.0.159
+	github.com/openziti/transport/v2 v2.0.160
 	github.com/openziti/x509-claims v1.0.3
 	github.com/openziti/xweb/v2 v2.1.3
 	github.com/openziti/ziti-db-explorer v1.1.3
@@ -91,7 +91,7 @@ require (
 	golang.org/x/sync v0.10.0
 	golang.org/x/sys v0.29.0
 	golang.org/x/text v0.21.0
-	google.golang.org/protobuf v1.36.2
+	google.golang.org/protobuf v1.36.3
 	gopkg.in/AlecAivazis/survey.v1 v1.8.8
 	gopkg.in/go-jose/go-jose.v2 v2.6.3
 	gopkg.in/resty.v1 v1.12.0

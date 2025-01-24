@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ziti.loop3.pb;
+package ztna.loop3.pb;
 option go_package = "github.com/cosmic-cloak/ztna/ziti-fabric-test/subcmd/loop3/pb/loop3_pb";
 
 message Test {

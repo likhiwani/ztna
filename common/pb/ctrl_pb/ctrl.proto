@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package ziti.ctrl.pb;
+package ztna.ctrl.pb;
 option go_package = "github.com/openziti/fabric/pb/ctrl_pb";
 
 // ContentTypes should be in the range 1000 - 1999, to ensure they don't overlap with cmd_pb messages
