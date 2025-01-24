@@ -22,9 +22,9 @@ import (
 
 	"github.com/openziti/channel/v3"
 	trace_pb "github.com/openziti/channel/v3/trace/pb"
-	"github.com/openziti/ziti/common/pb/mgmt_pb"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 )

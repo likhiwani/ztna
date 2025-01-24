@@ -21,9 +21,9 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/router/env"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/router/env"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"google.golang.org/protobuf/proto"
 	"time"
 )

@@ -1,15 +1,15 @@
 package network
 
 import (
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/openziti/transport/v2/tcp"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/models"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/stretchr/testify/assert"
 )
 

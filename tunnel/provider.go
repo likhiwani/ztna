@@ -5,7 +5,7 @@ import (
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/openziti/ziti/tunnel/health"
+	"github.com/cosmic-cloak/ztna/tunnel/health"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net"

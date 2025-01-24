@@ -17,9 +17,9 @@
 package network
 
 import (
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/pkg/errors"
 	"time"
 )

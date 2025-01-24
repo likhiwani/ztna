@@ -21,8 +21,8 @@ package tunnel
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/tunnel/intercept"
-	"github.com/openziti/ziti/tunnel/intercept/tproxy"
+	"github.com/cosmic-cloak/ztna/tunnel/intercept"
+	"github.com/cosmic-cloak/ztna/tunnel/intercept/tproxy"
 	"github.com/spf13/cobra"
 )
 

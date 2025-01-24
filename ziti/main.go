@@ -27,9 +27,9 @@ import (
 	"github.com/openziti/transport/v2/udp"
 	"github.com/openziti/transport/v2/ws"
 	"github.com/openziti/transport/v2/wss"
-	"github.com/openziti/ziti/common/build"
-	"github.com/openziti/ziti/common/version"
-	"github.com/openziti/ziti/ziti/cmd"
+	"github.com/cosmic-cloak/ztna/common/build"
+	"github.com/cosmic-cloak/ztna/common/version"
+	"github.com/cosmic-cloak/ztna/ziti/cmd"
 	"github.com/sirupsen/logrus"
 )
 

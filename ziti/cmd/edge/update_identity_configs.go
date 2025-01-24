@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 
 	"github.com/Jeffail/gabs"
 	"github.com/spf13/cobra"

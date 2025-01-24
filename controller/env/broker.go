@@ -21,11 +21,11 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/common"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"go.etcd.io/bbolt"
 )
 

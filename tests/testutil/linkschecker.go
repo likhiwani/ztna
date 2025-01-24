@@ -7,8 +7,8 @@ import (
 
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/common/handler_common"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/common/handler_common"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"

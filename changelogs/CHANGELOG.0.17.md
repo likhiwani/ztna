@@ -11,7 +11,7 @@
   case-insensitive
 * The CLI agent now runs over unix sockets and is enabled by default. See doc/ops-agent.md for
   details in the ziti repository.
-* [ziti#245](https://github.com/openziti/ziti/issues/245) Make timeout used by CLI's internal REST
+* [ziti#245](https://github.com/cosmic-cloak/ztna/issues/245) Make timeout used by CLI's internal REST
   client configurable via cmd line arg
 
   All `ziti edge controller` subcommands now support the `--timeout=n` flag which controls the

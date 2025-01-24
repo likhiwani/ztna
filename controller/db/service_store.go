@@ -19,8 +19,8 @@ package db
 import (
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/controller/xt_smartrouting"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
 	"go.etcd.io/bbolt"
 	"time"
 )

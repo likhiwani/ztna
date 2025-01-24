@@ -28,12 +28,12 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_server/operations/certificate_authority"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/apierror"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/fields"
-	"github.com/openziti/ziti/controller/internal/permissions"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/response"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/response"
 	"github.com/pkg/errors"
 )
 

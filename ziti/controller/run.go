@@ -18,7 +18,7 @@ package controller
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/controller/config"
+	"github.com/cosmic-cloak/ztna/controller/config"
 	"net"
 	"os"
 	"os/signal"
@@ -26,9 +26,9 @@ import (
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/agent"
-	"github.com/openziti/ziti/common/version"
-	"github.com/openziti/ziti/controller"
-	"github.com/openziti/ziti/controller/server"
+	"github.com/cosmic-cloak/ztna/common/version"
+	"github.com/cosmic-cloak/ztna/controller"
+	"github.com/cosmic-cloak/ztna/controller/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

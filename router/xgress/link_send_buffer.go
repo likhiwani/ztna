@@ -19,7 +19,7 @@ package xgress
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/info"
-	"github.com/openziti/ziti/common/inspect"
+	"github.com/cosmic-cloak/ztna/common/inspect"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"math"

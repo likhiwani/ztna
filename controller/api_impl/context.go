@@ -18,8 +18,8 @@ package api_impl
 
 import (
 	"bytes"
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/idgen"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/idgen"
 	"io"
 	"net/http"
 )

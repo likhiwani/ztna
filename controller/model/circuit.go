@@ -19,9 +19,9 @@ package model
 import (
 	"github.com/openziti/identity"
 	"github.com/openziti/storage/objectz"
-	"github.com/openziti/ziti/common/datastructures"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/datastructures"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/orcaman/concurrent-map/v2"
 	"sync/atomic"
 	"time"

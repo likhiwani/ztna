@@ -85,26 +85,26 @@ return an HTTP status of 429.
     * [Issue #91](https://github.com/openziti/storage/issues/91) - Support dashes in identifier segments after the first dot
 
 * github.com/openziti/transport/v2: [v2.0.153 -> v2.0.159](https://github.com/openziti/transport/compare/v2.0.153...v2.0.159)
-* github.com/openziti/ziti: [v1.2.2 -> v1.3.0](https://github.com/openziti/ziti/compare/v1.2.2...v1.3.0)
-    * [Issue #2674](https://github.com/openziti/ziti/issues/2674) - 404 not found on well-known OIDC configuration with default ports/localhost
-    * [Issue #2669](https://github.com/openziti/ziti/issues/2669) - Router api session tracker leaks memory.
-    * [Issue #2659](https://github.com/openziti/ziti/issues/2659) - OIDC Login Panics On Unsupported Media Type
-    * [Issue #2582](https://github.com/openziti/ziti/issues/2582) - An endpoint to determine whether a node is a raft leader
-    * [Issue #2619](https://github.com/openziti/ziti/issues/2619) - Add source id to all events
-    * [Issue #2644](https://github.com/openziti/ziti/issues/2644) - enhance mismapped external identity logging
-    * [Issue #2636](https://github.com/openziti/ziti/issues/2636) - Enable HA smoketest
-    * [Issue #2586](https://github.com/openziti/ziti/issues/2586) - Ziti Controller in HA mode doesn't update binding address in a bolt database after config changed
-    * [Issue #2639](https://github.com/openziti/ziti/issues/2639) - Change cluster events namespace from fabric.cluster to cluster
-    * [Issue #2184](https://github.com/openziti/ziti/issues/2184) - Add Event(s) For Controller Leader Connection State
-    * [Issue #2548](https://github.com/openziti/ziti/issues/2548) - Generate a log message if the cluster is without a leader for some configurable period of time
-    * [Issue #2624](https://github.com/openziti/ziti/issues/2624) - Remove uri/params from connect events
-    * [Issue #2596](https://github.com/openziti/ziti/issues/2596) - Add DisableRouterDataModel config flag to controller
-    * [Issue #2599](https://github.com/openziti/ziti/issues/2599) - Routers should only stream model data from one controller
-    * [Issue #2232](https://github.com/openziti/ziti/issues/2232) - Standardized REST API Error For Mutation on Non-Consensus Controller
-    * [Issue #2566](https://github.com/openziti/ziti/issues/2566) - Remove HA config flag from router
-    * [Issue #2550](https://github.com/openziti/ziti/issues/2550) - Router Data Model Chaos Test
-    * [Issue #2625](https://github.com/openziti/ziti/issues/2625) - edge sessions for an ERT may not be cleaned up when the ER/T is deleted 
-    * [Issue #2591](https://github.com/openziti/ziti/issues/2591) - Split Edge APIs can cause `ziti edge login` to fail
+* github.com/cosmic-cloak/ztna: [v1.2.2 -> v1.3.0](https://github.com/cosmic-cloak/ztna/compare/v1.2.2...v1.3.0)
+    * [Issue #2674](https://github.com/cosmic-cloak/ztna/issues/2674) - 404 not found on well-known OIDC configuration with default ports/localhost
+    * [Issue #2669](https://github.com/cosmic-cloak/ztna/issues/2669) - Router api session tracker leaks memory.
+    * [Issue #2659](https://github.com/cosmic-cloak/ztna/issues/2659) - OIDC Login Panics On Unsupported Media Type
+    * [Issue #2582](https://github.com/cosmic-cloak/ztna/issues/2582) - An endpoint to determine whether a node is a raft leader
+    * [Issue #2619](https://github.com/cosmic-cloak/ztna/issues/2619) - Add source id to all events
+    * [Issue #2644](https://github.com/cosmic-cloak/ztna/issues/2644) - enhance mismapped external identity logging
+    * [Issue #2636](https://github.com/cosmic-cloak/ztna/issues/2636) - Enable HA smoketest
+    * [Issue #2586](https://github.com/cosmic-cloak/ztna/issues/2586) - Ziti Controller in HA mode doesn't update binding address in a bolt database after config changed
+    * [Issue #2639](https://github.com/cosmic-cloak/ztna/issues/2639) - Change cluster events namespace from fabric.cluster to cluster
+    * [Issue #2184](https://github.com/cosmic-cloak/ztna/issues/2184) - Add Event(s) For Controller Leader Connection State
+    * [Issue #2548](https://github.com/cosmic-cloak/ztna/issues/2548) - Generate a log message if the cluster is without a leader for some configurable period of time
+    * [Issue #2624](https://github.com/cosmic-cloak/ztna/issues/2624) - Remove uri/params from connect events
+    * [Issue #2596](https://github.com/cosmic-cloak/ztna/issues/2596) - Add DisableRouterDataModel config flag to controller
+    * [Issue #2599](https://github.com/cosmic-cloak/ztna/issues/2599) - Routers should only stream model data from one controller
+    * [Issue #2232](https://github.com/cosmic-cloak/ztna/issues/2232) - Standardized REST API Error For Mutation on Non-Consensus Controller
+    * [Issue #2566](https://github.com/cosmic-cloak/ztna/issues/2566) - Remove HA config flag from router
+    * [Issue #2550](https://github.com/cosmic-cloak/ztna/issues/2550) - Router Data Model Chaos Test
+    * [Issue #2625](https://github.com/cosmic-cloak/ztna/issues/2625) - edge sessions for an ERT may not be cleaned up when the ER/T is deleted 
+    * [Issue #2591](https://github.com/cosmic-cloak/ztna/issues/2591) - Split Edge APIs can cause `ziti edge login` to fail
 
 # Release 1.2.2
 
@@ -118,9 +118,9 @@ return an HTTP status of 429.
 * github.com/openziti/storage: [v0.3.6 -> v0.3.8](https://github.com/openziti/storage/compare/v0.3.6...v0.3.8)
     * [Issue #87](https://github.com/openziti/storage/issues/87) - negative URL filter returns incorrect results
 
-* github.com/openziti/ziti: [v1.2.1 -> v1.2.2](https://github.com/openziti/ziti/compare/v1.2.1...v1.2.2)
-    * [Issue #2559](https://github.com/openziti/ziti/issues/2559) - expired JWTs are allowed to enroll
-    * [Issue #2543](https://github.com/openziti/ziti/issues/2543) - Support adding adding an uninitialized node to a cluster (rather than the reverse)
+* github.com/cosmic-cloak/ztna: [v1.2.1 -> v1.2.2](https://github.com/cosmic-cloak/ztna/compare/v1.2.1...v1.2.2)
+    * [Issue #2559](https://github.com/cosmic-cloak/ztna/issues/2559) - expired JWTs are allowed to enroll
+    * [Issue #2543](https://github.com/cosmic-cloak/ztna/issues/2543) - Support adding adding an uninitialized node to a cluster (rather than the reverse)
 
 
 # Release 1.2.1
@@ -139,14 +139,14 @@ return an HTTP status of 429.
 * github.com/openziti/runzmd: [v1.0.53 -> v1.0.55](https://github.com/openziti/runzmd/compare/v1.0.53...v1.0.55)
 * github.com/openziti/storage: [v0.3.2 -> v0.3.6](https://github.com/openziti/storage/compare/v0.3.2...v0.3.6)
 * github.com/openziti/transport/v2: [v2.0.150 -> v2.0.153](https://github.com/openziti/transport/compare/v2.0.150...v2.0.153)
-* github.com/openziti/ziti: [v1.2.0 -> v1.2.1](https://github.com/openziti/ziti/compare/v1.2.0...v1.2.1)
-    * [Issue #2543](https://github.com/openziti/ziti/issues/2543) - Support adding adding an uninitialized node to a cluster (rather than the reverse)
-    * [Issue #2541](https://github.com/openziti/ziti/issues/2541) - Add cluster id, to prevent merging disparate clusters
-    * [Issue #2532](https://github.com/openziti/ziti/issues/2532) - When adding an existing HA cluster member, remove/add if suffrage has changed
-    * [Issue #2217](https://github.com/openziti/ziti/issues/2217) - Controller list is empty until peers connect
-    * [Issue #2533](https://github.com/openziti/ziti/issues/2533) - Handle concurrent raft connections
-    * [Issue #2534](https://github.com/openziti/ziti/issues/2534) - Ziti ID with leading hyphen causes command-line parameter ambiguity
-    * [Issue #2528](https://github.com/openziti/ziti/issues/2528) - Updated router costs are not use when evaluating current path cost in the context of smart rerouting
+* github.com/cosmic-cloak/ztna: [v1.2.0 -> v1.2.1](https://github.com/cosmic-cloak/ztna/compare/v1.2.0...v1.2.1)
+    * [Issue #2543](https://github.com/cosmic-cloak/ztna/issues/2543) - Support adding adding an uninitialized node to a cluster (rather than the reverse)
+    * [Issue #2541](https://github.com/cosmic-cloak/ztna/issues/2541) - Add cluster id, to prevent merging disparate clusters
+    * [Issue #2532](https://github.com/cosmic-cloak/ztna/issues/2532) - When adding an existing HA cluster member, remove/add if suffrage has changed
+    * [Issue #2217](https://github.com/cosmic-cloak/ztna/issues/2217) - Controller list is empty until peers connect
+    * [Issue #2533](https://github.com/cosmic-cloak/ztna/issues/2533) - Handle concurrent raft connections
+    * [Issue #2534](https://github.com/cosmic-cloak/ztna/issues/2534) - Ziti ID with leading hyphen causes command-line parameter ambiguity
+    * [Issue #2528](https://github.com/cosmic-cloak/ztna/issues/2528) - Updated router costs are not use when evaluating current path cost in the context of smart rerouting
 
 # Release 1.2.0
 
@@ -373,17 +373,17 @@ events:
 * github.com/openziti/runzmd: [v1.0.51 -> v1.0.53](https://github.com/openziti/runzmd/compare/v1.0.51...v1.0.53)
 * github.com/openziti/sdk-golang: [v0.23.43 -> v0.23.44](https://github.com/openziti/sdk-golang/compare/v0.23.43...v0.23.44)
 * github.com/openziti/transport/v2: [v2.0.146 -> v2.0.150](https://github.com/openziti/transport/compare/v2.0.146...v2.0.150)
-* github.com/openziti/ziti: [v1.1.15 -> v1.2.0](https://github.com/openziti/ziti/compare/v1.1.15...v1.2.0)
-    * [Issue #2212](https://github.com/openziti/ziti/issues/2212) - Rework distributed control bootstrap mechanism
-    * [Issue #1835](https://github.com/openziti/ziti/issues/1835) - Add access log for rest and router connections
-    * [Issue #2234](https://github.com/openziti/ziti/issues/2234) - Emit an event when hasEdgeRouterConnection state changes for an Identity
-    * [Issue #2506](https://github.com/openziti/ziti/issues/2506) - Identity service config overrides referential integrity issues
-    * [Issue #2491](https://github.com/openziti/ziti/issues/2491) - fix router CSR loading
-    * [Issue #2478](https://github.com/openziti/ziti/issues/2478) - JWT signer secondary auth: not enough information to continue
-    * [Issue #2482](https://github.com/openziti/ziti/issues/2482) - router run command - improperly binds 127.0.0.1:53/udp when tunnel mode is not tproxy
-    * [Issue #2474](https://github.com/openziti/ziti/issues/2474) - Enable Ext JWT Enrollment/Generic Trust Bootstrapping
-    * [Issue #2471](https://github.com/openziti/ziti/issues/2471) - Service Access for Legacy SDKs in  HA does not work
-    * [Issue #2468](https://github.com/openziti/ziti/issues/2468) - enrollment signing cert is not properly identified
+* github.com/cosmic-cloak/ztna: [v1.1.15 -> v1.2.0](https://github.com/cosmic-cloak/ztna/compare/v1.1.15...v1.2.0)
+    * [Issue #2212](https://github.com/cosmic-cloak/ztna/issues/2212) - Rework distributed control bootstrap mechanism
+    * [Issue #1835](https://github.com/cosmic-cloak/ztna/issues/1835) - Add access log for rest and router connections
+    * [Issue #2234](https://github.com/cosmic-cloak/ztna/issues/2234) - Emit an event when hasEdgeRouterConnection state changes for an Identity
+    * [Issue #2506](https://github.com/cosmic-cloak/ztna/issues/2506) - Identity service config overrides referential integrity issues
+    * [Issue #2491](https://github.com/cosmic-cloak/ztna/issues/2491) - fix router CSR loading
+    * [Issue #2478](https://github.com/cosmic-cloak/ztna/issues/2478) - JWT signer secondary auth: not enough information to continue
+    * [Issue #2482](https://github.com/cosmic-cloak/ztna/issues/2482) - router run command - improperly binds 127.0.0.1:53/udp when tunnel mode is not tproxy
+    * [Issue #2474](https://github.com/cosmic-cloak/ztna/issues/2474) - Enable Ext JWT Enrollment/Generic Trust Bootstrapping
+    * [Issue #2471](https://github.com/cosmic-cloak/ztna/issues/2471) - Service Access for Legacy SDKs in  HA does not work
+    * [Issue #2468](https://github.com/cosmic-cloak/ztna/issues/2468) - enrollment signing cert is not properly identified
 
 # Release 1.1.15
 
@@ -402,8 +402,8 @@ events:
     * [Issue #629](https://github.com/openziti/sdk-golang/issues/629) - JWT session refresh interprets expiration date incorrectly
 
 * github.com/openziti/secretstream: [v0.1.24 -> v0.1.25](https://github.com/openziti/secretstream/compare/v0.1.24...v0.1.25)
-* github.com/openziti/ziti: [v1.1.14 -> v1.1.15](https://github.com/openziti/ziti/compare/v1.1.14...v1.1.15)
-    * [Issue #2460](https://github.com/openziti/ziti/issues/2460) - Panic on JWT token refresh
+* github.com/cosmic-cloak/ztna: [v1.1.14 -> v1.1.15](https://github.com/cosmic-cloak/ztna/compare/v1.1.14...v1.1.15)
+    * [Issue #2460](https://github.com/cosmic-cloak/ztna/issues/2460) - Panic on JWT token refresh
 
 # Release 1.1.14
 
@@ -415,21 +415,21 @@ events:
 
 * github.com/openziti/edge-api: [v0.26.30 -> v0.26.31](https://github.com/openziti/edge-api/compare/v0.26.30...v0.26.31)
 * github.com/openziti/jwks: [v1.0.5 -> v1.0.6](https://github.com/openziti/jwks/compare/v1.0.5...v1.0.6)
-* github.com/openziti/ziti: [v1.1.13 -> v1.1.14](https://github.com/openziti/ziti/compare/v1.1.13...v1.1.14)
-    * [Issue #2119](https://github.com/openziti/ziti/issues/2119) - Add authentication events
-    * [Issue #2424](https://github.com/openziti/ziti/issues/2424) - Enabling any health check causes WARNING to be logged
-    * [Issue #2454](https://github.com/openziti/ziti/issues/2454) - Fix release archive
-    * [Issue #1479](https://github.com/openziti/ziti/issues/1479) - ziti edge list ... show paginated output but no suggestions on how to go to next page
-    * [Issue #1420](https://github.com/openziti/ziti/issues/1420) - ziti-cli comma+space causes unhelpful error
-    * [Issue #2207](https://github.com/openziti/ziti/issues/2207) - ziti edge login --token -- gets "username and password fields are required"
-    * [Issue #2444](https://github.com/openziti/ziti/issues/2444) - Change default semantic for policies created from the CLI from AllOf to AnyOf
+* github.com/cosmic-cloak/ztna: [v1.1.13 -> v1.1.14](https://github.com/cosmic-cloak/ztna/compare/v1.1.13...v1.1.14)
+    * [Issue #2119](https://github.com/cosmic-cloak/ztna/issues/2119) - Add authentication events
+    * [Issue #2424](https://github.com/cosmic-cloak/ztna/issues/2424) - Enabling any health check causes WARNING to be logged
+    * [Issue #2454](https://github.com/cosmic-cloak/ztna/issues/2454) - Fix release archive
+    * [Issue #1479](https://github.com/cosmic-cloak/ztna/issues/1479) - ziti edge list ... show paginated output but no suggestions on how to go to next page
+    * [Issue #1420](https://github.com/cosmic-cloak/ztna/issues/1420) - ziti-cli comma+space causes unhelpful error
+    * [Issue #2207](https://github.com/cosmic-cloak/ztna/issues/2207) - ziti edge login --token -- gets "username and password fields are required"
+    * [Issue #2444](https://github.com/cosmic-cloak/ztna/issues/2444) - Change default semantic for policies created from the CLI from AllOf to AnyOf
 
 * github.com/openziti/xweb/v2: [v2.1.2 -> v2.1.3](https://github.com/openziti/xweb/compare/v2.1.2...v2.1.3)
-  * [Issue #2454](https://github.com/openziti/ziti/issues/2454) - Fix release archive
-  * [Issue #2429](https://github.com/openziti/ziti/issues/2429) - Controller configurations without default Edge API binding panics 
-* github.com/openziti/ziti: [v1.1.12 -> v1.1.13](https://github.com/openziti/ziti/compare/v1.1.12...v1.1.13)
-  * [Issue #2427](https://github.com/openziti/ziti/issues/2427) - Add low overhead xgress protocol for DTLS links
-  * [Issue #2422](https://github.com/openziti/ziti/issues/2422) - Busy first hop links should backpressure to xgress senders
+  * [Issue #2454](https://github.com/cosmic-cloak/ztna/issues/2454) - Fix release archive
+  * [Issue #2429](https://github.com/cosmic-cloak/ztna/issues/2429) - Controller configurations without default Edge API binding panics 
+* github.com/cosmic-cloak/ztna: [v1.1.12 -> v1.1.13](https://github.com/cosmic-cloak/ztna/compare/v1.1.12...v1.1.13)
+  * [Issue #2427](https://github.com/cosmic-cloak/ztna/issues/2427) - Add low overhead xgress protocol for DTLS links
+  * [Issue #2422](https://github.com/cosmic-cloak/ztna/issues/2422) - Busy first hop links should backpressure to xgress senders
   * support using "\*" in host.v1/host.v2 allowedAddresses
 
 
@@ -520,15 +520,15 @@ ziti fabric db start-check-integrity -f
 * github.com/openziti/xweb/v2: [v2.1.1 -> v2.1.2](https://github.com/openziti/xweb/compare/v2.1.1...v2.1.2)
 * github.com/openziti-incubator/cf: v0.0.3 (new)
 * github.com/openziti/dilithium: [v0.3.3 -> v0.3.5](https://github.com/openziti/dilithium/compare/v0.3.3...v0.3.5)
-* github.com/openziti/ziti: [v1.1.11 -> v1.1.12](https://github.com/openziti/ziti/compare/v1.1.11...v1.1.12)
-    * [Issue #2413](https://github.com/openziti/ziti/issues/2413) - Add db anonymization utility
-    * [Issue #2415](https://github.com/openziti/ziti/issues/2415) - Fix policy denormalization when service policy type is changed
-    * [Issue #2406](https://github.com/openziti/ziti/issues/2406) - ziti agent controller snapshot-db exit code is always successful
-    * [Issue #2405](https://github.com/openziti/ziti/issues/2405) - Investigate Older SDKs Not Enrolling Not Connecting in HA
-    * [Issue #2403](https://github.com/openziti/ziti/issues/2403) - Fix terminator costing concurrency issue
-    * [Issue #2397](https://github.com/openziti/ziti/issues/2397) - JWKS endpoints w/ new keys do not get refreshed
-    * [Issue #2390](https://github.com/openziti/ziti/issues/2390) - Update to github.com/openziti/channel/v3
-    * [Issue #2388](https://github.com/openziti/ziti/issues/2388) - Remove use of ziti fabric add-identity commands in 004-controller-pki.md
+* github.com/cosmic-cloak/ztna: [v1.1.11 -> v1.1.12](https://github.com/cosmic-cloak/ztna/compare/v1.1.11...v1.1.12)
+    * [Issue #2413](https://github.com/cosmic-cloak/ztna/issues/2413) - Add db anonymization utility
+    * [Issue #2415](https://github.com/cosmic-cloak/ztna/issues/2415) - Fix policy denormalization when service policy type is changed
+    * [Issue #2406](https://github.com/cosmic-cloak/ztna/issues/2406) - ziti agent controller snapshot-db exit code is always successful
+    * [Issue #2405](https://github.com/cosmic-cloak/ztna/issues/2405) - Investigate Older SDKs Not Enrolling Not Connecting in HA
+    * [Issue #2403](https://github.com/cosmic-cloak/ztna/issues/2403) - Fix terminator costing concurrency issue
+    * [Issue #2397](https://github.com/cosmic-cloak/ztna/issues/2397) - JWKS endpoints w/ new keys do not get refreshed
+    * [Issue #2390](https://github.com/cosmic-cloak/ztna/issues/2390) - Update to github.com/openziti/channel/v3
+    * [Issue #2388](https://github.com/cosmic-cloak/ztna/issues/2388) - Remove use of ziti fabric add-identity commands in 004-controller-pki.md
 
 # Release 1.1.11
 
@@ -549,18 +549,18 @@ ziti fabric db start-check-integrity -f
 * github.com/openziti/cobra-to-md: v1.0.1 (new)
 * github.com/openziti/edge-api: [v0.26.25 -> v0.26.29](https://github.com/openziti/edge-api/compare/v0.26.25...v0.26.29)
 * github.com/openziti/jwks: [v1.0.3 -> v1.0.4](https://github.com/openziti/jwks/compare/v1.0.3...v1.0.4)
-* github.com/openziti/ziti: [v1.1.9 -> v1.1.10](https://github.com/openziti/ziti/compare/v1.1.9...v1.1.10)
-    * [Issue #2374](https://github.com/openziti/ziti/issues/2374) - Edge Routers Do Not Accept JWTs for `openziti`/`native` audiences
-    * [Issue #2353](https://github.com/openziti/ziti/issues/2353) - Update go-jose to avoid CVEs
-    * [Issue #2333](https://github.com/openziti/ziti/issues/2333) - Give zit agent controller snapshot-db same capabilities as ziti fabric db snapshot
-    * [Issue #2343](https://github.com/openziti/ziti/issues/2343) - Transferring leadership to another controller fails sometimes
+* github.com/cosmic-cloak/ztna: [v1.1.9 -> v1.1.10](https://github.com/cosmic-cloak/ztna/compare/v1.1.9...v1.1.10)
+    * [Issue #2374](https://github.com/cosmic-cloak/ztna/issues/2374) - Edge Routers Do Not Accept JWTs for `openziti`/`native` audiences
+    * [Issue #2353](https://github.com/cosmic-cloak/ztna/issues/2353) - Update go-jose to avoid CVEs
+    * [Issue #2333](https://github.com/cosmic-cloak/ztna/issues/2333) - Give zit agent controller snapshot-db same capabilities as ziti fabric db snapshot
+    * [Issue #2343](https://github.com/cosmic-cloak/ztna/issues/2343) - Transferring leadership to another controller fails sometimes
 
 # Release 1.1.9
 
 ## What's New
 
 * Bug fixes, enhancements and continuing progress on controller HA
-* Includes a performance update ([Issue #2340](https://github.com/openziti/ziti/issues/2340)) which should improve
+* Includes a performance update ([Issue #2340](https://github.com/cosmic-cloak/ztna/issues/2340)) which should improve
   connection ramp times. Previously circuits would start with a relatively low window size and ramp slowly. Circuits
   will now start with a large initial window size and scale back if they can't keep up
 * Added `ziti ops verify-network`. A command to aid when configuring the overlay network, this command will check config
@@ -586,19 +586,19 @@ ziti fabric db start-check-integrity -f
 * github.com/openziti/transport/v2: [v2.0.138 -> v2.0.143](https://github.com/openziti/transport/compare/v2.0.138...v2.0.143)
     * [Issue #85](https://github.com/openziti/transport/issues/85) - Update to latest dtls library
 
-* github.com/openziti/ziti: [v1.1.8 -> v1.1.9](https://github.com/openziti/ziti/compare/v1.1.8...v1.1.9)
-    * [Issue #2343](https://github.com/openziti/ziti/issues/2343) - Transferring leadership to another controller fails sometimes
-    * [Issue #2340](https://github.com/openziti/ziti/issues/2340) - Update xgress defaults
-    * [Issue #2336](https://github.com/openziti/ziti/issues/2336) - Re-enable optional xgress payload mtu, with message framing
-    * [Issue #2091](https://github.com/openziti/ziti/issues/2091) - Add `scope` and `cliend_id` configuration to ext jwt signers
-    * [Issue #2318](https://github.com/openziti/ziti/issues/2318) - Unable to update appData on existing edge routers using PATCH
-    * [Issue #2281](https://github.com/openziti/ziti/issues/2281) - Session Certificates Should Return a Chain
-    * [Issue #2285](https://github.com/openziti/ziti/issues/2285) - routers sometimes report link metrics for closed links 
-    * [Issue #2282](https://github.com/openziti/ziti/issues/2282) - Investigate OIDC TOTP Redirect w/ application/json
-    * [Issue #2279](https://github.com/openziti/ziti/issues/2279) - Ensure xweb initialized before RAFT
-    * [Issue #2277](https://github.com/openziti/ziti/issues/2277) - docker controller and router deployments - generate a config by default
-    * [Issue #2154](https://github.com/openziti/ziti/issues/2154) - HA MFA Enrollment returns 500
-    * [Issue #2159](https://github.com/openziti/ziti/issues/2159) - API Session in HA return 400
+* github.com/cosmic-cloak/ztna: [v1.1.8 -> v1.1.9](https://github.com/cosmic-cloak/ztna/compare/v1.1.8...v1.1.9)
+    * [Issue #2343](https://github.com/cosmic-cloak/ztna/issues/2343) - Transferring leadership to another controller fails sometimes
+    * [Issue #2340](https://github.com/cosmic-cloak/ztna/issues/2340) - Update xgress defaults
+    * [Issue #2336](https://github.com/cosmic-cloak/ztna/issues/2336) - Re-enable optional xgress payload mtu, with message framing
+    * [Issue #2091](https://github.com/cosmic-cloak/ztna/issues/2091) - Add `scope` and `cliend_id` configuration to ext jwt signers
+    * [Issue #2318](https://github.com/cosmic-cloak/ztna/issues/2318) - Unable to update appData on existing edge routers using PATCH
+    * [Issue #2281](https://github.com/cosmic-cloak/ztna/issues/2281) - Session Certificates Should Return a Chain
+    * [Issue #2285](https://github.com/cosmic-cloak/ztna/issues/2285) - routers sometimes report link metrics for closed links 
+    * [Issue #2282](https://github.com/cosmic-cloak/ztna/issues/2282) - Investigate OIDC TOTP Redirect w/ application/json
+    * [Issue #2279](https://github.com/cosmic-cloak/ztna/issues/2279) - Ensure xweb initialized before RAFT
+    * [Issue #2277](https://github.com/cosmic-cloak/ztna/issues/2277) - docker controller and router deployments - generate a config by default
+    * [Issue #2154](https://github.com/cosmic-cloak/ztna/issues/2154) - HA MFA Enrollment returns 500
+    * [Issue #2159](https://github.com/cosmic-cloak/ztna/issues/2159) - API Session in HA return 400
 
 # Release 1.1.8
 
@@ -620,14 +620,14 @@ ziti fabric db start-check-integrity -f
     * [Issue #80](https://github.com/openziti/storage/issues/80) - Set indexes aren't cleaned up when referenced entities are deleted, only when they change
     * [Issue #78](https://github.com/openziti/storage/issues/78) - Allow searching for things without case sensitivity
 
-* github.com/openziti/ziti: [v1.1.7 -> v1.1.8](https://github.com/openziti/ziti/compare/v1.1.7...v1.1.8)
-    * [Issue #2121](https://github.com/openziti/ziti/issues/2121) - Use router data model for edge router tunnel
-    * [Issue #2245](https://github.com/openziti/ziti/issues/2245) - Add ability to retrieve a list of services that reference a config
-    * [Issue #2089](https://github.com/openziti/ziti/issues/2089) - Enhance Management API to list Posture Check Roles
-    * [Issue #2209](https://github.com/openziti/ziti/issues/2209) - `/edge/v1/external-jwt-signers` needs to be open
-    * [Issue #2010](https://github.com/openziti/ziti/issues/2010) - Add config information to router data model
-    * [Issue #1990](https://github.com/openziti/ziti/issues/1990) - Implement subscriber model for identity/service events in router
-    * [Issue #2240](https://github.com/openziti/ziti/issues/2240) - Secondary ext-jwt Auth Policy check incorrectly requires primary ext-jwt auth to be enabled
+* github.com/cosmic-cloak/ztna: [v1.1.7 -> v1.1.8](https://github.com/cosmic-cloak/ztna/compare/v1.1.7...v1.1.8)
+    * [Issue #2121](https://github.com/cosmic-cloak/ztna/issues/2121) - Use router data model for edge router tunnel
+    * [Issue #2245](https://github.com/cosmic-cloak/ztna/issues/2245) - Add ability to retrieve a list of services that reference a config
+    * [Issue #2089](https://github.com/cosmic-cloak/ztna/issues/2089) - Enhance Management API to list Posture Check Roles
+    * [Issue #2209](https://github.com/cosmic-cloak/ztna/issues/2209) - `/edge/v1/external-jwt-signers` needs to be open
+    * [Issue #2010](https://github.com/cosmic-cloak/ztna/issues/2010) - Add config information to router data model
+    * [Issue #1990](https://github.com/cosmic-cloak/ztna/issues/1990) - Implement subscriber model for identity/service events in router
+    * [Issue #2240](https://github.com/cosmic-cloak/ztna/issues/2240) - Secondary ext-jwt Auth Policy check incorrectly requires primary ext-jwt auth to be enabled
 
 
 # Release 1.1.7
@@ -704,7 +704,7 @@ with HA controllers and clients.
 
 For more information:
 
-* HA overview/getting started/migration: [HA Documentation](https://github.com/openziti/ziti/tree/release-next/doc/ha)
+* HA overview/getting started/migration: [HA Documentation](https://github.com/cosmic-cloak/ztna/tree/release-next/doc/ha)
 * Open Issues: [HA Project Board](https://github.com/orgs/openziti/projects/9/views/1)
 
 ## Component Updates and Bug Fixes
@@ -712,15 +712,15 @@ For more information:
 * github.com/openziti/storage: [v0.2.45 -> v0.2.46](https://github.com/openziti/storage/compare/v0.2.45...v0.2.46)
     * [Issue #76](https://github.com/openziti/storage/issues/76) - Add support for non-boltz symbols to the the boltz stores
 
-* github.com/openziti/ziti: [v1.1.5 -> v1.1.6](https://github.com/openziti/ziti/compare/v1.1.5...v1.1.6)
-    * [Issue #2171](https://github.com/openziti/ziti/issues/2171) - Routers should consider control channels unresponsive if they are not connected
-    * [Issue #2219](https://github.com/openziti/ziti/issues/2219) - Add inspection for router connections
-    * [Issue #2195](https://github.com/openziti/ziti/issues/2195) - cached data model file set to
-    * [Issue #2222](https://github.com/openziti/ziti/issues/2222) - Add way to get read-only status from cluster nodes
-    * [Issue #2191](https://github.com/openziti/ziti/issues/2191) - Change raft list cluster members element name from values to data to match rest of REST api
-    * [Issue #785](https://github.com/openziti/ziti/issues/785) - ziti edge update service-policy to empty/no posture checks fails
-    * [Issue #2205](https://github.com/openziti/ziti/issues/2205) - Merge fabric and edge model code
-    * [Issue #2165](https://github.com/openziti/ziti/issues/2165) - Add network id
+* github.com/cosmic-cloak/ztna: [v1.1.5 -> v1.1.6](https://github.com/cosmic-cloak/ztna/compare/v1.1.5...v1.1.6)
+    * [Issue #2171](https://github.com/cosmic-cloak/ztna/issues/2171) - Routers should consider control channels unresponsive if they are not connected
+    * [Issue #2219](https://github.com/cosmic-cloak/ztna/issues/2219) - Add inspection for router connections
+    * [Issue #2195](https://github.com/cosmic-cloak/ztna/issues/2195) - cached data model file set to
+    * [Issue #2222](https://github.com/cosmic-cloak/ztna/issues/2222) - Add way to get read-only status from cluster nodes
+    * [Issue #2191](https://github.com/cosmic-cloak/ztna/issues/2191) - Change raft list cluster members element name from values to data to match rest of REST api
+    * [Issue #785](https://github.com/cosmic-cloak/ztna/issues/785) - ziti edge update service-policy to empty/no posture checks fails
+    * [Issue #2205](https://github.com/cosmic-cloak/ztna/issues/2205) - Merge fabric and edge model code
+    * [Issue #2165](https://github.com/cosmic-cloak/ztna/issues/2165) - Add network id
 
 # Release 1.1.5
 
@@ -738,11 +738,11 @@ For more information:
     * [Issue #83](https://github.com/openziti/transport/issues/83) - tls.Dial should use proxy configuration if provided
 
 * github.com/openziti/xweb/v2: [v2.1.0 -> v2.1.1](https://github.com/openziti/xweb/compare/v2.1.0...v2.1.1)
-* github.com/openziti/ziti: [v1.1.4 -> v1.1.5](https://github.com/openziti/ziti/compare/v1.1.4...v1.1.5)
-    * [Issue #2173](https://github.com/openziti/ziti/issues/2173) - panic on HA peer connect
-    * [Issue #2171](https://github.com/openziti/ziti/issues/2171) - Routers should consider control channels unresponsive if they are not connected
-    * [Issue #2086](https://github.com/openziti/ziti/issues/2086) - Enable File Watching for Router/Controller Identities
-    * [Issue #2087](https://github.com/openziti/ziti/issues/2087) - Ext JWT not setting provider value in auth query
+* github.com/cosmic-cloak/ztna: [v1.1.4 -> v1.1.5](https://github.com/cosmic-cloak/ztna/compare/v1.1.4...v1.1.5)
+    * [Issue #2173](https://github.com/cosmic-cloak/ztna/issues/2173) - panic on HA peer connect
+    * [Issue #2171](https://github.com/cosmic-cloak/ztna/issues/2171) - Routers should consider control channels unresponsive if they are not connected
+    * [Issue #2086](https://github.com/cosmic-cloak/ztna/issues/2086) - Enable File Watching for Router/Controller Identities
+    * [Issue #2087](https://github.com/cosmic-cloak/ztna/issues/2087) - Ext JWT not setting provider value in auth query
 
 # Release 1.1.4
 
@@ -762,7 +762,7 @@ with HA controllers and clients.
 
 For more information:
 
-* HA overview/getting started/migration: [HA Documentation](https://github.com/openziti/ziti/tree/release-next/doc/ha)
+* HA overview/getting started/migration: [HA Documentation](https://github.com/cosmic-cloak/ztna/tree/release-next/doc/ha)
 * Open Issues: [HA Project Board](https://github.com/orgs/openziti/projects/9/views/1)
 
 ## Component Updates and Bug Fixes 
@@ -787,9 +787,9 @@ For more information:
     * [Issue #71](https://github.com/openziti/storage/issues/71) - Add AddFkIndexCascadeDelete
 
 * github.com/openziti/transport/v2: [v2.0.133 -> v2.0.136](https://github.com/openziti/transport/compare/v2.0.133...v2.0.136)
-* github.com/openziti/ziti: [v1.1.3 -> v1.1.4](https://github.com/openziti/ziti/compare/v1.1.3...v1.1.4)
-    * [Issue #2084](https://github.com/openziti/ziti/issues/2084) - Bug: Router enrollment is missing its server chain
-    * [Issue #2124](https://github.com/openziti/ziti/issues/2124) - api session certs should be deleted when related api sessions are deleted
+* github.com/cosmic-cloak/ztna: [v1.1.3 -> v1.1.4](https://github.com/cosmic-cloak/ztna/compare/v1.1.3...v1.1.4)
+    * [Issue #2084](https://github.com/cosmic-cloak/ztna/issues/2084) - Bug: Router enrollment is missing its server chain
+    * [Issue #2124](https://github.com/cosmic-cloak/ztna/issues/2124) - api session certs should be deleted when related api sessions are deleted
 
 # Release 1.1.3
 
@@ -846,11 +846,11 @@ ziti edge create service test --terminator-strategy sticky
 * github.com/openziti/secretstream: [v0.1.19 -> v0.1.20](https://github.com/openziti/secretstream/compare/v0.1.19...v0.1.20)
 * github.com/openziti/storage: [v0.2.37 -> v0.2.41](https://github.com/openziti/storage/compare/v0.2.37...v0.2.41)
 * github.com/openziti/transport/v2: [v2.0.131 -> v2.0.133](https://github.com/openziti/transport/compare/v2.0.131...v2.0.133)
-* github.com/openziti/ziti: [v1.1.2 -> v1.1.3](https://github.com/openziti/ziti/compare/v1.1.2...v1.1.3)
-    * [Issue #2064](https://github.com/openziti/ziti/issues/2064) - Fix panic on link close
-    * [Issue #2062](https://github.com/openziti/ziti/issues/2062) - Link connection retry delays should contain some randomization 
-    * [Issue #2055](https://github.com/openziti/ziti/issues/2055) - Controller panics on 'ziti agent cluster list'
-    * [Issue #2019](https://github.com/openziti/ziti/issues/2019) - Support mechanism for sticky dials
+* github.com/cosmic-cloak/ztna: [v1.1.2 -> v1.1.3](https://github.com/cosmic-cloak/ztna/compare/v1.1.2...v1.1.3)
+    * [Issue #2064](https://github.com/cosmic-cloak/ztna/issues/2064) - Fix panic on link close
+    * [Issue #2062](https://github.com/cosmic-cloak/ztna/issues/2062) - Link connection retry delays should contain some randomization 
+    * [Issue #2055](https://github.com/cosmic-cloak/ztna/issues/2055) - Controller panics on 'ziti agent cluster list'
+    * [Issue #2019](https://github.com/cosmic-cloak/ztna/issues/2019) - Support mechanism for sticky dials
 
 # Release 1.1.2
 
@@ -860,12 +860,12 @@ ziti edge create service test --terminator-strategy sticky
 
 ## Component Updates and Bug Fixes
 * github.com/openziti/sdk-golang: [v0.23.32 -> v0.23.35](https://github.com/openziti/sdk-golang/compare/v0.23.32...v0.23.35)
-* github.com/openziti/ziti: [v1.1.1 -> v1.1.2](https://github.com/openziti/ziti/compare/v1.1.1...v1.1.2)
-  * [Issue #2032](https://github.com/openziti/ziti/issues/2032) - Auto CA Enrollment Fails w/ 400 Bad Request
-  * [Issue #2026](https://github.com/openziti/ziti/issues/2026) - Root Version Endpoint Handling 404s
-  * [Issue #2002](https://github.com/openziti/ziti/issues/2002) - JWKS endpoints may not refresh on new KID
-  * [Issue #2007](https://github.com/openziti/ziti/issues/2007) - Identities for edge routers with tunneling enabled sometimes show hasEdgeRouterConnection=false even though everything is OK
-  * [Issue #1983](https://github.com/openziti/ziti/issues/1983) - delete of non-existent entity causes panic when run on follower controller
+* github.com/cosmic-cloak/ztna: [v1.1.1 -> v1.1.2](https://github.com/cosmic-cloak/ztna/compare/v1.1.1...v1.1.2)
+  * [Issue #2032](https://github.com/cosmic-cloak/ztna/issues/2032) - Auto CA Enrollment Fails w/ 400 Bad Request
+  * [Issue #2026](https://github.com/cosmic-cloak/ztna/issues/2026) - Root Version Endpoint Handling 404s
+  * [Issue #2002](https://github.com/cosmic-cloak/ztna/issues/2002) - JWKS endpoints may not refresh on new KID
+  * [Issue #2007](https://github.com/cosmic-cloak/ztna/issues/2007) - Identities for edge routers with tunneling enabled sometimes show hasEdgeRouterConnection=false even though everything is OK
+  * [Issue #1983](https://github.com/cosmic-cloak/ztna/issues/1983) - delete of non-existent entity causes panic when run on follower controller
 
 
 # Release 1.1.1
@@ -882,7 +882,7 @@ This release can be run in HA mode. The code is still alpha, as we're still find
 
 For more information:
 
-* HA overview/getting started/migration: [HA Documementation](https://github.com/openziti/ziti/tree/release-next/doc/ha)
+* HA overview/getting started/migration: [HA Documementation](https://github.com/cosmic-cloak/ztna/tree/release-next/doc/ha)
 * Open Issues: [HA Project Board](https://github.com/orgs/openziti/projects/9/views/1) 
 
 ## New Contributors
@@ -899,14 +899,14 @@ Thanks to new contributors
 * github.com/openziti/storage: [v0.2.36 -> v0.2.37](https://github.com/openziti/storage/compare/v0.2.36...v0.2.37)
     * [Issue #64](https://github.com/openziti/storage/issues/64) - Add support for transaction complete listeners
 
-* github.com/openziti/ziti: [v1.1.0 -> v1.1.1](https://github.com/openziti/ziti/compare/v1.1.0...v1.1.1)
-    * [Issue #1973](https://github.com/openziti/ziti/issues/1973) - Raft should not initialize if db is misconfigured
-    * [Issue #1971](https://github.com/openziti/ziti/issues/1971) - BUG: OIDC authentication does not convert config type names to ids
-    * [Issue #1966](https://github.com/openziti/ziti/issues/1966) - Handle multi-entity updates in router data model
-    * [Issue #1772](https://github.com/openziti/ziti/issues/1772) - provide a better error when the user is not logged in
-    * [Issue #1964](https://github.com/openziti/ziti/issues/1964) - Add API Session Token Update Messaging
-    * [Issue #1960](https://github.com/openziti/ziti/issues/1960) - JWT Session exchange isn't working
-    * [Issue #1962](https://github.com/openziti/ziti/issues/1962) - permissions enum doesn't contain "Invalid"
+* github.com/cosmic-cloak/ztna: [v1.1.0 -> v1.1.1](https://github.com/cosmic-cloak/ztna/compare/v1.1.0...v1.1.1)
+    * [Issue #1973](https://github.com/cosmic-cloak/ztna/issues/1973) - Raft should not initialize if db is misconfigured
+    * [Issue #1971](https://github.com/cosmic-cloak/ztna/issues/1971) - BUG: OIDC authentication does not convert config type names to ids
+    * [Issue #1966](https://github.com/cosmic-cloak/ztna/issues/1966) - Handle multi-entity updates in router data model
+    * [Issue #1772](https://github.com/cosmic-cloak/ztna/issues/1772) - provide a better error when the user is not logged in
+    * [Issue #1964](https://github.com/cosmic-cloak/ztna/issues/1964) - Add API Session Token Update Messaging
+    * [Issue #1960](https://github.com/cosmic-cloak/ztna/issues/1960) - JWT Session exchange isn't working
+    * [Issue #1962](https://github.com/cosmic-cloak/ztna/issues/1962) - permissions enum doesn't contain "Invalid"
 
 # Release 1.1.0
 
@@ -923,7 +923,7 @@ Thanks to new contributors
 ## HA Alpha2
 
 This release can be run in HA mode. The code is still alpha, so there are still some bugs and missing features,
-however basic functionality work with the exceptions noted. See the [HA Documementation](https://github.com/openziti/ziti/tree/release-next/doc/ha)
+however basic functionality work with the exceptions noted. See the [HA Documementation](https://github.com/cosmic-cloak/ztna/tree/release-next/doc/ha)
 for instructions on setting up an HA cluster.
 
 ### Known Issues
@@ -945,14 +945,14 @@ More information can be found on the [HA Project Board](https://github.com/orgs/
     * [Issue #541](https://github.com/openziti/sdk-golang/issues/541) - Token exchange in Go SDK not working
     * [Issue #540](https://github.com/openziti/sdk-golang/issues/540) - Switch to EdgeRouter.SupportedProtocols from deprecated URLs map
 
-* github.com/openziti/ziti: [v1.0.0 -> v1.1.0](https://github.com/openziti/ziti/compare/v1.0.0...v1.1.0)
-    * [Issue #1952](https://github.com/openziti/ziti/issues/1952) - Remove support for fabric only identities in CLI
-    * [Issue #1950](https://github.com/openziti/ziti/issues/1950) - Add policy type to service policy router events
-    * [Issue #1951](https://github.com/openziti/ziti/issues/1951) - Add more attributes to route data model Identity
-    * [Issue #1942](https://github.com/openziti/ziti/issues/1942) - Rework ER/T intercept code to be sessionless or use JWT sessions
-    * [Issue #1936](https://github.com/openziti/ziti/issues/1936) - SDK Hosted HA sessions are getting removed when they shouldn't be
-    * [Issue #1934](https://github.com/openziti/ziti/issues/1934) - Don't publish binary builds to artifactory
-    * [Issue #1931](https://github.com/openziti/ziti/issues/1931) - "invalid kid: <kid>" randomly occurs in HA mode
+* github.com/cosmic-cloak/ztna: [v1.0.0 -> v1.1.0](https://github.com/cosmic-cloak/ztna/compare/v1.0.0...v1.1.0)
+    * [Issue #1952](https://github.com/cosmic-cloak/ztna/issues/1952) - Remove support for fabric only identities in CLI
+    * [Issue #1950](https://github.com/cosmic-cloak/ztna/issues/1950) - Add policy type to service policy router events
+    * [Issue #1951](https://github.com/cosmic-cloak/ztna/issues/1951) - Add more attributes to route data model Identity
+    * [Issue #1942](https://github.com/cosmic-cloak/ztna/issues/1942) - Rework ER/T intercept code to be sessionless or use JWT sessions
+    * [Issue #1936](https://github.com/cosmic-cloak/ztna/issues/1936) - SDK Hosted HA sessions are getting removed when they shouldn't be
+    * [Issue #1934](https://github.com/cosmic-cloak/ztna/issues/1934) - Don't publish binary builds to artifactory
+    * [Issue #1931](https://github.com/cosmic-cloak/ztna/issues/1931) - "invalid kid: <kid>" randomly occurs in HA mode
 
 # Release 1.0.0
 
@@ -1046,11 +1046,11 @@ New metrics:
 * github.com/openziti/transport/v2: [v2.0.125 -> v2.0.131](https://github.com/openziti/transport/compare/v2.0.125...v2.0.131)
     * [Issue #79](https://github.com/openziti/transport/issues/79) - Add adaptive rate limiting to shared tls listener
 
-* github.com/openziti/ziti: [v0.34.2 -> v1.0.0](https://github.com/openziti/ziti/compare/v0.34.2...v1.0.0)
-    * [Issue #1923](https://github.com/openziti/ziti/issues/1923) - Add release validation test suite
-    * [Issue #1904](https://github.com/openziti/ziti/issues/1904) - Add TLS handshake rate limiter
-    * [Issue #1921](https://github.com/openziti/ziti/issues/1921) - Tidy CLI
-    * [Issue #1916](https://github.com/openziti/ziti/issues/1916) - SDK dials fails with 'token is malformed' error
-    * [Issue #1911](https://github.com/openziti/ziti/issues/1911) - Fix panic on first HA controller startup
-    * [Issue #1914](https://github.com/openziti/ziti/issues/1914) - Fix panic in PeerConnected
-    * [Issue #1781](https://github.com/openziti/ziti/issues/1781) - Admin identities have bind and dial permissions to services
+* github.com/cosmic-cloak/ztna: [v0.34.2 -> v1.0.0](https://github.com/cosmic-cloak/ztna/compare/v0.34.2...v1.0.0)
+    * [Issue #1923](https://github.com/cosmic-cloak/ztna/issues/1923) - Add release validation test suite
+    * [Issue #1904](https://github.com/cosmic-cloak/ztna/issues/1904) - Add TLS handshake rate limiter
+    * [Issue #1921](https://github.com/cosmic-cloak/ztna/issues/1921) - Tidy CLI
+    * [Issue #1916](https://github.com/cosmic-cloak/ztna/issues/1916) - SDK dials fails with 'token is malformed' error
+    * [Issue #1911](https://github.com/cosmic-cloak/ztna/issues/1911) - Fix panic on first HA controller startup
+    * [Issue #1914](https://github.com/cosmic-cloak/ztna/issues/1914) - Fix panic in PeerConnected
+    * [Issue #1781](https://github.com/cosmic-cloak/ztna/issues/1781) - Admin identities have bind and dial permissions to services

@@ -21,7 +21,7 @@ import (
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
 	"strings"
 	"time"
 )

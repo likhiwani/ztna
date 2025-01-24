@@ -17,17 +17,17 @@
 package create
 
 import (
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdHelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/constants"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdHelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 	"regexp"
 	"time"
 
 	"github.com/openziti/channel/v3"
 	foundation "github.com/openziti/transport/v2"
 	fabXweb "github.com/openziti/xweb/v2"
-	edge "github.com/openziti/ziti/controller/config"
-	fabForwarder "github.com/openziti/ziti/router/forwarder"
+	edge "github.com/cosmic-cloak/ztna/controller/config"
+	fabForwarder "github.com/cosmic-cloak/ztna/router/forwarder"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

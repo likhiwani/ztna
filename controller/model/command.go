@@ -17,13 +17,13 @@
 package model
 
 import (
-	"github.com/openziti/ziti/common/pb/cmd_pb"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/command"
-	"github.com/openziti/ziti/controller/fields"
-	"github.com/openziti/ziti/controller/idgen"
-	"github.com/openziti/ziti/controller/ioc"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/command"
+	"github.com/cosmic-cloak/ztna/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/idgen"
+	"github.com/cosmic-cloak/ztna/controller/ioc"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"google.golang.org/protobuf/proto"
 )
 

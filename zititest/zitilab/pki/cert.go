@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/ziti/cmd"
+	"github.com/cosmic-cloak/ztna/ziti/cmd"
 	"github.com/sirupsen/logrus"
 )
 

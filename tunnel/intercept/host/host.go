@@ -18,9 +18,9 @@ package host
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/tunnel/dns"
-	"github.com/openziti/ziti/tunnel/entities"
-	"github.com/openziti/ziti/tunnel/intercept"
+	"github.com/cosmic-cloak/ztna/tunnel/dns"
+	"github.com/cosmic-cloak/ztna/tunnel/entities"
+	"github.com/cosmic-cloak/ztna/tunnel/intercept"
 	"github.com/pkg/errors"
 )
 

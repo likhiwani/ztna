@@ -17,9 +17,9 @@
 package api_impl
 
 import (
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
 	"strconv"

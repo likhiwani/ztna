@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/trace/pb"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/identity"
 	"sync/atomic"

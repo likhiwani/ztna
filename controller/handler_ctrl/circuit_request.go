@@ -17,18 +17,18 @@
 package handler_ctrl
 
 import (
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"google.golang.org/protobuf/proto"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/network"
 )
 
 type circuitRequestHandler struct {

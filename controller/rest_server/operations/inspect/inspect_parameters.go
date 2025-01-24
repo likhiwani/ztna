@@ -39,7 +39,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 )
 
 // NewInspectParams creates a new InspectParams object

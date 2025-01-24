@@ -19,11 +19,11 @@ package events
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/network"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"reflect"
@@ -59,7 +59,7 @@ func (self *Dispatcher) registerTerminatorEventHandler(val interface{}, options 
 	handler, ok := val.(event.TerminatorEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/openziti/ziti/controller/event/TerminatorEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/TerminatorEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	propagateAlways := false

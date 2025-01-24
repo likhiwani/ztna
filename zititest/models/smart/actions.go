@@ -18,9 +18,9 @@ package main
 
 import (
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/zititest/models/smart/actions"
-	zitilab_actions "github.com/openziti/ziti/zititest/zitilab/actions"
-	"github.com/openziti/ziti/zititest/zitilab/console"
+	"github.com/cosmic-cloak/ztna/zititest/models/smart/actions"
+	zitilab_actions "github.com/cosmic-cloak/ztna/zititest/zitilab/actions"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/console"
 )
 
 func newActionsFactory() model.Factory {

@@ -19,9 +19,9 @@ package agentcli
 import (
 	"fmt"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/pb/mgmt_pb"
-	"github.com/openziti/ziti/controller"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"github.com/cosmic-cloak/ztna/controller"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"github.com/spf13/cobra"
 )
 

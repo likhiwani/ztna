@@ -18,11 +18,11 @@ package pki
 
 import (
 	"fmt"
-	cmd2 "github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/internal/log"
-	"github.com/openziti/ziti/ziti/pki/pki"
-	"github.com/openziti/ziti/ziti/pki/store"
+	cmd2 "github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
+	"github.com/cosmic-cloak/ztna/ziti/pki/pki"
+	"github.com/cosmic-cloak/ztna/ziti/pki/store"
 	"github.com/spf13/cobra"
 	"io"
 )

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/ziti/common"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"time"
 
 	"github.com/zitadel/oidc/v2/pkg/oidc"

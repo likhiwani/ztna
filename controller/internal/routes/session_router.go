@@ -24,9 +24,9 @@ import (
 	managementSession "github.com/openziti/edge-api/rest_management_api_server/operations/session"
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/metrics"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/internal/permissions"
-	"github.com/openziti/ziti/controller/response"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
+	"github.com/cosmic-cloak/ztna/controller/response"
 	"net/http"
 	"time"
 )

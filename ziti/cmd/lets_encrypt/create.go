@@ -21,8 +21,8 @@ import (
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/lego"
 	"github.com/go-acme/lego/v4/registration"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/internal/log"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
 	"github.com/spf13/cobra"
 	"io"
 )

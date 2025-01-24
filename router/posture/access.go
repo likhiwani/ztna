@@ -3,9 +3,9 @@ package posture
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/common"
-	"github.com/openziti/ziti/common/eid"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/common"
+	"github.com/cosmic-cloak/ztna/common/eid"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 )
 
 func HasAccess(rdm *common.RouterDataModel, identityId string, serviceId string, cache *Cache, policyType edge_ctrl_pb.PolicyType) (*common.ServicePolicy, error) {

@@ -24,9 +24,9 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/pkg/errors"
 )
 

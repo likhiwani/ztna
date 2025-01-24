@@ -18,7 +18,7 @@ package env
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/config"
+	"github.com/cosmic-cloak/ztna/common/config"
 )
 
 // An Xrctrl allows adding handlers to the router <-> controller connection

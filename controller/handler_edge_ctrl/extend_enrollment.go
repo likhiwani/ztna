@@ -19,12 +19,12 @@ package handler_edge_ctrl
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/cert"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/common/cert"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"google.golang.org/protobuf/proto"
 )
 

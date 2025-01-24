@@ -20,7 +20,7 @@ import (
 	"errors"
 	"github.com/openziti/edge-api/rest_management_api_client/config"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/internal/ascode"
+	"github.com/cosmic-cloak/ztna/internal/ascode"
 	"slices"
 )
 

@@ -18,9 +18,9 @@ package edge
 
 import (
 	"github.com/Jeffail/gabs"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/spf13/cobra"
 	"gopkg.in/resty.v1"
 	"io"

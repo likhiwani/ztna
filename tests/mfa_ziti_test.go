@@ -26,7 +26,7 @@ import (
 	"github.com/dgryski/dgoogauth"
 	"github.com/google/uuid"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
 	"image/png"
 	"net/http"
 	"net/url"

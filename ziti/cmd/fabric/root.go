@@ -18,11 +18,11 @@ package fabric
 
 import (
 	"github.com/Jeffail/gabs"
-	fabric_rest_client "github.com/openziti/ziti/controller/rest_client"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/util"
+	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/spf13/cobra"
 	"gopkg.in/resty.v1"
 )

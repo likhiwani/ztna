@@ -22,7 +22,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
 	"net/http"
 	"strconv"
 	"strings"

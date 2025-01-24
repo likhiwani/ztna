@@ -18,7 +18,7 @@ package xmgmt
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/config"
+	"github.com/cosmic-cloak/ztna/common/config"
 )
 
 type Xmgmt interface {

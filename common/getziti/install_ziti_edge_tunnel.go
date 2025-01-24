@@ -3,7 +3,7 @@ package getziti
 import (
 	"fmt"
 	"github.com/blang/semver"
-	c "github.com/openziti/ziti/ziti/constants"
+	c "github.com/cosmic-cloak/ztna/ziti/constants"
 	"strings"
 )
 

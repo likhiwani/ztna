@@ -17,7 +17,7 @@
 package events
 
 import (
-	"github.com/openziti/ziti/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/event"
 	"github.com/pkg/errors"
 	"reflect"
 )
@@ -49,7 +49,7 @@ func (self *Dispatcher) registerConnectEventHandler(val interface{}, _ map[strin
 	handler, ok := val.(event.ConnectEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/openziti/ziti/controller/event/ConnectEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/ConnectEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	self.AddConnectEventHandler(handler)

@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/network"
-	"github.com/openziti/ziti/common/handler_common"
-	"github.com/openziti/ziti/common/pb/mgmt_pb"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/network"
+	"github.com/cosmic-cloak/ztna/common/handler_common"
+	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
 	"io"
 )
 

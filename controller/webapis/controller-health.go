@@ -21,7 +21,7 @@ import (
 	"fmt"
 	gosundheit "github.com/AppsFlyer/go-sundheit"
 	"github.com/openziti/xweb/v2"
-	"github.com/openziti/ziti/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/env"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"

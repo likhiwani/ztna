@@ -22,7 +22,7 @@ package tests
 import (
 	"fmt"
 	"github.com/Jeffail/gabs"
-	"github.com/openziti/ziti/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/env"
 	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"

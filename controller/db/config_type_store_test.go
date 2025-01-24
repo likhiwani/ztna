@@ -19,7 +19,7 @@ package db
 import (
 	"fmt"
 	"github.com/openziti/storage/boltztest"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"go.etcd.io/bbolt"
 	"testing"
 	"time"

@@ -19,8 +19,8 @@ package handler_ctrl
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/router/forwarder"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/router/forwarder"
 	"google.golang.org/protobuf/proto"
 )
 

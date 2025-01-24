@@ -19,14 +19,14 @@
 
 * github.com/openziti/storage: [v0.2.28 -> v0.2.30](https://github.com/openziti/storage/compare/v0.2.28...v0.2.30)
 * github.com/openziti/transport/v2: [v2.0.121 -> v2.0.122](https://github.com/openziti/transport/compare/v2.0.121...v2.0.122)
-* github.com/openziti/ziti: [v0.32.1 -> v0.32.2](https://github.com/openziti/ziti/compare/v0.32.1...v0.32.2)
-    * [Issue #1741](https://github.com/openziti/ziti/issues/1741) - Prevent stuck links
-    * [Issue #1736](https://github.com/openziti/ziti/issues/1736) - controller crashes generating create circuit responses
-    * [Issue #1733](https://github.com/openziti/ziti/issues/1733) - Improve terminator creation performance
-    * [Issue #1734](https://github.com/openziti/ziti/issues/1734) - Make API rate limiter enabled by default
-    * [Issue #1726](https://github.com/openziti/ziti/issues/1726) - Fix some sdk hosting logging
-    * [Issue #1725](https://github.com/openziti/ziti/issues/1725) - Fix panic in entity event processing
-    * [Issue #652](https://github.com/openziti/ziti/issues/652) - CI support for MacOS arm64
+* github.com/cosmic-cloak/ztna: [v0.32.1 -> v0.32.2](https://github.com/cosmic-cloak/ztna/compare/v0.32.1...v0.32.2)
+    * [Issue #1741](https://github.com/cosmic-cloak/ztna/issues/1741) - Prevent stuck links
+    * [Issue #1736](https://github.com/cosmic-cloak/ztna/issues/1736) - controller crashes generating create circuit responses
+    * [Issue #1733](https://github.com/cosmic-cloak/ztna/issues/1733) - Improve terminator creation performance
+    * [Issue #1734](https://github.com/cosmic-cloak/ztna/issues/1734) - Make API rate limiter enabled by default
+    * [Issue #1726](https://github.com/cosmic-cloak/ztna/issues/1726) - Fix some sdk hosting logging
+    * [Issue #1725](https://github.com/cosmic-cloak/ztna/issues/1725) - Fix panic in entity event processing
+    * [Issue #652](https://github.com/cosmic-cloak/ztna/issues/652) - CI support for MacOS arm64
 
 # Release 0.32.1
 
@@ -54,11 +54,11 @@ ctrl:
 
 * github.com/openziti/edge-api: [v0.26.8 -> v0.26.10](https://github.com/openziti/edge-api/compare/v0.26.8...v0.26.10)
 * github.com/openziti/sdk-golang: [v0.22.17 -> v0.22.21](https://github.com/openziti/sdk-golang/compare/v0.22.17...v0.22.21)
-* github.com/openziti/ziti: [v0.32.0 -> v0.32.1](https://github.com/openziti/ziti/compare/v0.32.0...v0.32.1)
-    * [Issue #1709](https://github.com/openziti/ziti/issues/1709) - Fix link management race conditions found by chaos testing
-    * [Issue #1715](https://github.com/openziti/ziti/issues/1715) - Ensure controller raft peers don't end up with duplicate connections 
-    * [Issue #1702](https://github.com/openziti/ziti/issues/1702) - Add link management chaos test
-    * [Issue #1691](https://github.com/openziti/ziti/issues/1691) multiple er re-enrolls creates multiple enrollments
+* github.com/cosmic-cloak/ztna: [v0.32.0 -> v0.32.1](https://github.com/cosmic-cloak/ztna/compare/v0.32.0...v0.32.1)
+    * [Issue #1709](https://github.com/cosmic-cloak/ztna/issues/1709) - Fix link management race conditions found by chaos testing
+    * [Issue #1715](https://github.com/cosmic-cloak/ztna/issues/1715) - Ensure controller raft peers don't end up with duplicate connections 
+    * [Issue #1702](https://github.com/cosmic-cloak/ztna/issues/1702) - Add link management chaos test
+    * [Issue #1691](https://github.com/cosmic-cloak/ztna/issues/1691) multiple er re-enrolls creates multiple enrollments
 
 # Release 0.32.0
 
@@ -140,11 +140,11 @@ tls:
 * github.com/openziti/transport/v2: [v2.0.119 -> v2.0.121](https://github.com/openziti/transport/compare/v2.0.119...v2.0.121)
     * [Issue #73](https://github.com/openziti/transport/issues/73) - Allow overriding shared TLS/ALPN listener SSL handshake timeout
 
-* github.com/openziti/ziti: [v0.31.4 -> v0.32.0](https://github.com/openziti/ziti/compare/v0.31.4...v0.32.0)
-    * [Issue #1692](https://github.com/openziti/ziti/issues/1692) - Improve link stability with long lived link ids
-    * [Issue #1693](https://github.com/openziti/ziti/issues/1693) - Make links owned by the dialing router
-    * [Issue #1685](https://github.com/openziti/ziti/issues/1685) - Race condition where we try to create terminator after client connection is closed
-    * [Issue #1678](https://github.com/openziti/ziti/issues/1678) - Add link validation utility
-    * [Issue #1673](https://github.com/openziti/ziti/issues/1673) - xgress dialers not getting passed xgress config
-    * [Issue #1669](https://github.com/openziti/ziti/issues/1669) - Make sure link accepts are not single threaded
-    * [Issue #1657](https://github.com/openziti/ziti/issues/1657) - Add api session rate limiter
+* github.com/cosmic-cloak/ztna: [v0.31.4 -> v0.32.0](https://github.com/cosmic-cloak/ztna/compare/v0.31.4...v0.32.0)
+    * [Issue #1692](https://github.com/cosmic-cloak/ztna/issues/1692) - Improve link stability with long lived link ids
+    * [Issue #1693](https://github.com/cosmic-cloak/ztna/issues/1693) - Make links owned by the dialing router
+    * [Issue #1685](https://github.com/cosmic-cloak/ztna/issues/1685) - Race condition where we try to create terminator after client connection is closed
+    * [Issue #1678](https://github.com/cosmic-cloak/ztna/issues/1678) - Add link validation utility
+    * [Issue #1673](https://github.com/cosmic-cloak/ztna/issues/1673) - xgress dialers not getting passed xgress config
+    * [Issue #1669](https://github.com/cosmic-cloak/ztna/issues/1669) - Make sure link accepts are not single threaded
+    * [Issue #1657](https://github.com/cosmic-cloak/ztna/issues/1657) - Add api session rate limiter

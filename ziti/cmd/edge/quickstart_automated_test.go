@@ -5,7 +5,7 @@ package edge
 import (
 	"context"
 	"fmt"
-	"github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"testing"

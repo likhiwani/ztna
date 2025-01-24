@@ -19,8 +19,8 @@ package udp_vconn
 import (
 	"errors"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/tunnel"
-	"github.com/openziti/ziti/tunnel/entities"
+	"github.com/cosmic-cloak/ztna/tunnel"
+	"github.com/cosmic-cloak/ztna/tunnel/entities"
 	"github.com/openziti/foundation/v2/mempool"
 	"io"
 	"net"

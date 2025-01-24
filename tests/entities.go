@@ -26,7 +26,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"github.com/openziti/sdk-golang/ziti"
 	"math/big"
 	"sort"

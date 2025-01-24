@@ -19,10 +19,10 @@ package handler_ctrl
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/handler_common"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/common/handler_common"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/network"
 )
 
 type decommissionRouterHandler struct {

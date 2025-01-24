@@ -17,7 +17,7 @@
 package model
 
 import (
-	"github.com/openziti/ziti/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/db"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"

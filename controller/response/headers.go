@@ -17,7 +17,7 @@
 package response
 
 import (
-	"github.com/openziti/ziti/common/build"
+	"github.com/cosmic-cloak/ztna/common/build"
 	"strconv"
 )
 

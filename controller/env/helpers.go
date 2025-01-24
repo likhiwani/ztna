@@ -3,7 +3,7 @@ package env
 import (
 	openApiErrors "github.com/go-openapi/errors"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
 	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
 )

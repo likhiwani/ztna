@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"crypto/x509"
 	"encoding/json"
-	"github.com/openziti/ziti/ziti/internal/log"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
 	"os"
 	"path/filepath"
 	"strconv"

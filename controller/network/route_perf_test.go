@@ -18,7 +18,7 @@ package network
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"math/rand"
 	"testing"
 

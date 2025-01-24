@@ -1,7 +1,7 @@
 package edge
 
 import (
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/spf13/cobra"
 	"io"
 )

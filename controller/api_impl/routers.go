@@ -1,7 +1,7 @@
 package api_impl
 
 import (
-	"github.com/openziti/ziti/controller/rest_server/operations"
+	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
 )
 
 var Routers []Router

@@ -20,7 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 )
 
 const (

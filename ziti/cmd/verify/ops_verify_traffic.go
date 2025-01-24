@@ -20,8 +20,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/internal"
-	"github.com/openziti/ziti/ziti/cmd/edge"
+	"github.com/cosmic-cloak/ztna/internal"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/edge"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net"
@@ -39,7 +39,7 @@ import (
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/enroll"
-	"github.com/openziti/ziti/internal/rest/mgmt"
+	"github.com/cosmic-cloak/ztna/internal/rest/mgmt"
 )
 
 type traffic struct {

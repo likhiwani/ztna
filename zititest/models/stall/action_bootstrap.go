@@ -22,9 +22,9 @@ import (
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "github.com/openziti/ziti/zititest/zitilab/actions"
-	"github.com/openziti/ziti/zititest/zitilab/actions/edge"
-	"github.com/openziti/ziti/zititest/zitilab/models"
+	zitilib_actions "github.com/cosmic-cloak/ztna/zititest/zitilab/actions"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/actions/edge"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/models"
 	"time"
 )
 

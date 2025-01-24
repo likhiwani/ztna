@@ -18,16 +18,16 @@ package network
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 )

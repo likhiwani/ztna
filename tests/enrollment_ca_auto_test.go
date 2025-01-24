@@ -30,7 +30,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"math/big"
 	"net/http"
 	"strings"

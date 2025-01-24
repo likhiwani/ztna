@@ -19,12 +19,12 @@ package xgress_edge_tunnel_v2
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/router/xgress"
-	"github.com/openziti/ziti/router/xgress_common"
-	"github.com/openziti/ziti/tunnel"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress_common"
+	"github.com/cosmic-cloak/ztna/tunnel"
 	"github.com/pkg/errors"
 )
 

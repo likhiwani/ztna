@@ -26,10 +26,10 @@ import (
 	"github.com/openziti/transport/v2/transwarp"
 	"github.com/openziti/transport/v2/transwarptls"
 	"github.com/openziti/transport/v2/wss"
-	"github.com/openziti/ziti/zititest/ziti-fabric-test/subcmd"
-	_ "github.com/openziti/ziti/zititest/ziti-fabric-test/subcmd/client"
-	_ "github.com/openziti/ziti/zititest/ziti-fabric-test/subcmd/loop2"
-	_ "github.com/openziti/ziti/zititest/ziti-fabric-test/subcmd/loop3"
+	"github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd"
+	_ "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/client"
+	_ "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop2"
+	_ "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop3"
 	"github.com/sirupsen/logrus"
 )
 

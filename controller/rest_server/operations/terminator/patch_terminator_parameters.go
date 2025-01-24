@@ -40,7 +40,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 )
 
 // NewPatchTerminatorParams creates a new PatchTerminatorParams object

@@ -20,8 +20,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/router/env"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/env"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 )

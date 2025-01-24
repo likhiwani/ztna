@@ -26,9 +26,9 @@ import (
 	"strings"
 	"text/template"
 
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/cmd/templates"
-	"github.com/openziti/ziti/ziti/constants"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/templates"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

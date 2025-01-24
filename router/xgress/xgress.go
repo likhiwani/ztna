@@ -36,9 +36,9 @@ import (
 	"github.com/openziti/foundation/v2/debugz"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/identity"
-	"github.com/openziti/ziti/common/inspect"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/inspect"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/sirupsen/logrus"
 )
 

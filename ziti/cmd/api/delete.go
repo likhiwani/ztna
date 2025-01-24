@@ -19,7 +19,7 @@ package api
 import (
 	"github.com/fatih/color"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"net/url"
 	"strings"
 )

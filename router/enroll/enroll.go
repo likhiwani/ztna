@@ -35,8 +35,8 @@ import (
 	"github.com/openziti/identity/certtools"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/enroll"
-	"github.com/openziti/ziti/router"
-	"github.com/openziti/ziti/router/internal/edgerouter"
+	"github.com/cosmic-cloak/ztna/router"
+	"github.com/cosmic-cloak/ztna/router/internal/edgerouter"
 )
 
 type apiPost struct {

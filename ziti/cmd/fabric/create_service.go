@@ -18,8 +18,8 @@ package fabric
 
 import (
 	"github.com/Jeffail/gabs"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"github.com/spf13/cobra"
 )
 

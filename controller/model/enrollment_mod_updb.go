@@ -20,12 +20,12 @@ import (
 	"encoding/base64"
 	"errors"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/common/cert"
-	"github.com/openziti/ziti/common/eid"
-	"github.com/openziti/ziti/controller/apierror"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/common/cert"
+	"github.com/cosmic-cloak/ztna/common/eid"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"time"
 )
 

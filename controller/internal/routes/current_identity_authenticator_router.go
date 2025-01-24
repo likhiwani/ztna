@@ -25,10 +25,10 @@ import (
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/fields"
-	"github.com/openziti/ziti/controller/internal/permissions"
-	"github.com/openziti/ziti/controller/response"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
+	"github.com/cosmic-cloak/ztna/controller/response"
 )
 
 func init() {

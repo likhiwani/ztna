@@ -2,7 +2,7 @@ package mesh
 
 import (
 	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/ziti/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/event"
 	"runtime"
 	"testing"
 	"time"

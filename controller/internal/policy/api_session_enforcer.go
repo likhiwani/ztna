@@ -19,10 +19,10 @@ package policy
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/common/runner"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/change"
+	"github.com/cosmic-cloak/ztna/common/runner"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/change"
 	"github.com/sirupsen/logrus"
 	"time"
 )

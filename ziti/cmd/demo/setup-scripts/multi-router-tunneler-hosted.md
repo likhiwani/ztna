@@ -6,7 +6,7 @@ multiple applications.
 # Prerequisites
 
 You need at least one controller and an edge router running. for this to work.
-You can use the quick-start script found [here](https://github.com/openziti/ziti/tree/release-next/quickstart).
+You can use the quick-start script found [here](https://github.com/cosmic-cloak/ztna/tree/release-next/quickstart).
 
 # Setup
 

@@ -20,9 +20,9 @@ import (
 	"errors"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/common"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/model"
 
 	"net/http"
 	"time"

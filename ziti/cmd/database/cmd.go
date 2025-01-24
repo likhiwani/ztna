@@ -2,10 +2,11 @@ package database
 
 import (
 	"fmt"
-	"github.com/openziti/ziti-db-explorer/cmd/ziti-db-explorer/zdecli"
-	"github.com/openziti/ziti/ziti/util"
-	"github.com/spf13/cobra"
 	"io"
+
+	"github.com/cosmic-cloak/ztna/ziti/util"
+	"github.com/openziti/ziti-db-explorer/cmd/ziti-db-explorer/zdecli"
+	"github.com/spf13/cobra"
 )
 
 func NewCmdDb(out io.Writer, errOut io.Writer) *cobra.Command {

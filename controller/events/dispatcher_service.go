@@ -18,8 +18,8 @@ package events
 
 import (
 	"github.com/openziti/metrics/metrics_pb"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/network"
 	"github.com/pkg/errors"
 	"reflect"
 	"strings"

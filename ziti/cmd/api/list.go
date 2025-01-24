@@ -27,7 +27,7 @@ import (
 	"github.com/Jeffail/gabs"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/pkg/errors"
 )
 

@@ -17,9 +17,9 @@
 package events
 
 import (
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/network"
 	"github.com/pkg/errors"
 	"reflect"
 	"time"
@@ -52,7 +52,7 @@ func (self *Dispatcher) registerRouterEventHandler(val interface{}, _ map[string
 	handler, ok := val.(event.RouterEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/openziti/ziti/controller/event/RouterEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/RouterEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	self.AddRouterEventHandler(handler)

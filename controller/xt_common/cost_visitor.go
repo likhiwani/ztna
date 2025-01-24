@@ -1,8 +1,8 @@
 package xt_common
 
 import (
-	"github.com/openziti/ziti/common/inspect"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/inspect"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"math"
 	"sync/atomic"

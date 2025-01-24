@@ -17,7 +17,7 @@
 package tproxy
 
 import (
-	"github.com/openziti/ziti/tunnel/intercept"
+	"github.com/cosmic-cloak/ztna/tunnel/intercept"
 	"github.com/pkg/errors"
 )
 

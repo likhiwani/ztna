@@ -18,8 +18,8 @@ package util
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/common/getziti"
-	"github.com/openziti/ziti/ziti/constants"
+	"github.com/cosmic-cloak/ztna/common/getziti"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 	"os"
 	"strings"
 
@@ -27,7 +27,7 @@ import (
 
 	"github.com/blang/semver"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/common/version"
+	"github.com/cosmic-cloak/ztna/common/version"
 )
 
 func LogReleaseVersionCheck(zitiComponent string) {

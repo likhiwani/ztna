@@ -9,8 +9,8 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_client/service"
 	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/ziti/util"
-	"github.com/openziti/ziti/zitirest"
+	"github.com/cosmic-cloak/ztna/ziti/util"
+	"github.com/cosmic-cloak/ztna/zitirest"
 	"time"
 )
 

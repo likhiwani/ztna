@@ -18,7 +18,7 @@ package tests
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/zititest/models/smoke"
+	"github.com/cosmic-cloak/ztna/zititest/models/smoke"
 	"github.com/stretchr/testify/require"
 	"testing"
 )

@@ -26,11 +26,11 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_server"
 	managementInformational "github.com/openziti/edge-api/rest_management_api_server/operations/informational"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/internal/permissions"
-	"github.com/openziti/ziti/controller/response"
-	"github.com/openziti/ziti/common/build"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
+	"github.com/cosmic-cloak/ztna/controller/response"
+	"github.com/cosmic-cloak/ztna/common/build"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"time"
 )
 

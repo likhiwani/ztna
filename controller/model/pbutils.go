@@ -17,8 +17,8 @@
 package model
 
 import (
-	"github.com/openziti/ziti/common/pb/edge_cmd_pb"
-	"github.com/openziti/ziti/controller/change"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/change"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )

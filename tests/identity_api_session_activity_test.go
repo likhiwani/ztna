@@ -5,7 +5,7 @@ import (
 	"github.com/openziti/edge-api/rest_model"
 	edge_apis "github.com/openziti/sdk-golang/edge-apis"
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/ziti/controller/webapis"
+	"github.com/cosmic-cloak/ztna/controller/webapis"
 	"net/url"
 	"testing"
 	"time"

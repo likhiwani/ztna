@@ -22,9 +22,9 @@ import (
 	"github.com/hashicorp/raft"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/common/pb/cmd_pb"
-	"github.com/openziti/ziti/controller/models"
-	"github.com/openziti/ziti/controller/peermsg"
+	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/peermsg"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

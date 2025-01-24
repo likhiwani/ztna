@@ -18,8 +18,8 @@ package routes
 
 import (
 	"encoding/json"
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/fields"
 	"reflect"
 	"testing"
 

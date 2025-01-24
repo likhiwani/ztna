@@ -17,17 +17,17 @@
 package handler_ctrl
 
 import (
-	"github.com/openziti/ziti/common/capabilities"
+	"github.com/cosmic-cloak/ztna/common/capabilities"
 	"runtime/debug"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/openziti/ziti/common/metrics"
-	"github.com/openziti/ziti/common/trace"
-	"github.com/openziti/ziti/router/env"
-	"github.com/openziti/ziti/router/forwarder"
+	"github.com/cosmic-cloak/ztna/common/metrics"
+	"github.com/cosmic-cloak/ztna/common/trace"
+	"github.com/cosmic-cloak/ztna/router/env"
+	"github.com/cosmic-cloak/ztna/router/forwarder"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

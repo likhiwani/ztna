@@ -19,7 +19,7 @@ package tests
 import (
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/zititest/models/smoke"
+	"github.com/cosmic-cloak/ztna/zititest/models/smoke"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

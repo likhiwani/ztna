@@ -18,12 +18,12 @@ package api_impl
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/fields"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/network"
-	"github.com/openziti/ziti/controller/rest_server/operations"
-	"github.com/openziti/ziti/controller/rest_server/operations/service"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
+	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/service"
 )
 
 func init() {

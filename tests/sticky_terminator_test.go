@@ -23,7 +23,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/openziti/ziti/controller/xt_sticky"
+	"github.com/cosmic-cloak/ztna/controller/xt_sticky"
 	"testing"
 	"time"
 )

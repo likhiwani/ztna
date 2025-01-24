@@ -18,8 +18,8 @@ package create
 
 import (
 	_ "embed"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/cmd/templates"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/templates"
 	"os"
 	"path/filepath"
 	"strings"

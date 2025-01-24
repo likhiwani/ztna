@@ -18,8 +18,8 @@ package intercept
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/tunnel/dns"
-	"github.com/openziti/ziti/tunnel/entities"
+	"github.com/cosmic-cloak/ztna/tunnel/dns"
+	"github.com/cosmic-cloak/ztna/tunnel/entities"
 	"github.com/pkg/errors"
 	"net"
 )

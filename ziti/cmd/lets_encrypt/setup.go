@@ -17,7 +17,7 @@
 package lets_encrypt
 
 import (
-	"github.com/openziti/ziti/ziti/internal/log"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
 	"os"
 	"time"
 

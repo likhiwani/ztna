@@ -1,8 +1,8 @@
-module github.com/openziti/ziti/zititest
+module github.com/cosmic-cloak/ztna/zititest
 
 go 1.23.1
 
-replace github.com/openziti/ziti => ../
+replace github.com/cosmic-cloak/ztna => ../
 
 require (
 	github.com/Jeffail/gabs v1.4.0
@@ -20,7 +20,7 @@ require (
 	github.com/openziti/sdk-golang v0.23.44
 	github.com/openziti/storage v0.3.15
 	github.com/openziti/transport/v2 v2.0.159
-	github.com/openziti/ziti v0.28.3
+	github.com/cosmic-cloak/ztna v0.28.3
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/pkg/errors v0.9.1
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475

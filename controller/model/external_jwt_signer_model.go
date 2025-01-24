@@ -19,9 +19,9 @@ package model
 import (
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/apierror"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"go.etcd.io/bbolt"
 	"time"
 )

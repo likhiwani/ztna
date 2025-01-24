@@ -18,8 +18,8 @@ package routes
 
 import (
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"path"
 )
 

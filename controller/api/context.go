@@ -19,7 +19,7 @@ package api
 import (
 	"context"
 	"fmt"
-	"github.com/openziti/ziti/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/change"
 	"github.com/pkg/errors"
 	"net/http"
 )

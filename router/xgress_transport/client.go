@@ -18,7 +18,7 @@ package xgress_transport
 
 import (
 	"errors"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 )

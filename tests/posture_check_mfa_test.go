@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"net/http"
 	"net/url"
 	"testing"

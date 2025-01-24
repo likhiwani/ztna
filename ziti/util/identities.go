@@ -17,9 +17,9 @@ import (
 
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/openziti/edge-api/rest_management_api_client"
-	"github.com/openziti/ziti/controller/env"
-	fabric_rest_client "github.com/openziti/ziti/controller/rest_client"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"github.com/pkg/errors"
 	"gopkg.in/resty.v1"
 )

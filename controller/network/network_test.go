@@ -1,9 +1,9 @@
 package network
 
 import (
-	"github.com/openziti/ziti/controller/config"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/config"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"github.com/pkg/errors"
 	"runtime"
 	"testing"
@@ -14,11 +14,11 @@ import (
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/transport/v2/tcp"
-	"github.com/openziti/ziti/common/logcontext"
-	"github.com/openziti/ziti/controller/command"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/models"
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"github.com/cosmic-cloak/ztna/controller/command"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

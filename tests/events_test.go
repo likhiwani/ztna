@@ -21,8 +21,8 @@ package tests
 import (
 	"fmt"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/xt_smartrouting"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
 	"reflect"
 	"sync"
 	"testing"

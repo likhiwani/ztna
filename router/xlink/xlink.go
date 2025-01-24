@@ -21,9 +21,9 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"github.com/openziti/ziti/common/inspect"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/common/inspect"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"time"
 )
 

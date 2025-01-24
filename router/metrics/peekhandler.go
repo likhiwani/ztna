@@ -19,8 +19,8 @@ package metrics
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/router/env"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/env"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/openziti/metrics"
 	"time"
 )

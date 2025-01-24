@@ -17,9 +17,9 @@
 package helpers
 
 import (
-	"github.com/openziti/ziti/router/xgress_edge_tunnel"
-	edge "github.com/openziti/ziti/controller/config"
-	"github.com/openziti/ziti/ziti/constants"
+	"github.com/cosmic-cloak/ztna/router/xgress_edge_tunnel"
+	edge "github.com/cosmic-cloak/ztna/controller/config"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 	"github.com/pkg/errors"
 	"os"
 	"path/filepath"

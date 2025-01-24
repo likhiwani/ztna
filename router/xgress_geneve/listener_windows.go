@@ -17,7 +17,7 @@
 package xgress_geneve
 
 import (
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/pkg/errors"
 )
 

@@ -19,9 +19,9 @@ package router
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	"github.com/openziti/ziti/ziti/constants"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

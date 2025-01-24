@@ -19,7 +19,7 @@
 * github.com/openziti/storage: [v0.1.46 -> v0.1.49](https://github.com/openziti/storage/compare/v0.1.46...v0.1.49)
 * github.com/openziti/transport/v2: [v2.0.68 -> v2.0.72](https://github.com/openziti/transport/compare/v2.0.68...v2.0.72)
 * github.com/openziti/metrics: [v1.2.16 -> v1.2.19](https://github.com/openziti/metrics/compare/v1.2.16...v1.2.19)
-* github.com/openziti/ziti: [v0.27.8 -> v0.27.9](https://github.com/openziti/ziti/compare/v0.27.8...v0.27.9)
+* github.com/cosmic-cloak/ztna: [v0.27.8 -> v0.27.9](https://github.com/cosmic-cloak/ztna/compare/v0.27.8...v0.27.9)
 
 # Release 0.27.8
 
@@ -36,10 +36,10 @@
 
 * github.com/openziti/fabric: [v0.22.76 -> v0.22.77](https://github.com/openziti/fabric/compare/v0.22.76...v0.22.77)
 * github.com/openziti/storage: [v0.1.45 -> v0.1.46](https://github.com/openziti/storage/compare/v0.1.45...v0.1.46)
-* github.com/openziti/ziti: [v0.27.7 -> v0.27.8](https://github.com/openziti/ziti/compare/v0.27.7...v0.27.8)
-    * [Issue #1064](https://github.com/openziti/ziti/issues/1064) - Support auth-policy assignments on identities via the CLI
-    * [Issue #1058](https://github.com/openziti/ziti/issues/1058) - Allow Auth Policy Create/Update/Delete via CLI
-    * [Issue #1059](https://github.com/openziti/ziti/issues/1059) - Expose Delete for Ext JWT Signers in CLI
+* github.com/cosmic-cloak/ztna: [v0.27.7 -> v0.27.8](https://github.com/cosmic-cloak/ztna/compare/v0.27.7...v0.27.8)
+    * [Issue #1064](https://github.com/cosmic-cloak/ztna/issues/1064) - Support auth-policy assignments on identities via the CLI
+    * [Issue #1058](https://github.com/cosmic-cloak/ztna/issues/1058) - Allow Auth Policy Create/Update/Delete via CLI
+    * [Issue #1059](https://github.com/cosmic-cloak/ztna/issues/1059) - Expose Delete for Ext JWT Signers in CLI
 
 # Release 0.27.7
 
@@ -108,10 +108,10 @@
 * github.com/openziti/transport/v2: [v2.0.51 -> v2.0.68](https://github.com/openziti/transport/compare/v2.0.51...v2.0.68)
 * github.com/openziti/jwks: [v1.0.2 -> v1.0.3](https://github.com/openziti/jwks/compare/v1.0.2...v1.0.3)
 * github.com/openziti/metrics: [v1.2.3 -> v1.2.16](https://github.com/openziti/metrics/compare/v1.2.3...v1.2.16)
-* github.com/openziti/ziti: [v0.27.5 -> v0.27.6](https://github.com/openziti/ziti/compare/v0.27.5...v0.27.6)
-    * [Issue #1041](https://github.com/openziti/ziti/issues/1041) - Add ziti compact command to CLI
-    * [Issue #1032](https://github.com/openziti/ziti/issues/1032) - ziti edge create service fails silently if config names don't exist
-    * [Issue #1031](https://github.com/openziti/ziti/issues/1031) - Fixed quickstart bug with arm and arm64 ambiguity when running quickstart on arm architecture
+* github.com/cosmic-cloak/ztna: [v0.27.5 -> v0.27.6](https://github.com/cosmic-cloak/ztna/compare/v0.27.5...v0.27.6)
+    * [Issue #1041](https://github.com/cosmic-cloak/ztna/issues/1041) - Add ziti compact command to CLI
+    * [Issue #1032](https://github.com/cosmic-cloak/ztna/issues/1032) - ziti edge create service fails silently if config names don't exist
+    * [Issue #1031](https://github.com/cosmic-cloak/ztna/issues/1031) - Fixed quickstart bug with arm and arm64 ambiguity when running quickstart on arm architecture
 
 # Release 0.27.5
 
@@ -132,7 +132,7 @@
 
 * github.com/openziti/sdk-golang: [v0.18.27 -> v0.18.28](https://github.com/openziti/sdk-golang/compare/v0.18.27...v0.18.28)
 * github.com/openziti/storage: [v0.1.33 -> v0.1.34](https://github.com/openziti/storage/compare/v0.1.33...v0.1.34)
-* github.com/openziti/ziti: [v0.27.4 -> v0.27.5](https://github.com/openziti/ziti/compare/v0.27.4...v0.27.5)
+* github.com/cosmic-cloak/ztna: [v0.27.4 -> v0.27.5](https://github.com/cosmic-cloak/ztna/compare/v0.27.4...v0.27.5)
 
 # Release 0.27.4
 
@@ -149,7 +149,7 @@ This release contains a fix for a controller deadlock
 * github.com/openziti/fabric: [v0.22.19 -> v0.22.20](https://github.com/openziti/fabric/compare/v0.22.19...v0.22.20)
 * github.com/openziti/sdk-golang: [v0.18.26 -> v0.18.27](https://github.com/openziti/sdk-golang/compare/v0.18.26...v0.18.27)
 * github.com/openziti/transport/v2: [v2.0.50 -> v2.0.51](https://github.com/openziti/transport/compare/v2.0.50...v2.0.51)
-* github.com/openziti/ziti: [v0.27.3 -> v0.27.4](https://github.com/openziti/ziti/compare/v0.27.3...v0.27.4)
+* github.com/cosmic-cloak/ztna: [v0.27.3 -> v0.27.4](https://github.com/cosmic-cloak/ztna/compare/v0.27.3...v0.27.4)
 
 # Release 0.27.3
 
@@ -181,9 +181,9 @@ This release contains a fix for a controller deadlock
 * github.com/openziti/sdk-golang: [v0.18.21 -> v0.18.26](https://github.com/openziti/sdk-golang/compare/v0.18.21...v0.18.26)
 * github.com/openziti/storage: [v0.1.31 -> v0.1.33](https://github.com/openziti/storage/compare/v0.1.31...v0.1.33)
 * github.com/openziti/transport/v2: [v2.0.49 -> v2.0.50](https://github.com/openziti/transport/compare/v2.0.49...v2.0.50)
-* github.com/openziti/ziti: [v0.27.2 -> v0.27.3](https://github.com/openziti/ziti/compare/v0.27.2...v0.27.3)
-    * [Issue #974](https://github.com/openziti/ziti/issues/974) - tunnel "host" and "proxy" modes shouldn't run the nameserver
-    * [Issue #972](https://github.com/openziti/ziti/issues/972) - tunnel segfault
+* github.com/cosmic-cloak/ztna: [v0.27.2 -> v0.27.3](https://github.com/cosmic-cloak/ztna/compare/v0.27.2...v0.27.3)
+    * [Issue #974](https://github.com/cosmic-cloak/ztna/issues/974) - tunnel "host" and "proxy" modes shouldn't run the nameserver
+    * [Issue #972](https://github.com/cosmic-cloak/ztna/issues/972) - tunnel segfault
 
 # Release 0.27.2
 
@@ -212,8 +212,8 @@ This release contains a fix for a controller deadlock
 * github.com/openziti/storage: [v0.1.30 -> v0.1.31](https://github.com/openziti/storage/compare/v0.1.30...v0.1.31)
 * github.com/openziti/transport/v2: [v2.0.48 -> v2.0.49](https://github.com/openziti/transport/compare/v2.0.48...v2.0.49)
 * github.com/openziti/metrics: [v1.2.2 -> v1.2.3](https://github.com/openziti/metrics/compare/v1.2.2...v1.2.3)
-* github.com/openziti/ziti: [v0.27.1 -> v0.27.2](https://github.com/openziti/ziti/compare/v0.27.1...v0.27.2)
-    * [Issue #916](https://github.com/openziti/ziti/issues/916) - Allow defining resource tags via json in the cli
+* github.com/cosmic-cloak/ztna: [v0.27.1 -> v0.27.2](https://github.com/cosmic-cloak/ztna/compare/v0.27.1...v0.27.2)
+    * [Issue #916](https://github.com/cosmic-cloak/ztna/issues/916) - Allow defining resource tags via json in the cli
 
 
 # Release 0.27.1
@@ -242,9 +242,9 @@ This release contains a fix for a controller deadlock
     * [Issue #552](https://github.com/openziti/fabric/issues/552) - Add minimum cost delta for smart routing
     * [Issue #558](https://github.com/openziti/fabric/issues/558) - Allow terminators to be marked as system entities
 
-* github.com/openziti/ziti: [v0.27.0 -> v0.27.1](https://github.com/openziti/ziti/compare/v0.27.0...v0.27.1)
-    * [Issue #928](https://github.com/openziti/ziti/issues/928) - ziti fabric update terminator should not require setting router
-    * [Issue #929](https://github.com/openziti/ziti/issues/929) - zit fabric list terminators isn't showing cost or dynamic cost 
+* github.com/cosmic-cloak/ztna: [v0.27.0 -> v0.27.1](https://github.com/cosmic-cloak/ztna/compare/v0.27.0...v0.27.1)
+    * [Issue #928](https://github.com/cosmic-cloak/ztna/issues/928) - ziti fabric update terminator should not require setting router
+    * [Issue #929](https://github.com/cosmic-cloak/ztna/issues/929) - zit fabric list terminators isn't showing cost or dynamic cost 
 
 # Release 0.27.0
 
@@ -253,7 +253,7 @@ This release contains a fix for a controller deadlock
 * Ziti CLI
     * The CLI has been cleaned up and unused, unusable and underused components have been removed or hidden
     * Add create/delete transit-router CLI commands
-    * [Issue-706](https://github.com/openziti/ziti/issues/706) - Add port check to quickstart
+    * [Issue-706](https://github.com/cosmic-cloak/ztna/issues/706) - Add port check to quickstart
 
 ## Ziti CLI
 
@@ -296,12 +296,12 @@ This release contains a fix for a controller deadlock
 * github.com/openziti/storage: [v0.1.26 -> v0.1.30](https://github.com/openziti/storage/compare/v0.1.26...v0.1.30)
 * github.com/openziti/transport/v2: [v2.0.38 -> v2.0.48](https://github.com/openziti/transport/compare/v2.0.38...v2.0.48)
 * github.com/openziti/metrics: [v1.1.5 -> v1.2.2](https://github.com/openziti/metrics/compare/v1.1.5...v1.2.2)
-* github.com/openziti/ziti: [v0.26.11 -> v0.26.12](https://github.com/openziti/ziti/compare/v0.26.11...v0.26.12)
-    * [Issue #892](https://github.com/openziti/ziti/issues/892) - Add timeout to ziti agent controller snapshot-db command
-    * [Issue #917](https://github.com/openziti/ziti/issues/917) - ZITI_BIN_ROOT is incorrect in docker env
-    * [Issue #912](https://github.com/openziti/ziti/issues/912) - Binaries not updated in docker-compose env with new image
-    * [Issue #897](https://github.com/openziti/ziti/issues/897) - Add CLI options to manage  /edge/v1/transit-routers
-    * [Issue #706](https://github.com/openziti/ziti/issues/706) - Add port check to quickstart
+* github.com/cosmic-cloak/ztna: [v0.26.11 -> v0.26.12](https://github.com/cosmic-cloak/ztna/compare/v0.26.11...v0.26.12)
+    * [Issue #892](https://github.com/cosmic-cloak/ztna/issues/892) - Add timeout to ziti agent controller snapshot-db command
+    * [Issue #917](https://github.com/cosmic-cloak/ztna/issues/917) - ZITI_BIN_ROOT is incorrect in docker env
+    * [Issue #912](https://github.com/cosmic-cloak/ztna/issues/912) - Binaries not updated in docker-compose env with new image
+    * [Issue #897](https://github.com/cosmic-cloak/ztna/issues/897) - Add CLI options to manage  /edge/v1/transit-routers
+    * [Issue #706](https://github.com/cosmic-cloak/ztna/issues/706) - Add port check to quickstart
 
 # Older Changelogs
 

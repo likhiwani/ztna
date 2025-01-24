@@ -22,7 +22,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"errors"
-	"github.com/openziti/ziti/ziti/internal/log"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
 	"net/url"
 	"os"
 	"path/filepath"

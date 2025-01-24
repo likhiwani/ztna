@@ -13,7 +13,7 @@ authors:
     city: Charlotte
     country: US
     post-code: '28280'
-repository-code: 'https://github.com/openziti/ziti'
+repository-code: 'https://github.com/cosmic-cloak/ztna'
 url: 'https://openziti.io'
 abstract: >-
   OpenZiti is a free and open source project focused on

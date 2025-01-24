@@ -19,14 +19,14 @@ package events
 import (
 	"fmt"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/event"
 	"io"
 	"strings"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/network"
 	"github.com/pkg/errors"
 )
 

@@ -20,9 +20,9 @@
 package tests
 
 import (
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"testing"
 	"time"
 )

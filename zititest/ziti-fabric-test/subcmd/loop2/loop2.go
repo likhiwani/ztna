@@ -17,7 +17,7 @@
 package loop2
 
 import (
-	"github.com/openziti/ziti/zititest/ziti-fabric-test/subcmd"
+	"github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd"
 	"github.com/spf13/cobra"
 )
 

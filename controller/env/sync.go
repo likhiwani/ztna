@@ -20,9 +20,9 @@ import (
 	"crypto"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/ziti/common"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"sync"
 )
 

@@ -18,7 +18,7 @@ package main
 
 import (
 	"github.com/openziti/fablab"
-	"github.com/openziti/ziti/zititest/models/smoke"
+	"github.com/cosmic-cloak/ztna/zititest/models/smoke"
 )
 
 func main() {

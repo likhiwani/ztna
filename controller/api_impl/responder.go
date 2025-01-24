@@ -2,8 +2,8 @@ package api_impl
 
 import (
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 	"net/http"
 )
 

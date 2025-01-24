@@ -1,4 +1,4 @@
-module github.com/openziti/ziti
+module github.com/cosmic-cloak/ztna
 
 go 1.23
 

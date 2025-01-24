@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/zititest/zitilab"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab"
 	"github.com/pkg/errors"
 	"time"
 )

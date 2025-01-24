@@ -19,9 +19,9 @@ package api_impl
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/ziti/controller/event"
-	"github.com/openziti/ziti/controller/events"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/controller/events"
+	"github.com/cosmic-cloak/ztna/controller/network"
 	"github.com/openziti/metrics/metrics_pb"
 	"github.com/pkg/errors"
 	"strings"

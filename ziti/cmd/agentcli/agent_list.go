@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/openziti/agent"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/spf13/cobra"
 	"os"
 )

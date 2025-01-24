@@ -23,7 +23,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/openziti/edge-api/rest_model"
 	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/ziti/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/db"
 	"net/http"
 	"testing"
 	"time"

@@ -17,8 +17,8 @@
 package xt_smartrouting
 
 import (
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/controller/xt_common"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/xt_common"
 	"time"
 )
 

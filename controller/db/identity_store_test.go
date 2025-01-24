@@ -4,8 +4,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"github.com/openziti/ziti/common/eid"
-	"github.com/openziti/ziti/controller/change"
+	"github.com/cosmic-cloak/ztna/common/eid"
+	"github.com/cosmic-cloak/ztna/controller/change"
 	"go.etcd.io/bbolt"
 	"testing"
 )

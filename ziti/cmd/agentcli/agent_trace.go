@@ -18,7 +18,7 @@ package agentcli
 
 import (
 	"github.com/openziti/agent"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"github.com/spf13/cobra"
 	"os"
 )

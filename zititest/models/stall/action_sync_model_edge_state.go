@@ -19,8 +19,8 @@ package main
 import (
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/zititest/zitilab/actions/edge"
-	"github.com/openziti/ziti/zititest/zitilab/models"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/actions/edge"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/models"
 )
 
 func NewSyncModelEdgeStateAction() model.ActionBinder {

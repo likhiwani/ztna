@@ -19,8 +19,8 @@ package forwarder
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/router/env"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/router/env"
 	"github.com/sirupsen/logrus"
 	"sync/atomic"
 	"time"

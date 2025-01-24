@@ -18,7 +18,7 @@ package create
 
 import (
 	_ "embed"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"

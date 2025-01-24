@@ -17,8 +17,8 @@
 package handler_ctrl
 
 import (
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"github.com/sirupsen/logrus"
 	"time"
 
@@ -27,10 +27,10 @@ import (
 	"github.com/openziti/channel/v3/latency"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/metrics"
-	"github.com/openziti/ziti/common/trace"
-	"github.com/openziti/ziti/controller/network"
-	"github.com/openziti/ziti/controller/xctrl"
-	metrics2 "github.com/openziti/ziti/router/metrics"
+	"github.com/cosmic-cloak/ztna/common/trace"
+	"github.com/cosmic-cloak/ztna/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/xctrl"
+	metrics2 "github.com/cosmic-cloak/ztna/router/metrics"
 )
 
 type bindHandler struct {

@@ -17,7 +17,7 @@
 package xt_random
 
 import (
-	"github.com/openziti/ziti/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/xt"
 	"math/rand"
 )
 

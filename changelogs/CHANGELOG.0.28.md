@@ -12,7 +12,7 @@ Bug fix
 
 ## Component Updates and Bug Fixes
 
-* github.com/openziti/ziti: [v0.28.2 -> v0.28.3](https://github.com/openziti/ziti/compare/v0.28.2...v0.28.3)
+* github.com/cosmic-cloak/ztna: [v0.28.2 -> v0.28.3](https://github.com/cosmic-cloak/ztna/compare/v0.28.2...v0.28.3)
 
 # Release 0.28.2
 
@@ -41,15 +41,15 @@ Bug fix
 * github.com/openziti/transport/v2: [v2.0.90 -> v2.0.91](https://github.com/openziti/transport/compare/v2.0.90...v2.0.91)
 * github.com/openziti/metrics: [v1.2.26 -> v1.2.27](https://github.com/openziti/metrics/compare/v1.2.26...v1.2.27)
 * github.com/openziti/secretstream: [v0.1.8 -> v0.1.9](https://github.com/openziti/secretstream/compare/v0.1.8...v0.1.9)
-* github.com/openziti/ziti: [v0.28.1 -> v0.28.2](https://github.com/openziti/ziti/compare/v0.28.1...v0.28.2)
-  * [Issue #1144](https://github.com/openziti/ziti/issues/1144) - DB explore subcommand panic
-  * [Issue #986](https://github.com/openziti/ziti/issues/986) - Updated default ports in `.env` file to match documentation.
-  * [Issue #920](https://github.com/openziti/ziti/issues/920) - Fixed bug causing failure when re-running quickstart.
-  * [Issue #779](https://github.com/openziti/ziti/issues/779) - Add ability to upgrade ziti binaries using a quickstart function.
-  * [Issue #761](https://github.com/openziti/ziti/issues/761) - Remove Management Listener section from controller config.
-  * [Issue #650](https://github.com/openziti/ziti/issues/650) - Removed/Updated references to `ZITI_EDGE_CONTROLLER_API`
+* github.com/cosmic-cloak/ztna: [v0.28.1 -> v0.28.2](https://github.com/cosmic-cloak/ztna/compare/v0.28.1...v0.28.2)
+  * [Issue #1144](https://github.com/cosmic-cloak/ztna/issues/1144) - DB explore subcommand panic
+  * [Issue #986](https://github.com/cosmic-cloak/ztna/issues/986) - Updated default ports in `.env` file to match documentation.
+  * [Issue #920](https://github.com/cosmic-cloak/ztna/issues/920) - Fixed bug causing failure when re-running quickstart.
+  * [Issue #779](https://github.com/cosmic-cloak/ztna/issues/779) - Add ability to upgrade ziti binaries using a quickstart function.
+  * [Issue #761](https://github.com/cosmic-cloak/ztna/issues/761) - Remove Management Listener section from controller config.
+  * [Issue #650](https://github.com/cosmic-cloak/ztna/issues/650) - Removed/Updated references to `ZITI_EDGE_CONTROLLER_API`
   * Quickstart environment variable names have been cleaned up.
-  * [Issue #1030](https://github.com/openziti/ziti/issues/1030) - Provide an upgrade path for quickstart cleanup
+  * [Issue #1030](https://github.com/cosmic-cloak/ztna/issues/1030) - Provide an upgrade path for quickstart cleanup
 
 # Release 0.28.1
 
@@ -152,8 +152,8 @@ events:
 * github.com/openziti/storage: [v0.2.6 -> v0.2.7](https://github.com/openziti/storage/compare/v0.2.6...v0.2.7)
 * github.com/openziti/transport/v2: [v2.0.88 -> v2.0.90](https://github.com/openziti/transport/compare/v2.0.88...v2.0.90)
 * github.com/openziti/metrics: [v1.2.25 -> v1.2.26](https://github.com/openziti/metrics/compare/v1.2.25...v1.2.26)
-* github.com/openziti/ziti: [v0.28.0 -> v0.28.1](https://github.com/openziti/ziti/compare/v0.28.0...v0.28.1)
-  * [Issue #1132](https://github.com/openziti/ziti/issues/1132) - Updated `ws` protocol to `wss` as `ws` is no longer supported.
+* github.com/cosmic-cloak/ztna: [v0.28.0 -> v0.28.1](https://github.com/cosmic-cloak/ztna/compare/v0.28.0...v0.28.1)
+  * [Issue #1132](https://github.com/cosmic-cloak/ztna/issues/1132) - Updated `ws` protocol to `wss` as `ws` is no longer supported.
 
 # Release 0.28.0
 
@@ -393,13 +393,13 @@ listeners:
 * github.com/openziti/transport/v2: [v2.0.72 -> v2.0.88](https://github.com/openziti/transport/compare/v2.0.72...v2.0.88)
 * github.com/openziti/metrics: [v1.2.19 -> v1.2.25](https://github.com/openziti/metrics/compare/v1.2.19...v1.2.25)
 * github.com/openziti/secretstream: v0.1.8 (new)
-* github.com/openziti/ziti: [v0.27.9 -> v0.28.0](https://github.com/openziti/ziti/compare/v0.27.9...v0.28.0)
-  * [Issue #1112](https://github.com/openziti/ziti/issues/1112) - `ziti pki create` creates CA's and intermediates w/ the same DN
-  * [Issue #1087](https://github.com/openziti/ziti/issues/1087) - re-enable CI in forks
-  * [Issue #1013](https://github.com/openziti/ziti/issues/1013) - docker env password is renewed at each `docker-compose up`
-  * [Issue #1077](https://github.com/openziti/ziti/issues/1077) - Show auth-policy name on identity list instead of id
-  * [Issue #1119](https://github.com/openziti/ziti/issues/1119) - intercept.v1 config should permit underscores in the address
-  * [Issue #1123](https://github.com/openziti/ziti/issues/1123) - cannot update config types with ziti cli
+* github.com/cosmic-cloak/ztna: [v0.27.9 -> v0.28.0](https://github.com/cosmic-cloak/ztna/compare/v0.27.9...v0.28.0)
+  * [Issue #1112](https://github.com/cosmic-cloak/ztna/issues/1112) - `ziti pki create` creates CA's and intermediates w/ the same DN
+  * [Issue #1087](https://github.com/cosmic-cloak/ztna/issues/1087) - re-enable CI in forks
+  * [Issue #1013](https://github.com/cosmic-cloak/ztna/issues/1013) - docker env password is renewed at each `docker-compose up`
+  * [Issue #1077](https://github.com/cosmic-cloak/ztna/issues/1077) - Show auth-policy name on identity list instead of id
+  * [Issue #1119](https://github.com/cosmic-cloak/ztna/issues/1119) - intercept.v1 config should permit underscores in the address
+  * [Issue #1123](https://github.com/cosmic-cloak/ztna/issues/1123) - cannot update config types with ziti cli
 
 # Archived Changelogs
 

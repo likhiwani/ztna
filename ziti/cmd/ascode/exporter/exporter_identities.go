@@ -21,7 +21,7 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_client/auth_policy"
 	"github.com/openziti/edge-api/rest_management_api_client/identity"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/ziti/internal/ascode"
+	"github.com/cosmic-cloak/ztna/internal/ascode"
 	"slices"
 )
 

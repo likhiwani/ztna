@@ -50,9 +50,9 @@ ziti create config router edge --routerName myRouter --tunnelerMode tproxy --lan
 * github.com/openziti/storage: [v0.1.25 -> v0.1.26](https://github.com/openziti/storage/compare/v0.1.25...v0.1.26)
 * github.com/openziti/transport/v2: [v2.0.36 -> v2.0.38](https://github.com/openziti/transport/compare/v2.0.36...v2.0.38)
 * github.com/openziti/metrics: [v1.1.4 -> v1.1.5](https://github.com/openziti/metrics/compare/v1.1.4...v1.1.5)
-* github.com/openziti/ziti: [v0.26.10 -> v0.26.11](https://github.com/openziti/ziti/compare/v0.26.10...v0.26.11)
-    * [Issue 868](https://github.com/openziti/ziti/issues/868): `ZITI_EDGE_ROUTER_IP_OVERRIDE` does not override the edge router advertise hostname
-    * [Issue 882](https://github.com/openziti/ziti/issues/882): `ZITI_EDGE_ROUTER_RAWNAME` not stored in quickstart .env file
+* github.com/cosmic-cloak/ztna: [v0.26.10 -> v0.26.11](https://github.com/cosmic-cloak/ztna/compare/v0.26.10...v0.26.11)
+    * [Issue 868](https://github.com/cosmic-cloak/ztna/issues/868): `ZITI_EDGE_ROUTER_IP_OVERRIDE` does not override the edge router advertise hostname
+    * [Issue 882](https://github.com/cosmic-cloak/ztna/issues/882): `ZITI_EDGE_ROUTER_RAWNAME` not stored in quickstart .env file
 
 # Release 0.26.10
 
@@ -73,7 +73,7 @@ The only other changes are build updates.
 * github.com/openziti/storage: [v0.1.23 -> v0.1.25](https://github.com/openziti/storage/compare/v0.1.23...v0.1.25)
 * github.com/openziti/transport/v2: [v2.0.33 -> v2.0.36](https://github.com/openziti/transport/compare/v2.0.33...v2.0.36)
 * github.com/openziti/metrics: [v1.1.2 -> v1.1.4](https://github.com/openziti/metrics/compare/v1.1.2...v1.1.4)
-* github.com/openziti/ziti: [v0.26.9 -> v0.26.10](https://github.com/openziti/ziti/compare/v0.26.9...v0.26.10)
+* github.com/cosmic-cloak/ztna: [v0.26.9 -> v0.26.10](https://github.com/cosmic-cloak/ztna/compare/v0.26.9...v0.26.10)
 
 # Release 0.26.9
 
@@ -157,8 +157,8 @@ ziti create config controller --routerEnrollmentDuration 1h
 * github.com/openziti/jwks: [v1.0.1 -> v1.0.2](https://github.com/openziti/jwks/compare/v1.0.1...v1.0.2)
 * github.com/openziti/metrics: [v1.1.0 -> v1.1.2](https://github.com/openziti/metrics/compare/v1.1.0...v1.1.2)
 * github.com/openziti/x509-claims: [v1.0.2 -> v1.0.3](https://github.com/openziti/x509-claims/compare/v1.0.2...v1.0.3)
-* github.com/openziti/ziti: [0.26.8 -> 0.26.9](https://github.com/openziti/ziti/compare/0.26.8...0.26.9)
-    * [Issue #845](https://github.com/openziti/ziti/issues/845) - Setting ZITI_EDGE_ROUTER_IP_OVERRIDE now adds the IP to the CSR SANs of the router config
+* github.com/cosmic-cloak/ztna: [0.26.8 -> 0.26.9](https://github.com/cosmic-cloak/ztna/compare/0.26.8...0.26.9)
+    * [Issue #845](https://github.com/cosmic-cloak/ztna/issues/845) - Setting ZITI_EDGE_ROUTER_IP_OVERRIDE now adds the IP to the CSR SANs of the router config
 
 # Release 0.26.8
 
@@ -381,8 +381,8 @@ Example:
     * [Issue #21](https://github.com/openziti/storage/issues/21) - Support querying tags by default
 
 * github.com/openziti/transport/v2: [v2.0.28 -> v2.0.29](https://github.com/openziti/transport/compare/v2.0.28...v2.0.29)
-* github.com/openziti/ziti: [0.26.7 -> 0.26.8](https://github.com/openziti/ziti/compare/0.26.7...0.26.8)
-    * [Issue #835](https://github.com/openziti/ziti/issues/835) - Ensure model entity tags can be updated via CLI where appropriate
+* github.com/cosmic-cloak/ztna: [0.26.7 -> 0.26.8](https://github.com/cosmic-cloak/ztna/compare/0.26.7...0.26.8)
+    * [Issue #835](https://github.com/cosmic-cloak/ztna/issues/835) - Ensure model entity tags can be updated via CLI where appropriate
 
 # Release 0.26.7
 
@@ -450,7 +450,7 @@ Example:
 ## Ziti CLI
 ### Bug Fixes
 
-* [Issue 823](https://github.com/openziti/ziti/issues/843): Fixed quickstart bug with architecture detection not supporting `aarch64`
+* [Issue 823](https://github.com/cosmic-cloak/ztna/issues/843): Fixed quickstart bug with architecture detection not supporting `aarch64`
 
 ## Identity
 
@@ -485,7 +485,7 @@ Identity is a low-level library within Ziti and affects all Ziti components.
 * github.com/openziti/sdk-golang: [v0.16.104 -> v0.16.119](https://github.com/openziti/sdk-golang/compare/v0.16.104...v0.16.119)
 * github.com/openziti/storage: [v0.1.16 -> v0.1.20](https://github.com/openziti/storage/compare/v0.1.16...v0.1.20)
 * github.com/openziti/transport/v2: [v2.0.20 -> v2.0.28](https://github.com/openziti/transport/compare/v2.0.20...v2.0.28)
-* github.com/openziti/ziti: [0.26.5 -> 0.26.6](https://github.com/openziti/ziti/compare/0.26.5...0.26.6)
+* github.com/cosmic-cloak/ztna: [0.26.5 -> 0.26.6](https://github.com/cosmic-cloak/ztna/compare/0.26.5...0.26.6)
 
 # Release 0.26.5
 

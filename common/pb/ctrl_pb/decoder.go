@@ -21,7 +21,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics/metrics_pb"
-	"github.com/openziti/ziti/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
 	"google.golang.org/protobuf/proto"
 	"strconv"
 	"strings"

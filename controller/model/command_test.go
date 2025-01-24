@@ -3,9 +3,9 @@ package model
 import (
 	"testing"
 
-	"github.com/openziti/ziti/common/pb/cmd_pb"
-	"github.com/openziti/ziti/controller/command"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/command"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"github.com/stretchr/testify/require"
 )
 

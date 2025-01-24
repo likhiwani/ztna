@@ -21,12 +21,12 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	external_jwt_signer_client "github.com/openziti/edge-api/rest_client_api_server/operations/external_jwt_signer"
 	"github.com/openziti/edge-api/rest_management_api_server/operations/external_jwt_signer"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/fields"
-	"github.com/openziti/ziti/controller/internal/permissions"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/response"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/response"
 )
 
 func init() {

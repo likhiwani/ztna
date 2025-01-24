@@ -1,13 +1,13 @@
 package network
 
 import (
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"testing"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/controller/xt_smartrouting"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
 )
 
 func TestRouteSender_DestroysTerminatorWhenInvalidOnHandleRouteSendAndWeControl(t *testing.T) {

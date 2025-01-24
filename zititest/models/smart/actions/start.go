@@ -21,7 +21,7 @@ import (
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/zititest/zitilab/models"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/models"
 	"time"
 )
 

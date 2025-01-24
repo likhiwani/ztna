@@ -17,9 +17,9 @@
 package cmd
 
 import (
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/internal/log"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/internal/log"
 	"io"
 
 	"github.com/spf13/cobra"

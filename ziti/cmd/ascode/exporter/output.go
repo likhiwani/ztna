@@ -19,7 +19,7 @@ package exporter
 import (
 	"bufio"
 	"encoding/json"
-	"github.com/openziti/ziti/internal"
+	"github.com/cosmic-cloak/ztna/internal"
 	"gopkg.in/yaml.v3"
 
 	"io"

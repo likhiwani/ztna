@@ -19,7 +19,7 @@ package store
 
 import (
 	"crypto/x509/pkix"
-	"github.com/openziti/ziti/ziti/pki/certificate"
+	"github.com/cosmic-cloak/ztna/ziti/pki/certificate"
 	"math/big"
 )
 

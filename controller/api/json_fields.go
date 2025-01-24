@@ -18,8 +18,8 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/openziti/ziti/controller/apierror"
-	"github.com/openziti/ziti/controller/fields"
+	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"github.com/cosmic-cloak/ztna/controller/fields"
 )
 
 func GetFields(body []byte) (fields.UpdatedFields, error) {

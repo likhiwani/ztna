@@ -22,7 +22,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"github.com/openziti/ziti/router/internal/edgerouter"
+	"github.com/cosmic-cloak/ztna/router/internal/edgerouter"
 )
 
 type Csr struct {

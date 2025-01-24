@@ -7,7 +7,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics"
-	"github.com/openziti/ziti/controller/idgen"
+	"github.com/cosmic-cloak/ztna/controller/idgen"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	metrics2 "github.com/rcrowley/go-metrics"
 	"github.com/sirupsen/logrus"

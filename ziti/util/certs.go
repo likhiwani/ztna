@@ -7,7 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
-	"github.com/openziti/ziti/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
 	"io"
 	"net/http"
 	"net/url"

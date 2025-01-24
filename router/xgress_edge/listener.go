@@ -19,15 +19,15 @@ package xgress_edge
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/controller/idgen"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/controller/idgen"
 	"github.com/sirupsen/logrus"
 	"time"
 
-	"github.com/openziti/ziti/common/capabilities"
-	"github.com/openziti/ziti/common/cert"
-	fabricMetrics "github.com/openziti/ziti/common/metrics"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/common/capabilities"
+	"github.com/cosmic-cloak/ztna/common/cert"
+	fabricMetrics "github.com/cosmic-cloak/ztna/common/metrics"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 
@@ -37,9 +37,9 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
-	"github.com/openziti/ziti/router/state"
-	"github.com/openziti/ziti/router/xgress"
-	"github.com/openziti/ziti/router/xgress_common"
+	"github.com/cosmic-cloak/ztna/router/state"
+	"github.com/cosmic-cloak/ztna/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress_common"
 )
 
 var peerHeaderRequestMappings = map[uint32]uint32{

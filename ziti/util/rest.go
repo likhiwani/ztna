@@ -27,7 +27,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/edge-api/rest_management_api_client"
 	"github.com/openziti/edge-api/rest_model"
-	fabric_rest_client "github.com/openziti/ziti/controller/rest_client"
+	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
 	"gopkg.in/resty.v1"
 	"io"
 	"net/http"

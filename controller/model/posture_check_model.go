@@ -19,9 +19,9 @@ package model
 import (
 	"fmt"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/common/pb/edge_cmd_pb"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/models"
 	"go.etcd.io/bbolt"
 	"time"
 )

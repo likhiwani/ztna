@@ -38,20 +38,20 @@ Currently only HTTP Connect proxies which don't require authentication are suppo
     * [Issue #52](https://github.com/openziti/storage/issues/52) - Grammar should expect single valid query followed by EOF
 
 * github.com/openziti/transport/v2: [v2.0.107 -> v2.0.109](https://github.com/openziti/transport/compare/v2.0.107...v2.0.109)
-* github.com/openziti/ziti: [v0.30.4 -> v0.30.5](https://github.com/openziti/ziti/compare/v0.30.4...v0.30.5)
-    * [Issue #1336](https://github.com/openziti/ziti/issues/1336) - `ziti edge quickstart` did
+* github.com/cosmic-cloak/ztna: [v0.30.4 -> v0.30.5](https://github.com/cosmic-cloak/ztna/compare/v0.30.4...v0.30.5)
+    * [Issue #1336](https://github.com/cosmic-cloak/ztna/issues/1336) - `ziti edge quickstart` did
       not create the usual edge router/service edge router policy.
-    * [Issue #1397](https://github.com/openziti/ziti/issues/1397) - HTTP Proxy support for host.v1/host.v2 config types
-    * [Issue #1423](https://github.com/openziti/ziti/issues/1423) - Controller crashes when edge router reconnects (Client Hello)
-    * [Issue #1414](https://github.com/openziti/ziti/issues/1414) - Race condition in xgress_edge_tunnel tunneler at start but not seen in pre-compiled binary
-    * [Issue #1406](https://github.com/openziti/ziti/issues/1406) - Entity change event dispatcher isn't shutting down properly when controller shuts down
-    * [Issue #1382](https://github.com/openziti/ziti/issues/1382) - service failure costs are not shrinking over time
+    * [Issue #1397](https://github.com/cosmic-cloak/ztna/issues/1397) - HTTP Proxy support for host.v1/host.v2 config types
+    * [Issue #1423](https://github.com/cosmic-cloak/ztna/issues/1423) - Controller crashes when edge router reconnects (Client Hello)
+    * [Issue #1414](https://github.com/cosmic-cloak/ztna/issues/1414) - Race condition in xgress_edge_tunnel tunneler at start but not seen in pre-compiled binary
+    * [Issue #1406](https://github.com/cosmic-cloak/ztna/issues/1406) - Entity change event dispatcher isn't shutting down properly when controller shuts down
+    * [Issue #1382](https://github.com/cosmic-cloak/ztna/issues/1382) - service failure costs are not shrinking over time
 
 # Release 0.30.4
 
 ## What's New
 
-* `ziti edge quickstart`](https://github.com/openziti/ziti/issues/1298). You can now
+* `ziti edge quickstart`](https://github.com/cosmic-cloak/ztna/issues/1298). You can now
   download the `ziti` CLI and have a functioning network with just one command. The
   network it creates is ephemeral and is intended to be torn down when the process exits.
   It is intended for quick evaluation and testing of an overlay network. It supports the
@@ -86,7 +86,7 @@ Currently only HTTP Connect proxies which don't require authentication are suppo
 
 ## Component Updates and Bug Fixes
 
-* github.com/openziti/ziti: [v0.30.3 -> v0.30.4](https://github.com/openziti/ziti/compare/v0.30.3...v0.30.4)
+* github.com/cosmic-cloak/ztna: [v0.30.3 -> v0.30.4](https://github.com/cosmic-cloak/ztna/compare/v0.30.3...v0.30.4)
   * Fixed an issue causing router configs to be rewritten when docker compose was brought up with existing configs
 
 # Release 0.30.3
@@ -103,7 +103,7 @@ Currently only HTTP Connect proxies which don't require authentication are suppo
   * [Issue #785](https://github.com/openziti/fabric/issues/785) - Allow link groups to be single string value
   * [Issue #783](https://github.com/openziti/fabric/issues/783) - Raft cluster connections not updated for ALPN
 
-* github.com/openziti/ziti: [v0.30.2 -> v0.30.3](https://github.com/openziti/ziti/compare/v0.30.2...v0.30.3)
+* github.com/cosmic-cloak/ztna: [v0.30.2 -> v0.30.3](https://github.com/cosmic-cloak/ztna/compare/v0.30.2...v0.30.3)
 
 # Release 0.30.2
 
@@ -171,8 +171,8 @@ proxy:
 
 * github.com/openziti/metrics: [v1.2.31 -> v1.2.33](https://github.com/openziti/metrics/compare/v1.2.31...v1.2.33)
 * github.com/openziti/secretstream: [v0.1.10 -> v0.1.11](https://github.com/openziti/secretstream/compare/v0.1.10...v0.1.11)
-* github.com/openziti/ziti: [v0.30.1 -> v0.30.2](https://github.com/openziti/ziti/compare/v0.30.1...v0.30.2)
-  * [Issue #1266](https://github.com/openziti/ziti/issues/1266) - Outdated README.md: Some links return "Page Not Found"
+* github.com/cosmic-cloak/ztna: [v0.30.1 -> v0.30.2](https://github.com/cosmic-cloak/ztna/compare/v0.30.1...v0.30.2)
+  * [Issue #1266](https://github.com/cosmic-cloak/ztna/issues/1266) - Outdated README.md: Some links return "Page Not Found"
 
 
 # Release 0.30.1
@@ -181,9 +181,9 @@ proxy:
 
 ## Component Updates and Bug Fixes
 
-* github.com/openziti/ziti: [v0.30.0 -> v0.30.1](https://github.com/openziti/ziti/compare/v0.30.0...v0.30.1)
-  * [Issue #1225](https://github.com/openziti/ziti/issues/1225) - Updated ZITI_ROUTER_ADVERTISED_HOST to use the more common naming convention of ZITI_ROUTER_ADVERTISED_ADDRESS
-  * [Issue #1233](https://github.com/openziti/ziti/issues/1233) - Added `lsof` to the list of prerequisites to be checked during quickstart
+* github.com/cosmic-cloak/ztna: [v0.30.0 -> v0.30.1](https://github.com/cosmic-cloak/ztna/compare/v0.30.0...v0.30.1)
+  * [Issue #1225](https://github.com/cosmic-cloak/ztna/issues/1225) - Updated ZITI_ROUTER_ADVERTISED_HOST to use the more common naming convention of ZITI_ROUTER_ADVERTISED_ADDRESS
+  * [Issue #1233](https://github.com/cosmic-cloak/ztna/issues/1233) - Added `lsof` to the list of prerequisites to be checked during quickstart
 
 # Release 0.30.0
 
@@ -374,10 +374,10 @@ However, newer Edge Routers should be able to join older network in some circums
   * [Issue #4](https://github.com/openziti/ziti-db-explorer/issues/4) - db explore timeout error is uninformative
 
 * github.com/openziti/metrics: [v1.2.30 -> v1.2.31](https://github.com/openziti/metrics/compare/v1.2.30...v1.2.31)
-* github.com/openziti/ziti: [v0.29.0 -> v0.30.0](https://github.com/openziti/ziti/compare/v0.29.0...v0.30.0)
-  * [Issue #1199](https://github.com/openziti/ziti/issues/1199) - ziti edge list enrollments - CLI gets 404
-  * [Issue #1135](https://github.com/openziti/ziti/issues/1135) - Edge Router: Support multiple protocols on the same listener port
-  * [Issue #65](https://github.com/openziti/ziti/issues/65) - Add ECDSA support to PKI subcmd
-  * [Issue #1212](https://github.com/openziti/ziti/issues/1212) - getZiti fails on Mac OS
-  * [Issue #1220](https://github.com/openziti/ziti/issues/1220) - Fixed getZiti function not respecting user input for custom path
-  * [Issue #1219](https://github.com/openziti/ziti/issues/1219) - Added check for IPs provided as a DNS SANs entry, IPs will be ignored and not added as a DNS entry in the expressInstall PKI or router config generation.
+* github.com/cosmic-cloak/ztna: [v0.29.0 -> v0.30.0](https://github.com/cosmic-cloak/ztna/compare/v0.29.0...v0.30.0)
+  * [Issue #1199](https://github.com/cosmic-cloak/ztna/issues/1199) - ziti edge list enrollments - CLI gets 404
+  * [Issue #1135](https://github.com/cosmic-cloak/ztna/issues/1135) - Edge Router: Support multiple protocols on the same listener port
+  * [Issue #65](https://github.com/cosmic-cloak/ztna/issues/65) - Add ECDSA support to PKI subcmd
+  * [Issue #1212](https://github.com/cosmic-cloak/ztna/issues/1212) - getZiti fails on Mac OS
+  * [Issue #1220](https://github.com/cosmic-cloak/ztna/issues/1220) - Fixed getZiti function not respecting user input for custom path
+  * [Issue #1219](https://github.com/cosmic-cloak/ztna/issues/1219) - Added check for IPs provided as a DNS SANs entry, IPs will be ignored and not added as a DNS entry in the expressInstall PKI or router config generation.

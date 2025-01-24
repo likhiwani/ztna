@@ -17,9 +17,9 @@
 package handler_xgress
 
 import (
-	"github.com/openziti/ziti/router/forwarder"
-	"github.com/openziti/ziti/router/metrics"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/forwarder"
+	"github.com/cosmic-cloak/ztna/router/metrics"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 )
 
 type bindHandler struct {

@@ -2,8 +2,8 @@ package env
 
 import (
 	"bytes"
-	"github.com/openziti/ziti/common/eid"
-	"github.com/openziti/ziti/controller/response"
+	"github.com/cosmic-cloak/ztna/common/eid"
+	"github.com/cosmic-cloak/ztna/controller/response"
 	"io"
 	"net/http"
 )

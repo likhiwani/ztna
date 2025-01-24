@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/websockets"
 	"github.com/openziti/identity"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"io"
 	"net/http"
 	"strings"

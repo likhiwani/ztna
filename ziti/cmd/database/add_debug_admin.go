@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/common/eid"
-	"github.com/openziti/ziti/controller/change"
-	"github.com/openziti/ziti/controller/command"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/controller/model"
+	"github.com/cosmic-cloak/ztna/common/eid"
+	"github.com/cosmic-cloak/ztna/controller/change"
+	"github.com/cosmic-cloak/ztna/controller/command"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"github.com/spf13/cobra"
 )
 

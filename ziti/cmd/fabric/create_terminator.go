@@ -19,12 +19,12 @@ package fabric
 import (
 	"fmt"
 	"github.com/Jeffail/gabs"
-	"github.com/openziti/ziti/router/xgress_edge_transport"
+	"github.com/cosmic-cloak/ztna/router/xgress_edge_transport"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/spf13/cobra"
 	"math"
 )

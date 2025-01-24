@@ -3,9 +3,9 @@ package edge
 import (
 	"errors"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	"github.com/openziti/ziti/ziti/util"
-	"github.com/openziti/ziti/zititest/zitilab/cli"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/util"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
 	"path/filepath"
 )
 

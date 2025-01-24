@@ -22,9 +22,9 @@ import (
 
 	"github.com/openziti/agent"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/ziti/cmd/agentcli"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/agentcli"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

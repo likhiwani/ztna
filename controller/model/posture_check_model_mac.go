@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/openziti/ziti/common/pb/edge_cmd_pb"
-	"github.com/openziti/ziti/controller/db"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
+	"github.com/cosmic-cloak/ztna/controller/db"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )

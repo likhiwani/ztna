@@ -19,7 +19,7 @@ package lets_encrypt
 import (
 	"encoding/json"
 	"fmt"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"io"
 	"net/url"
 	"os"

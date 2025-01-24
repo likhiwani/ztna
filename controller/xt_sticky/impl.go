@@ -17,9 +17,9 @@
 package xt_sticky
 
 import (
-	"github.com/openziti/ziti/common/ctrl_msg"
-	"github.com/openziti/ziti/controller/xt"
-	"github.com/openziti/ziti/controller/xt_common"
+	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"github.com/cosmic-cloak/ztna/controller/xt"
+	"github.com/cosmic-cloak/ztna/controller/xt_common"
 	"time"
 )
 

@@ -17,15 +17,15 @@
 package api_impl
 
 import (
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/idgen"
-	"github.com/openziti/ziti/controller/model"
-	"github.com/openziti/ziti/controller/network"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/idgen"
+	"github.com/cosmic-cloak/ztna/controller/model"
+	"github.com/cosmic-cloak/ztna/controller/network"
 
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/ziti/controller/models"
+	"github.com/cosmic-cloak/ztna/controller/models"
 )
 
 const EntityNameService = "services"

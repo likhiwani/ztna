@@ -61,7 +61,7 @@ subject to timeout or wake events.
 ## What's New
 
 * Bug fix: patch for process multi would clear information
-* Bug fix: [ziti#420](https://github.com/openziti/ziti/issues/420) fix ziti-tunnel failover with multiple interfaces
+* Bug fix: [ziti#420](https://github.com/cosmic-cloak/ztna/issues/420) fix ziti-tunnel failover with multiple interfaces
   when once becomes unavailable
 * Bug fix: [edge#670](https://github.com/openziti/edge/issues/670) fix ziti-tunnel issue where address were left
   assigned to loopback after clean shutdown
@@ -266,7 +266,7 @@ link:
 ## What's New
 
 * Fixes a bug in the GO sdk which could cause panic by return nil connection and nil error
-* [ziti#170](https://github.com/openziti/ziti/issues/170) Fixes the service poll refresh default for ziti-tunnel host
+* [ziti#170](https://github.com/cosmic-cloak/ztna/issues/170) Fixes the service poll refresh default for ziti-tunnel host
   mode
 * Fixes a deadlock in control channel reconnect logic triggerable when network path to controller is unreliable
 

@@ -17,9 +17,9 @@
 package create
 
 import (
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/cmd/pki"
-	"github.com/openziti/ziti/ziti/cmd/templates"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/pki"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/templates"
 	"github.com/spf13/cobra"
 	"io"
 )

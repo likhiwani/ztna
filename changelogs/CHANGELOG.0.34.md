@@ -14,9 +14,9 @@
     * [Issue #24](https://github.com/openziti/secretstream/issues/24) - Potential side channel issue
     * [Issue #25](https://github.com/openziti/secretstream/issues/25) - Reads from crypto/rand not checked for errors
 
-* github.com/openziti/ziti: [v0.34.1 -> v0.34.2](https://github.com/openziti/ziti/compare/v0.34.1...v0.34.2)
-    * [Issue #1831](https://github.com/openziti/ziti/issues/1831) - Circuit ID should be returned in the response to a Dial request
-    * [Issue #1873](https://github.com/openziti/ziti/issues/1873) - host.v1 health check time.Duration unconvertible
+* github.com/cosmic-cloak/ztna: [v0.34.1 -> v0.34.2](https://github.com/cosmic-cloak/ztna/compare/v0.34.1...v0.34.2)
+    * [Issue #1831](https://github.com/cosmic-cloak/ztna/issues/1831) - Circuit ID should be returned in the response to a Dial request
+    * [Issue #1873](https://github.com/cosmic-cloak/ztna/issues/1873) - host.v1 health check time.Duration unconvertible
 
 # Release 0.34.1
 
@@ -48,10 +48,10 @@
 * github.com/openziti/secretstream: [v0.1.16 -> v0.1.17](https://github.com/openziti/secretstream/compare/v0.1.16...v0.1.17)
 * github.com/openziti/storage: [v0.2.30 -> v0.2.33](https://github.com/openziti/storage/compare/v0.2.30...v0.2.33)
 * github.com/openziti/transport/v2: [v2.0.122 -> v2.0.125](https://github.com/openziti/transport/compare/v2.0.122...v2.0.125)
-* github.com/openziti/ziti: [v0.33.1 -> v0.34.0](https://github.com/openziti/ziti/compare/v0.33.1...v0.34.0)
-    * [Issue #1858](https://github.com/openziti/ziti/issues/1858) - add option to create a generic env file instead of a BASH script
-    * [Issue #1428](https://github.com/openziti/ziti/issues/1428) - Investigate policy integrity performance
-    * [Issue #1854](https://github.com/openziti/ziti/issues/1854) - Controller can try to send unroute to router which has since disconnected, causing panic
-    * [Issue #1576](https://github.com/openziti/ziti/issues/1576) - Don't scan for posture checks if there are no posture checks 
-    * [Issue #1849](https://github.com/openziti/ziti/issues/1849) - Session Sync shouldn't be able to block the control channel
-    * [Issue #1846](https://github.com/openziti/ziti/issues/1846) - Looking up api session certs for api sessions is inefficient
+* github.com/cosmic-cloak/ztna: [v0.33.1 -> v0.34.0](https://github.com/cosmic-cloak/ztna/compare/v0.33.1...v0.34.0)
+    * [Issue #1858](https://github.com/cosmic-cloak/ztna/issues/1858) - add option to create a generic env file instead of a BASH script
+    * [Issue #1428](https://github.com/cosmic-cloak/ztna/issues/1428) - Investigate policy integrity performance
+    * [Issue #1854](https://github.com/cosmic-cloak/ztna/issues/1854) - Controller can try to send unroute to router which has since disconnected, causing panic
+    * [Issue #1576](https://github.com/cosmic-cloak/ztna/issues/1576) - Don't scan for posture checks if there are no posture checks 
+    * [Issue #1849](https://github.com/cosmic-cloak/ztna/issues/1849) - Session Sync shouldn't be able to block the control channel
+    * [Issue #1846](https://github.com/cosmic-cloak/ztna/issues/1846) - Looking up api session certs for api sessions is inefficient

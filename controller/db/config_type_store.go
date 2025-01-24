@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )

@@ -34,7 +34,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/openziti/ziti/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
 )
 
 // FixDataIntegrityAcceptedCode is the HTTP code returned for type FixDataIntegrityAccepted

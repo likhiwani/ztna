@@ -26,8 +26,8 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/openziti/ziti/ziti/pki/certificate"
-	"github.com/openziti/ziti/ziti/pki/store"
+	"github.com/cosmic-cloak/ztna/ziti/pki/certificate"
+	"github.com/cosmic-cloak/ztna/ziti/pki/store"
 	"time"
 
 	"github.com/openziti/identity/certtools"

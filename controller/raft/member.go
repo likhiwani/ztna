@@ -20,7 +20,7 @@ import (
 	"time"
 
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/ziti/common/pb/cmd_pb"
+	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
 
 	"github.com/hashicorp/raft"
 	"github.com/pkg/errors"

@@ -18,9 +18,9 @@ package edge
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/controller/db"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/controller/db"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/pkg/errors"
 	"io"
 	"math"

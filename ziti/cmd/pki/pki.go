@@ -17,11 +17,11 @@
 package pki
 
 import (
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/cmd/lets_encrypt"
-	"github.com/openziti/ziti/ziti/cmd/templates"
-	"github.com/openziti/ziti/ziti/pki/pki"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/lets_encrypt"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/templates"
+	"github.com/cosmic-cloak/ztna/ziti/pki/pki"
 	"github.com/spf13/cobra"
 	"io"
 )

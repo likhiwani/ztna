@@ -17,7 +17,7 @@
 package xt
 
 import (
-	"github.com/openziti/ziti/common/inspect"
+	"github.com/cosmic-cloak/ztna/common/inspect"
 	"math"
 
 	cmap "github.com/orcaman/concurrent-map/v2"

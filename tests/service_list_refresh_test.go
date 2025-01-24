@@ -4,7 +4,7 @@
 package tests
 
 import (
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"testing"
 	"time"
 )

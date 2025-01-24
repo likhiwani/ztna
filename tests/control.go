@@ -4,9 +4,9 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/transport/v2"
-	"github.com/openziti/ziti/common/capabilities"
-	"github.com/openziti/ziti/common/pb/ctrl_pb"
-	"github.com/openziti/ziti/controller/config"
+	"github.com/cosmic-cloak/ztna/common/capabilities"
+	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"github.com/cosmic-cloak/ztna/controller/config"
 	"math/big"
 )
 

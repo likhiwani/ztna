@@ -3,12 +3,12 @@ package fabric
 import (
 	"context"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/openziti/ziti/controller/rest_client/raft"
-	"github.com/openziti/ziti/controller/rest_model"
-	"github.com/openziti/ziti/ziti/cmd/api"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/util"
+	"github.com/cosmic-cloak/ztna/controller/rest_client/raft"
+	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/spf13/cobra"
 )
 

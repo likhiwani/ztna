@@ -20,8 +20,8 @@ import (
 	_ "embed"
 	"os"
 
-	cmdhelper "github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/constants"
+	cmdhelper "github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 )
 
 func SetZitiRouterIdentity(r *RouterTemplateValues, routerName string) {

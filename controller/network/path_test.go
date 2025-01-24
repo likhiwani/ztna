@@ -17,8 +17,8 @@
 package network
 
 import (
-	config2 "github.com/openziti/ziti/controller/config"
-	"github.com/openziti/ziti/controller/model"
+	config2 "github.com/cosmic-cloak/ztna/controller/config"
+	"github.com/cosmic-cloak/ztna/controller/model"
 	"testing"
 	"time"
 

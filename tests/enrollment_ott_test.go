@@ -28,7 +28,7 @@ import (
 	"fmt"
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/identity/certtools"
-	"github.com/openziti/ziti/common/eid"
+	"github.com/cosmic-cloak/ztna/common/eid"
 	"gopkg.in/resty.v1"
 	"net/http"
 	"testing"

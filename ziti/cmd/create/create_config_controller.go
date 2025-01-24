@@ -18,10 +18,10 @@ package create
 
 import (
 	_ "embed"
-	edge "github.com/openziti/ziti/controller/config"
-	"github.com/openziti/ziti/ziti/cmd/helpers"
-	"github.com/openziti/ziti/ziti/cmd/templates"
-	"github.com/openziti/ziti/ziti/constants"
+	edge "github.com/cosmic-cloak/ztna/controller/config"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/templates"
+	"github.com/cosmic-cloak/ztna/ziti/constants"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

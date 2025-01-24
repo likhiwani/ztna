@@ -18,7 +18,7 @@ package common
 
 import (
 	"fmt"
-	"github.com/openziti/ziti/common/pb/edge_ctrl_pb"
+	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 	"sync"
 	"sync/atomic"
 )

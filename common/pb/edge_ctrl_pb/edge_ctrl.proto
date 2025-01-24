@@ -4,7 +4,7 @@ package ziti.edge_ctrl.pb;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/openziti/ziti/common/pb/edge_ctrl_pb";
+option go_package = "github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb";
 
 enum ContentType {
   Zero = 0;

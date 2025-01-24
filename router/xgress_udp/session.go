@@ -18,7 +18,7 @@ package xgress_udp
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/ziti/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xgress"
 	"github.com/pkg/errors"
 	"io"
 	"net"

@@ -23,8 +23,8 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"github.com/openziti/ziti/router/xgress"
-	"github.com/openziti/ziti/router/xlink"
+	"github.com/cosmic-cloak/ztna/router/xgress"
+	"github.com/cosmic-cloak/ztna/router/xlink"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

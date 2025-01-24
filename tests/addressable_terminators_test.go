@@ -21,7 +21,7 @@ package tests
 import (
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/openziti/ziti/controller/xt_smartrouting"
+	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
 	"github.com/pkg/errors"
 	"net"
 	"strings"

@@ -25,9 +25,9 @@ import (
 	"strings"
 
 	"github.com/openziti/xweb/v2"
-	"github.com/openziti/ziti/controller/api"
-	"github.com/openziti/ziti/controller/env"
-	"github.com/openziti/ziti/controller/oidc_auth"
+	"github.com/cosmic-cloak/ztna/controller/api"
+	"github.com/cosmic-cloak/ztna/controller/env"
+	"github.com/cosmic-cloak/ztna/controller/oidc_auth"
 )
 
 var _ xweb.ApiHandlerFactory = &OidcApiFactory{}

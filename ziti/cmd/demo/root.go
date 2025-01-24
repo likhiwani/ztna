@@ -17,9 +17,9 @@
 package demo
 
 import (
-	"github.com/openziti/ziti/ziti/cmd/agentcli"
-	"github.com/openziti/ziti/ziti/cmd/common"
-	"github.com/openziti/ziti/ziti/cmd/helpers"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/agentcli"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/helpers"
 	"github.com/spf13/cobra"
 	"time"
 )

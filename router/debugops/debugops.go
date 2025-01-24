@@ -1,7 +1,7 @@
 package debugops
 
 import (
-	"github.com/openziti/ziti/router"
+	"github.com/cosmic-cloak/ztna/router"
 )
 
 const (

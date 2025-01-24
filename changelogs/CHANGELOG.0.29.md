@@ -59,8 +59,8 @@ have changed again. A summary of changes is below
 * github.com/openziti/transport/v2: [v2.0.91 -> v2.0.93](https://github.com/openziti/transport/compare/v2.0.91...v2.0.93)
 * github.com/openziti/metrics: [v1.2.27 -> v1.2.30](https://github.com/openziti/metrics/compare/v1.2.27...v1.2.30)
 * github.com/openziti/secretstream: [v0.1.9 -> v0.1.10](https://github.com/openziti/secretstream/compare/v0.1.9...v0.1.10)
-* github.com/openziti/ziti: [v0.28.4 -> v0.29.0](https://github.com/openziti/ziti/compare/v0.28.4...v0.29.0)
-  * [Issue #1180](https://github.com/openziti/ziti/issues/1180) - Add ability to debug failed smoketests
-  * [Issue #1169](https://github.com/openziti/ziti/issues/1169) - Consolidate demo and tutorial under demo
-  * [Issue #1168](https://github.com/openziti/ziti/issues/1168) - Remove ziti-controller, ziti-router and ziti-tunnel executables from build
-  * [Issue #1158](https://github.com/openziti/ziti/issues/1158) - Add iperf tests to ziti smoketest
+* github.com/cosmic-cloak/ztna: [v0.28.4 -> v0.29.0](https://github.com/cosmic-cloak/ztna/compare/v0.28.4...v0.29.0)
+  * [Issue #1180](https://github.com/cosmic-cloak/ztna/issues/1180) - Add ability to debug failed smoketests
+  * [Issue #1169](https://github.com/cosmic-cloak/ztna/issues/1169) - Consolidate demo and tutorial under demo
+  * [Issue #1168](https://github.com/cosmic-cloak/ztna/issues/1168) - Remove ziti-controller, ziti-router and ziti-tunnel executables from build
+  * [Issue #1158](https://github.com/cosmic-cloak/ztna/issues/1158) - Add iperf tests to ziti smoketest

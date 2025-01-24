@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/openziti/ziti/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
 	"github.com/pkg/errors"
 )
 
