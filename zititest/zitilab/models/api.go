@@ -3,15 +3,16 @@ package models
 import (
 	"context"
 	"fmt"
+	"time"
+
+	"github.com/cosmic-cloak/ztna/zitirest"
+	"github.com/cosmic-cloak/ztna/ztna/util"
 	"github.com/openziti/edge-api/rest_management_api_client/config"
 	"github.com/openziti/edge-api/rest_management_api_client/identity"
 	"github.com/openziti/edge-api/rest_management_api_client/posture_checks"
 	"github.com/openziti/edge-api/rest_management_api_client/service"
 	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
 	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/ziti/util"
-	"github.com/cosmic-cloak/ztna/zitirest"
-	"time"
 )
 
 func ListServices(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ServiceDetail, error) {

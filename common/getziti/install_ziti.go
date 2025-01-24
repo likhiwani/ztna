@@ -2,7 +2,8 @@ package getziti
 
 import (
 	"fmt"
-	c "github.com/cosmic-cloak/ztna/ziti/constants"
+
+	c "github.com/cosmic-cloak/ztna/ztna/constants"
 )
 
 func InstallZiti(targetVersion, targetOS, targetArch, binDir string, verbose bool) error {

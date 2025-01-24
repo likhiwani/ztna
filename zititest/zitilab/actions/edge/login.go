@@ -2,11 +2,12 @@ package edge
 
 import (
 	"errors"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/ziti/cmd/common"
-	"github.com/cosmic-cloak/ztna/ziti/util"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
 	"path/filepath"
+
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
+	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"github.com/cosmic-cloak/ztna/ztna/util"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func Login(componentSelector string) model.Action {

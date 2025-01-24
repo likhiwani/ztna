@@ -18,13 +18,14 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/ziti/constants"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
-	"github.com/sirupsen/logrus"
 	"strings"
 	"time"
+
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
+	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 var _ model.ComponentType = (*ZrokLoopTestType)(nil)

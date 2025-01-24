@@ -18,18 +18,19 @@ package zitilab
 
 import (
 	"fmt"
+	"io/fs"
+	"path/filepath"
+	"strings"
+
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
+	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
+	"github.com/cosmic-cloak/ztna/ztna/constants"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/libssh"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/ziti/constants"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
 	"github.com/sirupsen/logrus"
-	"io/fs"
-	"path/filepath"
-	"strings"
 )
 
 var _ model.ComponentType = (*ZrokFrontendType)(nil)

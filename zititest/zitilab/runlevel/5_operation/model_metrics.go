@@ -18,13 +18,14 @@ package zitilib_runlevel_5_operation
 
 import (
 	"encoding/json"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/fablab/kernel/model"
+	"time"
+
 	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
 	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
+	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func ModelMetrics(closer <-chan struct{}) model.Stage {

@@ -22,6 +22,16 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
+	"github.com/cosmic-cloak/ztna/controller/env"
+	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
+	"github.com/cosmic-cloak/ztna/ztna/util"
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/gorilla/websocket"
 	"github.com/michaelquigley/pfxlog"
@@ -31,16 +41,7 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_client/authentication"
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/identity"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
-	"github.com/cosmic-cloak/ztna/ziti/util"
 	"github.com/pkg/errors"
-	"io"
-	"net"
-	"net/http"
-	"net/url"
-	"strings"
-	"time"
 )
 
 type Clients struct {

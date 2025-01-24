@@ -19,13 +19,14 @@ package pki
 import (
 	"bytes"
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/pkg/errors"
+
+	"github.com/cosmic-cloak/ztna/ztna/cmd"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/ziti/cmd"
 	"github.com/sirupsen/logrus"
 )
 

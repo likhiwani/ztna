@@ -3,12 +3,6 @@ package getziti
 import (
 	"context"
 	"fmt"
-	"github.com/blang/semver"
-	"github.com/go-resty/resty/v2"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/versions"
-	c "github.com/cosmic-cloak/ztna/ziti/constants"
-	"github.com/pkg/errors"
 	"net/http"
 	"net/url"
 	"os"
@@ -16,6 +10,13 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/blang/semver"
+	c "github.com/cosmic-cloak/ztna/ztna/constants"
+	"github.com/go-resty/resty/v2"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/pkg/errors"
 )
 
 // GitHubReleasesData is used to parse the '/releases/latest' response from GitHub

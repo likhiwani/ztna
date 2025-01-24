@@ -2,9 +2,10 @@ package getziti
 
 import (
 	"fmt"
-	"github.com/blang/semver"
-	c "github.com/cosmic-cloak/ztna/ziti/constants"
 	"strings"
+
+	"github.com/blang/semver"
+	c "github.com/cosmic-cloak/ztna/ztna/constants"
 )
 
 func InstallZitiEdgeTunnel(targetVersion, targetOS, targetArch, binDir string, verbose bool) error {

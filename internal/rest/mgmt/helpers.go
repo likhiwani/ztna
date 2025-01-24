@@ -22,6 +22,11 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/cosmic-cloak/ztna/ztna/util"
 	"github.com/openziti/edge-api/rest_management_api_client"
 	"github.com/openziti/edge-api/rest_management_api_client/auth_policy"
 	"github.com/openziti/edge-api/rest_management_api_client/certificate_authority"
@@ -37,11 +42,7 @@ import (
 	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
 	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/edge-api/rest_util"
-	"github.com/cosmic-cloak/ztna/ziti/util"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"os"
-	"time"
 )
 
 const (

@@ -2,15 +2,16 @@ package stageziti
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/common/getziti"
-	"github.com/cosmic-cloak/ztna/ziti/util"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/cosmic-cloak/ztna/common/getziti"
+	"github.com/cosmic-cloak/ztna/ztna/util"
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 func StageZitiOnce(run model.Run, component *model.Component, version string, source string) error {

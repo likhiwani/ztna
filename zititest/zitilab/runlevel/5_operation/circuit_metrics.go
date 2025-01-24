@@ -2,16 +2,17 @@ package zitilib_runlevel_5_operation
 
 import (
 	"encoding/json"
+	"time"
+
 	"github.com/Jeffail/gabs/v2"
+	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"github.com/cosmic-cloak/ztna/controller/event"
+	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/ziti/cmd/api"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func CircuitMetrics(pollFreq time.Duration, closer <-chan struct{}, f func(string) string) model.Stage {
