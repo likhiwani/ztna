@@ -17,7 +17,7 @@
 package events
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/event"
+	"ztna-core/ztna/controller/event"
 	"github.com/pkg/errors"
 	"reflect"
 	"strings"
@@ -92,7 +92,7 @@ func (self *Dispatcher) registerEntityCountEventHandler(val interface{}, config 
 	handler, ok := val.(event.EntityCountEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/events/EntityCountEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement ztna-core/ztna/controller/events/EntityCountEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	interval := time.Minute * 5

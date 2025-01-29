@@ -17,17 +17,18 @@
 package routes
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	clientCurrentIdentity "github.com/openziti/edge-api/rest_client_api_server/operations/current_identity"
-	managementCurrentIdentity "github.com/openziti/edge-api/rest_management_api_server/operations/current_identity"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
 	"net/http"
+	clientCurrentIdentity "ztna-core/edge-api/rest_client_api_server/operations/current_identity"
+	managementCurrentIdentity "ztna-core/edge-api/rest_management_api_server/operations/current_identity"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 func init() {

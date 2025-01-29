@@ -21,7 +21,7 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/cosmic-cloak/ztna/tunnel/intercept/proxy"
+	"ztna-core/ztna/tunnel/intercept/proxy"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

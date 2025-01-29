@@ -17,16 +17,17 @@
 package routes
 
 import (
+	external_jwt_signer_client "ztna-core/edge-api/rest_client_api_server/operations/external_jwt_signer"
+	"ztna-core/edge-api/rest_management_api_server/operations/external_jwt_signer"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
-	external_jwt_signer_client "github.com/openziti/edge-api/rest_client_api_server/operations/external_jwt_signer"
-	"github.com/openziti/edge-api/rest_management_api_server/operations/external_jwt_signer"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
 )
 
 func init() {

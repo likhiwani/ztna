@@ -19,11 +19,12 @@
 package tests
 
 import (
-	"github.com/Jeffail/gabs"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
 	"net/http"
 	"testing"
+	"ztna-core/edge-api/rest_model"
+
+	"github.com/Jeffail/gabs"
+	"github.com/google/uuid"
 )
 
 func Test_EnrollmentUpdb(t *testing.T) {

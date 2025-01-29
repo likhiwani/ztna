@@ -17,7 +17,7 @@
 package loop3
 
 import (
-	"github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd"
+	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
 	"github.com/spf13/cobra"
 )
 

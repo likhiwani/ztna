@@ -17,7 +17,7 @@
 package xt
 
 import (
-	"github.com/cosmic-cloak/ztna/common/inspect"
+	"ztna-core/ztna/common/inspect"
 	"math"
 
 	cmap "github.com/orcaman/concurrent-map/v2"

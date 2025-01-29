@@ -19,9 +19,9 @@ package router
 import (
 	"fmt"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/constants"
+	"ztna-core/ztna/ztna/util"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

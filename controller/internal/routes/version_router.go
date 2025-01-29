@@ -18,18 +18,19 @@
 package routes
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	clientInformational "github.com/openziti/edge-api/rest_client_api_server/operations/informational"
-	managementInformational "github.com/openziti/edge-api/rest_management_api_server/operations/informational"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/xweb/v2"
-	"github.com/cosmic-cloak/ztna/common/build"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"github.com/cosmic-cloak/ztna/controller/webapis"
 	"runtime"
 	"sync"
+	clientInformational "ztna-core/edge-api/rest_client_api_server/operations/informational"
+	managementInformational "ztna-core/edge-api/rest_management_api_server/operations/informational"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/build"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/controller/webapis"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/openziti/xweb/v2"
 )
 
 func init() {

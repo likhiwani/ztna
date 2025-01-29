@@ -19,9 +19,9 @@ package demo
 import (
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/agentcli"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/agentcli"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/spf13/cobra"
 )
 

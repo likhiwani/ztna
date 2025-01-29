@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/info"
-	"github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 	"io"

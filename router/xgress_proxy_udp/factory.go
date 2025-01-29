@@ -18,8 +18,8 @@ package xgress_proxy_udp
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/router/env"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 )
 

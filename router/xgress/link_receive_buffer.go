@@ -21,7 +21,7 @@ import (
 	"github.com/emirpasic/gods/trees/btree"
 	"github.com/emirpasic/gods/utils"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/inspect"
+	"ztna-core/ztna/common/inspect"
 	"sync/atomic"
 	"time"
 )

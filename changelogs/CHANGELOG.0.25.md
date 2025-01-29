@@ -91,7 +91,7 @@ will be interrogated for new signing keys. The `jwksEndpoint` will only be inter
 ### Bug Fixes
 
 * https://github.com/openziti/fabric/issues/406
-* https://github.com/cosmic-cloak/ztna/issues/565 - Moved terminator information to its own field.
+* https://ztna-core/ztna/issues/565 - Moved terminator information to its own field.
 
 ### Metrics API
 

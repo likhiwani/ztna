@@ -21,9 +21,9 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/internal/log"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/internal/log"
 	"github.com/pkg/errors"
 
 	"github.com/shirou/gopsutil/v3/process"

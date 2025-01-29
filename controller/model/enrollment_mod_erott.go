@@ -18,13 +18,14 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/common/cert"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/pkg/errors"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/pkg/errors"
 )
 
 const (

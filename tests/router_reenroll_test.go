@@ -20,9 +20,9 @@ package tests
 
 import (
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
 	"net/http"
 	"testing"
+	"ztna-core/edge-api/rest_model"
 )
 
 func Test_Router_ReEnroll(t *testing.T) {

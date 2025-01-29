@@ -17,8 +17,8 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
 	"os"
 	"time"
 )

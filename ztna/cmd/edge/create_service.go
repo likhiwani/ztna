@@ -21,8 +21,8 @@ import (
 	"time"
 
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/api"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/spf13/cobra"
 )
 

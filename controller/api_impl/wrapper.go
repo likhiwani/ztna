@@ -2,8 +2,8 @@ package api_impl
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/network"
 	"net/http"
 )
 

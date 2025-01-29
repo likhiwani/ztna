@@ -18,24 +18,25 @@ package routes
 
 import (
 	"fmt"
+	"strings"
+	"time"
+	clientService "ztna-core/edge-api/rest_client_api_server/operations/service"
+	managementService "ztna-core/edge-api/rest_management_api_server/operations/service"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
-	clientService "github.com/openziti/edge-api/rest_client_api_server/operations/service"
-	managementService "github.com/openziti/edge-api/rest_management_api_server/operations/service"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"strings"
-	"time"
 
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/response"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/response"
 )
 
 func init() {

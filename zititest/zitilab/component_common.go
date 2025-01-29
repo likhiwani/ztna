@@ -19,7 +19,7 @@ package zitilab
 import (
 	"fmt"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "github.com/cosmic-cloak/ztna/zititest/zitilab/actions"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
 	"github.com/sirupsen/logrus"
 	"path/filepath"
 	"strings"

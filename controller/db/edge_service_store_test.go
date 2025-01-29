@@ -19,8 +19,8 @@ package db
 import (
 	"fmt"
 	"github.com/openziti/storage/boltztest"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
 	"testing"
 	"time"
 

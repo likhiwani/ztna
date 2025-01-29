@@ -17,15 +17,16 @@
 package routes
 
 import (
-	"github.com/go-openapi/strfmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
 	"strconv"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/response"
+
+	"github.com/go-openapi/strfmt"
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 type ModelToApiMapper func(*env.AppEnv, *response.RequestContext, models.Entity) (interface{}, error)

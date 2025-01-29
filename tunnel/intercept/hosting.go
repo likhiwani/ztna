@@ -17,22 +17,23 @@
 package intercept
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/transport/v2"
-	"github.com/openziti/transport/v2/proxies"
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
-	"github.com/cosmic-cloak/ztna/tunnel/health"
-	"github.com/cosmic-cloak/ztna/tunnel/router"
-	"github.com/cosmic-cloak/ztna/tunnel/utils"
-	"github.com/pkg/errors"
-	"golang.org/x/net/proxy"
 	"net"
 	"strconv"
 	"strings"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/health"
+	"ztna-core/ztna/tunnel/router"
+	"ztna-core/ztna/tunnel/utils"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/sdk-golang/ziti"
+	"github.com/openziti/transport/v2"
+	"github.com/openziti/transport/v2/proxies"
+	"github.com/pkg/errors"
+	"golang.org/x/net/proxy"
 )
 
 type healthChecksProvider interface {

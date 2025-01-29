@@ -18,8 +18,8 @@ package fabric
 
 import (
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/spf13/cobra"
 )
 

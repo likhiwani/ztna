@@ -26,9 +26,9 @@ import (
 	"strings"
 	"text/template"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/templates"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/templates"
+	"ztna-core/ztna/ztna/constants"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

@@ -2,8 +2,8 @@ package env
 
 import (
 	"bytes"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/response"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/response"
 	"io"
 	"net/http"
 )

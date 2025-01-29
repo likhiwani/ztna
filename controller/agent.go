@@ -2,7 +2,7 @@ package controller
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/common/pb/cmd_pb"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"net"
@@ -11,8 +11,8 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

@@ -18,20 +18,21 @@ package routes
 
 import (
 	"errors"
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/strfmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_management_api_server/operations/database"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/response"
 	"net/http"
 	"sync"
 	"sync/atomic"
 	"time"
+	"ztna-core/edge-api/rest_management_api_server/operations/database"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/response"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/michaelquigley/pfxlog"
 )
 
 func init() {

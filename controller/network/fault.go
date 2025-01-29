@@ -18,7 +18,7 @@ package network
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/controller/model"
 	"github.com/sirupsen/logrus"
 )
 

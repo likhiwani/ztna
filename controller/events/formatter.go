@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/controller/event"
+	"ztna-core/ztna/controller/event"
 	"github.com/pkg/errors"
 	"io"
 	"reflect"

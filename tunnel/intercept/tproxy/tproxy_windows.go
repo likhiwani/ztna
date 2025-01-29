@@ -17,7 +17,7 @@
 package tproxy
 
 import (
-	"github.com/cosmic-cloak/ztna/tunnel/intercept"
+	"ztna-core/ztna/tunnel/intercept"
 	"github.com/pkg/errors"
 )
 

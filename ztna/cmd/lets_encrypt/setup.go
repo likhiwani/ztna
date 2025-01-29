@@ -20,7 +20,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/internal/log"
+	"ztna-core/ztna/ztna/internal/log"
 
 	"github.com/go-acme/lego/v4/challenge/http01"
 	"github.com/go-acme/lego/v4/lego"

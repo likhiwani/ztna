@@ -21,10 +21,10 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
 	"github.com/fatih/color"
 	"github.com/openziti/storage/boltz"
 

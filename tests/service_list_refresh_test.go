@@ -4,7 +4,7 @@
 package tests
 
 import (
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"testing"
 	"time"
 )

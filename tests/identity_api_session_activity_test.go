@@ -1,14 +1,15 @@
 package tests
 
 import (
-	rest_identity "github.com/openziti/edge-api/rest_management_api_client/identity"
-	"github.com/openziti/edge-api/rest_model"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/controller/webapis"
 	"net/url"
 	"testing"
 	"time"
+	rest_identity "ztna-core/edge-api/rest_management_api_client/identity"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/webapis"
+
+	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	"github.com/openziti/sdk-golang/ziti"
 )
 
 func Test_Identity_HasErConnection(t *testing.T) {

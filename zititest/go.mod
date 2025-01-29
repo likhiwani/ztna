@@ -1,4 +1,4 @@
-module github.com/cosmic-cloak/ztna/zititest
+module ztna-core/ztna/zititest
 
 go 1.23.1
 
@@ -7,20 +7,20 @@ replace github.com/cosmic-cloak/ztna => ../
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/Jeffail/gabs/v2 v2.7.0
-	github.com/cosmic-cloak/ztna v0.28.3
+	ztna-core/ztna v0.28.3
 	github.com/go-openapi/runtime v0.28.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/michaelquigley/pfxlog v0.6.10
 	github.com/openziti/agent v1.0.23
-	github.com/openziti/channel/v3 v3.0.26
-	github.com/openziti/edge-api v0.26.38
+	github.com/openziti/channel/v3 v3.0.27
+	ztna-core/edge-api v0.0.0
 	github.com/openziti/fablab v0.5.84
 	github.com/openziti/foundation/v2 v2.0.56
 	github.com/openziti/identity v1.0.94
-	github.com/openziti/sdk-golang v0.23.44
+	github.com/openziti/sdk-golang v0.24.0
 	github.com/openziti/storage v0.3.15
-	github.com/openziti/transport/v2 v2.0.159
+	github.com/openziti/transport/v2 v2.0.160
 	github.com/orcaman/concurrent-map/v2 v2.0.1
 	github.com/pkg/errors v0.9.1
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
@@ -29,9 +29,11 @@ require (
 	github.com/stretchr/testify v1.10.0
 	go.etcd.io/bbolt v1.3.11
 	golang.org/x/net v0.34.0
-	google.golang.org/protobuf v1.36.2
+	google.golang.org/protobuf v1.36.3
 	gopkg.in/yaml.v2 v2.4.0
 )
+
+replace ztna-core/edge-api => ../../edge-api
 
 require (
 	github.com/AppsFlyer/go-sundheit v0.6.0 // indirect
@@ -80,7 +82,7 @@ require (
 	github.com/go-openapi/strfmt v0.23.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/go-openapi/validate v0.24.0 // indirect
-	github.com/go-resty/resty/v2 v2.16.3 // indirect
+	github.com/go-resty/resty/v2 v2.16.4 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect

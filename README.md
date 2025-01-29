@@ -2,9 +2,9 @@
 
 <br>
 
-[![Build Status](https://github.com/cosmic-cloak/ztna/actions/workflows/main.yml/badge.svg?query=branch%3Arelease-next)](https://github.com/cosmic-cloak/ztna/actions/workflows/main.yml?query=branch%3Arelease-next)
-[![Go Report Card](https://goreportcard.com/badge/github.com/cosmic-cloak/ztna)](https://goreportcard.com/report/github.com/cosmic-cloak/ztna)
-[![GoDoc](https://godoc.org/github.com/cosmic-cloak/ztna?status.svg)](https://pkg.go.dev/github.com/cosmic-cloak/ztna)
+[![Build Status](https://ztna-core/ztna/actions/workflows/main.yml/badge.svg?query=branch%3Arelease-next)](https://ztna-core/ztna/actions/workflows/main.yml?query=branch%3Arelease-next)
+[![Go Report Card](https://goreportcard.com/badge/ztna-core/ztna)](https://goreportcard.com/report/ztna-core/ztna)
+[![GoDoc](https://godoc.org/ztna-core/ztna?status.svg)](https://pkg.go.dev/ztna-core/ztna)
 [![Discourse Widget](https://img.shields.io/badge/join-us%20on%20discourse-gray.svg?longCache=true&logo=discourse&colorB=brightgreen")](https://openziti.discourse.group/)
 [![License: Apache-v2](https://img.shields.io/badge/License-Apache--2.0-yellow.svg)](LICENSE)
 
@@ -136,7 +136,7 @@ cruise on over to [the OpenZiti Discourse forum](https://openziti.discourse.grou
 The OpenZiti project welcomes contributions including, but not limited to, code, documentation and bug reports.
 
 * All OpenZiti code is found on Github under the [OpenZiti](https://github.com/openziti) organization. 
-  * [ziti](https://github.com/cosmic-cloak/ztna): top level project which builds all OpenZiti executables
+  * [ziti](https://ztna-core/ztna): top level project which builds all OpenZiti executables
   * [edge](https://github.com/openziti/edge): edge components and model which includes identity, polices and config 
   * [fabric](https://github.com/openziti/fabric): fabric project which includes core controller and router
   * [foundation](https://github.com/openziti/foundation): project which contains library code used across multiple projects

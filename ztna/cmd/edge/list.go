@@ -25,20 +25,22 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/edge-api/rest_management_api_client/auth_policy"
+	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
+
 	"github.com/go-openapi/runtime"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
-	"github.com/openziti/edge-api/rest_management_api_client/auth_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/external_jwt_signer"
 	"github.com/openziti/foundation/v2/stringz"
 
+	"ztna-core/edge-api/rest_management_api_client/certificate_authority"
+	"ztna-core/edge-api/rest_model"
+
 	"github.com/Jeffail/gabs"
-	"github.com/openziti/edge-api/rest_management_api_client/certificate_authority"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

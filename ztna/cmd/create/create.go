@@ -19,9 +19,9 @@ package create
 import (
 	"io"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/pki"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/templates"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/pki"
+	"ztna-core/ztna/ztna/cmd/templates"
 	"github.com/spf13/cobra"
 )
 

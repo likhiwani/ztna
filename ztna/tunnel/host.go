@@ -17,7 +17,7 @@
 package tunnel
 
 import (
-	"github.com/cosmic-cloak/ztna/tunnel/intercept/host"
+	"ztna-core/ztna/tunnel/intercept/host"
 	"github.com/spf13/cobra"
 )
 

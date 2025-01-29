@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/pkg/errors"

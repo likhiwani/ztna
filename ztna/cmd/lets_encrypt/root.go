@@ -19,7 +19,7 @@ package lets_encrypt
 import (
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 
 	"github.com/spf13/cobra"
 )

@@ -18,11 +18,11 @@ package model
 
 import (
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/common/pb/edge_cmd_pb"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 )

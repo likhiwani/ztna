@@ -39,7 +39,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_model"
 )
 
 // NewCreateDatabaseSnapshotWithPathParams creates a new CreateDatabaseSnapshotWithPathParams object

@@ -24,9 +24,9 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )

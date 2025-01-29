@@ -19,9 +19,9 @@ package xlink_transport
 import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics"
-	"github.com/cosmic-cloak/ztna/common/inspect"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/router/xgress"
 	"sync/atomic"
 	"time"
 )

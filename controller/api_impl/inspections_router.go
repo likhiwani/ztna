@@ -19,11 +19,11 @@ package api_impl
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/inspect"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_server/operations"
+	"ztna-core/ztna/controller/rest_server/operations/inspect"
 	"net/http"
 )
 

@@ -20,13 +20,14 @@ package tests
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
 	"net/http"
 	"net/url"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+
+	"github.com/google/uuid"
 )
 
 func Test_PostureChecks_MFA(t *testing.T) {

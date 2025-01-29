@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
 	"go.etcd.io/bbolt"
 	"testing"
 )

@@ -20,11 +20,12 @@
 package tests
 
 import (
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
 	"net/http"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+
+	"github.com/google/uuid"
 )
 
 func Test_EnrollmentRefresh(t *testing.T) {

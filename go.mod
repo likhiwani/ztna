@@ -1,4 +1,4 @@
-module github.com/cosmic-cloak/ztna
+module ztna-core/ztna
 
 go 1.23
 
@@ -54,7 +54,6 @@ require (
 	github.com/openziti/agent v1.0.23
 	github.com/openziti/channel/v3 v3.0.27
 	github.com/openziti/cobra-to-md v1.0.1
-	github.com/openziti/edge-api v0.26.38
 	github.com/openziti/foundation/v2 v2.0.56
 	github.com/openziti/identity v1.0.94
 	github.com/openziti/jwks v1.0.6
@@ -98,25 +97,25 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.1
 	rsc.io/goversion v1.2.0
+	ztna-core/edge-api v0.26.38
 )
 
 require (
 	github.com/MichaelMure/go-term-markdown v0.1.4 // indirect
 	github.com/MichaelMure/go-term-text v0.3.1 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
-	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/antchfx/xpath v1.3.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
-	github.com/biogo/store v0.0.0-20200525035639-8c94ae1e7c9c // indirect
+	github.com/biogo/store v0.0.0-20190426020002-884f370e325d // indirect
 	github.com/boltdb/bolt v1.3.1 // indirect
 	github.com/c-bata/go-prompt v0.2.6 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
-	github.com/creack/pty v1.1.11 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
-	github.com/dlclark/regexp2 v1.10.0 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/eliukblau/pixterm/pkg/ansimage v0.0.0-20191210081756-9fb6cf8c2f75 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -124,30 +123,29 @@ require (
 	github.com/go-jose/go-jose/v4 v4.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-ole/go-ole v1.3.0 // indirect
+	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-openapi/analysis v0.23.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
 	github.com/go-openapi/jsonreference v0.21.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
-	github.com/gorilla/schema v1.4.1 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20191123064959-2c17d62f5098 // indirect
+	github.com/gorilla/schema v1.3.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-metrics v0.5.4 // indirect
 	github.com/hashicorp/go-msgpack v0.5.5 // indirect
 	github.com/hashicorp/go-msgpack/v2 v2.1.2 // indirect
-	github.com/hashicorp/golang-lru v0.6.0 // indirect
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/iancoleman/strcase v0.1.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/josharian/native v1.1.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/kr/pty v1.1.8 // indirect
-	github.com/kyokomi/emoji/v2 v2.2.12 // indirect
-	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
-	github.com/lufia/plan9stats v0.0.0-20240909124753-873cd0166683 // indirect
+	github.com/kyokomi/emoji/v2 v2.2.8 // indirect
+	github.com/lucasb-eyer/go-colorful v1.0.3 // indirect
+	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -164,6 +162,7 @@ require (
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/openziti-incubator/cf v0.0.3 // indirect
 	github.com/openziti/dilithium v0.3.5 // indirect
+	github.com/openziti/edge-api v0.26.38 // indirect
 	github.com/parallaxsecond/parsec-client-go v0.0.0-20221025095442-f0a77d263cf9 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pion/dtls/v3 v3.0.4 // indirect
@@ -171,8 +170,8 @@ require (
 	github.com/pion/transport/v3 v3.0.7 // indirect
 	github.com/pkg/term v1.2.0-beta.2 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
-	github.com/rivo/uniseg v0.4.4 // indirect
+	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rodaine/table v1.0.1 // indirect
 	github.com/rs/cors v1.11.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -184,25 +183,27 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/tklauser/go-sysconf v0.3.14 // indirect
-	github.com/tklauser/numcpus v0.9.0 // indirect
+	github.com/tklauser/go-sysconf v0.3.12 // indirect
+	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.mongodb.org/mongo-driver v1.17.1 // indirect
+	go.mongodb.org/mongo-driver v1.17.0 // indirect
 	go.mozilla.org/pkcs7 v0.9.0 // indirect
-	go.opentelemetry.io/otel v1.30.0 // indirect
-	go.opentelemetry.io/otel/metric v1.30.0 // indirect
-	go.opentelemetry.io/otel/trace v1.30.0 // indirect
+	go.opentelemetry.io/otel v1.29.0 // indirect
+	go.opentelemetry.io/otel/metric v1.29.0 // indirect
+	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/image v0.0.0-20191206065243-da761ea9ff43 // indirect
 	golang.org/x/mod v0.22.0 // indirect
 	golang.org/x/term v0.28.0 // indirect
 	golang.org/x/tools v0.28.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	nhooyr.io/websocket v1.8.17 // indirect
 )
+
+replace ztna-core/edge-api => ../edge-api

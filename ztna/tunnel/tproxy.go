@@ -22,7 +22,7 @@ package tunnel
 import (
 	"fmt"
 
-	"github.com/cosmic-cloak/ztna/tunnel/intercept/tproxy"
+	"ztna-core/ztna/tunnel/intercept/tproxy"
 	"github.com/spf13/cobra"
 )
 

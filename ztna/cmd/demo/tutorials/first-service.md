@@ -3,7 +3,7 @@
 Hello. In this tutorial we’re going to go explore services, identities and polices.
 
 Please note: this tutorial can be run interactively, by running 'ziti demo first-service'. It can also be viewed as a web
-page [here](https://github.com/cosmic-cloak/ztna/blob/release-next/ziti/cmd/demo/tutorials/first-service.md). It may be convenient to be able to view both at the same time. The interactive version
+page [here](https://ztna-core/ztna/blob/release-next/ziti/cmd/demo/tutorials/first-service.md). It may be convenient to be able to view both at the same time. The interactive version
 will save you a lot of typing or copy/pasting, but content may be easier to read in a web-browser.
 
 <!---action:pause -->
@@ -20,7 +20,7 @@ service.
 ## Prerequisites
 
 First, let’s make sure you’ve got an environment running you can work with. We need a Ziti controller and at least one edge router to work with. If you don’t have a controller and edge router running,
-you can use the quick-start script found [here](https://github.com/cosmic-cloak/ztna/tree/release-next/quickstart). The fastest way to invoke the quick-start is to run
+you can use the quick-start script found [here](https://ztna-core/ztna/tree/release-next/quickstart). The fastest way to invoke the quick-start is to run
 
 `source <(wget -qO- https://raw.githubusercontent.com/openziti/ziti/release-next/quickstart/docker/image/ziti-cli-functions.sh); expressInstall`
 

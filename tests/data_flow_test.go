@@ -21,8 +21,8 @@ package tests
 import (
 	"bytes"
 	"github.com/google/uuid"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/xt_smartrouting"
 	"math"
 	"testing"
 	"time"

@@ -23,9 +23,9 @@ import (
 	"strings"
 	"time"
 
-	edge "github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/router/xgress_edge_tunnel"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	edge "ztna-core/ztna/controller/config"
+	"ztna-core/ztna/router/xgress_edge_tunnel"
+	"ztna-core/ztna/ztna/constants"
 	"github.com/pkg/errors"
 )
 

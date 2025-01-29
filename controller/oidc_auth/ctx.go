@@ -3,8 +3,8 @@ package oidc_auth
 import (
 	"context"
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/change"
 	"github.com/zitadel/oidc/v2/pkg/oidc"
 	"net/http"
 )

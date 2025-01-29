@@ -34,15 +34,15 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/circuit"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/database"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/inspect"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/link"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/raft"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/router"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/service"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/terminator"
+	"ztna-core/ztna/controller/rest_server/operations"
+	"ztna-core/ztna/controller/rest_server/operations/circuit"
+	"ztna-core/ztna/controller/rest_server/operations/database"
+	"ztna-core/ztna/controller/rest_server/operations/inspect"
+	"ztna-core/ztna/controller/rest_server/operations/link"
+	"ztna-core/ztna/controller/rest_server/operations/raft"
+	"ztna-core/ztna/controller/rest_server/operations/router"
+	"ztna-core/ztna/controller/rest_server/operations/service"
+	"ztna-core/ztna/controller/rest_server/operations/terminator"
 )
 
 //go:generate swagger generate server --target ../../controller --name ZitiFabric --spec ../specs/swagger.yml --model-package rest_model --server-package rest_server --principal interface{} --exclude-main

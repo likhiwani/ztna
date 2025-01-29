@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"crypto/sha512"
 	"github.com/google/go-cmp/cmp"
-	loop3_pb "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
 	"github.com/stretchr/testify/require"
 	"reflect"
 	"testing"

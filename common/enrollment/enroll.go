@@ -19,11 +19,12 @@ package enrollment
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/identity/engines"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
 	"os"
 	"strings"
+	"ztna-core/ztna/ztna/cmd/common"
+
+	"github.com/openziti/identity/engines"
+	"github.com/openziti/sdk-golang/ziti"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/term"

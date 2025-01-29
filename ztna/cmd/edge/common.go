@@ -21,7 +21,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/api"
 	"github.com/pkg/errors"
 )
 

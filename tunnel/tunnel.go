@@ -21,12 +21,13 @@ import (
 	"strconv"
 	"time"
 
-	//"github.com/cosmic-cloak/ztna/tunnel/entities"
-	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/sirupsen/logrus"
+	//"ztna-core/ztna/tunnel/entities"
 	"io"
 	"net"
 	"strings"
+
+	"github.com/openziti/sdk-golang/ziti/edge"
+	"github.com/sirupsen/logrus"
 )
 
 var log = logrus.StandardLogger()

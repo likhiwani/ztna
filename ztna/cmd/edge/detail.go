@@ -20,7 +20,7 @@ import (
 	"io"
 
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 )
 
 func DetailEntityOfType(entityType, entityId string, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {

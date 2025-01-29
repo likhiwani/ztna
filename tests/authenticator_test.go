@@ -21,16 +21,17 @@ package tests
 
 import (
 	"fmt"
-	"github.com/Jeffail/gabs"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/apierror"
+
+	"github.com/Jeffail/gabs"
+	"github.com/google/uuid"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Authenticators_AdminUsingAdminEndpoints(t *testing.T) {

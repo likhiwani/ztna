@@ -17,7 +17,7 @@
 package loop3
 
 import (
-	loop3_pb "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
 	"gopkg.in/yaml.v2"
 	"os"
 	"time"

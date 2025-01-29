@@ -1,5 +1,5 @@
 # this is a list of shortcut routes at get.openziti.io for raw.githubusercontent.com and is documented in
-# https://github.com/cosmic-cloak/ztna/tree/main/quickstart#github-raw-reverse-proxy
+# https://ztna-core/ztna/tree/main/quickstart#github-raw-reverse-proxy
 
 # these are file shortcuts, so the shortcut is the test file
 - get: /ziti-cli-functions.sh

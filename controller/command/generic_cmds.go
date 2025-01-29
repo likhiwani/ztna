@@ -1,10 +1,10 @@
 package command
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/common/pb/cmd_pb"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 )

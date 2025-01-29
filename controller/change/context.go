@@ -19,7 +19,7 @@ package change
 import (
 	"context"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/common/pb/cmd_pb"
 )
 
 type ContextKeyType string

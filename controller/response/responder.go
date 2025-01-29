@@ -18,13 +18,14 @@ package response
 
 import (
 	"fmt"
+	"net/http"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/apierror"
+
 	"github.com/go-openapi/errors"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"net/http"
 )
 
 // todo: rename to Responder, remove old Responder and RequestResponder

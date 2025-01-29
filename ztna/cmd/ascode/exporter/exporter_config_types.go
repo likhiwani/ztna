@@ -17,9 +17,9 @@
 package exporter
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/config"
-	"github.com/openziti/edge-api/rest_model"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/config"
+	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsConfigTypeExportRequired(args []string) bool {

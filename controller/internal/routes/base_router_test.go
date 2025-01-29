@@ -18,8 +18,8 @@ package routes
 
 import (
 	"encoding/json"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/fields"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/fields"
 	"reflect"
 	"testing"
 

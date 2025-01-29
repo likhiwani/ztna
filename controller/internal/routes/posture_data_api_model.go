@@ -19,11 +19,12 @@ package routes
 import (
 	"time"
 
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
 )
 
 func MapPostureDataToRestModel(_ *env.AppEnv, postureData *model.PostureData) *rest_model.PostureData {

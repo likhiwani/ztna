@@ -21,8 +21,8 @@ import (
 	"time"
 
 	"github.com/blang/semver"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/common/pb/edge_cmd_pb"
+	"ztna-core/ztna/controller/db"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )

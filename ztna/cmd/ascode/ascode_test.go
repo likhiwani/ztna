@@ -27,9 +27,9 @@ import (
 	"time"
 
 	"github.com/antchfx/jsonquery"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/ascode/exporter"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/ascode/importer"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/edge"
+	"ztna-core/ztna/ztna/cmd/ascode/exporter"
+	"ztna-core/ztna/ztna/cmd/ascode/importer"
+	"ztna-core/ztna/ztna/cmd/edge"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/stretchr/testify/assert"
 )

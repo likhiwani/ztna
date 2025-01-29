@@ -18,16 +18,17 @@ package routes
 
 import (
 	"fmt"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/controller/xt"
+
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"github.com/cosmic-cloak/ztna/controller/xt"
 )
 
 const EntityNameTerminator = "terminators"

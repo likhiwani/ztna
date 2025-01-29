@@ -3,9 +3,9 @@ package posture
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 )
 
 func HasAccess(rdm *common.RouterDataModel, identityId string, serviceId string, cache *Cache, policyType edge_ctrl_pb.PolicyType) (*common.ServicePolicy, error) {

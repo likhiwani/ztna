@@ -43,14 +43,14 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/circuit"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/database"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/inspect"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/link"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/raft"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/router"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/service"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/terminator"
+	"ztna-core/ztna/controller/rest_server/operations/circuit"
+	"ztna-core/ztna/controller/rest_server/operations/database"
+	"ztna-core/ztna/controller/rest_server/operations/inspect"
+	"ztna-core/ztna/controller/rest_server/operations/link"
+	"ztna-core/ztna/controller/rest_server/operations/raft"
+	"ztna-core/ztna/controller/rest_server/operations/router"
+	"ztna-core/ztna/controller/rest_server/operations/service"
+	"ztna-core/ztna/controller/rest_server/operations/terminator"
 )
 
 // NewZitiFabricAPI creates a new ZitiFabric instance

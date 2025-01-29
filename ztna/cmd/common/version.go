@@ -18,7 +18,7 @@ package common
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common/version"
+	"ztna-core/ztna/common/version"
 	"github.com/spf13/cobra"
 )
 

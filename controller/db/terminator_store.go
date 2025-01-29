@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/foundation/v2/sequence"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt"
 	"go.etcd.io/bbolt"
 )
 

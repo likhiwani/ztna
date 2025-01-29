@@ -20,9 +20,9 @@
 package tests
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
 	"testing"
 	"time"
 )

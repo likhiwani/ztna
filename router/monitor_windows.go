@@ -19,7 +19,7 @@
 package router
 
 import (
-	"github.com/cosmic-cloak/ztna/router/forwarder"
+	"ztna-core/ztna/router/forwarder"
 )
 
 type routerMonitor struct{}

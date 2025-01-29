@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/router/env"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/router/env"
 	"github.com/stretchr/testify/require"
 	"os"
 	"path"

@@ -28,8 +28,8 @@ import (
 	aws_ssh_keys6 "github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/aws_ssh_key"
 	terraform6 "github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/models"
-	zitilab_5_operation "github.com/cosmic-cloak/ztna/zititest/zitilab/runlevel/5_operation"
+	"ztna-core/ztna/zititest/zitilab/models"
+	zitilab_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
 	"time"
 )
 

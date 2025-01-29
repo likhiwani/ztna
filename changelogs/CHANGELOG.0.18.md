@@ -482,7 +482,7 @@ edge:
 
 * Default hosting precedence and cost can now be configured for identities
 * Health checks can now be configured for the go based tunneler (ziti-tunnel) using server configs
-* [ziti#177](https://github.com/cosmic-cloak/ztna/issues/177) ziti-tunnel has a new `host` mode, if you
+* [ziti#177](https://ztna-core/ztna/issues/177) ziti-tunnel has a new `host` mode, if you
   are only hosting services
 * Changes to terminators (add/updated/delete/router online/router offline) will now generate events
   that can be emitted
@@ -901,7 +901,7 @@ expire and be used for reconnection.
 
 ## What's New
 
-* [ziti#253](https://github.com/cosmic-cloak/ztna/issues/253) `ziti-tunnel enroll` should set non-zero
+* [ziti#253](https://ztna-core/ztna/issues/253) `ziti-tunnel enroll` should set non-zero
   exit status if an error occur
 * Rewrite of Xgress with the following goals
     * Fix deadlocks at high throughput

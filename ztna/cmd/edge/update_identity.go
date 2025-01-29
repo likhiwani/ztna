@@ -22,8 +22,8 @@ import (
 	"math"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/api"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/openziti/sdk-golang/ziti"
 
 	"github.com/pkg/errors"

@@ -18,16 +18,17 @@ package webapis
 
 import (
 	"fmt"
-	"github.com/openziti/edge-api/rest_management_api_client"
-	"github.com/openziti/edge-api/rest_management_api_server"
-	"github.com/openziti/xweb/v2"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/response"
 	"net/http"
 	"strings"
 	"time"
+	"ztna-core/edge-api/rest_management_api_client"
+	"ztna-core/edge-api/rest_management_api_server"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/response"
+
+	"github.com/openziti/xweb/v2"
 )
 
 const (

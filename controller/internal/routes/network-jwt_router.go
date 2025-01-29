@@ -3,18 +3,19 @@ package routes
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	enrollment_client "ztna-core/edge-api/rest_client_api_server/operations/enrollment"
+	enrollment_management "ztna-core/edge-api/rest_management_api_server/operations/enrollment"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
-	enrollment_client "github.com/openziti/edge-api/rest_client_api_server/operations/enrollment"
-	enrollment_management "github.com/openziti/edge-api/rest_management_api_server/operations/enrollment"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"net/http"
 )
 
 func init() {

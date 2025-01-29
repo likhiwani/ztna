@@ -2,22 +2,23 @@ package entities
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/mitchellh/mapstructure"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/genext"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/transport/v2"
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/health"
-	"github.com/cosmic-cloak/ztna/tunnel/utils"
-	"github.com/pkg/errors"
 	"net"
 	"reflect"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/health"
+	"ztna-core/ztna/tunnel/utils"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/mitchellh/mapstructure"
+	"github.com/openziti/foundation/v2/genext"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/transport/v2"
+	"github.com/pkg/errors"
 )
 
 const (

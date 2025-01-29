@@ -5,8 +5,8 @@
 * Backward compatibility router <-> controller fix to address metrics parsing panic
 
 ## Component Updates and Bug Fixes
-* github.com/cosmic-cloak/ztna: [v0.33.0 -> v0.33.1](https://github.com/cosmic-cloak/ztna/compare/v0.33.0...v0.33.1)
-    * [Issue #1826](https://github.com/cosmic-cloak/ztna/issues/1826) - 0.33.+ routers can cause panic in pre-0.33 controller with new metric
+* ztna-core/ztna: [v0.33.0 -> v0.33.1](https://ztna-core/ztna/compare/v0.33.0...v0.33.1)
+    * [Issue #1826](https://ztna-core/ztna/issues/1826) - 0.33.+ routers can cause panic in pre-0.33 controller with new metric
 
 # Release 0.33.0
 
@@ -41,13 +41,13 @@ back to the routers when it's got too much work.
 
 ## Component Updates and Bug Fixes
 
-* github.com/openziti/edge-api: [v0.26.10 -> v0.26.12](https://github.com/openziti/edge-api/compare/v0.26.10...v0.26.12)
-* github.com/cosmic-cloak/ztna: [v0.32.2 -> v0.33.0](https://github.com/cosmic-cloak/ztna/compare/v0.32.2...v0.33.0)
-    * [Issue #1815](https://github.com/cosmic-cloak/ztna/issues/1815) - Panic if api session sync failed handler is called twice in the router
-    * [Issue #1794](https://github.com/cosmic-cloak/ztna/issues/1794) - Add SDK terminator chaos test and fix any bugs found as part of chaos testing
-    * [Issue #1781](https://github.com/cosmic-cloak/ztna/issues/1781) - Improve performance when adding intercepted services
-    * [Issue #1369](https://github.com/cosmic-cloak/ztna/issues/1369) - Allow filtering by policy type when listing identities for service or services for identity
-    * [Issue #1791](https://github.com/cosmic-cloak/ztna/issues/1791) - route dial isn't checking for network timeouts correctly
-    * [Issue #1204](https://github.com/cosmic-cloak/ztna/issues/1204) - ziti cli identity tags related flags misbehaving
-    * [Issue #987](https://github.com/cosmic-cloak/ztna/issues/987) - "ziti create config router edge" doesn't know about --tunnelerMode proxy
-    * [Issue #652](https://github.com/cosmic-cloak/ztna/issues/652) - Update CLI script M1 Support when github actions allows
+* ztna-core/edge-api: [v0.26.10 -> v0.26.12](https://ztna-core/edge-api/compare/v0.26.10...v0.26.12)
+* ztna-core/ztna: [v0.32.2 -> v0.33.0](https://ztna-core/ztna/compare/v0.32.2...v0.33.0)
+    * [Issue #1815](https://ztna-core/ztna/issues/1815) - Panic if api session sync failed handler is called twice in the router
+    * [Issue #1794](https://ztna-core/ztna/issues/1794) - Add SDK terminator chaos test and fix any bugs found as part of chaos testing
+    * [Issue #1781](https://ztna-core/ztna/issues/1781) - Improve performance when adding intercepted services
+    * [Issue #1369](https://ztna-core/ztna/issues/1369) - Allow filtering by policy type when listing identities for service or services for identity
+    * [Issue #1791](https://ztna-core/ztna/issues/1791) - route dial isn't checking for network timeouts correctly
+    * [Issue #1204](https://ztna-core/ztna/issues/1204) - ziti cli identity tags related flags misbehaving
+    * [Issue #987](https://ztna-core/ztna/issues/987) - "ziti create config router edge" doesn't know about --tunnelerMode proxy
+    * [Issue #652](https://ztna-core/ztna/issues/652) - Update CLI script M1 Support when github actions allows

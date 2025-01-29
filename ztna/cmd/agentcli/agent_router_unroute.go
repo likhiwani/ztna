@@ -19,10 +19,10 @@ package agentcli
 import (
 	"fmt"
 
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/router"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/router"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/openziti/channel/v3"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"

@@ -29,14 +29,16 @@ import (
 	"os"
 	"strings"
 
+	"ztna-core/ztna/router"
+	"ztna-core/ztna/router/internal/edgerouter"
+
+	"ztna-core/edge-api/rest_model"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/identity/certtools"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/enroll"
-	"github.com/cosmic-cloak/ztna/router"
-	"github.com/cosmic-cloak/ztna/router/internal/edgerouter"
 )
 
 type apiPost struct {

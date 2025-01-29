@@ -17,9 +17,9 @@
 package exporter
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/edge_router"
-	"github.com/openziti/edge-api/rest_model"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/edge_router"
+	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsEdgeRouterExportRequired(args []string) bool {

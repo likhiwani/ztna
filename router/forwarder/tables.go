@@ -18,7 +18,7 @@ package forwarder
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress"
 	"github.com/orcaman/concurrent-map/v2"
 	"reflect"
 	"sync/atomic"

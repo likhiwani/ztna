@@ -20,8 +20,8 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	trace_pb "github.com/openziti/channel/v3/trace/pb"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/common/trace"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
 	"github.com/openziti/identity"
 	"google.golang.org/protobuf/proto"
 )

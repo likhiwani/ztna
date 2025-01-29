@@ -22,10 +22,11 @@ import (
 	"net/http"
 	"testing"
 
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+
 	"github.com/Jeffail/gabs"
 	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
 )
 
 func Test_PostureChecks_ProcessMulti(t *testing.T) {

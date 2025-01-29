@@ -25,7 +25,7 @@ import (
 	"github.com/openziti/sdk-golang/ziti/edge/network"
 	"github.com/openziti/secretstream"
 	"github.com/openziti/secretstream/kx"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"io"

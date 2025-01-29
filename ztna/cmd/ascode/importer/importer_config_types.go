@@ -17,12 +17,12 @@
 package importer
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/config"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/edge-api/rest_util"
-	"github.com/cosmic-cloak/ztna/internal"
-	"github.com/cosmic-cloak/ztna/internal/rest/mgmt"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/config"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/edge-api/rest_util"
+	"ztna-core/ztna/internal"
+	"ztna-core/ztna/internal/rest/mgmt"
 )
 
 func (importer *Importer) IsConfigTypeImportRequired(args []string) bool {

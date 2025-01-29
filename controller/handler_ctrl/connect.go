@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/network"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/identity"

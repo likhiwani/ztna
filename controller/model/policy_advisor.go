@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/controller/db"
 	"go.etcd.io/bbolt"
 )
 

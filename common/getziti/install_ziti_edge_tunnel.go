@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	c "ztna-core/ztna/ztna/constants"
+
 	"github.com/blang/semver"
-	c "github.com/cosmic-cloak/ztna/ztna/constants"
 )
 
 func InstallZitiEdgeTunnel(targetVersion, targetOS, targetArch, binDir string, verbose bool) error {

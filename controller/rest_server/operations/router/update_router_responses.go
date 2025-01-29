@@ -34,7 +34,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_model"
 )
 
 // UpdateRouterOKCode is the HTTP code returned for type UpdateRouterOK

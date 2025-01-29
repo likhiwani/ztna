@@ -1,14 +1,15 @@
 package intercept
 
 import (
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/util"
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
-	"github.com/stretchr/testify/require"
 	"net"
 	"testing"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/entities"
+
+	"github.com/google/uuid"
+	"github.com/openziti/foundation/v2/util"
+	"github.com/stretchr/testify/require"
 )
 
 type testProvider struct {

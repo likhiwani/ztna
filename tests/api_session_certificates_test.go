@@ -26,18 +26,19 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/Jeffail/gabs"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_client_api_client/current_api_session"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/identity/certtools"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/cosmic-cloak/ztna/common/spiffehlp"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"testing"
+	"ztna-core/edge-api/rest_client_api_client/current_api_session"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/spiffehlp"
+
+	"github.com/Jeffail/gabs"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/identity/certtools"
+	edge_apis "github.com/openziti/sdk-golang/edge-apis"
 )
 
 func Test_Api_Session_Certs(t *testing.T) {

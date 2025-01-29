@@ -9,18 +9,19 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	id "github.com/openziti/identity"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/cosmic-cloak/ztna/common/eid"
 	"io"
 	"math/big"
 	"net/http"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+
+	"github.com/google/uuid"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	id "github.com/openziti/identity"
+	"github.com/openziti/sdk-golang/ziti"
+	"github.com/openziti/sdk-golang/ziti/edge"
 )
 
 func Test_CA_Auth_Two_Identities_Diff_Certs(t *testing.T) {

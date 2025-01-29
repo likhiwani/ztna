@@ -18,7 +18,7 @@ package xlink_transport
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/router/xlink"
 )
 
 // BindHandlerFactory can be implemented and provided to the factory to perform channel binding and other channel setup

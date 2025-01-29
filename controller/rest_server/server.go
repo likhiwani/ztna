@@ -49,7 +49,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
+	"ztna-core/ztna/controller/rest_server/operations"
 )
 
 const (

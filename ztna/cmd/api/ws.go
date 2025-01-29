@@ -22,7 +22,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 	"github.com/gorilla/websocket"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"

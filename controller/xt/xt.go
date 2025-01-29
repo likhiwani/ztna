@@ -19,7 +19,7 @@ package xt
 import (
 	"fmt"
 	"github.com/openziti/identity"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
+	"ztna-core/ztna/common/logcontext"
 	"time"
 )
 

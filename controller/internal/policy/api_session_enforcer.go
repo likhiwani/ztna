@@ -19,10 +19,10 @@ package policy
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/runner"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/common/runner"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/change"
 	"github.com/sirupsen/logrus"
 	"time"
 )

@@ -21,7 +21,7 @@ import (
 	"crypto/x509"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/transport/v2"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/controller/models"
 	"testing"
 	"time"
 
@@ -29,15 +29,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/cert"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/jwtsigner"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/jwtsigner"
 )
 
 var _ Env = &TestContext{}

@@ -5,7 +5,7 @@ This script sets up the SDK client side for an echo service
 # Prerequisites
 
 You need at least one controller and an edge router running. for this to work. You can use the
-quick-start script found [here](https://github.com/cosmic-cloak/ztna/tree/release-next/quickstart).
+quick-start script found [here](https://ztna-core/ztna/tree/release-next/quickstart).
 
 # Setup
 

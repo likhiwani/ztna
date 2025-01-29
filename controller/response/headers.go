@@ -17,7 +17,7 @@
 package response
 
 import (
-	"github.com/cosmic-cloak/ztna/common/build"
+	"ztna-core/ztna/common/build"
 	"strconv"
 )
 

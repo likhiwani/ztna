@@ -1,7 +1,7 @@
 package debugops
 
 import (
-	"github.com/cosmic-cloak/ztna/router"
+	"ztna-core/ztna/router"
 )
 
 const (

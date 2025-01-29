@@ -19,11 +19,11 @@ package controller
 import (
 	"fmt"
 
-	"github.com/cosmic-cloak/ztna/common/version"
-	edgeSubCmd "github.com/cosmic-cloak/ztna/controller/subcmd"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/common/version"
+	edgeSubCmd "ztna-core/ztna/controller/subcmd"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/constants"
+	"ztna-core/ztna/ztna/util"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

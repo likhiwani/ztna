@@ -19,10 +19,11 @@ package common
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/zitadel/oidc/v2/pkg/oidc"
 	"time"
+	"ztna-core/edge-api/rest_model"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/zitadel/oidc/v2/pkg/oidc"
 )
 
 const (

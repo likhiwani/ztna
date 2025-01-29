@@ -4,11 +4,12 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/controller/model"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/model"
+
+	"github.com/openziti/foundation/v2/stringz"
 
 	"github.com/zitadel/oidc/v2/pkg/oidc"
 )

@@ -61,7 +61,7 @@ declare -a QUICK_FILES=(
     test/compose.override.yml
     docker/{simplified-docker-compose.yml,.env}
 )
-        # TODO: re-add cert checks files after https://github.com/cosmic-cloak/ztna/pull/1278
+        # TODO: re-add cert checks files after https://ztna-core/ztna/pull/1278
     # test/{quickstart_test.go,compose.override.yml,check-cert-chains.zsh}
 # download the quickstart Go test suite files from GitHub unless a local dir is specified
 if [[ -n "${ZITI_QUICK_DIR:-}" ]]; then
@@ -139,7 +139,7 @@ fi
 # for FILE in \
     # ""
     # check-cert-chains.zsh
-    # TODO: re-add cert checks to cp list after https://github.com/cosmic-cloak/ztna/pull/1278
+    # TODO: re-add cert checks to cp list after https://ztna-core/ztna/pull/1278
 # do
     # docker compose cp \
     #     "./${FILE}" \
@@ -159,7 +159,7 @@ docker compose exec ziti-controller \
         source /persistent/ziti.env >/dev/null;
         _wait_for_public_router >/dev/null;
     '
-        # TODO: re-add cert checks to above test suite after https://github.com/cosmic-cloak/ztna/pull/1278
+        # TODO: re-add cert checks to above test suite after https://ztna-core/ztna/pull/1278
         # zsh /persistent/check-cert-chains.zsh;
 docker compose --profile test run --rm quickstart-test
 

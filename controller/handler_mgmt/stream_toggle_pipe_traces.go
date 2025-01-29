@@ -18,17 +18,17 @@ package handler_mgmt
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/controller/model"
 	"sync"
 	"time"
 
 	"github.com/openziti/channel/v3"
 	trace_pb "github.com/openziti/channel/v3/trace/pb"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/common/trace"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/controller/network"
 	"google.golang.org/protobuf/proto"
 )
 

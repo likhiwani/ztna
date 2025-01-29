@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/versions"
-	"github.com/cosmic-cloak/ztna/controller/event"
+	"ztna-core/ztna/controller/event"
 	"math/rand"
 	"net"
 	"strings"

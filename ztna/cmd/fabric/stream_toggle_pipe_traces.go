@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/openziti/channel/v3"
 	trace_pb "github.com/openziti/channel/v3/trace/pb"
 	"github.com/spf13/cobra"

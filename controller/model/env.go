@@ -22,13 +22,13 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/cert"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/jwtsigner"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/jwtsigner"
 )
 
 type Env interface {

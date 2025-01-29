@@ -15,10 +15,10 @@
     * [Issue #468](https://github.com/openziti/sdk-golang/issues/468) - SDK does an unnecessary number of session refreshes
 
 * github.com/openziti/storage: [v0.2.26 -> v0.2.27](https://github.com/openziti/storage/compare/v0.2.26...v0.2.27)
-* github.com/cosmic-cloak/ztna: [v0.31.3 -> v0.31.4](https://github.com/cosmic-cloak/ztna/compare/v0.31.3...v0.31.4)
-    * [Issue #1645](https://github.com/cosmic-cloak/ztna/issues/1645) - Once routers share a link id, we can't use the link id to decide which duplicate link to discard
-    * [Issue #1642](https://github.com/cosmic-cloak/ztna/issues/1642) - Revert posture check optimization
-    * [Issue #1586](https://github.com/cosmic-cloak/ztna/issues/1586) - If ack is received before payload is processed by link send buffer, a stall can result
+* ztna-core/ztna: [v0.31.3 -> v0.31.4](https://ztna-core/ztna/compare/v0.31.3...v0.31.4)
+    * [Issue #1645](https://ztna-core/ztna/issues/1645) - Once routers share a link id, we can't use the link id to decide which duplicate link to discard
+    * [Issue #1642](https://ztna-core/ztna/issues/1642) - Revert posture check optimization
+    * [Issue #1586](https://ztna-core/ztna/issues/1586) - If ack is received before payload is processed by link send buffer, a stall can result
 
 
 # Release 0.31.3
@@ -65,18 +65,18 @@ ziti fabric raft remove-member ctrl3
 
 ## Component Updates and Bug Fixes
 
-* github.com/openziti/edge-api: [v0.26.1 -> v0.26.6](https://github.com/openziti/edge-api/compare/v0.26.1...v0.26.6)
+* ztna-core/edge-api: [v0.26.1 -> v0.26.6](https://ztna-core/edge-api/compare/v0.26.1...v0.26.6)
 * github.com/openziti/sdk-golang: [v0.20.139 -> v0.21.2](https://github.com/openziti/sdk-golang/compare/v0.20.139...v0.21.2)
     * [Issue #465](https://github.com/openziti/sdk-golang/issues/465) - Allow listen options to specify how many listeners need to be established before returning
     * [Issue #462](https://github.com/openziti/sdk-golang/issues/462) - Allow refreshing a single service
 
-* github.com/cosmic-cloak/ztna: [v0.31.2 -> v0.31.3](https://github.com/cosmic-cloak/ztna/compare/v0.31.2...v0.31.3)
-    * [Issue #1583](https://github.com/cosmic-cloak/ztna/issues/1583) - xgress: Potential data stall due when processing acks after checking window size 
-    * [Issue #1578](https://github.com/cosmic-cloak/ztna/issues/1578) - Send BindSuccess notifications to SDK if supported
-    * [Issue #1544](https://github.com/cosmic-cloak/ztna/issues/1544) - Support transfer raft leadership via REST
-    * [Issue #1543](https://github.com/cosmic-cloak/ztna/issues/1543) - Support add/remove raft peer via REST
-    * [Issue #1496](https://github.com/cosmic-cloak/ztna/issues/1496) - Configurable Timer needed to close idle circuits
-    * [Issue #1402](https://github.com/cosmic-cloak/ztna/issues/1402) - Allow router to decomission itself
+* ztna-core/ztna: [v0.31.2 -> v0.31.3](https://ztna-core/ztna/compare/v0.31.2...v0.31.3)
+    * [Issue #1583](https://ztna-core/ztna/issues/1583) - xgress: Potential data stall due when processing acks after checking window size 
+    * [Issue #1578](https://ztna-core/ztna/issues/1578) - Send BindSuccess notifications to SDK if supported
+    * [Issue #1544](https://ztna-core/ztna/issues/1544) - Support transfer raft leadership via REST
+    * [Issue #1543](https://ztna-core/ztna/issues/1543) - Support add/remove raft peer via REST
+    * [Issue #1496](https://ztna-core/ztna/issues/1496) - Configurable Timer needed to close idle circuits
+    * [Issue #1402](https://ztna-core/ztna/issues/1402) - Allow router to decomission itself
 
 # Release 0.31.2
 
@@ -119,7 +119,7 @@ in the bbolt datastore. There's now basic support for querying in-memory types a
 * github.com/openziti/channel/v2: [v2.0.105 -> v2.0.111](https://github.com/openziti/channel/compare/v2.0.105...v2.0.111)
     * [Issue #118](https://github.com/openziti/channel/issues/118) - Allowing checking if reconnecting impl is currently connected
 
-* github.com/openziti/edge-api: [v0.26.0 -> v0.26.1](https://github.com/openziti/edge-api/compare/v0.26.0...v0.26.1)
+* ztna-core/edge-api: [v0.26.0 -> v0.26.1](https://ztna-core/edge-api/compare/v0.26.0...v0.26.1)
 * github.com/openziti/foundation/v2: [v2.0.33 -> v2.0.35](https://github.com/openziti/foundation/compare/v2.0.33...v2.0.35)
 * github.com/openziti/identity: [v1.0.66 -> v1.0.68](https://github.com/openziti/identity/compare/v1.0.66...v1.0.68)
 * github.com/openziti/metrics: [v1.2.37 -> v1.2.40](https://github.com/openziti/metrics/compare/v1.2.37...v1.2.40)
@@ -133,16 +133,16 @@ in the bbolt datastore. There's now basic support for querying in-memory types a
     * [Issue #57](https://github.com/openziti/storage/issues/57) - Support querying collections of in memory objects
 
 * github.com/openziti/transport/v2: [v2.0.113 -> v2.0.119](https://github.com/openziti/transport/compare/v2.0.113...v2.0.119)
-* github.com/cosmic-cloak/ztna: [v0.31.0 -> v0.31.1](https://github.com/cosmic-cloak/ztna/compare/v0.31.0...v0.31.1)
-    * [Issue #1555](https://github.com/cosmic-cloak/ztna/issues/1555) - Consolidate fabric/edge persistence code
-    * [Issue #1547](https://github.com/cosmic-cloak/ztna/issues/1547) - Support filtering, sorting and paging circuits and links
-    * [Issue #1446](https://github.com/cosmic-cloak/ztna/issues/1446) - Allow for idempotent sdk based terminators 
-    * [Issue #1540](https://github.com/cosmic-cloak/ztna/issues/1540) - Transit router create fails in HA environment
-    * [Issue #1523](https://github.com/cosmic-cloak/ztna/issues/1523) - Bootstrap members not working
-    * [Issue #1525](https://github.com/cosmic-cloak/ztna/issues/1525) - Improve cluster list output
-    * [Issue #1519](https://github.com/cosmic-cloak/ztna/issues/1519) - Simplify link ack handling
-    * [Issue #1513](https://github.com/cosmic-cloak/ztna/issues/1513) - DNS service failure should not cause a router restart
-    * [Issue #1494](https://github.com/cosmic-cloak/ztna/issues/1494) - Panic if applying raft log returns nil result
+* ztna-core/ztna: [v0.31.0 -> v0.31.1](https://ztna-core/ztna/compare/v0.31.0...v0.31.1)
+    * [Issue #1555](https://ztna-core/ztna/issues/1555) - Consolidate fabric/edge persistence code
+    * [Issue #1547](https://ztna-core/ztna/issues/1547) - Support filtering, sorting and paging circuits and links
+    * [Issue #1446](https://ztna-core/ztna/issues/1446) - Allow for idempotent sdk based terminators 
+    * [Issue #1540](https://ztna-core/ztna/issues/1540) - Transit router create fails in HA environment
+    * [Issue #1523](https://ztna-core/ztna/issues/1523) - Bootstrap members not working
+    * [Issue #1525](https://ztna-core/ztna/issues/1525) - Improve cluster list output
+    * [Issue #1519](https://ztna-core/ztna/issues/1519) - Simplify link ack handling
+    * [Issue #1513](https://ztna-core/ztna/issues/1513) - DNS service failure should not cause a router restart
+    * [Issue #1494](https://ztna-core/ztna/issues/1494) - Panic if applying raft log returns nil result
 
 
 # Release 0.31.0
@@ -183,8 +183,8 @@ If the rate limiter is enabled, the following metrics will be produced:
 
 * github.com/openziti/agent: [v1.0.15 -> v1.0.16](https://github.com/openziti/agent/compare/v1.0.15...v1.0.16)
 * github.com/openziti/channel/v2: [v2.0.101 -> v2.0.105](https://github.com/openziti/channel/compare/v2.0.101...v2.0.105)
-* github.com/openziti/edge-api: [v0.25.38 -> v0.26.0](https://github.com/openziti/edge-api/compare/v0.25.38...v0.26.0)
-    * [Issue #49](https://github.com/openziti/edge-api/issues/49) - Add 429 responses to allow indicating that the server is too busy
+* ztna-core/edge-api: [v0.25.38 -> v0.26.0](https://ztna-core/edge-api/compare/v0.25.38...v0.26.0)
+    * [Issue #49](https://ztna-core/edge-api/issues/49) - Add 429 responses to allow indicating that the server is too busy
 
 * github.com/openziti/identity: [v1.0.64 -> v1.0.66](https://github.com/openziti/identity/compare/v1.0.64...v1.0.66)
 * github.com/openziti/metrics: [v1.2.36 -> v1.2.37](https://github.com/openziti/metrics/compare/v1.2.36...v1.2.37)
@@ -194,10 +194,10 @@ If the rate limiter is enabled, the following metrics will be produced:
 * github.com/openziti/secretstream: [v0.1.12 -> v0.1.13](https://github.com/openziti/secretstream/compare/v0.1.12...v0.1.13)
 * github.com/openziti/storage: [v0.2.20 -> v0.2.23](https://github.com/openziti/storage/compare/v0.2.20...v0.2.23)
 * github.com/openziti/transport/v2: [v2.0.109 -> v2.0.113](https://github.com/openziti/transport/compare/v2.0.109...v2.0.113)
-* github.com/cosmic-cloak/ztna: [v0.30.5 -> v0.31.0](https://github.com/cosmic-cloak/ztna/compare/v0.30.5...v0.31.0)
-    * [Issue #1471](https://github.com/cosmic-cloak/ztna/issues/1471) - Router links not resilient to controller crash
-    * [Issue #1468](https://github.com/cosmic-cloak/ztna/issues/1468) - Quickstart quietly fails if password is < 5 characters long
-    * [Issue #1445](https://github.com/cosmic-cloak/ztna/issues/1445) - Add controller update guardrail
-    * [Issue #1442](https://github.com/cosmic-cloak/ztna/issues/1442) - Network watchdog not shutting down when controller shuts down
-    * [Issue #1465](https://github.com/cosmic-cloak/ztna/issues/1465) - Upgrade functions `getZiti` and `performMigration` were only functional on Mac OS, now they are functional for Linux and Mac OSs.
-    * [Issue #1217](https://github.com/cosmic-cloak/ztna/issues/1217) - Quickstart was improperly handling special characters in `ZITI_PWD`. Special characters are now supported for `ZITI_PWD` in quickstart functions.
+* ztna-core/ztna: [v0.30.5 -> v0.31.0](https://ztna-core/ztna/compare/v0.30.5...v0.31.0)
+    * [Issue #1471](https://ztna-core/ztna/issues/1471) - Router links not resilient to controller crash
+    * [Issue #1468](https://ztna-core/ztna/issues/1468) - Quickstart quietly fails if password is < 5 characters long
+    * [Issue #1445](https://ztna-core/ztna/issues/1445) - Add controller update guardrail
+    * [Issue #1442](https://ztna-core/ztna/issues/1442) - Network watchdog not shutting down when controller shuts down
+    * [Issue #1465](https://ztna-core/ztna/issues/1465) - Upgrade functions `getZiti` and `performMigration` were only functional on Mac OS, now they are functional for Linux and Mac OSs.
+    * [Issue #1217](https://ztna-core/ztna/issues/1217) - Quickstart was improperly handling special characters in `ZITI_PWD`. Special characters are now supported for `ZITI_PWD` in quickstart functions.

@@ -4,10 +4,10 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	config2 "github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/raft"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	config2 "ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/raft"
 	"google.golang.org/protobuf/proto"
 )
 

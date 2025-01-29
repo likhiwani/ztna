@@ -18,11 +18,11 @@ package exporter
 
 import (
 	"errors"
-	"github.com/openziti/edge-api/rest_management_api_client/config"
-	"github.com/openziti/edge-api/rest_management_api_client/service"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/internal/ascode"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/config"
+	"ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/internal/ascode"
 )
 
 func (exporter Exporter) IsServiceExportRequired(args []string) bool {

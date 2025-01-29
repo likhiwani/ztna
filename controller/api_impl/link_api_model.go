@@ -17,10 +17,10 @@
 package api_impl
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/rest_model"
 )
 
 const EntityNameLink = "links"

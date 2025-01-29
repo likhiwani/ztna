@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 	"github.com/openziti/ziti-db-explorer/cmd/ziti-db-explorer/zdecli"
 	"github.com/spf13/cobra"
 )

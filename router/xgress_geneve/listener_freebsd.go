@@ -24,7 +24,7 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress"
 )
 
 type listener struct{}

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"path/filepath"
 
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/zititest/zitilab/cli"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/util"
 	"github.com/openziti/fablab/kernel/model"
 )
 

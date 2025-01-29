@@ -2,7 +2,7 @@ package xt_common
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"math/rand"
 	"sync"

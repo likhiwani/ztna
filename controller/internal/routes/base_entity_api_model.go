@@ -17,10 +17,11 @@
 package routes
 
 import (
-	"github.com/go-openapi/strfmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/models"
 	"path"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/models"
+
+	"github.com/go-openapi/strfmt"
 )
 
 func BaseEntityToRestModel(entity models.Entity, linkFactory LinksFactory) rest_model.BaseEntity {

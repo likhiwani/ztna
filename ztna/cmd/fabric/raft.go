@@ -3,12 +3,12 @@ package fabric
 import (
 	"context"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_client/raft"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/controller/rest_client/raft"
+	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/spf13/cobra"
 )

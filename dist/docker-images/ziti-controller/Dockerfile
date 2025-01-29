@@ -18,7 +18,7 @@ LABEL name="openziti/ziti-controller" \
       summary="Run the OpenZiti Controller" \
       description="Run the OpenZiti Controller" \
       org.opencontainers.image.description="Run the OpenZiti Controller" \
-      org.opencontainers.image.source="https://github.com/cosmic-cloak/ztna"
+      org.opencontainers.image.source="https://ztna-core/ztna"
 
 # set up image as root, then drop privs to ziggy
 USER root

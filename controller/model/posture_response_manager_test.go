@@ -17,7 +17,7 @@
 package model
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/controller/db"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"

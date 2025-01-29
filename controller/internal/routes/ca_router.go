@@ -22,18 +22,19 @@ import (
 	"fmt"
 	"net/http"
 
+	"ztna-core/edge-api/rest_management_api_server/operations/certificate_authority"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_management_api_server/operations/certificate_authority"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
 	"github.com/pkg/errors"
 )
 

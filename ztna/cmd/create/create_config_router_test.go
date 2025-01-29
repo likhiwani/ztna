@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/constants"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"
 )

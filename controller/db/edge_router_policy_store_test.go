@@ -6,7 +6,7 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
 	"sort"

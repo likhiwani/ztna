@@ -22,8 +22,8 @@ import (
 	"github.com/openziti/channel/v3/latency"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/metrics"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/raft"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/raft"
 	"github.com/sirupsen/logrus"
 	"time"
 )

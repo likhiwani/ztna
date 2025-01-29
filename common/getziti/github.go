@@ -11,8 +11,9 @@ import (
 	"strings"
 	"time"
 
+	c "ztna-core/ztna/ztna/constants"
+
 	"github.com/blang/semver"
-	c "github.com/cosmic-cloak/ztna/ztna/constants"
 	"github.com/go-resty/resty/v2"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/versions"

@@ -20,7 +20,7 @@
 package tests
 
 import (
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"github.com/openziti/foundation/v2/stringz"
 	"net/url"
 	"sort"

@@ -19,11 +19,11 @@ package pki
 import (
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/lets_encrypt"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/templates"
-	"github.com/cosmic-cloak/ztna/ztna/pki/pki"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/lets_encrypt"
+	"ztna-core/ztna/ztna/cmd/templates"
+	"ztna-core/ztna/ztna/pki/pki"
 	"github.com/spf13/cobra"
 )
 

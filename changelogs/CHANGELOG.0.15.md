@@ -6,18 +6,18 @@
 # Release 0.15.2
 
 * What's New:
-    * [#140](https://github.com/cosmic-cloak/ztna/issues/140) - Allow logging JSON request for Ziti CLI
-    * [#148](https://github.com/cosmic-cloak/ztna/issues/148) - Show isOnline in ziti edge list
+    * [#140](https://ztna-core/ztna/issues/140) - Allow logging JSON request for Ziti CLI
+    * [#148](https://ztna-core/ztna/issues/148) - Show isOnline in ziti edge list
       edge-routers
-    * [#144](https://github.com/cosmic-cloak/ztna/issues/144) - Allow ziti-fabric list to use queries.
+    * [#144](https://ztna-core/ztna/issues/144) - Allow ziti-fabric list to use queries.
       Default to `true limit none`
 
 * Bug Fixes:
-    * [#142](https://github.com/cosmic-cloak/ztna/issues/142) - fix CLI ca create not defaulting
+    * [#142](https://ztna-core/ztna/issues/142) - fix CLI ca create not defaulting
       identity roles
-    * [#146](https://github.com/cosmic-cloak/ztna/issues/146) - Export edge router JWT fails sometimes
+    * [#146](https://ztna-core/ztna/issues/146) - Export edge router JWT fails sometimes
       when there are more than 10 edge routers
-    * [#147](https://github.com/cosmic-cloak/ztna/issues/147) - Fix paging output when using 'limit
+    * [#147](https://ztna-core/ztna/issues/147) - Fix paging output when using 'limit
       none'
     * [edge#243](https://github.com/openziti/edge/issue/243) - Session creation only returns 10 edge
       routers
@@ -34,11 +34,11 @@
   No new functionality introduced.
 
 * Bug fixes
-    * [#129](https://github.com/cosmic-cloak/ztna/issues/129) - minor issue with `ziti-tunnel enroll`
+    * [#129](https://ztna-core/ztna/issues/129) - minor issue with `ziti-tunnel enroll`
       outputting the success message at ERROR level
-    * [#131](https://github.com/cosmic-cloak/ztna/issues/131) - issues w/ creating identities, CAs and
+    * [#131](https://ztna-core/ztna/issues/131) - issues w/ creating identities, CAs and
       validating CAs
-    * [#133](https://github.com/cosmic-cloak/ztna/issues/133) - fix service lookup by name when creating
+    * [#133](https://ztna-core/ztna/issues/133) - fix service lookup by name when creating
       service edge router policies
     * [edge#191](https://github.com/openziti/edge/issues/191) - updating self password via CLI would
       error with 404 not found

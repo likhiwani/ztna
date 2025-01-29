@@ -22,7 +22,7 @@ import (
 	"io"
 
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

@@ -18,14 +18,15 @@ package importer
 
 import (
 	"encoding/json"
-	"github.com/Jeffail/gabs/v2"
-	"github.com/openziti/edge-api/rest_management_api_client/posture_checks"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/edge-api/rest_util"
-	"github.com/cosmic-cloak/ztna/internal"
-	"github.com/cosmic-cloak/ztna/internal/rest/mgmt"
 	"slices"
 	"strings"
+	"ztna-core/edge-api/rest_management_api_client/posture_checks"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/edge-api/rest_util"
+	"ztna-core/ztna/internal"
+	"ztna-core/ztna/internal/rest/mgmt"
+
+	"github.com/Jeffail/gabs/v2"
 )
 
 func (importer *Importer) IsPostureCheckImportRequired(args []string) bool {

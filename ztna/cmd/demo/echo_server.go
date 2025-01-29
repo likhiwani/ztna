@@ -25,7 +25,7 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/cosmic-cloak/ztna/common/version"
+	"ztna-core/ztna/common/version"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

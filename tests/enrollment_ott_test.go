@@ -26,13 +26,14 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/identity/certtools"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"gopkg.in/resty.v1"
 	"net/http"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+
+	"github.com/openziti/identity/certtools"
+	"gopkg.in/resty.v1"
 )
 
 func Test_EnrollmentOtt(t *testing.T) {

@@ -20,12 +20,13 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
+
 	"github.com/go-openapi/strfmt"
-	"github.com/openziti/edge-api/rest_management_api_client/external_jwt_signer"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

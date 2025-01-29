@@ -2,7 +2,7 @@ package posture
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"time"
 )

@@ -4,13 +4,14 @@ package tests
 
 import (
 	"fmt"
-	"github.com/Jeffail/gabs"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/model"
 	"net/http"
 	"sort"
 	"testing"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/model"
+
+	"github.com/Jeffail/gabs"
 )
 
 func Test_CA(t *testing.T) {

@@ -19,9 +19,9 @@ package handler_edge_ctrl
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/event"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/event"
 	"google.golang.org/protobuf/proto"
 	"slices"
 	"sync"

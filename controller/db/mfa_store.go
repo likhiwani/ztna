@@ -19,7 +19,7 @@ package db
 import (
 	"github.com/google/uuid"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 )
 
 const (

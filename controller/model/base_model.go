@@ -17,7 +17,7 @@
 package model
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/controller/models"
 	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )

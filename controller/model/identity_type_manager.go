@@ -18,7 +18,7 @@ package model
 
 import (
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/controller/db"
 )
 
 func NewIdentityTypeManager(env Env) *IdentityTypeManager {

@@ -28,14 +28,15 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/env"
+	"net/http"
+	"testing"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/env"
+
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/identity/certtools"
 	"gopkg.in/resty.v1"
-	"net/http"
-	"testing"
 )
 
 func Test_EnrollmentIdentityExtend(t *testing.T) {

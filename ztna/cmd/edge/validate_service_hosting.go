@@ -19,12 +19,13 @@ package edge
 import (
 	"fmt"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_client/terminator"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/util"
-	"github.com/openziti/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/ztna/controller/rest_client/terminator"
+	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/util"
+
 	"github.com/spf13/cobra"
 )
 

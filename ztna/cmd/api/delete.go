@@ -20,7 +20,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/util"
 	"github.com/fatih/color"
 	"github.com/openziti/storage/boltz"
 )

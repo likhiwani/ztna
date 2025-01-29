@@ -40,7 +40,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_model"
 )
 
 // NewUpdateServiceParams creates a new UpdateServiceParams object

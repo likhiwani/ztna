@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/common/getziti"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/common/getziti"
+	"ztna-core/ztna/ztna/util"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

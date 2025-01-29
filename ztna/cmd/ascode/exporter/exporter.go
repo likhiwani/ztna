@@ -24,12 +24,13 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/internal"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/edge"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/edge-api/rest_management_api_client"
+	"ztna-core/ztna/internal"
+	"ztna-core/ztna/ztna/cmd/edge"
+	"ztna-core/ztna/ztna/constants"
+
 	"github.com/judedaryl/go-arrayutils"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_management_api_client"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

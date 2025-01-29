@@ -17,14 +17,15 @@
 package routes
 
 import (
+	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"time"
 )
 
 const EntityNameCurrentSession = "current-api-session"

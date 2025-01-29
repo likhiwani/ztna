@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/foundation/v2/debugz"
 	"github.com/openziti/foundation/v2/rate"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/controller/change"
 	"github.com/sirupsen/logrus"
 	"reflect"
 )

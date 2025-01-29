@@ -17,14 +17,15 @@
 package routes
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/openziti/edge-api/rest_client_api_server/operations/posture_checks"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
 	"time"
+	"ztna-core/edge-api/rest_client_api_server/operations/posture_checks"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {

@@ -25,12 +25,13 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/openziti/sdk-golang/ziti"
 	"math/big"
 	"sort"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+
+	"github.com/openziti/sdk-golang/ziti"
 
 	"github.com/Jeffail/gabs"
 )

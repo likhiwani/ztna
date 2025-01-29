@@ -29,7 +29,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/pki/certificate"
+	"ztna-core/ztna/ztna/pki/certificate"
 
 	"crypto/x509"
 )

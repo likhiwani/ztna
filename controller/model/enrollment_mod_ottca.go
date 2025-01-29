@@ -19,12 +19,12 @@ package model
 import (
 	"crypto/x509"
 	"encoding/pem"
-	"github.com/cosmic-cloak/ztna/common/cert"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	fabricApiError "github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/controller/apierror"
+	fabricApiError "ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
 	"time"
 )
 

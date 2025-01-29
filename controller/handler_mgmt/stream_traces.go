@@ -20,10 +20,10 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/trace/pb"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/common/trace"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/common/trace"
 	"google.golang.org/protobuf/proto"
 )
 

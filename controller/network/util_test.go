@@ -18,14 +18,14 @@ package network
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/xt_smartrouting"
 
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/controller/db"
 )
 
 func newTestEntityHelper(ctx *model.TestContext, network *Network) *testEntityHelper {

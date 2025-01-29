@@ -1,13 +1,13 @@
 package network
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/controller/model"
 	"testing"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
-	"github.com/cosmic-cloak/ztna/controller/xt"
-	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt_smartrouting"
 )
 
 func TestRouteSender_DestroysTerminatorWhenInvalidOnHandleRouteSendAndWeControl(t *testing.T) {

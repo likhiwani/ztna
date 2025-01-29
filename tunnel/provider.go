@@ -2,13 +2,14 @@ package tunnel
 
 import (
 	"encoding/json"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
-	"github.com/cosmic-cloak/ztna/tunnel/health"
-	"github.com/sirupsen/logrus"
 	"io"
 	"net"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel/health"
+
+	"github.com/openziti/sdk-golang/ziti"
+	"github.com/openziti/sdk-golang/ziti/edge"
+	"github.com/sirupsen/logrus"
 )
 
 type HostingContext interface {
@@ -58,22 +59,34 @@ type contextProvider struct {
 	ziti.Context
 }
 
-func (self *contextProvider) PrepForUse(serviceId string) {
-	if _, err := self.Context.GetSession(serviceId); err != nil {
+// GetCurrentIdentity implements FabricProvider.
+// Subtle: this method shadows the method (Context).GetCurrentIdentity of contextProvider.Context.
+func (cp *contextProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, error) {
+	panic("unimplemented")
+}
+
+// GetCurrentIdentityWithBackoff implements FabricProvider.
+// Subtle: this method shadows the method (Context).GetCurrentIdentityWithBackoff of contextProvider.Context.
+func (cp *contextProvider) GetCurrentIdentityWithBackoff() (*rest_model.IdentityDetail, error) {
+	panic("unimplemented")
+}
+
+func (cp *contextProvider) PrepForUse(serviceId string) {
+	if _, err := cp.Context.GetSession(serviceId); err != nil {
 		logrus.WithError(err).Error("failed to acquire network session")
 	} else {
 		logrus.Debug("acquired network session")
 	}
 }
 
-func (self *contextProvider) TunnelService(service Service, identity string, conn net.Conn, halfClose bool, appData []byte) error {
+func (cp *contextProvider) TunnelService(service Service, identity string, conn net.Conn, halfClose bool, appData []byte) error {
 	options := &ziti.DialOptions{
 		ConnectTimeout: service.GetDialTimeout(),
 		AppData:        appData,
 		Identity:       identity,
 	}
 
-	zitiConn, err := self.Context.DialWithOptions(service.GetName(), options)
+	zitiConn, err := cp.Context.DialWithOptions(service.GetName(), options)
 	if err != nil {
 		return err
 	}
@@ -82,20 +95,20 @@ func (self *contextProvider) TunnelService(service Service, identity string, con
 	return nil
 }
 
-func (self *contextProvider) HostService(hostCtx HostingContext) (HostControl, error) {
+func (cp *contextProvider) HostService(hostCtx HostingContext) (HostControl, error) {
 	logger := logrus.WithField("service", hostCtx.ServiceName())
-	listener, err := self.Context.ListenWithOptions(hostCtx.ServiceName(), hostCtx.ListenOptions())
+	listener, err := cp.Context.ListenWithOptions(hostCtx.ServiceName(), hostCtx.ListenOptions())
 	if err != nil {
 		logger.WithError(err).Error("error listening for service")
 		return nil, err
 	}
 
-	go self.accept(listener, hostCtx)
+	go cp.accept(listener, hostCtx)
 
 	return listener, nil
 }
 
-func (self *contextProvider) accept(listener edge.Listener, hostCtx HostingContext) {
+func (cp *contextProvider) accept(listener edge.Listener, hostCtx HostingContext) {
 	defer hostCtx.OnClose()
 
 	logger := logrus.WithField("service", hostCtx.ServiceName())

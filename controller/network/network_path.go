@@ -2,9 +2,9 @@ package network
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/xt"
 	"github.com/pkg/errors"
 	"math"
 	"time"

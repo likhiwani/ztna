@@ -18,8 +18,8 @@ package api_impl
 
 import (
 	"github.com/go-openapi/strfmt"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/rest_model"
 	"path"
 )
 

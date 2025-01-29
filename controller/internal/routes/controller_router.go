@@ -17,13 +17,14 @@
 package routes
 
 import (
+	controllersClient "ztna-core/edge-api/rest_client_api_server/operations/controllers"
+	controllersMan "ztna-core/edge-api/rest_management_api_server/operations/controllers"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
-	controllersClient "github.com/openziti/edge-api/rest_client_api_server/operations/controllers"
-	controllersMan "github.com/openziti/edge-api/rest_management_api_server/operations/controllers"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
 )
 
 func init() {

@@ -3,10 +3,11 @@ package oidc_auth
 import (
 	"encoding"
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
+	"ztna-core/edge-api/rest_model"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 // render will attempt to send a responses on the provided http.ResponseWriter. All error output will be directed to the

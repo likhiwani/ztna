@@ -5,7 +5,7 @@ import (
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltztest"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"go.etcd.io/bbolt"
 	"sort"
 	"testing"

@@ -18,8 +18,8 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/fields"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/fields"
 )
 
 func GetFields(body []byte) (fields.UpdatedFields, error) {

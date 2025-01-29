@@ -18,8 +18,8 @@ package api_impl
 
 import (
 	"encoding/json"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/rest_model"
 	"strings"
 )
 

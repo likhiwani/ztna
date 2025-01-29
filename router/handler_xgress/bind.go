@@ -17,9 +17,9 @@
 package handler_xgress
 
 import (
-	"github.com/cosmic-cloak/ztna/router/forwarder"
-	"github.com/cosmic-cloak/ztna/router/metrics"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/forwarder"
+	"ztna-core/ztna/router/metrics"
+	"ztna-core/ztna/router/xgress"
 )
 
 type bindHandler struct {

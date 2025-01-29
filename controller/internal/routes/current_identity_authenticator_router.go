@@ -18,17 +18,18 @@ package routes
 
 import (
 	"crypto/x509"
+	clientCurrentApiSession "ztna-core/edge-api/rest_client_api_server/operations/current_api_session"
+	managementCurrentApiSession "ztna-core/edge-api/rest_management_api_server/operations/current_api_session"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
-	clientCurrentApiSession "github.com/openziti/edge-api/rest_client_api_server/operations/current_api_session"
-	managementCurrentApiSession "github.com/openziti/edge-api/rest_management_api_server/operations/current_api_session"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/response"
 )
 
 func init() {

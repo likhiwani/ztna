@@ -18,8 +18,8 @@ package sync_strats
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/env"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/env"
 	"go.etcd.io/bbolt"
 )
 

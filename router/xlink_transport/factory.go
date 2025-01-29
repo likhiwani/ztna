@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/router/xlink"
 )
 
 type channelType byte

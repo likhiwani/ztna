@@ -8,20 +8,6 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/edge-api/rest_management_api_client"
-	api_client_config "github.com/openziti/edge-api/rest_management_api_client/config"
-	"github.com/openziti/edge-api/rest_management_api_client/edge_router_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/identity"
-	"github.com/openziti/edge-api/rest_management_api_client/service"
-	"github.com/openziti/edge-api/rest_management_api_client/service_edge_router_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/terminator"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/edge-api/rest_util"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/enroll"
-	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net"
 	"net/http"
@@ -30,6 +16,21 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_management_api_client"
+	api_client_config "ztna-core/edge-api/rest_management_api_client/config"
+	"ztna-core/edge-api/rest_management_api_client/edge_router_policy"
+	"ztna-core/edge-api/rest_management_api_client/identity"
+	"ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_management_api_client/service_edge_router_policy"
+	"ztna-core/edge-api/rest_management_api_client/service_policy"
+	"ztna-core/edge-api/rest_management_api_client/terminator"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/edge-api/rest_util"
+
+	"github.com/openziti/sdk-golang/ziti"
+	"github.com/openziti/sdk-golang/ziti/enroll"
+	log "github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 )
 
 func enrollIdentity(client *rest_management_api_client.ZitiEdgeManagement, identityID string) *ziti.Config {
@@ -161,7 +162,7 @@ func getIdentityByName(client *rest_management_api_client.ZitiEdgeManagement, na
 			log.Fatalf("Could not obtain an ID for the identity named %s after retries", name)
 			return nil
 		}
-		
+
 		fmt.Printf("Retrying to fetch identity %s...\n", name)
 		time.Sleep(100 * time.Millisecond)
 	}

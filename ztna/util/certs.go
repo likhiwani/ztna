@@ -16,7 +16,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/cmd/common"
 
 	"github.com/fullsailor/pkcs7"
 	"github.com/pkg/errors"

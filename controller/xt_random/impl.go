@@ -17,7 +17,7 @@
 package xt_random
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt"
 	"math/rand"
 )
 

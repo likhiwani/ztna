@@ -25,7 +25,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd"
+	"ztna-core/ztna/ztna/cmd"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
 )

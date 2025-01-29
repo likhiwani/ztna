@@ -20,7 +20,7 @@ package router
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/router/forwarder"
+	"ztna-core/ztna/router/forwarder"
 	"os"
 	"os/signal"
 	"syscall"

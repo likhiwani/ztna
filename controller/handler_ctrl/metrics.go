@@ -19,8 +19,8 @@ package handler_ctrl
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
 	"github.com/openziti/metrics/metrics_pb"
 	"google.golang.org/protobuf/proto"
 )

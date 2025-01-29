@@ -19,10 +19,10 @@ package handler_xgress
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/router/env"
-	"github.com/cosmic-cloak/ztna/router/forwarder"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/forwarder"
+	"ztna-core/ztna/router/xgress"
 	"time"
 )
 

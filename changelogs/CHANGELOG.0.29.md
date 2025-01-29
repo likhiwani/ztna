@@ -49,7 +49,7 @@ have changed again. A summary of changes is below
 * github.com/openziti/edge: [v0.24.348 -> v0.24.364](https://github.com/openziti/edge/compare/v0.24.348...v0.24.364)
   * [Issue #1543](https://github.com/openziti/edge/issues/1543) - controller ca normalization can go into infinite loop on startup with bad certs
 
-* github.com/openziti/edge-api: [v0.25.29 -> v0.25.30](https://github.com/openziti/edge-api/compare/v0.25.29...v0.25.30)
+* ztna-core/edge-api: [v0.25.29 -> v0.25.30](https://ztna-core/edge-api/compare/v0.25.29...v0.25.30)
 * github.com/openziti/fabric: [v0.23.39 -> v0.23.45](https://github.com/openziti/fabric/compare/v0.23.39...v0.23.45)
 * github.com/openziti/foundation/v2: [v2.0.26 -> v2.0.28](https://github.com/openziti/foundation/compare/v2.0.26...v2.0.28)
 * github.com/openziti/identity: [v1.0.57 -> v1.0.59](https://github.com/openziti/identity/compare/v1.0.57...v1.0.59)
@@ -59,8 +59,8 @@ have changed again. A summary of changes is below
 * github.com/openziti/transport/v2: [v2.0.91 -> v2.0.93](https://github.com/openziti/transport/compare/v2.0.91...v2.0.93)
 * github.com/openziti/metrics: [v1.2.27 -> v1.2.30](https://github.com/openziti/metrics/compare/v1.2.27...v1.2.30)
 * github.com/openziti/secretstream: [v0.1.9 -> v0.1.10](https://github.com/openziti/secretstream/compare/v0.1.9...v0.1.10)
-* github.com/cosmic-cloak/ztna: [v0.28.4 -> v0.29.0](https://github.com/cosmic-cloak/ztna/compare/v0.28.4...v0.29.0)
-  * [Issue #1180](https://github.com/cosmic-cloak/ztna/issues/1180) - Add ability to debug failed smoketests
-  * [Issue #1169](https://github.com/cosmic-cloak/ztna/issues/1169) - Consolidate demo and tutorial under demo
-  * [Issue #1168](https://github.com/cosmic-cloak/ztna/issues/1168) - Remove ziti-controller, ziti-router and ziti-tunnel executables from build
-  * [Issue #1158](https://github.com/cosmic-cloak/ztna/issues/1158) - Add iperf tests to ziti smoketest
+* ztna-core/ztna: [v0.28.4 -> v0.29.0](https://ztna-core/ztna/compare/v0.28.4...v0.29.0)
+  * [Issue #1180](https://ztna-core/ztna/issues/1180) - Add ability to debug failed smoketests
+  * [Issue #1169](https://ztna-core/ztna/issues/1169) - Consolidate demo and tutorial under demo
+  * [Issue #1168](https://ztna-core/ztna/issues/1168) - Remove ziti-controller, ziti-router and ziti-tunnel executables from build
+  * [Issue #1158](https://ztna-core/ztna/issues/1158) - Add iperf tests to ziti smoketest

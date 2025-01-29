@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/constants"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"

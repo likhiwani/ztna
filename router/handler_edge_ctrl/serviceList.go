@@ -2,9 +2,10 @@ package handler_edge_ctrl
 
 import (
 	"encoding/json"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )

@@ -18,18 +18,19 @@ package routes
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/strfmt"
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"strings"
 )
 
 const (

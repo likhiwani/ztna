@@ -15,11 +15,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/controller/env"
-	fabric_rest_client "github.com/cosmic-cloak/ztna/controller/rest_client"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/edge-api/rest_management_api_client"
+	"ztna-core/ztna/controller/env"
+	fabric_rest_client "ztna-core/ztna/controller/rest_client"
+	"ztna-core/ztna/ztna/cmd/common"
+
 	httptransport "github.com/go-openapi/runtime/client"
-	"github.com/openziti/edge-api/rest_management_api_client"
 	"github.com/pkg/errors"
 	"gopkg.in/resty.v1"
 )

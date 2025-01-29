@@ -23,7 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"io"
 	"testing"
 	"time"

@@ -1,9 +1,10 @@
 package edge_ctrl_pb
 
 import (
-	"github.com/openziti/edge-api/rest_model"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/xt"
+
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/controller/xt"
 )
 
 func (m *ClientHello) GetContentType() int32 {

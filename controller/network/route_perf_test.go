@@ -18,7 +18,7 @@ package network
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/controller/model"
 	"math/rand"
 	"testing"
 

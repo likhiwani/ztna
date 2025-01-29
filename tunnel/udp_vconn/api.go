@@ -17,8 +17,8 @@
 package udp_vconn
 
 import (
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/entities"
 	"github.com/openziti/foundation/v2/mempool"
 	"io"
 	"net"

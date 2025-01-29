@@ -18,8 +18,8 @@ package api_impl
 
 import (
 	"bytes"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/idgen"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/idgen"
 	"io"
 	"net/http"
 )

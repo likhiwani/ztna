@@ -17,9 +17,9 @@
 package exporter
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/service_edge_router_policy"
-	"github.com/openziti/edge-api/rest_model"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/service_edge_router_policy"
+	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsServiceEdgeRouterPolicyExportRequired(args []string) bool {

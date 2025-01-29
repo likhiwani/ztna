@@ -17,11 +17,11 @@
 package exporter
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/auth_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/external_jwt_signer"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/internal/ascode"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/auth_policy"
+	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/internal/ascode"
 )
 
 func (exporter Exporter) IsAuthPolicyExportRequired(args []string) bool {

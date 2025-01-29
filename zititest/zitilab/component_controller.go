@@ -21,8 +21,8 @@ import (
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/pki"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
+	"ztna-core/ztna/zititest/zitilab/pki"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"github.com/pkg/errors"
 	"io/fs"
 )

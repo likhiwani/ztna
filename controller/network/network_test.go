@@ -1,9 +1,9 @@
 package network
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/model"
 	"github.com/pkg/errors"
 	"runtime"
 	"testing"
@@ -14,11 +14,11 @@ import (
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/transport/v2/tcp"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/models"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/xt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

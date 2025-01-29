@@ -17,7 +17,7 @@
 package xgress_edge_transport
 
 import (
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 )
 

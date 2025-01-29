@@ -23,8 +23,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cosmic-cloak/ztna/ztna/pki/pki"
-	"github.com/cosmic-cloak/ztna/ztna/pki/store"
+	"ztna-core/ztna/ztna/pki/pki"
+	"ztna-core/ztna/ztna/pki/store"
 	"github.com/sirupsen/logrus"
 )
 

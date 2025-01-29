@@ -18,13 +18,13 @@ package importer
 
 import (
 	"errors"
-	"github.com/openziti/edge-api/rest_management_api_client/edge_router"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/edge-api/rest_util"
-	"github.com/cosmic-cloak/ztna/internal"
-	"github.com/cosmic-cloak/ztna/internal/ascode"
-	"github.com/cosmic-cloak/ztna/internal/rest/mgmt"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/edge_router"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/edge-api/rest_util"
+	"ztna-core/ztna/internal"
+	"ztna-core/ztna/internal/ascode"
+	"ztna-core/ztna/internal/rest/mgmt"
 )
 
 func (importer *Importer) IsEdgeRouterImportRequired(args []string) bool {

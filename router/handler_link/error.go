@@ -19,8 +19,8 @@ package handler_link
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/router/env"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xlink"
 )
 
 type errorHandler struct {

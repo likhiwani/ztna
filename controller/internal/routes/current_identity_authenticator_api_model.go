@@ -17,10 +17,10 @@
 package routes
 
 import (
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/models"
 	"path"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/models"
 )
 
 var CurrentIdentityAuthenticatorLinkFactory LinksFactory = NewCurrentIdentityAuthenticatorLinkFactory()

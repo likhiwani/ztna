@@ -20,12 +20,12 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdHelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdHelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/constants"
 
-	edge "github.com/cosmic-cloak/ztna/controller/config"
-	fabForwarder "github.com/cosmic-cloak/ztna/router/forwarder"
+	edge "ztna-core/ztna/controller/config"
+	fabForwarder "ztna-core/ztna/router/forwarder"
 	"github.com/openziti/channel/v3"
 	foundation "github.com/openziti/transport/v2"
 	fabXweb "github.com/openziti/xweb/v2"

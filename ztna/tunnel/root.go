@@ -22,16 +22,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/constants"
+	"ztna-core/ztna/ztna/util"
 	"github.com/openziti/sdk-golang/ziti/sdkinfo"
 
-	"github.com/cosmic-cloak/ztna/common/version"
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/dns"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
-	"github.com/cosmic-cloak/ztna/tunnel/intercept"
+	"ztna-core/ztna/common/version"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/dns"
+	"ztna-core/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/intercept"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/agent"
 	"github.com/openziti/sdk-golang/ziti"
@@ -196,7 +196,6 @@ func startIdentity(cmd *cobra.Command, serviceListenerGroup *intercept.ServiceLi
 		OnContextReady: func(ctx ziti.Context) {
 			serviceListener.HandleProviderReady(tunnel.NewContextProvider(ctx))
 		},
-		OnServiceUpdate: serviceListener.HandleServicesChange,
 		EdgeRouterUrlFilter: func(url string) bool {
 			return strings.HasPrefix(url, "tls:")
 		},

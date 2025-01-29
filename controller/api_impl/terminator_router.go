@@ -18,12 +18,12 @@ package api_impl
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/terminator"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/rest_server/operations"
+	"ztna-core/ztna/controller/rest_server/operations/terminator"
 )
 
 func init() {

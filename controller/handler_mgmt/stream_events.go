@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
 	"io"
 )
 

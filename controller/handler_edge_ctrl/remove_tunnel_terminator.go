@@ -18,9 +18,9 @@ package handler_edge_ctrl
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/env"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/env"
 	"github.com/sirupsen/logrus"
 )
 

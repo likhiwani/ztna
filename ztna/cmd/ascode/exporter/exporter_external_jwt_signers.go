@@ -17,9 +17,9 @@
 package exporter
 
 import (
-	"github.com/openziti/edge-api/rest_management_api_client/external_jwt_signer"
-	"github.com/openziti/edge-api/rest_model"
 	"slices"
+	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
+	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsExtJwtSignerExportRequired(args []string) bool {

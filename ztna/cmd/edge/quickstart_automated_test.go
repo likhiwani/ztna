@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/helpers"
 	log "github.com/sirupsen/logrus"
 )
 

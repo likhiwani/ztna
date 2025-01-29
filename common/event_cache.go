@@ -18,7 +18,7 @@ package common
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"sync"
 	"sync/atomic"
 )

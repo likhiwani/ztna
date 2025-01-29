@@ -17,15 +17,15 @@
 package xgress_edge_transport
 
 import (
-	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"ztna-core/ztna/common/ctrl_msg"
 	"github.com/pkg/errors"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/router/xgress_common"
-	"github.com/cosmic-cloak/ztna/controller/xt"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress_common"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/router/xgress"
 	"github.com/openziti/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
 )

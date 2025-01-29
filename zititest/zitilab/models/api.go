@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/zitirest"
-	"github.com/cosmic-cloak/ztna/ztna/util"
-	"github.com/openziti/edge-api/rest_management_api_client/config"
-	"github.com/openziti/edge-api/rest_management_api_client/identity"
-	"github.com/openziti/edge-api/rest_management_api_client/posture_checks"
-	"github.com/openziti/edge-api/rest_management_api_client/service"
-	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
-	"github.com/openziti/edge-api/rest_model"
+	"ztna-core/edge-api/rest_management_api_client/config"
+	"ztna-core/edge-api/rest_management_api_client/identity"
+	"ztna-core/edge-api/rest_management_api_client/posture_checks"
+	"ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_management_api_client/service_policy"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/zitirest"
+	"ztna-core/ztna/ztna/util"
 )
 
 func ListServices(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ServiceDetail, error) {

@@ -18,11 +18,12 @@ package response
 
 import (
 	"errors"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/model"
+
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/model"
 
 	"net/http"
 	"time"

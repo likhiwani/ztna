@@ -25,7 +25,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/spf13/cobra"

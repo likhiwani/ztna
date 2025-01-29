@@ -1,6 +1,6 @@
 package posture
 
-import "github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+import "ztna-core/ztna/common/pb/edge_ctrl_pb"
 
 type OsCheck struct {
 	*edge_ctrl_pb.DataState_PostureCheck

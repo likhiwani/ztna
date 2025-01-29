@@ -17,8 +17,8 @@
 package network
 
 import (
-	config2 "github.com/cosmic-cloak/ztna/controller/config"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	config2 "ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/model"
 	"testing"
 	"time"
 

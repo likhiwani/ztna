@@ -22,7 +22,7 @@ import (
 	"errors"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/controller/xctrl"
+	"ztna-core/ztna/controller/xctrl"
 	"github.com/openziti/storage/boltz"
 	"github.com/sirupsen/logrus"
 	"time"

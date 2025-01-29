@@ -21,7 +21,7 @@ import (
 	"crypto/x509/pkix"
 	"math/big"
 
-	"github.com/cosmic-cloak/ztna/ztna/pki/certificate"
+	"ztna-core/ztna/ztna/pki/certificate"
 )
 
 // Store represents a way to store a Certificate Authority.

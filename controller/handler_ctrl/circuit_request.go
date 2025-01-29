@@ -17,18 +17,18 @@
 package handler_ctrl
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/xt"
 	"google.golang.org/protobuf/proto"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
-	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/network"
 )
 
 type circuitRequestHandler struct {

@@ -18,9 +18,9 @@ package handler_ctrl
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/network"
 )
 
 type baseHandler struct {

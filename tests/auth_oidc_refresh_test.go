@@ -1,15 +1,16 @@
 package tests
 
 import (
-	"github.com/golang-jwt/jwt/v5"
-	service2 "github.com/openziti/edge-api/rest_client_api_client/service"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/controller/oidc_auth"
-	"github.com/zitadel/oidc/v2/pkg/oidc"
-	"golang.org/x/oauth2"
 	"net/url"
 	"testing"
+	service2 "ztna-core/edge-api/rest_client_api_client/service"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/oidc_auth"
+
+	"github.com/golang-jwt/jwt/v5"
+	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	"github.com/zitadel/oidc/v2/pkg/oidc"
+	"golang.org/x/oauth2"
 )
 
 func Test_Authenticate_OIDC_Refresh(t *testing.T) {

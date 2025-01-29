@@ -1,7 +1,7 @@
 package posture
 
 import (
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 )
 
 type DomainCheck struct {

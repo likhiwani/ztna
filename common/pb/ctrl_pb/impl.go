@@ -17,7 +17,7 @@
 package ctrl_pb
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt"
 )
 
 func (request *CircuitConfirmation) GetContentType() int32 {

@@ -25,7 +25,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/identity"
-	"github.com/cosmic-cloak/ztna/controller/command"
+	"ztna-core/ztna/controller/command"
 	"github.com/pkg/errors"
 	"net"
 	"net/url"

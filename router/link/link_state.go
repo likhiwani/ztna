@@ -19,8 +19,8 @@ package link
 import (
 	"container/heap"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/router/xlink"
 	"math/rand"
 	"sync/atomic"
 	"time"

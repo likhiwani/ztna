@@ -12,7 +12,7 @@ Bug fix
 
 ## Component Updates and Bug Fixes
 
-* github.com/cosmic-cloak/ztna: [v0.28.2 -> v0.28.3](https://github.com/cosmic-cloak/ztna/compare/v0.28.2...v0.28.3)
+* ztna-core/ztna: [v0.28.2 -> v0.28.3](https://ztna-core/ztna/compare/v0.28.2...v0.28.3)
 
 # Release 0.28.2
 
@@ -29,7 +29,7 @@ Bug fix
   * [Issue #1528](https://github.com/openziti/edge/issues/1528) - edge unbind returns incorrect message if token is not supplied or invalid
   * [Issue #1416](https://github.com/openziti/edge/issues/1416) - Allow MFA token name to be configured
 
-* github.com/openziti/edge-api: [v0.25.25 -> v0.25.29](https://github.com/openziti/edge-api/compare/v0.25.25...v0.25.29)
+* ztna-core/edge-api: [v0.25.25 -> v0.25.29](https://ztna-core/edge-api/compare/v0.25.25...v0.25.29)
 * github.com/openziti/fabric: [v0.23.35 -> v0.23.39](https://github.com/openziti/fabric/compare/v0.23.35...v0.23.39)
   * [Issue #751](https://github.com/openziti/fabric/issues/751) - Use of Fprintf causing buffer pool corruption with amqp event output
 
@@ -41,15 +41,15 @@ Bug fix
 * github.com/openziti/transport/v2: [v2.0.90 -> v2.0.91](https://github.com/openziti/transport/compare/v2.0.90...v2.0.91)
 * github.com/openziti/metrics: [v1.2.26 -> v1.2.27](https://github.com/openziti/metrics/compare/v1.2.26...v1.2.27)
 * github.com/openziti/secretstream: [v0.1.8 -> v0.1.9](https://github.com/openziti/secretstream/compare/v0.1.8...v0.1.9)
-* github.com/cosmic-cloak/ztna: [v0.28.1 -> v0.28.2](https://github.com/cosmic-cloak/ztna/compare/v0.28.1...v0.28.2)
-  * [Issue #1144](https://github.com/cosmic-cloak/ztna/issues/1144) - DB explore subcommand panic
-  * [Issue #986](https://github.com/cosmic-cloak/ztna/issues/986) - Updated default ports in `.env` file to match documentation.
-  * [Issue #920](https://github.com/cosmic-cloak/ztna/issues/920) - Fixed bug causing failure when re-running quickstart.
-  * [Issue #779](https://github.com/cosmic-cloak/ztna/issues/779) - Add ability to upgrade ziti binaries using a quickstart function.
-  * [Issue #761](https://github.com/cosmic-cloak/ztna/issues/761) - Remove Management Listener section from controller config.
-  * [Issue #650](https://github.com/cosmic-cloak/ztna/issues/650) - Removed/Updated references to `ZITI_EDGE_CONTROLLER_API`
+* ztna-core/ztna: [v0.28.1 -> v0.28.2](https://ztna-core/ztna/compare/v0.28.1...v0.28.2)
+  * [Issue #1144](https://ztna-core/ztna/issues/1144) - DB explore subcommand panic
+  * [Issue #986](https://ztna-core/ztna/issues/986) - Updated default ports in `.env` file to match documentation.
+  * [Issue #920](https://ztna-core/ztna/issues/920) - Fixed bug causing failure when re-running quickstart.
+  * [Issue #779](https://ztna-core/ztna/issues/779) - Add ability to upgrade ziti binaries using a quickstart function.
+  * [Issue #761](https://ztna-core/ztna/issues/761) - Remove Management Listener section from controller config.
+  * [Issue #650](https://ztna-core/ztna/issues/650) - Removed/Updated references to `ZITI_EDGE_CONTROLLER_API`
   * Quickstart environment variable names have been cleaned up.
-  * [Issue #1030](https://github.com/cosmic-cloak/ztna/issues/1030) - Provide an upgrade path for quickstart cleanup
+  * [Issue #1030](https://ztna-core/ztna/issues/1030) - Provide an upgrade path for quickstart cleanup
 
 # Release 0.28.1
 
@@ -134,7 +134,7 @@ events:
   * [Issue #1507](https://github.com/openziti/edge/issues/1507) - edge-router with encryption disabled fails
   * [Issue #1517](https://github.com/openziti/edge/issues/1517) - allow wildcard domains in intercept.v1 addresses
 
-* github.com/openziti/edge-api: [v0.25.24 -> v0.25.25](https://github.com/openziti/edge-api/compare/v0.25.24...v0.25.25)
+* ztna-core/edge-api: [v0.25.24 -> v0.25.25](https://ztna-core/edge-api/compare/v0.25.24...v0.25.25)
 * github.com/openziti/fabric: [v0.23.29 -> v0.23.35](https://github.com/openziti/fabric/compare/v0.23.29...v0.23.35)
   * [Issue #538](https://github.com/openziti/fabric/issues/538) - Allow quiescing/dequiescing routers
   * [Issue #738](https://github.com/openziti/fabric/issues/738) - Timeout from routing is getting reported as conn refused instead of timeout
@@ -152,8 +152,8 @@ events:
 * github.com/openziti/storage: [v0.2.6 -> v0.2.7](https://github.com/openziti/storage/compare/v0.2.6...v0.2.7)
 * github.com/openziti/transport/v2: [v2.0.88 -> v2.0.90](https://github.com/openziti/transport/compare/v2.0.88...v2.0.90)
 * github.com/openziti/metrics: [v1.2.25 -> v1.2.26](https://github.com/openziti/metrics/compare/v1.2.25...v1.2.26)
-* github.com/cosmic-cloak/ztna: [v0.28.0 -> v0.28.1](https://github.com/cosmic-cloak/ztna/compare/v0.28.0...v0.28.1)
-  * [Issue #1132](https://github.com/cosmic-cloak/ztna/issues/1132) - Updated `ws` protocol to `wss` as `ws` is no longer supported.
+* ztna-core/ztna: [v0.28.0 -> v0.28.1](https://ztna-core/ztna/compare/v0.28.0...v0.28.1)
+  * [Issue #1132](https://ztna-core/ztna/issues/1132) - Updated `ws` protocol to `wss` as `ws` is no longer supported.
 
 # Release 0.28.0
 
@@ -369,7 +369,7 @@ listeners:
   * [Issue #1295](https://github.com/openziti/edge/issues/1295) - Ensure DB migrations work properly in a clustered setup (edge)
   * [Issue #1418](https://github.com/openziti/edge/issues/1418) - Checks for session edge router availability are inefficient
 
-* github.com/openziti/edge-api: [v0.25.11 -> v0.25.24](https://github.com/openziti/edge-api/compare/v0.25.11...v0.25.24)
+* ztna-core/edge-api: [v0.25.11 -> v0.25.24](https://ztna-core/edge-api/compare/v0.25.11...v0.25.24)
 * github.com/openziti/fabric: [v0.22.87 -> v0.23.29](https://github.com/openziti/fabric/compare/v0.22.87...v0.23.29)
   * [Issue #724](https://github.com/openziti/fabric/issues/724) - Controller should be notified of forwarding faults on links
   * [Issue #725](https://github.com/openziti/fabric/issues/725) - If reroute fails, circuit should be torn down
@@ -393,13 +393,13 @@ listeners:
 * github.com/openziti/transport/v2: [v2.0.72 -> v2.0.88](https://github.com/openziti/transport/compare/v2.0.72...v2.0.88)
 * github.com/openziti/metrics: [v1.2.19 -> v1.2.25](https://github.com/openziti/metrics/compare/v1.2.19...v1.2.25)
 * github.com/openziti/secretstream: v0.1.8 (new)
-* github.com/cosmic-cloak/ztna: [v0.27.9 -> v0.28.0](https://github.com/cosmic-cloak/ztna/compare/v0.27.9...v0.28.0)
-  * [Issue #1112](https://github.com/cosmic-cloak/ztna/issues/1112) - `ziti pki create` creates CA's and intermediates w/ the same DN
-  * [Issue #1087](https://github.com/cosmic-cloak/ztna/issues/1087) - re-enable CI in forks
-  * [Issue #1013](https://github.com/cosmic-cloak/ztna/issues/1013) - docker env password is renewed at each `docker-compose up`
-  * [Issue #1077](https://github.com/cosmic-cloak/ztna/issues/1077) - Show auth-policy name on identity list instead of id
-  * [Issue #1119](https://github.com/cosmic-cloak/ztna/issues/1119) - intercept.v1 config should permit underscores in the address
-  * [Issue #1123](https://github.com/cosmic-cloak/ztna/issues/1123) - cannot update config types with ziti cli
+* ztna-core/ztna: [v0.27.9 -> v0.28.0](https://ztna-core/ztna/compare/v0.27.9...v0.28.0)
+  * [Issue #1112](https://ztna-core/ztna/issues/1112) - `ziti pki create` creates CA's and intermediates w/ the same DN
+  * [Issue #1087](https://ztna-core/ztna/issues/1087) - re-enable CI in forks
+  * [Issue #1013](https://ztna-core/ztna/issues/1013) - docker env password is renewed at each `docker-compose up`
+  * [Issue #1077](https://ztna-core/ztna/issues/1077) - Show auth-policy name on identity list instead of id
+  * [Issue #1119](https://ztna-core/ztna/issues/1119) - intercept.v1 config should permit underscores in the address
+  * [Issue #1123](https://ztna-core/ztna/issues/1123) - cannot update config types with ziti cli
 
 # Archived Changelogs
 

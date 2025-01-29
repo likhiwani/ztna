@@ -3,20 +3,21 @@ package tests
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/dgryski/dgoogauth"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_management_api_client/api_session"
-	"github.com/openziti/edge-api/rest_management_api_client/edge_router_policy"
-	management_service "github.com/openziti/edge-api/rest_management_api_client/service"
-	"github.com/openziti/edge-api/rest_management_api_client/service_edge_router_policy"
-	management_service_policy "github.com/openziti/edge-api/rest_management_api_client/service_policy"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/edge-api/rest_util"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/openziti/sdk-golang/ziti"
 	"net/url"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_management_api_client/api_session"
+	"ztna-core/edge-api/rest_management_api_client/edge_router_policy"
+	management_service "ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_management_api_client/service_edge_router_policy"
+	management_service_policy "ztna-core/edge-api/rest_management_api_client/service_policy"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/edge-api/rest_util"
+
+	"github.com/dgryski/dgoogauth"
+	"github.com/google/uuid"
+	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	"github.com/openziti/sdk-golang/ziti"
 )
 
 func Test_SDK_Events(t *testing.T) {

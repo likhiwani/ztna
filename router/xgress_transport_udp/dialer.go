@@ -17,16 +17,16 @@
 package xgress_transport_udp
 
 import (
-	"github.com/cosmic-cloak/ztna/router/env"
+	"ztna-core/ztna/router/env"
 	"github.com/pkg/errors"
 	"net"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/controller/xt"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
-	"github.com/cosmic-cloak/ztna/router/xgress"
-	"github.com/cosmic-cloak/ztna/router/xgress_udp"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress_udp"
 	"github.com/openziti/identity"
 )
 

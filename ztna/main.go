@@ -17,9 +17,9 @@
 package main
 
 import (
-	"github.com/cosmic-cloak/ztna/common/build"
-	"github.com/cosmic-cloak/ztna/common/version"
-	"github.com/cosmic-cloak/ztna/ztna/cmd"
+	"ztna-core/ztna/common/build"
+	"ztna-core/ztna/common/version"
+	"ztna-core/ztna/ztna/cmd"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/dtls"

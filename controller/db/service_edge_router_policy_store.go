@@ -6,7 +6,7 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"sort"
 )
 

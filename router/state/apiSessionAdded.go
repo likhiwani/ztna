@@ -27,9 +27,9 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/sync_strats"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/sync_strats"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )

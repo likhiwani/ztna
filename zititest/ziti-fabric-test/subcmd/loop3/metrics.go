@@ -3,7 +3,7 @@ package loop3
 import (
 	"encoding/binary"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/pkg/errors"
 	"github.com/rcrowley/go-metrics"

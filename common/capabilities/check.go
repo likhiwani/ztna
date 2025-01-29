@@ -19,7 +19,7 @@ package capabilities
 import (
 	"math/big"
 
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/ctrl_pb"
 	"github.com/openziti/channel/v3"
 )
 

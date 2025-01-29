@@ -20,11 +20,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
-	"github.com/openziti/edge-api/rest_management_api_client/auth_policy"
-	"github.com/openziti/edge-api/rest_model"
+	"ztna-core/edge-api/rest_management_api_client/auth_policy"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/ztna/cmd/api"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
+
 	"github.com/spf13/cobra"
 )
 

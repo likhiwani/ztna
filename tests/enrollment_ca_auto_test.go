@@ -29,13 +29,13 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"fmt"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common/eid"
 	"math/big"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
 )
 
 func Test_EnrollmetnCaAuto(t *testing.T) {

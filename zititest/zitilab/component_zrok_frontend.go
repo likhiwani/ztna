@@ -22,9 +22,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/ztna/zititest/zitilab/cli"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+	"ztna-core/ztna/ztna/constants"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"

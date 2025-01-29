@@ -21,13 +21,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/common/getziti"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/ztna/common/getziti"
+	"ztna-core/ztna/ztna/constants"
 
 	"github.com/fatih/color"
 
 	"github.com/blang/semver"
-	"github.com/cosmic-cloak/ztna/common/version"
+	"ztna-core/ztna/common/version"
 	"github.com/michaelquigley/pfxlog"
 )
 

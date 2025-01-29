@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/agentcli"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/agentcli"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/openziti/agent"
 	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"

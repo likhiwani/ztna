@@ -21,11 +21,12 @@ import (
 	"io"
 	"os"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
-	"github.com/openziti/edge-api/rest_management_api_client/certificate_authority"
-	"github.com/openziti/edge-api/rest_model"
+	"ztna-core/edge-api/rest_management_api_client/certificate_authority"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"gopkg.in/resty.v1"

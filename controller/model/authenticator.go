@@ -19,7 +19,7 @@ package model
 import (
 	"crypto/x509"
 	"encoding/json"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/controller/change"
 	"net/http"
 )
 

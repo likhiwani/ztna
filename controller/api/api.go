@@ -17,11 +17,12 @@
 package api
 
 import (
+	"net/http"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+
 	"github.com/go-openapi/runtime"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"net/http"
 )
 
 type Responder interface {

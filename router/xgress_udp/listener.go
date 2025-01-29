@@ -17,7 +17,7 @@
 package xgress_udp
 
 import (
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress"
 	"io"
 	"net"
 )

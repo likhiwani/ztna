@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/openziti/agent"
 	"github.com/spf13/cobra"

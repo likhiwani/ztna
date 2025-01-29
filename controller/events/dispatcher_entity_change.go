@@ -22,10 +22,10 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/genext"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"reflect"
@@ -65,7 +65,7 @@ func (self *Dispatcher) registerEntityChangeEventHandler(val interface{}, option
 	handler, ok := val.(event.EntityChangeEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/EntityChangeEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement ztna-core/ztna/controller/event/EntityChangeEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	propagateAlways := false

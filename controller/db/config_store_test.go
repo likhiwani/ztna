@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/openziti/storage/boltztest"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"go.etcd.io/bbolt"
 	"testing"
 	"time"

@@ -20,9 +20,9 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/foundation/v2/info"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/model"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/model"
 	"time"
 )
 

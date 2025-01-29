@@ -26,7 +26,7 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"

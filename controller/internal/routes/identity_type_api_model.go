@@ -17,10 +17,10 @@
 package routes
 
 import (
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
 )
 
 const EntityNameIdentityType = "identity-types"

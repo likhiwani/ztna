@@ -23,10 +23,10 @@ import (
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/config"
-	"github.com/cosmic-cloak/ztna/router/xgress"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/config"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
 	"time"
 )
 

@@ -3,7 +3,7 @@ package xgress_common
 import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 )

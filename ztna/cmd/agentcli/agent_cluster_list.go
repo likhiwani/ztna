@@ -21,9 +21,9 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/ztna/cmd/api"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/openziti/channel/v3"
 	"github.com/spf13/cobra"

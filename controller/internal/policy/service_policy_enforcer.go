@@ -19,12 +19,12 @@ package policy
 import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/common/runner"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/common/runner"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/controller/env"
+	"ztna-core/ztna/controller/env"
 	"go.etcd.io/bbolt"
 )
 

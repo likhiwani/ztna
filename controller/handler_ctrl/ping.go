@@ -18,7 +18,7 @@ package handler_ctrl
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
+	"ztna-core/ztna/common/handler_common"
 )
 
 type pingHandler struct{}

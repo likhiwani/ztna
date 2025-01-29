@@ -17,8 +17,8 @@
 package xgress_transport_udp
 
 import (
-	"github.com/cosmic-cloak/ztna/router/env"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress"
 	"github.com/openziti/identity"
 	"github.com/pkg/errors"
 )

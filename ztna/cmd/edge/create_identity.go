@@ -24,9 +24,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/ztna/cmd/api"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/pkg/errors"
 
 	"github.com/Jeffail/gabs"

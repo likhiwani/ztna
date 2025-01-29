@@ -17,14 +17,14 @@
 package xgress_transport
 
 import (
-	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
-	"github.com/cosmic-cloak/ztna/router/env"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/router/env"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/controller/xt"
-	"github.com/cosmic-cloak/ztna/common/logcontext"
-	"github.com/cosmic-cloak/ztna/router/xgress"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/router/xgress"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"

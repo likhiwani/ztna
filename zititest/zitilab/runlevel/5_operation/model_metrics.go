@@ -20,9 +20,10 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/common/pb/mgmt_pb"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/ztna/cmd/api"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"

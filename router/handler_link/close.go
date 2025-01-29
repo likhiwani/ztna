@@ -19,8 +19,8 @@ package handler_link
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/router/forwarder"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/router/forwarder"
+	"ztna-core/ztna/router/xlink"
 )
 
 type closeHandler struct {

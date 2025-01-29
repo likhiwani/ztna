@@ -3,9 +3,9 @@ package model
 import (
 	"testing"
 
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/models"
 	"github.com/stretchr/testify/require"
 )
 

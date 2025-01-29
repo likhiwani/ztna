@@ -21,8 +21,8 @@ import (
 	"github.com/openziti/foundation/v2/errorz"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	"crypto"
 	"crypto/sha256"
 	"crypto/x509"
-	"github.com/cosmic-cloak/ztna/common"
+	"ztna-core/ztna/common"
 	"time"
 )
 

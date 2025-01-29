@@ -21,16 +21,17 @@ package tests
 
 import (
 	"encoding/json"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_management_api_client/posture_checks"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
 	"strings"
 	"sync"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_management_api_client/posture_checks"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+
+	"github.com/google/uuid"
 )
 
 type identityEvent struct {

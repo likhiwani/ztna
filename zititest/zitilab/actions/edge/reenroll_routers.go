@@ -3,7 +3,7 @@ package edge
 import (
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab"
 )
 
 func ReEnrollEdgeRouters(componentSpec string, concurrency int) model.Action {

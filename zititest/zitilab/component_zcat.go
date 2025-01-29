@@ -18,7 +18,7 @@ package zitilab
 
 import (
 	"github.com/openziti/fablab/kernel/model"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"strings"
 )
 

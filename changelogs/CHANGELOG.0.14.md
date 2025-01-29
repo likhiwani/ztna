@@ -35,7 +35,7 @@ Ziti 0.14.10 includes the following:
 
 Ziti 0.14.9 includes the following:
 
-* [Move ziti edge controller commands to ziti edge](https://github.com/cosmic-cloak/ztna/issues/108)
+* [Move ziti edge controller commands to ziti edge](https://ztna-core/ztna/issues/108)
     * Note: for now `ziti edge` and `ziti edge controller` will both have edge controller related
       commands. `ziti edge controller` is deprecated and will be removed in a future release. Please
       update your scripts.
@@ -50,8 +50,8 @@ Ziti 0.14.8 includes the following:
 
 Ziti 0.14.7 includes the following:
 
-* [Add CLI support for updating terminators](https://github.com/cosmic-cloak/ztna/issues/106)
-* [Add CLI support for managing identity service config overrides](https://github.com/cosmic-cloak/ztna/issues/105)
+* [Add CLI support for updating terminators](https://ztna-core/ztna/issues/106)
+* [Add CLI support for managing identity service config overrides](https://ztna-core/ztna/issues/105)
 
 NOTE: 0.14.6 was released with the same code as 0.14.5 due to CI re-running
 
@@ -134,9 +134,9 @@ target identities, addresses the root cause, and adds regression tests.
 Ziti 0.14.2 includes the following:
 
 * CLI enhancements
-    * [can't create service policy with @ identity name](https://github.com/cosmic-cloak/ztna/issues/93)
-    * [Add CLI commands to allow updating policies and role attributes](https://github.com/cosmic-cloak/ztna/issues/94)
-    * [CLI: read config/config-type JSON from file](https://github.com/cosmic-cloak/ztna/issues/90)
+    * [can't create service policy with @ identity name](https://ztna-core/ztna/issues/93)
+    * [Add CLI commands to allow updating policies and role attributes](https://ztna-core/ztna/issues/94)
+    * [CLI: read config/config-type JSON from file](https://ztna-core/ztna/issues/90)
 * [Not found errors for assigned/related ids do not say which resource was not found](https://github.com/openziti/edge/issues/148)
 * Fixes to connection setup timing
 

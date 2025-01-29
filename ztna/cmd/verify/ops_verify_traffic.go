@@ -25,20 +25,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/internal"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/edge"
+	"ztna-core/ztna/internal"
+	"ztna-core/ztna/ztna/cmd/edge"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 
-	"github.com/cosmic-cloak/ztna/internal/rest/mgmt"
-	"github.com/openziti/edge-api/rest_management_api_client"
-	"github.com/openziti/edge-api/rest_management_api_client/identity"
-	"github.com/openziti/edge-api/rest_management_api_client/service"
-	"github.com/openziti/edge-api/rest_management_api_client/service_policy"
-	"github.com/openziti/edge-api/rest_management_api_client/terminator"
-	"github.com/openziti/edge-api/rest_model"
+	"ztna-core/edge-api/rest_management_api_client"
+	"ztna-core/edge-api/rest_management_api_client/identity"
+	"ztna-core/edge-api/rest_management_api_client/service"
+	"ztna-core/edge-api/rest_management_api_client/service_policy"
+	"ztna-core/edge-api/rest_management_api_client/terminator"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/internal/rest/mgmt"
+
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/sdk-golang/ziti/enroll"
 )

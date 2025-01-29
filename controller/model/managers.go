@@ -17,13 +17,13 @@
 package model
 
 import (
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/command"
-	"github.com/cosmic-cloak/ztna/controller/fields"
-	"github.com/cosmic-cloak/ztna/controller/ioc"
-	"github.com/cosmic-cloak/ztna/controller/models"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/common/pb/edge_cmd_pb"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/ioc"
+	"ztna-core/ztna/controller/models"
 	"google.golang.org/protobuf/proto"
 )
 

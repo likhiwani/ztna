@@ -24,7 +24,7 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab"
 )
 
 //go:embed config

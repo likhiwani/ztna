@@ -19,7 +19,7 @@
 package tests
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"ztna-core/ztna/controller/apierror"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/stretchr/testify/require"
 	"testing"

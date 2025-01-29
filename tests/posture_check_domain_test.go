@@ -21,7 +21,7 @@ package tests
 import (
 	"github.com/Jeffail/gabs"
 	"github.com/google/uuid"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"net/http"
 	"testing"
 )

@@ -3,7 +3,7 @@ package edge
 import (
 	"io"
 
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/spf13/cobra"
 )
 

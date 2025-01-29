@@ -22,18 +22,19 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
-	"github.com/go-openapi/strfmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/cosmic-cloak/ztna/controller/model"
 	"net"
 	"net/http"
 	"strconv"
 	"sync"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/controller/model"
+
+	"github.com/go-openapi/strfmt"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	nfpem "github.com/openziti/foundation/v2/pem"
 )
 
 type jsonWebKey struct {

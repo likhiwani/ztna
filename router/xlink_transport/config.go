@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/router/link"
+	"ztna-core/ztna/router/link"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"

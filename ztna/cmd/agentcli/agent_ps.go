@@ -28,8 +28,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/v3/process"
 	"github.com/spf13/cobra"

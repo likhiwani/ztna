@@ -18,7 +18,7 @@ package verify
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/internal"
+	"ztna-core/ztna/internal"
 	"io"
 	"net"
 	"os"
@@ -30,7 +30,7 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 
-	"github.com/cosmic-cloak/ztna/common"
+	"ztna-core/ztna/common"
 )
 
 var log = pfxlog.Logger()

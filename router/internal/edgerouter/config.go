@@ -28,9 +28,9 @@ import (
 	"github.com/mitchellh/mapstructure"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
-	"github.com/cosmic-cloak/ztna/common"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/router"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/router"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 )

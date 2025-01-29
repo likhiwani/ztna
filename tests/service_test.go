@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"net/url"
 	"sort"
 	"testing"

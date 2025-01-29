@@ -17,8 +17,8 @@
 package model
 
 import (
-	"github.com/cosmic-cloak/ztna/common/pb/edge_cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/change"
+	"ztna-core/ztna/common/pb/edge_cmd_pb"
+	"ztna-core/ztna/controller/change"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )

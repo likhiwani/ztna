@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/eid"
+	"ztna-core/ztna/common/eid"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"strings"

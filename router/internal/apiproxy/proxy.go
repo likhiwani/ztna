@@ -20,7 +20,7 @@ import (
 	"crypto/tls"
 	"encoding/base64"
 	"github.com/michaelquigley/pfxlog"
-	"github.com/cosmic-cloak/ztna/router/internal/edgerouter"
+	"ztna-core/ztna/router/internal/edgerouter"
 	"net/http"
 	"net/http/httputil"
 	"net/url"

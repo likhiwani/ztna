@@ -19,10 +19,10 @@ package state
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	"github.com/cosmic-cloak/ztna/common/runner"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	routerEnv "github.com/cosmic-cloak/ztna/router/env"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/runner"
+	"ztna-core/ztna/controller/env"
+	routerEnv "ztna-core/ztna/router/env"
 	"google.golang.org/protobuf/proto"
 	"time"
 )

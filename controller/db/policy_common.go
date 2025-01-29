@@ -8,7 +8,7 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"

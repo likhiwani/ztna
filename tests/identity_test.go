@@ -20,19 +20,20 @@
 package tests
 
 import (
-	"github.com/Jeffail/gabs"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
-	"github.com/openziti/edge-api/rest_model"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/db"
 	"net/http"
 	"net/url"
 	"sort"
 	"testing"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/db"
+
+	"github.com/Jeffail/gabs"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 func Test_Identity(t *testing.T) {

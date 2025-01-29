@@ -2,7 +2,7 @@ package posture
 
 import (
 	"github.com/openziti/sdk-golang/pb/edge_client_pb"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"time"
 )
 

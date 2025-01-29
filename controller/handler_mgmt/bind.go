@@ -19,10 +19,10 @@ package handler_mgmt
 import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/cosmic-cloak/ztna/common/trace"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	"github.com/cosmic-cloak/ztna/controller/xmgmt"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/xmgmt"
 )
 
 type BindHandler struct {

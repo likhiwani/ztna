@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/cosmic-cloak/ztna/router/forwarder"
-	"github.com/cosmic-cloak/ztna/router/xlink"
+	"ztna-core/ztna/router/forwarder"
+	"ztna-core/ztna/router/xlink"
 	"github.com/sirupsen/logrus"
 )
 

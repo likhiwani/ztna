@@ -4,8 +4,8 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/trace/pb"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
-	"github.com/cosmic-cloak/ztna/common/trace"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
 	"google.golang.org/protobuf/proto"
 )
 

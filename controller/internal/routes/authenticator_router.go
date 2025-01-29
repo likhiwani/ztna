@@ -17,16 +17,17 @@
 package routes
 
 import (
+	"time"
+	"ztna-core/edge-api/rest_management_api_server/operations/authenticator"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/internal/permissions"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/response"
+
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/openziti/edge-api/rest_management_api_server/operations/authenticator"
-	"github.com/cosmic-cloak/ztna/controller/env"
-	"github.com/cosmic-cloak/ztna/controller/internal/permissions"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/response"
-	"github.com/cosmic-cloak/ztna/controller/fields"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/pkg/errors"
-	"time"
 )
 
 func init() {

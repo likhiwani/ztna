@@ -21,8 +21,9 @@ import (
 	"io/fs"
 	"strings"
 
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/stageziti"
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+	"ztna-core/ztna/ztna/constants"
+
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"

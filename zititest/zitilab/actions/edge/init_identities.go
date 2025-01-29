@@ -3,8 +3,8 @@ package edge
 import (
 	"github.com/openziti/fablab/kernel/libssh"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "github.com/cosmic-cloak/ztna/zititest/zitilab/actions"
-	"github.com/cosmic-cloak/ztna/zititest/zitilab/cli"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/cli"
 	"path/filepath"
 	"strings"
 )

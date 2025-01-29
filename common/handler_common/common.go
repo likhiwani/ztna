@@ -3,7 +3,7 @@ package handler_common
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/ctrl_msg"
+	"ztna-core/ztna/common/ctrl_msg"
 	"time"
 )
 

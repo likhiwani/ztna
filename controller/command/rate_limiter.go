@@ -23,7 +23,7 @@ import (
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/rate"
 	"github.com/openziti/metrics"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"ztna-core/ztna/controller/apierror"
 	"github.com/pkg/errors"
 	"strings"
 	"sync"

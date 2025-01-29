@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
-	"github.com/cosmic-cloak/ztna/controller/db"
-	"github.com/cosmic-cloak/ztna/controller/event"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
 	"github.com/pkg/errors"
 	"reflect"
 	"time"
@@ -90,7 +90,7 @@ func (self *Dispatcher) registerApiSessionEventHandler(val interface{}, config m
 	handler, ok := val.(event.ApiSessionEventHandler)
 
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/ApiSessionEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement ztna-core/ztna/controller/event/ApiSessionEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	var includeList []string

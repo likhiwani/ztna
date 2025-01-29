@@ -5,9 +5,9 @@ import (
 	openApiErrors "github.com/go-openapi/errors"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	apierror2 "github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/api"
+	apierror2 "ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/rest_model"
 	"net/http"
 )
 

@@ -22,9 +22,9 @@ import (
 	"math"
 
 	"github.com/Jeffail/gabs"
-	"github.com/cosmic-cloak/ztna/router/xgress_edge_transport"
-	"github.com/cosmic-cloak/ztna/ztna/cmd/api"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/router/xgress_edge_transport"
+	"ztna-core/ztna/ztna/cmd/api"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/spf13/cobra"
 )

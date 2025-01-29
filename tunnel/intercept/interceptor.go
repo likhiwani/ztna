@@ -18,8 +18,8 @@ package intercept
 
 import (
 	"fmt"
-	"github.com/cosmic-cloak/ztna/tunnel/dns"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/dns"
+	"ztna-core/ztna/tunnel/entities"
 	"github.com/pkg/errors"
 	"net"
 )

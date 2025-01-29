@@ -17,17 +17,17 @@
 package handler_ctrl
 
 import (
-	"github.com/cosmic-cloak/ztna/common/capabilities"
+	"ztna-core/ztna/common/capabilities"
 	"runtime/debug"
 	"time"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/cosmic-cloak/ztna/common/metrics"
-	"github.com/cosmic-cloak/ztna/common/trace"
-	"github.com/cosmic-cloak/ztna/router/env"
-	"github.com/cosmic-cloak/ztna/router/forwarder"
+	"ztna-core/ztna/common/metrics"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/forwarder"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )

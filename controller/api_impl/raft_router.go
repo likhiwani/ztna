@@ -19,18 +19,18 @@ package api_impl
 import (
 	"fmt"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/common/pb/cmd_pb"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/controller/apierror"
 	"net/http"
 	"time"
 
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/cosmic-cloak/ztna/controller/api"
-	"github.com/cosmic-cloak/ztna/controller/network"
-	nfraft "github.com/cosmic-cloak/ztna/controller/raft"
-	"github.com/cosmic-cloak/ztna/controller/rest_model"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations"
-	"github.com/cosmic-cloak/ztna/controller/rest_server/operations/raft"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/network"
+	nfraft "ztna-core/ztna/controller/raft"
+	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_server/operations"
+	"ztna-core/ztna/controller/rest_server/operations/raft"
 )
 
 func init() {

@@ -18,16 +18,6 @@ package intercept
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/edge-api/rest_model"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/tunnel"
-	"github.com/cosmic-cloak/ztna/tunnel/dns"
-	"github.com/cosmic-cloak/ztna/tunnel/entities"
-	"github.com/cosmic-cloak/ztna/tunnel/health"
-	"github.com/pkg/errors"
-	logrus "github.com/sirupsen/logrus"
 	"net"
 	"os"
 	"os/signal"
@@ -36,6 +26,17 @@ import (
 	"sync"
 	"syscall"
 	"time"
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/dns"
+	"ztna-core/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/health"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/sdk-golang/ziti"
+	"github.com/pkg/errors"
+	logrus "github.com/sirupsen/logrus"
 )
 
 // variables for substitutions in intercept.v1 sourceIp property

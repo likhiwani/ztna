@@ -19,8 +19,8 @@ package events
 import (
 	"github.com/google/uuid"
 	"github.com/openziti/metrics/metrics_pb"
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/network"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
 	"github.com/pkg/errors"
 	"reflect"
 	"regexp"
@@ -87,7 +87,7 @@ func (self *Dispatcher) relayMessagesToEventsUnfiltered(msg *metrics_pb.MetricsM
 func (self *Dispatcher) registerMetricsEventHandler(val interface{}, config map[string]interface{}) error {
 	handler, ok := val.(event.MetricsEventHandler)
 	if !ok {
-		return errors.Errorf("type %v doesn't implement github.com/cosmic-cloak/ztna/controller/event/MetricsEventHandler interface.", reflect.TypeOf(val))
+		return errors.Errorf("type %v doesn't implement ztna-core/ztna/controller/event/MetricsEventHandler interface.", reflect.TypeOf(val))
 	}
 
 	var sourceFilterDef = ""

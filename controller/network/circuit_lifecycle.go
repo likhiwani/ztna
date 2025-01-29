@@ -17,9 +17,9 @@
 package network
 
 import (
-	"github.com/cosmic-cloak/ztna/controller/event"
-	"github.com/cosmic-cloak/ztna/controller/model"
-	"github.com/cosmic-cloak/ztna/controller/xt"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/xt"
 	"github.com/pkg/errors"
 	"time"
 )

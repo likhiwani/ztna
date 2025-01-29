@@ -19,8 +19,8 @@
 package tests
 
 import (
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/xt_smartrouting"
 	"github.com/openziti/sdk-golang/ziti"
 	"testing"
 	"time"

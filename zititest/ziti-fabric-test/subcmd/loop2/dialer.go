@@ -27,8 +27,8 @@ import (
 	"github.com/openziti/identity/dotziti"
 	"github.com/openziti/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
-	"github.com/cosmic-cloak/ztna/router/xgress_transport"
-	loop2_pb "github.com/cosmic-cloak/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
+	"ztna-core/ztna/router/xgress_transport"
+	loop2_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
 	"github.com/spf13/cobra"
 )
 

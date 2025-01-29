@@ -19,7 +19,7 @@ package agentcli
 import (
 	"os"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
+	"ztna-core/ztna/ztna/cmd/common"
 	"github.com/openziti/agent"
 	"github.com/spf13/cobra"
 )

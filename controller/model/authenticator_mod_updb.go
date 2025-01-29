@@ -22,8 +22,8 @@ import (
 	"errors"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/cosmic-cloak/ztna/controller/apierror"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/db"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"time"
 )

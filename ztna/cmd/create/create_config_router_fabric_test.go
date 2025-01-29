@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/constants"
+	"ztna-core/ztna/ztna/constants"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )

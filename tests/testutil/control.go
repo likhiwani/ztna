@@ -2,8 +2,8 @@ package testutil
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/handler_common"
-	"github.com/cosmic-cloak/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/ctrl_pb"
 	"github.com/stretchr/testify/require"
 	"time"
 )

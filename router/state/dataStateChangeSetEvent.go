@@ -3,8 +3,8 @@ package state
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/pb/edge_ctrl_pb"
-	controllerEnv "github.com/cosmic-cloak/ztna/controller/env"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	controllerEnv "ztna-core/ztna/controller/env"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -2,9 +2,9 @@ package model
 
 import (
 	"github.com/openziti/storage/boltztest"
-	"github.com/cosmic-cloak/ztna/common/eid"
-	"github.com/cosmic-cloak/ztna/controller/change"
-	"github.com/cosmic-cloak/ztna/controller/db"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"

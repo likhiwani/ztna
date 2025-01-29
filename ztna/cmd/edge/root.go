@@ -20,11 +20,11 @@ import (
 	"context"
 	"io"
 
-	"github.com/cosmic-cloak/ztna/ztna/cmd/common"
-	cmdhelper "github.com/cosmic-cloak/ztna/ztna/cmd/helpers"
-	"github.com/cosmic-cloak/ztna/ztna/util"
+	"ztna-core/ztna/ztna/cmd/common"
+	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+	"ztna-core/ztna/ztna/util"
 
-	"github.com/cosmic-cloak/ztna/common/enrollment"
+	"ztna-core/ztna/common/enrollment"
 	"github.com/spf13/cobra"
 )
 

@@ -18,7 +18,7 @@ package xctrl
 
 import (
 	"github.com/openziti/channel/v3"
-	"github.com/cosmic-cloak/ztna/common/config"
+	"ztna-core/ztna/common/config"
 	"github.com/openziti/storage/boltz"
 )
 

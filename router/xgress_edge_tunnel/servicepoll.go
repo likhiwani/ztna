@@ -21,11 +21,12 @@ import (
 	"sync"
 	"time"
 
+	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/tunnel/intercept"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/edge-api/rest_model"
 	"github.com/openziti/sdk-golang/ziti"
-	"github.com/cosmic-cloak/ztna/tunnel/intercept"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 )

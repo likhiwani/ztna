@@ -149,12 +149,12 @@ swagger.yml) for complete details.
 
 ## What's New
 
-* [ziti#192 CAs default to 10yr expiration](https://github.com/cosmic-cloak/ztna/issues/192)
+* [ziti#192 CAs default to 10yr expiration](https://ztna-core/ztna/issues/192)
 * Allow specifying edge config file when using ziti-fabric-test loop2
 * Add grouping data to streaming metrics, so values can be associated with their source metric
 * New WSS underlay to support Edge Router connections from Browser-based webapps using the
   ziti-sdk-js
-* [ziti#151 enroll subcommand w/out args should print help](https://github.com/cosmic-cloak/ztna/issues/192)
+* [ziti#151 enroll subcommand w/out args should print help](https://ztna-core/ztna/issues/192)
 * Fix processing of `--configTypes all` in `ziti edge list services`
 * Addressable Terminators and the eXtensible Terminator Validation framework
 * GO Edge SDK now respects Service.EncryptionRequired setting
@@ -307,7 +307,7 @@ registered under the name `edge`. The binding is the key and the validator name 
     * Session Performance Fixes
         * [Supported unindexed FK constraints in bbolt](https://github.com/openziti/foundation/issues/119)
         * [Improve API Session and Session creation performance](https://github.com/openziti/edge/issues/281)
-    * [Make enrollment available from the ziti CLI](https://github.com/cosmic-cloak/ztna/issues/182)
+    * [Make enrollment available from the ziti CLI](https://ztna-core/ztna/issues/182)
     * Docker image for `ziti-tunnel` - Embellish examples and fix entrypoint script to wait for
       clean up of iptables rules on exit
     * Various Internal Stability & Scale Fixes
@@ -341,7 +341,7 @@ registered under the name `edge`. The binding is the key and the validator name 
 * Datastore Integrity Checker
     * [foundation#107](https://github.com/openziti/foundation/issues/107)
     * [edge#258](https://github.com/openziti/edge/issues/258)
-    * [#163](https://github.com/cosmic-cloak/ztna/issues/163)
+    * [#163](https://ztna-core/ztna/issues/163)
 * Events Framework
     * [foundation#116](https://github.com/openziti/foundation/issues/116) - Add generic event
       framework and use it for metrics
@@ -349,11 +349,11 @@ registered under the name `edge`. The binding is the key and the validator name 
     * [edge#229](https://github.com/openziti/edge/issues/229) - Stream Session Events
 
 * Bug Fixes:
-    * [#152](https://github.com/cosmic-cloak/ztna/issues/152) - Fix ziti-router enroll exit code on
+    * [#152](https://ztna-core/ztna/issues/152) - Fix ziti-router enroll exit code on
       failure
-    * [#156](https://github.com/cosmic-cloak/ztna/issues/156) - Fix display of policies with empty roles
+    * [#156](https://ztna-core/ztna/issues/156) - Fix display of policies with empty roles
       lists
-    * [#169](https://github.com/cosmic-cloak/ztna/issues/169) - Fix delete by ID in Ziti CLI
+    * [#169](https://ztna-core/ztna/issues/169) - Fix delete by ID in Ziti CLI
     * [edge#269](https://github.com/openziti/edge/issues/269) - Service Policy types in the bbolt
       should be 1 and 2, rather than 4 and 5
     * [edge#273](https://github.com/openziti/edge/issues/273) - Avoid tun "not pollable" read
@@ -507,7 +507,7 @@ routers. Performance was tested against the APIs used by the SDKs.
 See for more detail:
 
 * [Denormalized Policies](https://github.com/openziti/edge/wiki/Denormalized-Policies)
-* [Characterization (Pure Model Tests)](https://github.com/cosmic-cloak/ztna/wiki/Characterization#pure-model-tests)
+* [Characterization (Pure Model Tests)](https://ztna-core/ztna/wiki/Characterization#pure-model-tests)
 
 ## Data Integrity Checking Framework
 

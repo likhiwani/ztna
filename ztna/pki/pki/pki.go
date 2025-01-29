@@ -28,8 +28,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cosmic-cloak/ztna/ztna/pki/certificate"
-	"github.com/cosmic-cloak/ztna/ztna/pki/store"
+	"ztna-core/ztna/ztna/pki/certificate"
+	"ztna-core/ztna/ztna/pki/store"
 
 	"github.com/openziti/identity/certtools"
 )

@@ -34,14 +34,14 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"github.com/cosmic-cloak/ztna/controller/rest_client/circuit"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/database"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/inspect"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/link"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/raft"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/router"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/service"
-	"github.com/cosmic-cloak/ztna/controller/rest_client/terminator"
+	"ztna-core/ztna/controller/rest_client/circuit"
+	"ztna-core/ztna/controller/rest_client/database"
+	"ztna-core/ztna/controller/rest_client/inspect"
+	"ztna-core/ztna/controller/rest_client/link"
+	"ztna-core/ztna/controller/rest_client/raft"
+	"ztna-core/ztna/controller/rest_client/router"
+	"ztna-core/ztna/controller/rest_client/service"
+	"ztna-core/ztna/controller/rest_client/terminator"
 )
 
 // Default ziti fabric HTTP client.
