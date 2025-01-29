@@ -4,7 +4,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/xt"
 
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 )
 
 func (m *ClientHello) GetContentType() int32 {

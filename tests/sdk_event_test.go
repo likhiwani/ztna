@@ -16,8 +16,8 @@ import (
 
 	"github.com/dgryski/dgoogauth"
 	"github.com/google/uuid"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/openziti/sdk-golang/ziti"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
+	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_SDK_Events(t *testing.T) {

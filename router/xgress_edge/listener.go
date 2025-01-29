@@ -35,7 +35,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/identity"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress"

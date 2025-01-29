@@ -31,8 +31,8 @@ Currently only HTTP Connect proxies which don't require authentication are suppo
 * github.com/openziti/identity: [v1.0.63 -> v1.0.64](https://github.com/openziti/identity/compare/v1.0.63...v1.0.64)
 * github.com/openziti/metrics: [v1.2.35 -> v1.2.36](https://github.com/openziti/metrics/compare/v1.2.35...v1.2.36)
 * github.com/openziti/runzmd: [v1.0.32 -> v1.0.33](https://github.com/openziti/runzmd/compare/v1.0.32...v1.0.33)
-* github.com/openziti/sdk-golang: [v0.20.116 -> v0.20.122](https://github.com/openziti/sdk-golang/compare/v0.20.116...v0.20.122)
-    * [Issue #436](https://github.com/openziti/sdk-golang/issues/436) - HTTP calls should respect environment proxy settings
+* ztna-core/sdk-golang: [v0.20.116 -> v0.20.122](https://ztna-core/sdk-golang/compare/v0.20.116...v0.20.122)
+    * [Issue #436](https://ztna-core/sdk-golang/issues/436) - HTTP calls should respect environment proxy settings
 
 * github.com/openziti/storage: [v0.2.18 -> v0.2.20](https://github.com/openziti/storage/compare/v0.2.18...v0.2.20)
     * [Issue #52](https://github.com/openziti/storage/issues/52) - Grammar should expect single valid query followed by EOF
@@ -164,7 +164,7 @@ proxy:
 * github.com/openziti/foundation/v2: [v2.0.29 -> v2.0.30](https://github.com/openziti/foundation/compare/v2.0.29...v2.0.30)
 * github.com/openziti/identity: [v1.0.60 -> v1.0.61](https://github.com/openziti/identity/compare/v1.0.60...v1.0.61)
 * github.com/openziti/runzmd: [v1.0.29 -> v1.0.30](https://github.com/openziti/runzmd/compare/v1.0.29...v1.0.30)
-* github.com/openziti/sdk-golang: [v0.20.90 -> v0.20.101](https://github.com/openziti/sdk-golang/compare/v0.20.90...v0.20.101)
+* ztna-core/sdk-golang: [v0.20.90 -> v0.20.101](https://ztna-core/sdk-golang/compare/v0.20.90...v0.20.101)
 * github.com/openziti/storage: [v0.2.12 -> v0.2.14](https://github.com/openziti/storage/compare/v0.2.12...v0.2.14)
 * github.com/openziti/transport/v2: [v2.0.99 -> v2.0.103](https://github.com/openziti/transport/compare/v2.0.99...v2.0.103)
   * [Issue #54](https://github.com/openziti/transport/issues/54) - Support HTTP Connect proxying for TLS connections
@@ -366,7 +366,7 @@ However, newer Edge Routers should be able to join older network in some circums
 * github.com/openziti/foundation/v2: [v2.0.28 -> v2.0.29](https://github.com/openziti/foundation/compare/v2.0.28...v2.0.29)
 * github.com/openziti/identity: [v1.0.59 -> v1.0.60](https://github.com/openziti/identity/compare/v1.0.59...v1.0.60)
 * github.com/openziti/runzmd: [v1.0.28 -> v1.0.29](https://github.com/openziti/runzmd/compare/v1.0.28...v1.0.29)
-* github.com/openziti/sdk-golang: [v0.20.78 -> v0.20.90](https://github.com/openziti/sdk-golang/compare/v0.20.78...v0.20.90)
+* ztna-core/sdk-golang: [v0.20.78 -> v0.20.90](https://ztna-core/sdk-golang/compare/v0.20.78...v0.20.90)
 * github.com/openziti/storage: [v0.2.11 -> v0.2.12](https://github.com/openziti/storage/compare/v0.2.11...v0.2.12)
 * github.com/openziti/transport/v2: [v2.0.93 -> v2.0.99](https://github.com/openziti/transport/compare/v2.0.93...v2.0.99)
 * github.com/openziti/xweb/v2: [v2.0.2 -> v2.1.0](https://github.com/openziti/xweb/compare/v2.0.2...v2.1.0)

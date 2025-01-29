@@ -41,8 +41,8 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/internal/rest/mgmt"
 
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/enroll"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/enroll"
 )
 
 type traffic struct {

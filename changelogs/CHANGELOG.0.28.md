@@ -36,7 +36,7 @@ Bug fix
 * github.com/openziti/foundation/v2: [v2.0.25 -> v2.0.26](https://github.com/openziti/foundation/compare/v2.0.25...v2.0.26)
 * github.com/openziti/identity: [v1.0.56 -> v1.0.57](https://github.com/openziti/identity/compare/v1.0.56...v1.0.57)
 * github.com/openziti/runzmd: [v1.0.25 -> v1.0.26](https://github.com/openziti/runzmd/compare/v1.0.25...v1.0.26)
-* github.com/openziti/sdk-golang: [v0.20.58 -> v0.20.67](https://github.com/openziti/sdk-golang/compare/v0.20.58...v0.20.67)
+* ztna-core/sdk-golang: [v0.20.58 -> v0.20.67](https://ztna-core/sdk-golang/compare/v0.20.58...v0.20.67)
 * github.com/openziti/storage: [v0.2.7 -> v0.2.8](https://github.com/openziti/storage/compare/v0.2.7...v0.2.8)
 * github.com/openziti/transport/v2: [v2.0.90 -> v2.0.91](https://github.com/openziti/transport/compare/v2.0.90...v2.0.91)
 * github.com/openziti/metrics: [v1.2.26 -> v1.2.27](https://github.com/openziti/metrics/compare/v1.2.26...v1.2.27)
@@ -146,8 +146,8 @@ events:
 * github.com/openziti/foundation/v2: [v2.0.24 -> v2.0.25](https://github.com/openziti/foundation/compare/v2.0.24...v2.0.25)
 * github.com/openziti/identity: [v1.0.54 -> v1.0.56](https://github.com/openziti/identity/compare/v1.0.54...v1.0.56)
 * github.com/openziti/runzmd: [v1.0.24 -> v1.0.25](https://github.com/openziti/runzmd/compare/v1.0.24...v1.0.25)
-* github.com/openziti/sdk-golang: [v0.20.51 -> v0.20.58](https://github.com/openziti/sdk-golang/compare/v0.20.51...v0.20.58)
-  * [Issue #409](https://github.com/openziti/sdk-golang/issues/409) - sdk-golang v0.20.49 loops forever with older 'ws://' edge router
+* ztna-core/sdk-golang: [v0.20.51 -> v0.20.58](https://ztna-core/sdk-golang/compare/v0.20.51...v0.20.58)
+  * [Issue #409](https://ztna-core/sdk-golang/issues/409) - sdk-golang v0.20.49 loops forever with older 'ws://' edge router
 
 * github.com/openziti/storage: [v0.2.6 -> v0.2.7](https://github.com/openziti/storage/compare/v0.2.6...v0.2.7)
 * github.com/openziti/transport/v2: [v2.0.88 -> v2.0.90](https://github.com/openziti/transport/compare/v2.0.88...v2.0.90)
@@ -385,9 +385,9 @@ listeners:
 * github.com/openziti/foundation/v2: [v2.0.21 -> v2.0.24](https://github.com/openziti/foundation/compare/v2.0.21...v2.0.24)
 * github.com/openziti/identity: [v1.0.45 -> v1.0.54](https://github.com/openziti/identity/compare/v1.0.45...v1.0.54)
 * github.com/openziti/runzmd: [v1.0.20 -> v1.0.24](https://github.com/openziti/runzmd/compare/v1.0.20...v1.0.24)
-* github.com/openziti/sdk-golang: [v0.18.76 -> v0.20.51](https://github.com/openziti/sdk-golang/compare/v0.18.76...v0.20.51)
-  * [Issue #407](https://github.com/openziti/sdk-golang/issues/407) - Allowing filtering which edge router urls the sdk uses
-  * [Issue #394](https://github.com/openziti/sdk-golang/issues/394) - SDK does not recover from API session expiration (during app/computer suspend)
+* ztna-core/sdk-golang: [v0.18.76 -> v0.20.51](https://ztna-core/sdk-golang/compare/v0.18.76...v0.20.51)
+  * [Issue #407](https://ztna-core/sdk-golang/issues/407) - Allowing filtering which edge router urls the sdk uses
+  * [Issue #394](https://ztna-core/sdk-golang/issues/394) - SDK does not recover from API session expiration (during app/computer suspend)
 
 * github.com/openziti/storage: [v0.1.49 -> v0.2.6](https://github.com/openziti/storage/compare/v0.1.49...v0.2.6)
 * github.com/openziti/transport/v2: [v2.0.72 -> v2.0.88](https://github.com/openziti/transport/compare/v2.0.72...v2.0.88)

@@ -25,7 +25,7 @@ import (
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/constants"
 	"ztna-core/ztna/ztna/util"
-	"github.com/openziti/sdk-golang/ziti/sdkinfo"
+	"ztna-core/sdk-golang/ziti/sdkinfo"
 
 	"ztna-core/ztna/common/version"
 	"ztna-core/ztna/tunnel"
@@ -34,7 +34,7 @@ import (
 	"ztna-core/ztna/tunnel/intercept"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/agent"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

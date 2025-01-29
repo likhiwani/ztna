@@ -41,11 +41,11 @@ ziti create config router edge --routerName myRouter --tunnelerMode tproxy --lan
 * github.com/openziti/foundation/v2: [v2.0.6 -> v2.0.7](https://github.com/openziti/foundation/compare/v2.0.6...v2.0.7)
 * github.com/openziti/identity: [v1.0.18 -> v1.0.20](https://github.com/openziti/identity/compare/v1.0.18...v1.0.20)
 * github.com/openziti/runzmd: v1.0.3 (new)
-* github.com/openziti/sdk-golang: [v0.16.135 -> v0.16.146](https://github.com/openziti/sdk-golang/compare/v0.16.135...v0.16.146)
-    * [Issue #328](https://github.com/openziti/sdk-golang/issues/328) - enrollment has no 'verbose' option for debugging
-    * [Issue #314](https://github.com/openziti/sdk-golang/issues/314) - Incorrect documentation for grpc-example
-    * [Issue #317](https://github.com/openziti/sdk-golang/issues/317) - No documentation for call example
-    * [Issue #311](https://github.com/openziti/sdk-golang/issues/311) - Chat Client and Server needs documentation
+* ztna-core/sdk-golang: [v0.16.135 -> v0.16.146](https://ztna-core/sdk-golang/compare/v0.16.135...v0.16.146)
+    * [Issue #328](https://ztna-core/sdk-golang/issues/328) - enrollment has no 'verbose' option for debugging
+    * [Issue #314](https://ztna-core/sdk-golang/issues/314) - Incorrect documentation for grpc-example
+    * [Issue #317](https://ztna-core/sdk-golang/issues/317) - No documentation for call example
+    * [Issue #311](https://ztna-core/sdk-golang/issues/311) - Chat Client and Server needs documentation
 
 * github.com/openziti/storage: [v0.1.25 -> v0.1.26](https://github.com/openziti/storage/compare/v0.1.25...v0.1.26)
 * github.com/openziti/transport/v2: [v2.0.36 -> v2.0.38](https://github.com/openziti/transport/compare/v2.0.36...v2.0.38)
@@ -69,7 +69,7 @@ The only other changes are build updates.
 * github.com/openziti/fabric: [v0.21.3 -> v0.21.9](https://github.com/openziti/fabric/compare/v0.21.3...v0.21.9)
 * github.com/openziti/foundation/v2: [v2.0.5 -> v2.0.6](https://github.com/openziti/foundation/compare/v2.0.5...v2.0.6)
 * github.com/openziti/identity: [v1.0.16 -> v1.0.18](https://github.com/openziti/identity/compare/v1.0.16...v1.0.18)
-* github.com/openziti/sdk-golang: [v0.16.129 -> v0.16.135](https://github.com/openziti/sdk-golang/compare/v0.16.129...v0.16.135)
+* ztna-core/sdk-golang: [v0.16.129 -> v0.16.135](https://ztna-core/sdk-golang/compare/v0.16.129...v0.16.135)
 * github.com/openziti/storage: [v0.1.23 -> v0.1.25](https://github.com/openziti/storage/compare/v0.1.23...v0.1.25)
 * github.com/openziti/transport/v2: [v2.0.33 -> v2.0.36](https://github.com/openziti/transport/compare/v2.0.33...v2.0.36)
 * github.com/openziti/metrics: [v1.1.2 -> v1.1.4](https://github.com/openziti/metrics/compare/v1.1.2...v1.1.4)
@@ -149,7 +149,7 @@ ziti create config controller --routerEnrollmentDuration 1h
 
 * github.com/openziti/foundation/v2: [v2.0.4 -> v2.0.5](https://github.com/openziti/foundation/compare/v2.0.4...v2.0.5)
 * github.com/openziti/identity: [v1.0.12 -> v1.0.16](https://github.com/openziti/identity/compare/v1.0.12...v1.0.16)
-* github.com/openziti/sdk-golang: [v0.16.121 -> v0.16.128](https://github.com/openziti/sdk-golang/compare/v0.16.121...v0.16.128)
+* ztna-core/sdk-golang: [v0.16.121 -> v0.16.128](https://ztna-core/sdk-golang/compare/v0.16.121...v0.16.128)
 * github.com/openziti/storage: [v0.1.21 -> v0.1.23](https://github.com/openziti/storage/compare/v0.1.21...v0.1.23)
     * [Issue #23](https://github.com/openziti/storage/issues/23) - fix panic: IterateLink on ref counted link collection should never return a nil cursor 
 
@@ -376,7 +376,7 @@ Example:
 * github.com/openziti/metrics: [v1.0.7 -> v1.1.0](https://github.com/openziti/metrics/compare/v1.0.7...v1.1.0)
     * [Issue #15](https://github.com/openziti/metrics/issues/15) - Support tags and multiple values on usage
 
-* github.com/openziti/sdk-golang: [v0.16.119 -> v0.16.121](https://github.com/openziti/sdk-golang/compare/v0.16.119...v0.16.121)
+* ztna-core/sdk-golang: [v0.16.119 -> v0.16.121](https://ztna-core/sdk-golang/compare/v0.16.119...v0.16.121)
 * github.com/openziti/storage: [v0.1.20 -> v0.1.21](https://github.com/openziti/storage/compare/v0.1.20...v0.1.21)
     * [Issue #21](https://github.com/openziti/storage/issues/21) - Support querying tags by default
 
@@ -482,7 +482,7 @@ Identity is a low-level library within Ziti and affects all Ziti components.
 * github.com/openziti/foundation/v2: [v2.0.2 -> v2.0.4](https://github.com/openziti/foundation/compare/v2.0.2...v2.0.4)
 * github.com/openziti/identity: [v1.0.5 -> v1.0.11](https://github.com/openziti/identity/compare/v1.0.5...v1.0.11)
 * github.com/openziti/metrics: [v1.0.3 -> v1.0.7](https://github.com/openziti/metrics/compare/v1.0.3...v1.0.7)
-* github.com/openziti/sdk-golang: [v0.16.104 -> v0.16.119](https://github.com/openziti/sdk-golang/compare/v0.16.104...v0.16.119)
+* ztna-core/sdk-golang: [v0.16.104 -> v0.16.119](https://ztna-core/sdk-golang/compare/v0.16.104...v0.16.119)
 * github.com/openziti/storage: [v0.1.16 -> v0.1.20](https://github.com/openziti/storage/compare/v0.1.16...v0.1.20)
 * github.com/openziti/transport/v2: [v2.0.20 -> v2.0.28](https://github.com/openziti/transport/compare/v2.0.20...v2.0.28)
 * ztna-core/ztna: [0.26.5 -> 0.26.6](https://ztna-core/ztna/compare/0.26.5...0.26.6)

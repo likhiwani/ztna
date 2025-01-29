@@ -37,8 +37,8 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity/certtools"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/enroll"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/enroll"
 )
 
 type apiPost struct {

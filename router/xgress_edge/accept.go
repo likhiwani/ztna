@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/latency"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/cert"
 	"math"
 	"sync/atomic"

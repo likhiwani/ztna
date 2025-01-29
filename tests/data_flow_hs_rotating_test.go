@@ -21,8 +21,8 @@ package tests
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/eid"
 	"github.com/pkg/errors"
 	"math/rand"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/sdk-golang/pb/edge_client_pb"
+	"ztna-core/sdk-golang/pb/edge_client_pb"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 )

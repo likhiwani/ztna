@@ -14,8 +14,8 @@
 * github.com/openziti/identity: [v1.0.69 -> v1.0.70](https://github.com/openziti/identity/compare/v1.0.69...v1.0.70)
 * github.com/openziti/metrics: [v1.2.43 -> v1.2.45](https://github.com/openziti/metrics/compare/v1.2.43...v1.2.45)
 * github.com/openziti/runzmd: [v1.0.37 -> v1.0.38](https://github.com/openziti/runzmd/compare/v1.0.37...v1.0.38)
-* github.com/openziti/sdk-golang: [v0.22.21 -> v0.22.28](https://github.com/openziti/sdk-golang/compare/v0.22.21...v0.22.28)
-    * [Issue #495](https://github.com/openziti/sdk-golang/issues/495) - Refresh edge session if listen attempt fails, to ensure that session is still valid
+* ztna-core/sdk-golang: [v0.22.21 -> v0.22.28](https://ztna-core/sdk-golang/compare/v0.22.21...v0.22.28)
+    * [Issue #495](https://ztna-core/sdk-golang/issues/495) - Refresh edge session if listen attempt fails, to ensure that session is still valid
 
 * github.com/openziti/storage: [v0.2.28 -> v0.2.30](https://github.com/openziti/storage/compare/v0.2.28...v0.2.30)
 * github.com/openziti/transport/v2: [v2.0.121 -> v2.0.122](https://github.com/openziti/transport/compare/v2.0.121...v2.0.122)
@@ -53,7 +53,7 @@ ctrl:
     * [Issue #125](https://github.com/openziti/channel/issues/125) - Ensure reconnecting channel is marked as connected before calling reconnect callback
 
 * ztna-core/edge-api: [v0.26.8 -> v0.26.10](https://ztna-core/edge-api/compare/v0.26.8...v0.26.10)
-* github.com/openziti/sdk-golang: [v0.22.17 -> v0.22.21](https://github.com/openziti/sdk-golang/compare/v0.22.17...v0.22.21)
+* ztna-core/sdk-golang: [v0.22.17 -> v0.22.21](https://ztna-core/sdk-golang/compare/v0.22.17...v0.22.21)
 * ztna-core/ztna: [v0.32.0 -> v0.32.1](https://ztna-core/ztna/compare/v0.32.0...v0.32.1)
     * [Issue #1709](https://ztna-core/ztna/issues/1709) - Fix link management race conditions found by chaos testing
     * [Issue #1715](https://ztna-core/ztna/issues/1715) - Ensure controller raft peers don't end up with duplicate connections 
@@ -132,8 +132,8 @@ tls:
 * github.com/openziti/identity: [v1.0.68 -> v1.0.69](https://github.com/openziti/identity/compare/v1.0.68...v1.0.69)
 * github.com/openziti/metrics: [v1.2.41 -> v1.2.43](https://github.com/openziti/metrics/compare/v1.2.41...v1.2.43)
 * github.com/openziti/runzmd: [v1.0.36 -> v1.0.37](https://github.com/openziti/runzmd/compare/v1.0.36...v1.0.37)
-* github.com/openziti/sdk-golang: [v0.22.0 -> v0.22.17](https://github.com/openziti/sdk-golang/compare/v0.22.0...v0.22.17)
-    * [Issue #482](https://github.com/openziti/sdk-golang/issues/482) - Deprecate ListenOptions.MaxConnections in favor of MaxTerminators
+* ztna-core/sdk-golang: [v0.22.0 -> v0.22.17](https://ztna-core/sdk-golang/compare/v0.22.0...v0.22.17)
+    * [Issue #482](https://ztna-core/sdk-golang/issues/482) - Deprecate ListenOptions.MaxConnections in favor of MaxTerminators
 
 * github.com/openziti/secretstream: [v0.1.14 -> v0.1.16](https://github.com/openziti/secretstream/compare/v0.1.14...v0.1.16)
 * github.com/openziti/storage: [v0.2.27 -> v0.2.28](https://github.com/openziti/storage/compare/v0.2.27...v0.2.28)

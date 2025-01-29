@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/agent"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/router/xgress_transport"
 	"github.com/spf13/cobra"

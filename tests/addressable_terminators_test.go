@@ -19,8 +19,8 @@
 package tests
 
 import (
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/controller/xt_smartrouting"
 	"github.com/pkg/errors"
 	"net"

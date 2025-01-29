@@ -9,7 +9,7 @@ import (
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

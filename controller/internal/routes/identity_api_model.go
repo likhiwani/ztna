@@ -30,7 +30,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 )
 
 const (

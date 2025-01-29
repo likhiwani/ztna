@@ -20,7 +20,7 @@
 package tests
 
 import (
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/rcrowley/go-metrics"
 	"os"
 	"testing"

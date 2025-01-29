@@ -23,7 +23,7 @@ import (
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/router/xgress"

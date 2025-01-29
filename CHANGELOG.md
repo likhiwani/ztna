@@ -371,7 +371,7 @@ events:
 
 * github.com/openziti/metrics: [v1.2.58 -> v1.2.59](https://github.com/openziti/metrics/compare/v1.2.58...v1.2.59)
 * github.com/openziti/runzmd: [v1.0.51 -> v1.0.53](https://github.com/openziti/runzmd/compare/v1.0.51...v1.0.53)
-* github.com/openziti/sdk-golang: [v0.23.43 -> v0.23.44](https://github.com/openziti/sdk-golang/compare/v0.23.43...v0.23.44)
+* ztna-core/sdk-golang: [v0.23.43 -> v0.23.44](https://ztna-core/sdk-golang/compare/v0.23.43...v0.23.44)
 * github.com/openziti/transport/v2: [v2.0.146 -> v2.0.150](https://github.com/openziti/transport/compare/v2.0.146...v2.0.150)
 * ztna-core/ztna: [v1.1.15 -> v1.2.0](https://ztna-core/ztna/compare/v1.1.15...v1.2.0)
     * [Issue #2212](https://ztna-core/ztna/issues/2212) - Rework distributed control bootstrap mechanism
@@ -398,8 +398,8 @@ events:
     * [Issue #144](https://github.com/openziti/channel/issues/144) - Add ReadAdapter utility
 
 * ztna-core/edge-api: [v0.26.31 -> v0.26.32](https://ztna-core/edge-api/compare/v0.26.31...v0.26.32)
-* github.com/openziti/sdk-golang: [v0.23.42 -> v0.23.43](https://github.com/openziti/sdk-golang/compare/v0.23.42...v0.23.43)
-    * [Issue #629](https://github.com/openziti/sdk-golang/issues/629) - JWT session refresh interprets expiration date incorrectly
+* ztna-core/sdk-golang: [v0.23.42 -> v0.23.43](https://ztna-core/sdk-golang/compare/v0.23.42...v0.23.43)
+    * [Issue #629](https://ztna-core/sdk-golang/issues/629) - JWT session refresh interprets expiration date incorrectly
 
 * github.com/openziti/secretstream: [v0.1.24 -> v0.1.25](https://github.com/openziti/secretstream/compare/v0.1.24...v0.1.25)
 * ztna-core/ztna: [v1.1.14 -> v1.1.15](https://ztna-core/ztna/compare/v1.1.14...v1.1.15)
@@ -509,8 +509,8 @@ ziti fabric db start-check-integrity -f
 
 * github.com/openziti/metrics: [v1.2.57 -> v1.2.58](https://github.com/openziti/metrics/compare/v1.2.57...v1.2.58)
 * github.com/openziti/runzmd: [v1.0.50 -> v1.0.51](https://github.com/openziti/runzmd/compare/v1.0.50...v1.0.51)
-* github.com/openziti/sdk-golang: [v0.23.40 -> v0.23.42](https://github.com/openziti/sdk-golang/compare/v0.23.40...v0.23.42)
-    * [Issue #625](https://github.com/openziti/sdk-golang/issues/625) - traffic optimization: implement support for receiving multi-part edge payloads
+* ztna-core/sdk-golang: [v0.23.40 -> v0.23.42](https://ztna-core/sdk-golang/compare/v0.23.40...v0.23.42)
+    * [Issue #625](https://ztna-core/sdk-golang/issues/625) - traffic optimization: implement support for receiving multi-part edge payloads
 
 * github.com/openziti/secretstream: [v0.1.21 -> v0.1.24](https://github.com/openziti/secretstream/compare/v0.1.21...v0.1.24)
 * github.com/openziti/storage: [v0.3.0 -> v0.3.2](https://github.com/openziti/storage/compare/v0.3.0...v0.3.2)
@@ -580,8 +580,8 @@ ziti fabric db start-check-integrity -f
 * github.com/openziti/identity: [v1.0.81 -> v1.0.84](https://github.com/openziti/identity/compare/v1.0.81...v1.0.84)
 * github.com/openziti/metrics: [v1.2.56 -> v1.2.57](https://github.com/openziti/metrics/compare/v1.2.56...v1.2.57)
 * github.com/openziti/runzmd: [v1.0.49 -> v1.0.50](https://github.com/openziti/runzmd/compare/v1.0.49...v1.0.50)
-* github.com/openziti/sdk-golang: [v0.23.39 -> v0.23.40](https://github.com/openziti/sdk-golang/compare/v0.23.39...v0.23.40)
-    * [Issue #601](https://github.com/openziti/sdk-golang/issues/601) - Only send config types on service list if controller version supports it
+* ztna-core/sdk-golang: [v0.23.39 -> v0.23.40](https://ztna-core/sdk-golang/compare/v0.23.39...v0.23.40)
+    * [Issue #601](https://ztna-core/sdk-golang/issues/601) - Only send config types on service list if controller version supports it
 
 * github.com/openziti/transport/v2: [v2.0.138 -> v2.0.143](https://github.com/openziti/transport/compare/v2.0.138...v2.0.143)
     * [Issue #85](https://github.com/openziti/transport/issues/85) - Update to latest dtls library
@@ -612,9 +612,9 @@ ziti fabric db start-check-integrity -f
     * [Issue #120](https://ztna-core/edge-api/issues/120) - Add API for retrieving services referencing a config
     * [Issue #121](https://ztna-core/edge-api/issues/121) - Add API for retrieving the set of attribute roles used by posture checks
 
-* github.com/openziti/sdk-golang: [v0.23.38 -> v0.23.39](https://github.com/openziti/sdk-golang/compare/v0.23.38...v0.23.39)
-    * [Issue #596](https://github.com/openziti/sdk-golang/issues/596) - SDK should submit selected config types to auth and service list APIs
-    * [Issue #593](https://github.com/openziti/sdk-golang/issues/593) - SDK Golang OIDC Get API Session Returns Wrong Value
+* ztna-core/sdk-golang: [v0.23.38 -> v0.23.39](https://ztna-core/sdk-golang/compare/v0.23.38...v0.23.39)
+    * [Issue #596](https://ztna-core/sdk-golang/issues/596) - SDK should submit selected config types to auth and service list APIs
+    * [Issue #593](https://ztna-core/sdk-golang/issues/593) - SDK Golang OIDC Get API Session Returns Wrong Value
 
 * github.com/openziti/storage: [v0.2.47 -> v0.3.0](https://github.com/openziti/storage/compare/v0.2.47...v0.3.0)
     * [Issue #80](https://github.com/openziti/storage/issues/80) - Set indexes aren't cleaned up when referenced entities are deleted, only when they change
@@ -777,9 +777,9 @@ For more information:
 * github.com/openziti/identity: [v1.0.77 -> v1.0.80](https://github.com/openziti/identity/compare/v1.0.77...v1.0.80)
 * github.com/openziti/metrics: [v1.2.54 -> v1.2.56](https://github.com/openziti/metrics/compare/v1.2.54...v1.2.56)
 * github.com/openziti/runzmd: [v1.0.47 -> v1.0.49](https://github.com/openziti/runzmd/compare/v1.0.47...v1.0.49)
-* github.com/openziti/sdk-golang: [v0.23.37 -> v0.23.38](https://github.com/openziti/sdk-golang/compare/v0.23.37...v0.23.38)
-    * [Issue #573](https://github.com/openziti/sdk-golang/issues/573) - api session refresh spins in a tight loop if there is no current api session
-    * [Issue #562](https://github.com/openziti/sdk-golang/issues/562) - Support sticky dials
+* ztna-core/sdk-golang: [v0.23.37 -> v0.23.38](https://ztna-core/sdk-golang/compare/v0.23.37...v0.23.38)
+    * [Issue #573](https://ztna-core/sdk-golang/issues/573) - api session refresh spins in a tight loop if there is no current api session
+    * [Issue #562](https://ztna-core/sdk-golang/issues/562) - Support sticky dials
 
 * github.com/openziti/secretstream: [v0.1.20 -> v0.1.21](https://github.com/openziti/secretstream/compare/v0.1.20...v0.1.21)
 * github.com/openziti/storage: [v0.2.41 -> v0.2.45](https://github.com/openziti/storage/compare/v0.2.41...v0.2.45)
@@ -840,8 +840,8 @@ ziti edge create service test --terminator-strategy sticky
 * github.com/openziti/identity: [v1.0.75 -> v1.0.77](https://github.com/openziti/identity/compare/v1.0.75...v1.0.77)
 * github.com/openziti/metrics: [v1.2.51 -> v1.2.54](https://github.com/openziti/metrics/compare/v1.2.51...v1.2.54)
 * github.com/openziti/runzmd: [v1.0.43 -> v1.0.47](https://github.com/openziti/runzmd/compare/v1.0.43...v1.0.47)
-* github.com/openziti/sdk-golang: [v0.23.35 -> v0.23.37](https://github.com/openziti/sdk-golang/compare/v0.23.35...v0.23.37)
-    * [Issue #562](https://github.com/openziti/sdk-golang/issues/562) - Support sticky dials
+* ztna-core/sdk-golang: [v0.23.35 -> v0.23.37](https://ztna-core/sdk-golang/compare/v0.23.35...v0.23.37)
+    * [Issue #562](https://ztna-core/sdk-golang/issues/562) - Support sticky dials
 
 * github.com/openziti/secretstream: [v0.1.19 -> v0.1.20](https://github.com/openziti/secretstream/compare/v0.1.19...v0.1.20)
 * github.com/openziti/storage: [v0.2.37 -> v0.2.41](https://github.com/openziti/storage/compare/v0.2.37...v0.2.41)
@@ -859,7 +859,7 @@ ziti edge create service test --terminator-strategy sticky
 * Bug fixes and minor enhancements
 
 ## Component Updates and Bug Fixes
-* github.com/openziti/sdk-golang: [v0.23.32 -> v0.23.35](https://github.com/openziti/sdk-golang/compare/v0.23.32...v0.23.35)
+* ztna-core/sdk-golang: [v0.23.32 -> v0.23.35](https://ztna-core/sdk-golang/compare/v0.23.32...v0.23.35)
 * ztna-core/ztna: [v1.1.1 -> v1.1.2](https://ztna-core/ztna/compare/v1.1.1...v1.1.2)
   * [Issue #2032](https://ztna-core/ztna/issues/2032) - Auto CA Enrollment Fails w/ 400 Bad Request
   * [Issue #2026](https://ztna-core/ztna/issues/2026) - Root Version Endpoint Handling 404s
@@ -893,8 +893,8 @@ Thanks to new contributors
 
 ## Component Updates and Bug Fixes
 * ztna-core/edge-api: [v0.26.17 -> v0.26.18](https://ztna-core/edge-api/compare/v0.26.17...v0.26.18)
-* github.com/openziti/sdk-golang: [v0.23.27 -> v0.23.32](https://github.com/openziti/sdk-golang/compare/v0.23.27...v0.23.32)
-    * [Issue #554](https://github.com/openziti/sdk-golang/issues/554) - Passing in config types on service list breaks on older controller
+* ztna-core/sdk-golang: [v0.23.27 -> v0.23.32](https://ztna-core/sdk-golang/compare/v0.23.27...v0.23.32)
+    * [Issue #554](https://ztna-core/sdk-golang/issues/554) - Passing in config types on service list breaks on older controller
 
 * github.com/openziti/storage: [v0.2.36 -> v0.2.37](https://github.com/openziti/storage/compare/v0.2.36...v0.2.37)
     * [Issue #64](https://github.com/openziti/storage/issues/64) - Add support for transaction complete listeners
@@ -940,10 +940,10 @@ More information can be found on the [HA Project Board](https://github.com/orgs/
 * ztna-core/edge-api: [v0.26.16 -> v0.26.17](https://ztna-core/edge-api/compare/v0.26.16...v0.26.17)
     * [Issue #107](https://ztna-core/edge-api/issues/107) - Add configTypes param to service list
 
-* github.com/openziti/sdk-golang: [v0.23.19 -> v0.23.27](https://github.com/openziti/sdk-golang/compare/v0.23.19...v0.23.27)
-    * [Issue #545](https://github.com/openziti/sdk-golang/issues/545) - Set config types on query when listing services
-    * [Issue #541](https://github.com/openziti/sdk-golang/issues/541) - Token exchange in Go SDK not working
-    * [Issue #540](https://github.com/openziti/sdk-golang/issues/540) - Switch to EdgeRouter.SupportedProtocols from deprecated URLs map
+* ztna-core/sdk-golang: [v0.23.19 -> v0.23.27](https://ztna-core/sdk-golang/compare/v0.23.19...v0.23.27)
+    * [Issue #545](https://ztna-core/sdk-golang/issues/545) - Set config types on query when listing services
+    * [Issue #541](https://ztna-core/sdk-golang/issues/541) - Token exchange in Go SDK not working
+    * [Issue #540](https://ztna-core/sdk-golang/issues/540) - Switch to EdgeRouter.SupportedProtocols from deprecated URLs map
 
 * ztna-core/ztna: [v1.0.0 -> v1.1.0](https://ztna-core/ztna/compare/v1.0.0...v1.1.0)
     * [Issue #1952](https://ztna-core/ztna/issues/1952) - Remove support for fabric only identities in CLI
@@ -1040,7 +1040,7 @@ New metrics:
 * github.com/openziti/identity: [v1.0.73 -> v1.0.75](https://github.com/openziti/identity/compare/v1.0.73...v1.0.75)
 * github.com/openziti/metrics: [v1.2.48 -> v1.2.51](https://github.com/openziti/metrics/compare/v1.2.48...v1.2.51)
 * github.com/openziti/runzmd: [v1.0.41 -> v1.0.43](https://github.com/openziti/runzmd/compare/v1.0.41...v1.0.43)
-* github.com/openziti/sdk-golang: [v0.23.15 -> v0.23.19](https://github.com/openziti/sdk-golang/compare/v0.23.15...v0.23.19)
+* ztna-core/sdk-golang: [v0.23.15 -> v0.23.19](https://ztna-core/sdk-golang/compare/v0.23.15...v0.23.19)
 * github.com/openziti/secretstream: [v0.1.18 -> v0.1.19](https://github.com/openziti/secretstream/compare/v0.1.18...v0.1.19)
 * github.com/openziti/storage: [v0.2.33 -> v0.2.36](https://github.com/openziti/storage/compare/v0.2.33...v0.2.36)
 * github.com/openziti/transport/v2: [v2.0.125 -> v2.0.131](https://github.com/openziti/transport/compare/v2.0.125...v2.0.131)

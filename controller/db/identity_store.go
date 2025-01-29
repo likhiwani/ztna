@@ -19,7 +19,7 @@ package db
 import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/eid"

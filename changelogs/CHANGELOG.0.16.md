@@ -294,7 +294,7 @@ registered under the name `edge`. The binding is the key and the validator name 
         * [Scale latency metric when used for path costing](https://github.com/openziti/fabric/issues/123)
         * [Services not always getting cleared from cache when terminators are updated](https://github.com/openziti/fabric/issues/124)
         * [Fix service policy denormalization migration](https://github.com/openziti/edge/issues/291)
-    * [sdk-golang#84](https://github.com/openziti/sdk-golang/issues/84) Fixes go routine leak that
+    * [sdk-golang#84](https://ztna-core/sdk-golang/issues/84) Fixes go routine leak that
       would slowly kill SDK application (i.e. ziti-probe)
     * REST API doc via ReDoc available at `https://<host>:<port>/docs`
 

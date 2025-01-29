@@ -16,7 +16,7 @@
 
 package handler_edge_ctrl
 
-import "github.com/openziti/sdk-golang/ziti/edge"
+import "ztna-core/sdk-golang/ziti/edge"
 
 type controllerError interface {
 	error

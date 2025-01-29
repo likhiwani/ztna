@@ -30,7 +30,7 @@ import (
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/foundation/v2/mempool"
 	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/sdk-golang/ziti/edge/network"
+	"ztna-core/sdk-golang/ziti/edge/network"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"

@@ -18,7 +18,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 )
 
 func TestSdkAuth(t *testing.T) {

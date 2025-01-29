@@ -7,8 +7,8 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/tunnel/health"
 
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/sirupsen/logrus"
 )
 

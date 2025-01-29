@@ -8,7 +8,7 @@ import (
 	"ztna-core/ztna/controller/oidc_auth"
 
 	"github.com/golang-jwt/jwt/v5"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 	"github.com/zitadel/oidc/v2/pkg/oidc"
 	"golang.org/x/oauth2"
 )

@@ -101,8 +101,8 @@
 * github.com/openziti/foundation/v2: [v2.0.10 -> v2.0.18](https://github.com/openziti/foundation/compare/v2.0.10...v2.0.18)
 * github.com/openziti/identity: [v1.0.30 -> v1.0.42](https://github.com/openziti/identity/compare/v1.0.30...v1.0.42)
 * github.com/openziti/runzmd: [v1.0.9 -> v1.0.18](https://github.com/openziti/runzmd/compare/v1.0.9...v1.0.18)
-* github.com/openziti/sdk-golang: [v0.18.28 -> v0.18.76](https://github.com/openziti/sdk-golang/compare/v0.18.28...v0.18.76)
-    * [Issue #356](https://github.com/openziti/sdk-golang/issues/356) - sdk connections should respect net.Conn deadline related API specifications 
+* ztna-core/sdk-golang: [v0.18.28 -> v0.18.76](https://ztna-core/sdk-golang/compare/v0.18.28...v0.18.76)
+    * [Issue #356](https://ztna-core/sdk-golang/issues/356) - sdk connections should respect net.Conn deadline related API specifications 
 
 * github.com/openziti/storage: [v0.1.34 -> v0.1.45](https://github.com/openziti/storage/compare/v0.1.34...v0.1.45)
 * github.com/openziti/transport/v2: [v2.0.51 -> v2.0.68](https://github.com/openziti/transport/compare/v2.0.51...v2.0.68)
@@ -130,7 +130,7 @@
     * [Issue #601](https://github.com/openziti/fabric/issues/601) - Only use endpoints file in router once endpoints have changed
     * [Issue #583](https://github.com/openziti/fabric/issues/583) - Compress raft snapshots
 
-* github.com/openziti/sdk-golang: [v0.18.27 -> v0.18.28](https://github.com/openziti/sdk-golang/compare/v0.18.27...v0.18.28)
+* ztna-core/sdk-golang: [v0.18.27 -> v0.18.28](https://ztna-core/sdk-golang/compare/v0.18.27...v0.18.28)
 * github.com/openziti/storage: [v0.1.33 -> v0.1.34](https://github.com/openziti/storage/compare/v0.1.33...v0.1.34)
 * ztna-core/ztna: [v0.27.4 -> v0.27.5](https://ztna-core/ztna/compare/v0.27.4...v0.27.5)
 
@@ -147,7 +147,7 @@ This release contains a fix for a controller deadlock
     * [Issue #1303](https://github.com/openziti/edge/issues/1303) - Fix deadlock when flushing api session heartbeats 
 
 * github.com/openziti/fabric: [v0.22.19 -> v0.22.20](https://github.com/openziti/fabric/compare/v0.22.19...v0.22.20)
-* github.com/openziti/sdk-golang: [v0.18.26 -> v0.18.27](https://github.com/openziti/sdk-golang/compare/v0.18.26...v0.18.27)
+* ztna-core/sdk-golang: [v0.18.26 -> v0.18.27](https://ztna-core/sdk-golang/compare/v0.18.26...v0.18.27)
 * github.com/openziti/transport/v2: [v2.0.50 -> v2.0.51](https://github.com/openziti/transport/compare/v2.0.50...v2.0.51)
 * ztna-core/ztna: [v0.27.3 -> v0.27.4](https://ztna-core/ztna/compare/v0.27.3...v0.27.4)
 
@@ -178,7 +178,7 @@ This release contains a fix for a controller deadlock
 
 * github.com/openziti/identity: [v1.0.29 -> v1.0.30](https://github.com/openziti/identity/compare/v1.0.29...v1.0.30)
 * github.com/openziti/runzmd: [v1.0.7 -> v1.0.9](https://github.com/openziti/runzmd/compare/v1.0.7...v1.0.9)
-* github.com/openziti/sdk-golang: [v0.18.21 -> v0.18.26](https://github.com/openziti/sdk-golang/compare/v0.18.21...v0.18.26)
+* ztna-core/sdk-golang: [v0.18.21 -> v0.18.26](https://ztna-core/sdk-golang/compare/v0.18.21...v0.18.26)
 * github.com/openziti/storage: [v0.1.31 -> v0.1.33](https://github.com/openziti/storage/compare/v0.1.31...v0.1.33)
 * github.com/openziti/transport/v2: [v2.0.49 -> v2.0.50](https://github.com/openziti/transport/compare/v2.0.49...v2.0.50)
 * ztna-core/ztna: [v0.27.2 -> v0.27.3](https://ztna-core/ztna/compare/v0.27.2...v0.27.3)
@@ -208,7 +208,7 @@ This release contains a fix for a controller deadlock
 
 * github.com/openziti/foundation/v2: [v2.0.9 -> v2.0.10](https://github.com/openziti/foundation/compare/v2.0.9...v2.0.10)
 * github.com/openziti/identity: [v1.0.28 -> v1.0.29](https://github.com/openziti/identity/compare/v1.0.28...v1.0.29)
-* github.com/openziti/sdk-golang: [v0.18.19 -> v0.18.21](https://github.com/openziti/sdk-golang/compare/v0.18.19...v0.18.21)
+* ztna-core/sdk-golang: [v0.18.19 -> v0.18.21](https://ztna-core/sdk-golang/compare/v0.18.19...v0.18.21)
 * github.com/openziti/storage: [v0.1.30 -> v0.1.31](https://github.com/openziti/storage/compare/v0.1.30...v0.1.31)
 * github.com/openziti/transport/v2: [v2.0.48 -> v2.0.49](https://github.com/openziti/transport/compare/v2.0.48...v2.0.49)
 * github.com/openziti/metrics: [v1.2.2 -> v1.2.3](https://github.com/openziti/metrics/compare/v1.2.2...v1.2.3)
@@ -292,7 +292,7 @@ This release contains a fix for a controller deadlock
 * github.com/openziti/foundation/v2: [v2.0.7 -> v2.0.9](https://github.com/openziti/foundation/compare/v2.0.7...v2.0.9)
 * github.com/openziti/identity: [v1.0.20 -> v1.0.28](https://github.com/openziti/identity/compare/v1.0.20...v1.0.28)
 * github.com/openziti/runzmd: [v1.0.3 -> v1.0.7](https://github.com/openziti/runzmd/compare/v1.0.3...v1.0.7)
-* github.com/openziti/sdk-golang: [v0.16.146 -> v0.18.19](https://github.com/openziti/sdk-golang/compare/v0.16.146...v0.18.19)
+* ztna-core/sdk-golang: [v0.16.146 -> v0.18.19](https://ztna-core/sdk-golang/compare/v0.16.146...v0.18.19)
 * github.com/openziti/storage: [v0.1.26 -> v0.1.30](https://github.com/openziti/storage/compare/v0.1.26...v0.1.30)
 * github.com/openziti/transport/v2: [v2.0.38 -> v2.0.48](https://github.com/openziti/transport/compare/v2.0.38...v2.0.48)
 * github.com/openziti/metrics: [v1.1.5 -> v1.2.2](https://github.com/openziti/metrics/compare/v1.1.5...v1.2.2)

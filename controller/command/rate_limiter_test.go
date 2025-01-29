@@ -24,7 +24,7 @@ import (
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"ztna-core/ztna/controller/apierror"
 	"github.com/stretchr/testify/assert"
 	"sync"

@@ -25,7 +25,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/router/xgress_transport"
 	loop2_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"

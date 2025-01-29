@@ -66,7 +66,7 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/xweb/v2"
 	cmap "github.com/orcaman/concurrent-map/v2"

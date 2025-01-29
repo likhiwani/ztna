@@ -26,7 +26,7 @@ import (
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/router/xgress"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
 )
 

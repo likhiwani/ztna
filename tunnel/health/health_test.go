@@ -5,8 +5,8 @@ package health
 import (
 	"context"
 	"fmt"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/stretchr/testify/require"
 	"io"
 	"net"

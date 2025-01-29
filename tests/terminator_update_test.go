@@ -19,7 +19,7 @@
 package tests
 
 import (
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"testing"
 	"time"
 )

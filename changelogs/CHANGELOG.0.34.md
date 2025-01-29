@@ -9,7 +9,7 @@
 
 ## Component Updates and Bug Fixes
 * ztna-core/edge-api: [v0.26.13 -> v0.26.14](https://ztna-core/edge-api/compare/v0.26.13...v0.26.14)
-* github.com/openziti/sdk-golang: [v0.23.14 -> v0.23.15](https://github.com/openziti/sdk-golang/compare/v0.23.14...v0.23.15)
+* ztna-core/sdk-golang: [v0.23.14 -> v0.23.15](https://ztna-core/sdk-golang/compare/v0.23.14...v0.23.15)
 * github.com/openziti/secretstream: [v0.1.17 -> v0.1.18](https://github.com/openziti/secretstream/compare/v0.1.17...v0.1.18)
     * [Issue #24](https://github.com/openziti/secretstream/issues/24) - Potential side channel issue
     * [Issue #25](https://github.com/openziti/secretstream/issues/25) - Reads from crypto/rand not checked for errors
@@ -40,10 +40,10 @@
 * github.com/openziti/identity: [v1.0.70 -> v1.0.73](https://github.com/openziti/identity/compare/v1.0.70...v1.0.73)
 * github.com/openziti/metrics: [v1.2.45 -> v1.2.48](https://github.com/openziti/metrics/compare/v1.2.45...v1.2.48)
 * github.com/openziti/runzmd: [v1.0.38 -> v1.0.41](https://github.com/openziti/runzmd/compare/v1.0.38...v1.0.41)
-* github.com/openziti/sdk-golang: [v0.22.28 -> v0.23.14](https://github.com/openziti/sdk-golang/compare/v0.22.28...v0.23.14)
-    * [Issue #524](https://github.com/openziti/sdk-golang/issues/524) - Add circuit id to edge.Conn, so sdk connections can be correlated with network traffic
-    * [Issue #515](https://github.com/openziti/sdk-golang/issues/515) - Service hosting improvements
-    * [Issue #501](https://github.com/openziti/sdk-golang/issues/501) - Improve hosting session management
+* ztna-core/sdk-golang: [v0.22.28 -> v0.23.14](https://ztna-core/sdk-golang/compare/v0.22.28...v0.23.14)
+    * [Issue #524](https://ztna-core/sdk-golang/issues/524) - Add circuit id to edge.Conn, so sdk connections can be correlated with network traffic
+    * [Issue #515](https://ztna-core/sdk-golang/issues/515) - Service hosting improvements
+    * [Issue #501](https://ztna-core/sdk-golang/issues/501) - Improve hosting session management
 
 * github.com/openziti/secretstream: [v0.1.16 -> v0.1.17](https://github.com/openziti/secretstream/compare/v0.1.16...v0.1.17)
 * github.com/openziti/storage: [v0.2.30 -> v0.2.33](https://github.com/openziti/storage/compare/v0.2.30...v0.2.33)

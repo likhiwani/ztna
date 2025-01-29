@@ -20,8 +20,8 @@ package tests
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/xt"
 	"github.com/pkg/errors"

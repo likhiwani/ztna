@@ -54,7 +54,7 @@ have changed again. A summary of changes is below
 * github.com/openziti/foundation/v2: [v2.0.26 -> v2.0.28](https://github.com/openziti/foundation/compare/v2.0.26...v2.0.28)
 * github.com/openziti/identity: [v1.0.57 -> v1.0.59](https://github.com/openziti/identity/compare/v1.0.57...v1.0.59)
 * github.com/openziti/runzmd: [v1.0.26 -> v1.0.28](https://github.com/openziti/runzmd/compare/v1.0.26...v1.0.28)
-* github.com/openziti/sdk-golang: [v0.20.67 -> v0.20.78](https://github.com/openziti/sdk-golang/compare/v0.20.67...v0.20.78)
+* ztna-core/sdk-golang: [v0.20.67 -> v0.20.78](https://ztna-core/sdk-golang/compare/v0.20.67...v0.20.78)
 * github.com/openziti/storage: [v0.2.8 -> v0.2.11](https://github.com/openziti/storage/compare/v0.2.8...v0.2.11)
 * github.com/openziti/transport/v2: [v2.0.91 -> v2.0.93](https://github.com/openziti/transport/compare/v2.0.91...v2.0.93)
 * github.com/openziti/metrics: [v1.2.27 -> v1.2.30](https://github.com/openziti/metrics/compare/v1.2.27...v1.2.30)

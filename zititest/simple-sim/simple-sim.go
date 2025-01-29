@@ -27,7 +27,7 @@ import (
 	"ztna-core/ztna/common/eid"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

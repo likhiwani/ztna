@@ -34,7 +34,7 @@ import (
 	"ztna-core/ztna/tunnel/intercept/tproxy"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 )

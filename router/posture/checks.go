@@ -1,7 +1,7 @@
 package posture
 
 import (
-	"github.com/openziti/sdk-golang/pb/edge_client_pb"
+	"ztna-core/sdk-golang/pb/edge_client_pb"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"time"
 )

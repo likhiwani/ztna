@@ -22,7 +22,7 @@ package tests
 import (
 	"errors"
 	"fmt"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"ztna-core/ztna/common/eid"
 	"io"
 	"testing"

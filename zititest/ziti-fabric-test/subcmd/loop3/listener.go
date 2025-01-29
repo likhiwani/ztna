@@ -22,7 +22,7 @@ import (
 	"github.com/openziti/agent"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
 	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
 	"github.com/sirupsen/logrus"

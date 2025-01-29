@@ -29,7 +29,7 @@ import (
 	"ztna-core/ztna/tunnel/utils"
 
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/proxies"
 	"github.com/pkg/errors"

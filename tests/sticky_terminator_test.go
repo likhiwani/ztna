@@ -21,8 +21,8 @@ package tests
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/controller/xt_sticky"
 	"testing"
 	"time"

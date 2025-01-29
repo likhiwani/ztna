@@ -24,11 +24,11 @@ import (
 	"ztna-core/ztna/ztna/cmd/common"
 
 	"github.com/openziti/identity/engines"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/term"
-	"github.com/openziti/sdk-golang/ziti/enroll"
+	"ztna-core/sdk-golang/ziti/enroll"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

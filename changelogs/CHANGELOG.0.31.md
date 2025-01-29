@@ -11,8 +11,8 @@
 ## Component Updates and Bug Fixes
 
 * github.com/openziti/metrics: [v1.2.40 -> v1.2.41](https://github.com/openziti/metrics/compare/v1.2.40...v1.2.41)
-* github.com/openziti/sdk-golang: [v0.21.2 -> v0.22.0](https://github.com/openziti/sdk-golang/compare/v0.21.2...v0.22.0)
-    * [Issue #468](https://github.com/openziti/sdk-golang/issues/468) - SDK does an unnecessary number of session refreshes
+* ztna-core/sdk-golang: [v0.21.2 -> v0.22.0](https://ztna-core/sdk-golang/compare/v0.21.2...v0.22.0)
+    * [Issue #468](https://ztna-core/sdk-golang/issues/468) - SDK does an unnecessary number of session refreshes
 
 * github.com/openziti/storage: [v0.2.26 -> v0.2.27](https://github.com/openziti/storage/compare/v0.2.26...v0.2.27)
 * ztna-core/ztna: [v0.31.3 -> v0.31.4](https://ztna-core/ztna/compare/v0.31.3...v0.31.4)
@@ -66,9 +66,9 @@ ziti fabric raft remove-member ctrl3
 ## Component Updates and Bug Fixes
 
 * ztna-core/edge-api: [v0.26.1 -> v0.26.6](https://ztna-core/edge-api/compare/v0.26.1...v0.26.6)
-* github.com/openziti/sdk-golang: [v0.20.139 -> v0.21.2](https://github.com/openziti/sdk-golang/compare/v0.20.139...v0.21.2)
-    * [Issue #465](https://github.com/openziti/sdk-golang/issues/465) - Allow listen options to specify how many listeners need to be established before returning
-    * [Issue #462](https://github.com/openziti/sdk-golang/issues/462) - Allow refreshing a single service
+* ztna-core/sdk-golang: [v0.20.139 -> v0.21.2](https://ztna-core/sdk-golang/compare/v0.20.139...v0.21.2)
+    * [Issue #465](https://ztna-core/sdk-golang/issues/465) - Allow listen options to specify how many listeners need to be established before returning
+    * [Issue #462](https://ztna-core/sdk-golang/issues/462) - Allow refreshing a single service
 
 * ztna-core/ztna: [v0.31.2 -> v0.31.3](https://ztna-core/ztna/compare/v0.31.2...v0.31.3)
     * [Issue #1583](https://ztna-core/ztna/issues/1583) - xgress: Potential data stall due when processing acks after checking window size 
@@ -124,9 +124,9 @@ in the bbolt datastore. There's now basic support for querying in-memory types a
 * github.com/openziti/identity: [v1.0.66 -> v1.0.68](https://github.com/openziti/identity/compare/v1.0.66...v1.0.68)
 * github.com/openziti/metrics: [v1.2.37 -> v1.2.40](https://github.com/openziti/metrics/compare/v1.2.37...v1.2.40)
 * github.com/openziti/runzmd: [v1.0.33 -> v1.0.36](https://github.com/openziti/runzmd/compare/v1.0.33...v1.0.36)
-* github.com/openziti/sdk-golang: [v0.20.129 -> v0.20.139](https://github.com/openziti/sdk-golang/compare/v0.20.129...v0.20.139)
-    * [Issue #457](https://github.com/openziti/sdk-golang/issues/457) - Add  inspect support
-    * [Issue #450](https://github.com/openziti/sdk-golang/issues/450) - Support idempotent terminator creation
+* ztna-core/sdk-golang: [v0.20.129 -> v0.20.139](https://ztna-core/sdk-golang/compare/v0.20.129...v0.20.139)
+    * [Issue #457](https://ztna-core/sdk-golang/issues/457) - Add  inspect support
+    * [Issue #450](https://ztna-core/sdk-golang/issues/450) - Support idempotent terminator creation
 
 * github.com/openziti/secretstream: [v0.1.13 -> v0.1.14](https://github.com/openziti/secretstream/compare/v0.1.13...v0.1.14)
 * github.com/openziti/storage: [v0.2.23 -> v0.2.26](https://github.com/openziti/storage/compare/v0.2.23...v0.2.26)
@@ -188,8 +188,8 @@ If the rate limiter is enabled, the following metrics will be produced:
 
 * github.com/openziti/identity: [v1.0.64 -> v1.0.66](https://github.com/openziti/identity/compare/v1.0.64...v1.0.66)
 * github.com/openziti/metrics: [v1.2.36 -> v1.2.37](https://github.com/openziti/metrics/compare/v1.2.36...v1.2.37)
-* github.com/openziti/sdk-golang: [v0.20.122 -> v0.20.129](https://github.com/openziti/sdk-golang/compare/v0.20.122...v0.20.129)
-    * [Issue #443](https://github.com/openziti/sdk-golang/issues/443) - Don't send close in response to a close on a listener
+* ztna-core/sdk-golang: [v0.20.122 -> v0.20.129](https://ztna-core/sdk-golang/compare/v0.20.122...v0.20.129)
+    * [Issue #443](https://ztna-core/sdk-golang/issues/443) - Don't send close in response to a close on a listener
 
 * github.com/openziti/secretstream: [v0.1.12 -> v0.1.13](https://github.com/openziti/secretstream/compare/v0.1.12...v0.1.13)
 * github.com/openziti/storage: [v0.2.20 -> v0.2.23](https://github.com/openziti/storage/compare/v0.2.20...v0.2.23)

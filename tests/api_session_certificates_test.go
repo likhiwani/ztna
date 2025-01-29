@@ -38,7 +38,7 @@ import (
 	"github.com/Jeffail/gabs"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity/certtools"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 )
 
 func Test_Api_Session_Certs(t *testing.T) {

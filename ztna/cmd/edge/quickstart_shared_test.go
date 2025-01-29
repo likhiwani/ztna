@@ -27,8 +27,8 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/edge-api/rest_util"
 
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/enroll"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/enroll"
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )

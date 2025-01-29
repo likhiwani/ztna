@@ -20,7 +20,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/fatih/color"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"io"
 	"net"
 	"net/http"

@@ -24,7 +24,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/inspect"

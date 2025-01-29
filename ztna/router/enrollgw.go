@@ -20,7 +20,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/router/enroll"
 	"ztna-core/ztna/router"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/spf13/cobra"
 	"os"
 )

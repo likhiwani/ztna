@@ -8,8 +8,8 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/webapis"
 
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
-	"github.com/openziti/sdk-golang/ziti"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
+	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_Identity_HasErConnection(t *testing.T) {

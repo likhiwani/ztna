@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/sequencer"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"golang.org/x/sync/semaphore"
 	"sync/atomic"
 )

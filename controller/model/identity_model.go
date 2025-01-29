@@ -18,7 +18,7 @@ package model
 
 import (
 	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"

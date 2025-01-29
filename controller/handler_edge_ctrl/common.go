@@ -10,7 +10,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/identity"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/logcontext"

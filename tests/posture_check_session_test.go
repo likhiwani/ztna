@@ -21,7 +21,7 @@ package tests
 import (
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/xt_smartrouting"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"testing"
 	"time"
 )

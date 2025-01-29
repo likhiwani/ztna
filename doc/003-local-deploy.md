@@ -118,5 +118,5 @@ If you prefer, you may read [the first-service tutorial as a web site](../ziti/c
 
 ## Further Exploration
 
-- The [Go SDK examples](https://github.com/openziti/sdk-golang/tree/main/example#readme) illustrate embedding OpenZiti in both client and server applications.
+- The [Go SDK examples](https://ztna-core/sdk-golang/tree/main/example#readme) illustrate embedding OpenZiti in both client and server applications.
 - You may wish to [know more about controller PKI](./004-controller-pki.md).

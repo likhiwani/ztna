@@ -18,7 +18,7 @@ require (
 	github.com/openziti/fablab v0.5.84
 	github.com/openziti/foundation/v2 v2.0.56
 	github.com/openziti/identity v1.0.94
-	github.com/openziti/sdk-golang v0.24.0
+	ztna-core/sdk-golang v0.24.0
 	github.com/openziti/storage v0.3.15
 	github.com/openziti/transport/v2 v2.0.160
 	github.com/orcaman/concurrent-map/v2 v2.0.1

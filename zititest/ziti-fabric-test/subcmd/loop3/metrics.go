@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common/pb/mgmt_pb"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"github.com/pkg/errors"
 	"github.com/rcrowley/go-metrics"
 	"google.golang.org/protobuf/proto"

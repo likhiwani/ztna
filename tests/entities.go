@@ -31,7 +31,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
 
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/Jeffail/gabs"
 )

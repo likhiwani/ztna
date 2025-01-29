@@ -32,7 +32,7 @@ import (
 	"ztna-core/ztna/controller/config"
 	"ztna-core/ztna/zitirest"
 
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 
 	"crypto"
 	"crypto/ecdsa"
@@ -68,9 +68,9 @@ import (
 	"github.com/openziti/foundation/v2/versions"
 	idlib "github.com/openziti/identity"
 	"github.com/openziti/identity/certtools"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
-	sdkEnroll "github.com/openziti/sdk-golang/ziti/enroll"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	sdkEnroll "ztna-core/sdk-golang/ziti/enroll"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
 	"github.com/openziti/transport/v2/tls"

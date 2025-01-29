@@ -59,7 +59,6 @@ require (
 	github.com/openziti/jwks v1.0.6
 	github.com/openziti/metrics v1.2.65
 	github.com/openziti/runzmd v1.0.59
-	github.com/openziti/sdk-golang v0.24.0
 	github.com/openziti/secretstream v0.1.28
 	github.com/openziti/storage v0.3.15
 	github.com/openziti/transport/v2 v2.0.160
@@ -98,6 +97,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 	rsc.io/goversion v1.2.0
 	ztna-core/edge-api v0.26.38
+	ztna-core/sdk-golang v0.24.0
 )
 
 require (
@@ -162,7 +162,6 @@ require (
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/openziti-incubator/cf v0.0.3 // indirect
 	github.com/openziti/dilithium v0.3.5 // indirect
-	github.com/openziti/edge-api v0.26.38 // indirect
 	github.com/parallaxsecond/parsec-client-go v0.0.0-20221025095442-f0a77d263cf9 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pion/dtls/v3 v3.0.4 // indirect
@@ -207,3 +206,5 @@ require (
 )
 
 replace ztna-core/edge-api => ../edge-api
+
+replace ztna-core/sdk-golang => ../sdk-golang

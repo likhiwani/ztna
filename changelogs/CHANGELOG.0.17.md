@@ -7,7 +7,7 @@
   issues when used as a common name in CSRs
 * [edge#424](https://github.com/openziti/edge/issues/424) Authenticated, non-admin, clients can
   query service terminators
-* [sdk-golang#112](https://github.com/openziti/sdk-golang/issues/112) Process checks for Windows are
+* [sdk-golang#112](https://ztna-core/sdk-golang/issues/112) Process checks for Windows are
   case-insensitive
 * The CLI agent now runs over unix sockets and is enabled by default. See doc/ops-agent.md for
   details in the ziti repository.

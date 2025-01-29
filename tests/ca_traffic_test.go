@@ -20,8 +20,8 @@ import (
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	id "github.com/openziti/identity"
-	"github.com/openziti/sdk-golang/ziti"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 )
 
 func Test_CA_Auth_Two_Identities_Diff_Certs(t *testing.T) {

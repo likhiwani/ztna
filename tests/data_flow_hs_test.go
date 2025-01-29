@@ -21,7 +21,7 @@ package tests
 
 import (
 	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	"ztna-core/ztna/common/eid"
 	"sync/atomic"
 	"testing"

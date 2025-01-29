@@ -25,7 +25,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
-	edge_apis "github.com/openziti/sdk-golang/edge-apis"
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 	"github.com/zitadel/oidc/v2/pkg/client/rp"
 	httphelper "github.com/zitadel/oidc/v2/pkg/http"
 	"github.com/zitadel/oidc/v2/pkg/oidc"

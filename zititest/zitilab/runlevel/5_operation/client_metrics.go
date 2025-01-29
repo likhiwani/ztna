@@ -21,7 +21,7 @@ import (
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/model"
 	"ztna-core/ztna/common/pb/mgmt_pb"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
 	"ztna-core/ztna/zititest/zitilab/cli"
 	"github.com/sirupsen/logrus"

@@ -24,7 +24,7 @@ import (
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"

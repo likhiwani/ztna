@@ -23,7 +23,7 @@ import (
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/metrics"
-	"github.com/openziti/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"

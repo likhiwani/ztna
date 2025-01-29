@@ -14,7 +14,7 @@ Ziti 0.14.12 includes the following:
 
 Ziti 0.14.11 includes the following:
 
-* [Ziti-Tunnel - Bind terminators are only created during startup](https://github.com/openziti/sdk-golang/issues/56)
+* [Ziti-Tunnel - Bind terminators are only created during startup](https://ztna-core/sdk-golang/issues/56)
 * [Close on one side of connection doesn't propagate to other side](https://github.com/openziti/edge/issues/189)
 * [Simplify sequencer close logic](https://github.com/openziti/foundation/issues/81)
 * Misc Fixes

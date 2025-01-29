@@ -25,7 +25,7 @@ import (
 	enrollment_management "ztna-core/edge-api/rest_management_api_client/enrollment"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/openziti/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_EnrollmentNetwork(t *testing.T) {
