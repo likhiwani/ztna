@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewPatchRouterParams() *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewPatchRouterParams() *PatchRouterParams {
 // NewPatchRouterParamsWithTimeout creates a new PatchRouterParams object
 // with the ability to set a timeout on a request.
 func NewPatchRouterParamsWithTimeout(timeout time.Duration) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewPatchRouterParamsWithTimeout(timeout time.Duration) *PatchRouterParams {
 // NewPatchRouterParamsWithContext creates a new PatchRouterParams object
 // with the ability to set a context for a request.
 func NewPatchRouterParamsWithContext(ctx context.Context) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewPatchRouterParamsWithContext(ctx context.Context) *PatchRouterParams {
 // NewPatchRouterParamsWithHTTPClient creates a new PatchRouterParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewPatchRouterParamsWithHTTPClient(client *http.Client) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type PatchRouterParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *PatchRouterParams) WithDefaults() *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *PatchRouterParams) WithDefaults() *PatchRouterParams {
 //
 // All values with no default are reset to their zero value.
 func (o *PatchRouterParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the patch router params
 func (o *PatchRouterParams) WithTimeout(timeout time.Duration) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the patch router params
 func (o *PatchRouterParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the patch router params
 func (o *PatchRouterParams) WithContext(ctx context.Context) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the patch router params
 func (o *PatchRouterParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the patch router params
 func (o *PatchRouterParams) WithHTTPClient(client *http.Client) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the patch router params
 func (o *PatchRouterParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the patch router params
 func (o *PatchRouterParams) WithID(id string) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the patch router params
 func (o *PatchRouterParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithRouter adds the router to the patch router params
 func (o *PatchRouterParams) WithRouter(router *rest_model.RouterPatch) *PatchRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetRouter(router)
 	return o
 }
 
 // SetRouter adds the router to the patch router params
 func (o *PatchRouterParams) SetRouter(router *rest_model.RouterPatch) {
+    logtrace.LogWithFunctionName()
 	o.Router = router
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *PatchRouterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

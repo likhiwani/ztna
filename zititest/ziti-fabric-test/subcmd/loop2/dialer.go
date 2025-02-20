@@ -22,17 +22,20 @@ import (
 	"strings"
 	"time"
 
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress_transport"
+	loop2_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/router/xgress_transport"
-	loop2_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
 	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	dialerCmd := newDialerCmd()
 	loop2Cmd.AddCommand(dialerCmd.cmd)
 }
@@ -47,6 +50,7 @@ type dialerCmd struct {
 }
 
 func newDialerCmd() *dialerCmd {
+	logtrace.LogWithFunctionName()
 	result := &dialerCmd{
 		cmd: &cobra.Command{
 			Use:   "dialer <scenarioFile>",
@@ -68,6 +72,7 @@ func newDialerCmd() *dialerCmd {
 }
 
 func (cmd *dialerCmd) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	scenario, err := LoadScenario(args[0])
@@ -154,6 +159,7 @@ func (cmd *dialerCmd) run(_ *cobra.Command, args []string) {
 }
 
 func (cmd *dialerCmd) connect() net.Conn {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	var conn net.Conn
@@ -206,6 +212,7 @@ func (cmd *dialerCmd) connect() net.Conn {
 }
 
 func dialDirect(endpoint transport.Address, id *identity.TokenId) (net.Conn, error) {
+	logtrace.LogWithFunctionName()
 	peer, err := endpoint.Dial("loop", id, 0, nil)
 	if err != nil {
 		return nil, err
@@ -215,6 +222,7 @@ func dialDirect(endpoint transport.Address, id *identity.TokenId) (net.Conn, err
 }
 
 func dialIngress(endpoint transport.Address, id, serviceId *identity.TokenId) (net.Conn, error) {
+	logtrace.LogWithFunctionName()
 	peer, err := xgress_transport.ClientDial(endpoint, id, serviceId, nil)
 	if err != nil {
 		return nil, err

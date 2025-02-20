@@ -18,14 +18,17 @@ package api_impl
 
 import (
 	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/logtrace"
 
-	"ztna-core/ztna/controller/models"
-	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
 	"strconv"
+	"ztna-core/ztna/controller/models"
+
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 func GetModelQueryOptionsFromRequest(r *http.Request) (*PublicQueryOptions, error) {
+	logtrace.LogWithFunctionName()
 	filter := r.URL.Query().Get("filter")
 	sort := r.URL.Query().Get("sort")
 
@@ -43,6 +46,7 @@ func GetModelQueryOptionsFromRequest(r *http.Request) (*PublicQueryOptions, erro
 }
 
 func GetRequestPaging(r *http.Request) (*Paging, error) {
+	logtrace.LogWithFunctionName()
 	l := r.URL.Query().Get("limit")
 	o := r.URL.Query().Get("offset")
 
@@ -82,6 +86,7 @@ type QueryResult struct {
 }
 
 func NewQueryResult(result interface{}, metadata *models.QueryMetaData) *QueryResult {
+	logtrace.LogWithFunctionName()
 	return &QueryResult{
 		Result:           result,
 		Count:            metadata.Count,
@@ -92,6 +97,7 @@ func NewQueryResult(result interface{}, metadata *models.QueryMetaData) *QueryRe
 }
 
 func TagsOrDefault(tags *rest_model.Tags) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if tags == nil || tags.SubTags == nil {
 		return map[string]interface{}{}
 	}
@@ -99,6 +105,7 @@ func TagsOrDefault(tags *rest_model.Tags) map[string]interface{} {
 }
 
 func BoolOrDefault(val *bool) bool {
+	logtrace.LogWithFunctionName()
 	if val == nil {
 		return false
 	}
@@ -107,6 +114,7 @@ func BoolOrDefault(val *bool) bool {
 }
 
 func Int64OrDefault(val *int64) int64 {
+	logtrace.LogWithFunctionName()
 	if val == nil {
 		return 0
 	}

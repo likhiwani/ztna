@@ -19,11 +19,13 @@
 package rest_util
 
 import (
+	"net/url"
+	fabric_rest_client "ztna-core/ztna/controller/rest_client"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
-	fabric_rest_client "ztna-core/ztna/controller/rest_client"
 	"github.com/openziti/identity"
-	"net/url"
 )
 
 // TransportConfig provides information about how to access a REST API
@@ -45,6 +47,7 @@ type TransportFactory interface {
 type TransportFactoryF func(config TransportConfig) (runtime.ClientTransport, error)
 
 func (self TransportFactoryF) New(config TransportConfig) (runtime.ClientTransport, error) {
+	logtrace.LogWithFunctionName()
 	return self(config)
 }
 
@@ -52,6 +55,7 @@ func (self TransportFactoryF) New(config TransportConfig) (runtime.ClientTranspo
 // assumes that the fabric is running without the edge and is using cert based authentication. If the fabric is
 // running with the edge, an appropriate edge based TransportFactory will need to be provided
 func NewFabricClientWithIdentity(identity identity.Identity, apiAddress string) (*fabric_rest_client.ZitiFabric, error) {
+	logtrace.LogWithFunctionName()
 	factory := &IdentityTransportFactory{
 		identity: identity,
 	}
@@ -60,6 +64,7 @@ func NewFabricClientWithIdentity(identity identity.Identity, apiAddress string) 
 
 // NewFabricClient will return a ZitiFabric REST client given a transport factory and api address
 func NewFabricClient(transportFactory TransportFactory, apiAddress string) (*fabric_rest_client.ZitiFabric, error) {
+	logtrace.LogWithFunctionName()
 	transportConfig := NewZitiFabricTransportConfig(apiAddress)
 	transport, err := transportFactory.New(transportConfig)
 	if err != nil {
@@ -76,20 +81,24 @@ type TransportConfigImpl struct {
 }
 
 func (self *TransportConfigImpl) GetHost() string {
+	logtrace.LogWithFunctionName()
 	return self.ApiAddress
 }
 
 func (self *TransportConfigImpl) GetBasePath() string {
+	logtrace.LogWithFunctionName()
 	return self.BasePath
 }
 
 func (self *TransportConfigImpl) GetSchemes() []string {
+	logtrace.LogWithFunctionName()
 	return self.Schemes
 }
 
 // NewZitiFabricTransportConfig will create a TransportConfig using the given API address and
 // the default ziti fabric rest client values for base path and schema.
 func NewZitiFabricTransportConfig(apiAddress string) TransportConfig {
+	logtrace.LogWithFunctionName()
 	return &TransportConfigImpl{
 		ApiAddress: apiAddress,
 		BasePath:   fabric_rest_client.DefaultBasePath,
@@ -104,6 +113,7 @@ type IdentityTransportFactory struct {
 }
 
 func (self *IdentityTransportFactory) New(config TransportConfig) (runtime.ClientTransport, error) {
+	logtrace.LogWithFunctionName()
 	ctrlUrl, err := url.Parse(config.GetHost())
 	if err != nil {
 		return nil, err

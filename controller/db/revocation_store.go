@@ -17,9 +17,11 @@
 package db
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"time"
 )
 
 const (
@@ -32,6 +34,7 @@ type Revocation struct {
 }
 
 func (r Revocation) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeRevocations
 }
 
@@ -42,6 +45,7 @@ type RevocationStore interface {
 }
 
 func newRevocationStore(stores *stores) *revocationStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &revocationStoreImpl{}
 	store.baseStore = newBaseStore[*Revocation](stores, store)
 	store.InitImpl(store)
@@ -53,22 +57,28 @@ type revocationStoreImpl struct {
 }
 
 func (store *revocationStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.AddSymbol(FieldRevocationExpiresAt, ast.NodeTypeDatetime)
 }
 
-func (store *revocationStoreImpl) initializeLinked() {}
+func (store *revocationStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (store *revocationStoreImpl) NewEntity() *Revocation {
+	logtrace.LogWithFunctionName()
 	return &Revocation{}
 }
 
 func (store *revocationStoreImpl) FillEntity(entity *Revocation, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.ExpiresAt = bucket.GetTimeOrError(FieldRevocationExpiresAt)
 }
 
 func (store *revocationStoreImpl) PersistEntity(entity *Revocation, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetTimeP(FieldRevocationExpiresAt, &entity.ExpiresAt)
 }

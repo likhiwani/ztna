@@ -17,8 +17,10 @@
 package xgress_transport
 
 import (
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/openziti/channel/v3"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
 )
@@ -28,10 +30,12 @@ type transportXgressConn struct {
 }
 
 func (c *transportXgressConn) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return c.Detail().String()
 }
 
 func (c *transportXgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	buffer := make([]byte, 10240)
 	n, err := c.Read(buffer)
 	if err == nil {
@@ -45,10 +49,12 @@ func (c *transportXgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
 }
 
 func (c *transportXgressConn) WritePayload(p []byte, _ map[uint8][]byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	return c.Write(p)
 }
 
 func (self *transportXgressConn) HandleControlMsg(controlType xgress.ControlType, headers channel.Headers, responder xgress.ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	if controlType == xgress.ControlTypeTraceRoute {
 		xgress.RespondToTraceRequest(headers, "xgress/transport", "", responder)
 		return nil

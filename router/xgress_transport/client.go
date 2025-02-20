@@ -18,13 +18,16 @@ package xgress_transport
 
 import (
 	"errors"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 )
 
 // ClientDial dials the given xgress address and handles authentication, returning an authed connection or an error
 func ClientDial(addr transport.Address, id *identity.TokenId, serviceId *identity.TokenId, tcfg transport.Configuration) (transport.Conn, error) {
+	logtrace.LogWithFunctionName()
 	peer, err := addr.Dial("i/"+id.Token, id, 0, tcfg)
 	if err != nil {
 		return nil, err

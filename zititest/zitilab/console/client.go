@@ -17,11 +17,14 @@
 package console
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )
 
 func NewClient(ws *websocket.Conn, server *Server) *Client {
+	logtrace.LogWithFunctionName()
 	nextId++
 	return &Client{
 		id:     nextId,
@@ -33,10 +36,12 @@ func NewClient(ws *websocket.Conn, server *Server) *Client {
 }
 
 func (client *Client) Conn() *websocket.Conn {
+	logtrace.LogWithFunctionName()
 	return client.ws
 }
 
 func (client *Client) Write(msg *Message) {
+	logtrace.LogWithFunctionName()
 	select {
 	case client.ch <- msg:
 	default:
@@ -44,10 +49,12 @@ func (client *Client) Write(msg *Message) {
 }
 
 func (client *Client) Listen() {
+	logtrace.LogWithFunctionName()
 	client.listenWrite()
 }
 
 func (client *Client) listenWrite() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case msg := <-client.ch:

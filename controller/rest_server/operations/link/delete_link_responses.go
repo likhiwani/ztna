@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DeleteLinkOK struct {
 
 // NewDeleteLinkOK creates DeleteLinkOK with default headers values
 func NewDeleteLinkOK() *DeleteLinkOK {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteLinkOK{}
 }
 
 // WithPayload adds the payload to the delete link o k response
 func (o *DeleteLinkOK) WithPayload(payload *rest_model.Empty) *DeleteLinkOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete link o k response
 func (o *DeleteLinkOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteLinkOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DeleteLinkBadRequest struct {
 
 // NewDeleteLinkBadRequest creates DeleteLinkBadRequest with default headers values
 func NewDeleteLinkBadRequest() *DeleteLinkBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteLinkBadRequest{}
 }
 
 // WithPayload adds the payload to the delete link bad request response
 func (o *DeleteLinkBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteLinkBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete link bad request response
 func (o *DeleteLinkBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteLinkBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DeleteLinkUnauthorized struct {
 
 // NewDeleteLinkUnauthorized creates DeleteLinkUnauthorized with default headers values
 func NewDeleteLinkUnauthorized() *DeleteLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteLinkUnauthorized{}
 }
 
 // WithPayload adds the payload to the delete link unauthorized response
 func (o *DeleteLinkUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete link unauthorized response
 func (o *DeleteLinkUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteLinkUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type DeleteLinkTooManyRequests struct {
 
 // NewDeleteLinkTooManyRequests creates DeleteLinkTooManyRequests with default headers values
 func NewDeleteLinkTooManyRequests() *DeleteLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteLinkTooManyRequests{}
 }
 
 // WithPayload adds the payload to the delete link too many requests response
 func (o *DeleteLinkTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete link too many requests response
 func (o *DeleteLinkTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteLinkTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

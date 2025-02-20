@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"bytes"
 	"fmt"
 	"os"
@@ -42,6 +43,7 @@ type AgentPsAction struct {
 
 // NewPsCmd Pss a command object for the "Ps" command
 func NewPsCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentPsAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -65,6 +67,7 @@ func NewPsCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements this command
 func (self *AgentPsAction) Run() error {
+	logtrace.LogWithFunctionName()
 	fmt.Println("ps is running")
 	ps := FindAll()
 
@@ -116,6 +119,7 @@ func (self *AgentPsAction) Run() error {
 var develRe = regexp.MustCompile(`devel\s+\+\w+`)
 
 func shortenVersion(v string) string {
+	logtrace.LogWithFunctionName()
 	if !strings.HasPrefix(v, "devel") {
 		return v
 	}
@@ -127,6 +131,7 @@ func shortenVersion(v string) string {
 }
 
 func pad(s string, total int) string {
+	logtrace.LogWithFunctionName()
 	if len(s) >= total {
 		return s
 	}
@@ -134,6 +139,7 @@ func pad(s string, total int) string {
 }
 
 func max(i, j int) int {
+	logtrace.LogWithFunctionName()
 	if i > j {
 		return i
 	}
@@ -152,6 +158,7 @@ type P struct {
 
 // FindAll returns all the Ziti processes currently running on this host.
 func FindAll() []P {
+	logtrace.LogWithFunctionName()
 	pss, err := process.Processes()
 	// fmt.Println("FindAll, err is: %s", err)
 
@@ -212,6 +219,7 @@ func FindAll() []P {
 // if a Go process or not. If the process is a Go process,
 // it reports PID, binary name and full path of the binary.
 func isGo(pr *process.Process) (path, version string, agent, ok bool, err error) {
+	logtrace.LogWithFunctionName()
 	if pr.Pid == 0 {
 		// ignore system process
 		return
@@ -238,6 +246,7 @@ func isGo(pr *process.Process) (path, version string, agent, ok bool, err error)
 const gopsConfigDirEnvKey = "GOPS_CONFIG_DIR"
 
 func ConfigDir() (string, error) {
+	logtrace.LogWithFunctionName()
 	if configDir := os.Getenv(gopsConfigDirEnvKey); configDir != "" {
 		return configDir, nil
 	}
@@ -253,6 +262,7 @@ func ConfigDir() (string, error) {
 }
 
 func guessUnixHomeDir() string {
+	logtrace.LogWithFunctionName()
 	usr, err := user.Current()
 	if err == nil {
 		return usr.HomeDir
@@ -261,6 +271,7 @@ func guessUnixHomeDir() string {
 }
 
 func PIDFile(pid int) (string, error) {
+	logtrace.LogWithFunctionName()
 	gopsdir, err := ConfigDir()
 	if err != nil {
 		return "", err
@@ -269,6 +280,7 @@ func PIDFile(pid int) (string, error) {
 }
 
 func isZiti(pr *process.Process) (ok bool) {
+	logtrace.LogWithFunctionName()
 	name, err := pr.Name()
 	if err != nil {
 		return false

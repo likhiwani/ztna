@@ -19,17 +19,20 @@ package handler_peer_ctrl
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/raft"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/errorz"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/peermsg"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/hashicorp/raft"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/errorz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
 func sendErrorResponseCalculateType(m *channel.Message, ch channel.Channel, err error) {
+	logtrace.LogWithFunctionName()
 	if errors.Is(err, raft.ErrNotLeader) {
 		sendErrorResponse(m, ch, err, peermsg.ErrorCodeNotLeader)
 	} else {
@@ -38,6 +41,7 @@ func sendErrorResponseCalculateType(m *channel.Message, ch channel.Channel, err 
 }
 
 func sendErrorResponse(m *channel.Message, ch channel.Channel, err error, errorCode uint32) {
+	logtrace.LogWithFunctionName()
 	resp := channel.NewMessage(int32(cmd_pb.ContentType_ErrorResponseType), []byte(err.Error()))
 	resp.ReplyTo(m)
 	resp.PutUint32Header(peermsg.HeaderErrorCode, errorCode)
@@ -48,6 +52,7 @@ func sendErrorResponse(m *channel.Message, ch channel.Channel, err error, errorC
 }
 
 func sendApiErrorResponse(m *channel.Message, ch channel.Channel, err *errorz.ApiError) {
+	logtrace.LogWithFunctionName()
 	encodingMap := map[string]interface{}{}
 	encodingMap["code"] = err.Code
 	encodingMap["message"] = err.Message
@@ -73,6 +78,7 @@ func sendApiErrorResponse(m *channel.Message, ch channel.Channel, err *errorz.Ap
 }
 
 func sendSuccessResponse(m *channel.Message, ch channel.Channel, index uint64) {
+	logtrace.LogWithFunctionName()
 	resp := channel.NewMessage(int32(cmd_pb.ContentType_SuccessResponseType), nil)
 	resp.ReplyTo(m)
 	resp.PutUint64Header(peermsg.HeaderIndex, index)

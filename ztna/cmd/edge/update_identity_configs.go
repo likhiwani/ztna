@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -34,6 +35,7 @@ type updateIdentityConfigsOptions struct {
 }
 
 func newUpdateIdentityConfigsCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateIdentityConfigsOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -64,6 +66,7 @@ func newUpdateIdentityConfigsCmd(out io.Writer, errOut io.Writer) *cobra.Command
 
 // runupdateIdentityConfigs update a new identity on the Ziti Edge Controller
 func runupdateIdentityConfigs(o *updateIdentityConfigsOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("identities", o.Args[0], o.Options)
 	if err != nil {
 		return err

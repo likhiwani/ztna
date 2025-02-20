@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"math"
 	"strconv"
@@ -36,6 +37,7 @@ type AgentGetOptionsAction struct {
 }
 
 func NewGetCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentGetOptionsAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -60,6 +62,7 @@ func NewGetCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements the command
 func (self *AgentGetOptionsAction) Run() error {
+	logtrace.LogWithFunctionName()
 	pid, err := strconv.Atoi(self.Args[0])
 	if err != nil {
 		return err
@@ -74,6 +77,7 @@ func (self *AgentGetOptionsAction) Run() error {
 }
 
 func processInfo(pid int32) {
+	logtrace.LogWithFunctionName()
 	p, err := process.NewProcess(pid)
 	if err != nil {
 		log.Fatalf("Cannot read process info: %v", err)

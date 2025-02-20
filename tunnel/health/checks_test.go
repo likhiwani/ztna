@@ -3,13 +3,16 @@ package health
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/mitchellh/mapstructure"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/mitchellh/mapstructure"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_LoadPingTest(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 
 	var test = `

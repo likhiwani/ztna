@@ -1,6 +1,16 @@
 package handler_link
 
 import (
+	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/forwarder"
+	metrics2 "ztna-core/ztna/router/metrics"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/latency"
@@ -8,19 +18,12 @@ import (
 	"github.com/openziti/foundation/v2/concurrenz"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/metrics"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/trace"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/forwarder"
-	metrics2 "ztna-core/ztna/router/metrics"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xlink"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func NewBindHandlerFactory(c env.NetworkControllers, f *forwarder.Forwarder, hbo *channel.HeartbeatOptions, mr metrics.Registry, registry xlink.Registry) *bindHandlerFactory {
+	logtrace.LogWithFunctionName()
 	return &bindHandlerFactory{
 		ctrl:             c,
 		forwarder:        f,
@@ -39,6 +42,7 @@ type bindHandlerFactory struct {
 }
 
 func (self *bindHandlerFactory) NewBindHandler(link xlink.Xlink, latency bool, listenerSide bool) channel.BindHandler {
+	logtrace.LogWithFunctionName()
 	return &bindHandler{
 		bindHandlerFactory: self,
 		xlink:              link,
@@ -55,6 +59,7 @@ type bindHandler struct {
 }
 
 func (self *bindHandler) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	ch := binding.GetChannel()
 	if self.listenerSide {
 		if err := self.verifyRouter(self.xlink, ch); err != nil {
@@ -109,6 +114,7 @@ func (self *bindHandler) BindChannel(binding channel.Binding) error {
 }
 
 func (self *bindHandler) verifyRouter(l xlink.Xlink, ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	var fingerprints []string
 	for _, cert := range ch.Certificates() {
 		fingerprints = append(fingerprints, nfpem.FingerprintFromCertificate(cert))
@@ -153,19 +159,27 @@ type heartbeatCallback struct {
 	latencySemaphore concurrenz.Semaphore
 }
 
-func (self *heartbeatCallback) HeartbeatTx(int64) {}
+func (self *heartbeatCallback) HeartbeatTx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
-func (self *heartbeatCallback) HeartbeatRx(int64) {}
+func (self *heartbeatCallback) HeartbeatRx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
-func (self *heartbeatCallback) HeartbeatRespTx(int64) {}
+func (self *heartbeatCallback) HeartbeatRespTx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *heartbeatCallback) HeartbeatRespRx(ts int64) {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	self.lastResponse = now.UnixMilli()
 	self.latencyMetric.Update(now.UnixNano() - ts)
 }
 
 func (self *heartbeatCallback) CheckHeartBeat() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("channelId", self.ch.Label())
 	now := time.Now().UnixMilli()
 	if delta := now - self.lastResponse; delta > 30000 {
@@ -185,6 +199,7 @@ func (self *heartbeatCallback) CheckHeartBeat() {
 }
 
 func (self *heartbeatCallback) checkQueueTime() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("linkId", self.ch.Id())
 	if !self.latencySemaphore.TryAcquire() {
 		log.Warn("unable to check queue time, too many check already running")

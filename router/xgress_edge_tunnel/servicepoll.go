@@ -22,16 +22,19 @@ import (
 	"time"
 
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/sdk-golang/ziti"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 )
 
 func newServicePoller(fabricProvider *fabricProvider) *servicePoller {
+	logtrace.LogWithFunctionName()
 	result := &servicePoller{
 		services:                cmap.New[*rest_model.ServiceDetail](),
 		servicesLastUpdateToken: cmap.New[[]byte](),
@@ -51,6 +54,7 @@ type servicePoller struct {
 }
 
 func (self *servicePoller) handleServiceListUpdate(ch channel.Channel, lastUpdateToken []byte, services []*rest_model.ServiceDetail) {
+	logtrace.LogWithFunctionName()
 	self.serviceListenerLock.Lock()
 	defer self.serviceListenerLock.Unlock()
 
@@ -102,6 +106,7 @@ func (self *servicePoller) handleServiceListUpdate(ch channel.Channel, lastUpdat
 
 // TODO: just push updates down the control channel when necessary
 func (self *servicePoller) pollServices(pollInterval time.Duration, notifyClose <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	if err := self.fabricProvider.authenticate(); err != nil {
 		logrus.WithError(err).Fatal("xgress_edge_tunnel unable to authenticate to controller. " +
 			"ensure tunneler mode is enabled for this router or disable tunnel listener. exiting ")
@@ -123,6 +128,7 @@ func (self *servicePoller) pollServices(pollInterval time.Duration, notifyClose 
 }
 
 func (self *servicePoller) requestServiceListUpdate() {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.fabricProvider.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh != nil { // not currently connected to any controllers
 		lastUpdateToken, _ := self.servicesLastUpdateToken.Get(ctrlCh.Id())

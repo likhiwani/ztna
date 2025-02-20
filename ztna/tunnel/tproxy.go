@@ -22,15 +22,19 @@ package tunnel
 import (
 	"fmt"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept/tproxy"
+
 	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	hostSpecificCmds = append(hostSpecificCmds, NewTProxyCmd())
 }
 
 func NewTProxyCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	var runTProxyCmd = &cobra.Command{
 		Use:     "tproxy",
 		Short:   "Use the 'tproxy' interceptor",
@@ -44,6 +48,7 @@ func NewTProxyCmd() *cobra.Command {
 }
 
 func runTProxy(cmd *cobra.Command, _ []string) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	lanIf, err := cmd.Flags().GetString("lanIf")
 	if err != nil {

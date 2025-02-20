@@ -17,9 +17,12 @@
 package main
 
 import (
+	"os"
 	"ztna-core/ztna/common/build"
 	"ztna-core/ztna/common/version"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/dtls"
@@ -34,6 +37,17 @@ import (
 )
 
 func init() {
+	file, err := os.OpenFile("/Users/lbaswani/make-it-happen/ztna/ztna.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		logrus.Fatalf("Failed to open log file: %v", err)
+	}
+	logrus.SetOutput(file)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+	logrus.SetLevel(logrus.InfoLevel)
+
+	logtrace.LogWithFunctionName()
 	options := pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").NoColor()
 	pfxlog.GlobalInit(logrus.InfoLevel, options)
 
@@ -50,5 +64,6 @@ func init() {
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	cmd.Execute()
 }

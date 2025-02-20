@@ -20,9 +20,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/blang/semver"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/blang/semver"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
@@ -34,6 +36,7 @@ const ZitiSdkTypeC = "ziti-sdk-c"
 const MfaPromptGracePeriod = -5 * time.Minute //5m
 
 func init() {
+	logtrace.LogWithFunctionName()
 	minCSdkVersion = semver.MustParse("0.25.0")
 }
 
@@ -45,10 +48,12 @@ type PostureCheckMfa struct {
 }
 
 func (p *PostureCheckMfa) TypeId() string {
+	logtrace.LogWithFunctionName()
 	return db.PostureCheckTypeMFA
 }
 
 func (p *PostureCheckMfa) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	msg.Subtype = &edge_cmd_pb.PostureCheck_Mfa_{
 		Mfa: &edge_cmd_pb.PostureCheck_Mfa{
 			TimeoutSeconds:        p.TimeoutSeconds,
@@ -60,6 +65,7 @@ func (p *PostureCheckMfa) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
 }
 
 func (p *PostureCheckMfa) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	if mfa_, ok := msg.Subtype.(*edge_cmd_pb.PostureCheck_Mfa_); ok {
 		if mfa := mfa_.Mfa; mfa != nil {
 			p.TimeoutSeconds = mfa.TimeoutSeconds
@@ -74,6 +80,7 @@ func (p *PostureCheckMfa) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error 
 }
 
 func (p *PostureCheckMfa) LastUpdatedAt(apiSessionId string, pd *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	apiSessionData := pd.ApiSessions[apiSessionId]
 
 	//not enough data yet
@@ -97,6 +104,7 @@ func (p *PostureCheckMfa) LastUpdatedAt(apiSessionId string, pd *PostureData) *t
 }
 
 func (p *PostureCheckMfa) IsLegacyClient(apiSessionData *ApiSessionPostureData) bool {
+	logtrace.LogWithFunctionName()
 	if apiSessionData.SdkInfo == nil {
 		return true // don't know what it is
 	}
@@ -113,6 +121,7 @@ func (p *PostureCheckMfa) IsLegacyClient(apiSessionData *ApiSessionPostureData) 
 }
 
 func (p *PostureCheckMfa) GetTimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	if p.TimeoutSeconds > 0 {
 		return p.TimeoutSeconds
 	}
@@ -121,10 +130,12 @@ func (p *PostureCheckMfa) GetTimeoutSeconds() int64 {
 }
 
 func (p *PostureCheckMfa) GetTimeoutRemainingSeconds(apiSessionId string, pd *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return p.getTimeoutRemainingAtSeconds(apiSessionId, pd, time.Now())
 }
 
 func (p *PostureCheckMfa) getTimeoutRemainingAtSeconds(apiSessionId string, pd *PostureData, now time.Time) int64 {
+	logtrace.LogWithFunctionName()
 	if p.TimeoutSeconds == PostureCheckNoTimeout {
 		return PostureCheckNoTimeout
 	}
@@ -172,6 +183,7 @@ func (p *PostureCheckMfa) getTimeoutRemainingAtSeconds(apiSessionId string, pd *
 }
 
 func calculateTimeout(now time.Time, pastEventOccuredAt time.Time, gracePeriod time.Duration) int64 {
+	logtrace.LogWithFunctionName()
 	durationSinceEvent := now.Sub(pastEventOccuredAt)
 
 	timeout := int64((gracePeriod - durationSinceEvent).Seconds())
@@ -184,6 +196,7 @@ func calculateTimeout(now time.Time, pastEventOccuredAt time.Time, gracePeriod t
 }
 
 func (p *PostureCheckMfa) FailureValues(apiSessionId string, pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	ret := &PostureCheckFailureValuesMfa{
 		ActualValue: PostureCheckMfaValues{
 			PassedMfa:             false,
@@ -233,10 +246,12 @@ func (p *PostureCheckMfa) FailureValues(apiSessionId string, pd *PostureData) Po
 }
 
 func (p *PostureCheckMfa) Evaluate(apiSessionId string, pd *PostureData) bool {
+	logtrace.LogWithFunctionName()
 	return p.evaluateAt(apiSessionId, pd, time.Now())
 }
 
 func (p *PostureCheckMfa) evaluateAt(apiSessionId string, pd *PostureData, now time.Time) bool {
+	logtrace.LogWithFunctionName()
 	apiSessionData := pd.ApiSessions[apiSessionId]
 
 	if apiSessionData == nil {
@@ -274,6 +289,7 @@ func (p *PostureCheckMfa) evaluateAt(apiSessionId string, pd *PostureData, now t
 }
 
 func (p *PostureCheckMfa) PassedOnWake(apiSessionData *ApiSessionPostureData, now time.Time) bool {
+	logtrace.LogWithFunctionName()
 	if !p.PromptOnWake {
 		return true
 	}
@@ -294,6 +310,7 @@ func (p *PostureCheckMfa) PassedOnWake(apiSessionData *ApiSessionPostureData, no
 }
 
 func (p *PostureCheckMfa) PassedOnUnlock(apiSessionData *ApiSessionPostureData, now time.Time) bool {
+	logtrace.LogWithFunctionName()
 	if !p.PromptOnUnlock {
 		return true
 	}
@@ -314,10 +331,12 @@ func (p *PostureCheckMfa) PassedOnUnlock(apiSessionData *ApiSessionPostureData, 
 }
 
 func newPostureCheckMfa() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckMfa{}
 }
 
 func (p *PostureCheckMfa) fillFrom(_ Env, tx *bbolt.Tx, check *db.PostureCheck, subType db.PostureCheckSubType) error {
+	logtrace.LogWithFunctionName()
 	subCheck := subType.(*db.PostureCheckMfa)
 
 	if subCheck == nil {
@@ -333,6 +352,7 @@ func (p *PostureCheckMfa) fillFrom(_ Env, tx *bbolt.Tx, check *db.PostureCheck, 
 }
 
 func (p *PostureCheckMfa) toBoltEntityForCreate(*bbolt.Tx, Env) (db.PostureCheckSubType, error) {
+	logtrace.LogWithFunctionName()
 	return &db.PostureCheckMfa{
 		TimeoutSeconds:        p.TimeoutSeconds,
 		PromptOnWake:          p.PromptOnWake,
@@ -364,9 +384,11 @@ type PostureCheckFailureValuesMfa struct {
 }
 
 func (p PostureCheckFailureValuesMfa) Expected() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ExpectedValue
 }
 
 func (p PostureCheckFailureValuesMfa) Actual() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ActualValue
 }

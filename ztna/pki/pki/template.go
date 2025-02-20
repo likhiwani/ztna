@@ -24,9 +24,11 @@ import (
 	"fmt"
 	"math/big"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 func defaultTemplate(genReq *Request, publicKey crypto.PublicKey) error {
+	logtrace.LogWithFunctionName()
 	publicKeyBytes, err := x509.MarshalPKIXPublicKey(publicKey)
 
 	if err != nil {
@@ -48,6 +50,7 @@ func defaultTemplate(genReq *Request, publicKey crypto.PublicKey) error {
 }
 
 func caTemplate(genReq *Request, intermediateCA bool) error {
+	logtrace.LogWithFunctionName()
 	genReq.Template.KeyUsage = x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign | x509.KeyUsageCRLSign
 	genReq.Template.BasicConstraintsValid = true
 	genReq.Template.MaxPathLenZero = true
@@ -63,6 +66,7 @@ func caTemplate(genReq *Request, intermediateCA bool) error {
 }
 
 func nonCATemplate(genReq *Request) {
+	logtrace.LogWithFunctionName()
 	genReq.Template.BasicConstraintsValid = true
 	genReq.Template.KeyUsage = x509.KeyUsageDigitalSignature | x509.KeyUsageKeyEncipherment | x509.KeyUsageContentCommitment
 }

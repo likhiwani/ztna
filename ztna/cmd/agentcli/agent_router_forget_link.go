@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -32,6 +33,7 @@ type ForgetLinkAgentAction struct {
 }
 
 func NewForgetLinkAgentCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &ForgetLinkAgentAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -56,10 +58,12 @@ func NewForgetLinkAgentCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements the command
 func (self *ForgetLinkAgentAction) Run() error {
+	logtrace.LogWithFunctionName()
 	return self.MakeChannelRequest(router.AgentAppId, self.makeRequest)
 }
 
 func (self *ForgetLinkAgentAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	linkId := self.Args[0]
 
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_RouterDebugForgetLinkRequestType), []byte(linkId))

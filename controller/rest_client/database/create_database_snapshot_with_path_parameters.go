@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateDatabaseSnapshotWithPathParams() *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewCreateDatabaseSnapshotWithPathParams() *CreateDatabaseSnapshotWithPathPa
 // NewCreateDatabaseSnapshotWithPathParamsWithTimeout creates a new CreateDatabaseSnapshotWithPathParams object
 // with the ability to set a timeout on a request.
 func NewCreateDatabaseSnapshotWithPathParamsWithTimeout(timeout time.Duration) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewCreateDatabaseSnapshotWithPathParamsWithTimeout(timeout time.Duration) *
 // NewCreateDatabaseSnapshotWithPathParamsWithContext creates a new CreateDatabaseSnapshotWithPathParams object
 // with the ability to set a context for a request.
 func NewCreateDatabaseSnapshotWithPathParamsWithContext(ctx context.Context) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewCreateDatabaseSnapshotWithPathParamsWithContext(ctx context.Context) *Cr
 // NewCreateDatabaseSnapshotWithPathParamsWithHTTPClient creates a new CreateDatabaseSnapshotWithPathParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateDatabaseSnapshotWithPathParamsWithHTTPClient(client *http.Client) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type CreateDatabaseSnapshotWithPathParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateDatabaseSnapshotWithPathParams) WithDefaults() *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *CreateDatabaseSnapshotWithPathParams) WithDefaults() *CreateDatabaseSna
 //
 // All values with no default are reset to their zero value.
 func (o *CreateDatabaseSnapshotWithPathParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) WithTimeout(timeout time.Duration) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) WithContext(ctx context.Context) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) WithHTTPClient(client *http.Client) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithSnapshot adds the snapshot to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) WithSnapshot(snapshot *rest_model.DatabaseSnapshotCreate) *CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 	o.SetSnapshot(snapshot)
 	return o
 }
 
 // SetSnapshot adds the snapshot to the create database snapshot with path params
 func (o *CreateDatabaseSnapshotWithPathParams) SetSnapshot(snapshot *rest_model.DatabaseSnapshotCreate) {
+    logtrace.LogWithFunctionName()
 	o.Snapshot = snapshot
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *CreateDatabaseSnapshotWithPathParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

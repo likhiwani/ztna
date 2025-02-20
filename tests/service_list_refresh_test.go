@@ -4,12 +4,14 @@
 package tests
 
 import (
-	"ztna-core/ztna/common/eid"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 )
 
 func setupServiceListRefreshTest(ctx *TestContext) (string, *identity, *session) {
+	logtrace.LogWithFunctionName()
 	identityRole := eid.New()
 	identity, userAuth := ctx.AdminManagementSession.requireCreateIdentityWithUpdbEnrollment(eid.New(), "1s2w3e4r5t6", false, identityRole)
 	nonAdminUserSession, err := userAuth.AuthenticateClientApi(ctx)
@@ -24,6 +26,7 @@ func setupServiceListRefreshTest(ctx *TestContext) (string, *identity, *session)
 }
 
 func Test_ServiceListRefresh(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

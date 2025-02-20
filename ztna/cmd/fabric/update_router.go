@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/ztna/cmd/api"
@@ -40,6 +41,7 @@ type updateRouterOptions struct {
 }
 
 func newUpdateRouterCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateRouterOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -73,6 +75,7 @@ func newUpdateRouterCmd(p common.OptionsProvider) *cobra.Command {
 
 // runUpdateRouter update a new router on the Ziti Edge Controller
 func runUpdateRouter(o *updateRouterOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := api.MapNameToID(util.FabricAPI, "routers", &o.Options, o.Args[0])
 	if err != nil {
 		return err

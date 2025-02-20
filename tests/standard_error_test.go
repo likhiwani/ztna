@@ -1,3 +1,4 @@
+//go:build apitests
 // +build apitests
 
 /*
@@ -19,13 +20,16 @@
 package tests
 
 import (
+	"testing"
 	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func Test_StandardErrorMessages(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

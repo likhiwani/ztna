@@ -18,12 +18,14 @@ package env
 
 import (
 	"crypto"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/versions"
+	"sync"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
-	"sync"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/versions"
 )
 
 // RouterSyncStrategyType aliased type for router strategies
@@ -115,6 +117,7 @@ type RouterStateValues struct {
 }
 
 func NewRouterStatusValues() RouterStateValues {
+	logtrace.LogWithFunctionName()
 	return RouterStateValues{
 		IsOnline:   false,
 		Hostname:   "",
@@ -136,6 +139,7 @@ type LockingRouterState struct {
 }
 
 func NewLockingRouterStatus() *LockingRouterState {
+	logtrace.LogWithFunctionName()
 	return &LockingRouterState{
 		internal: NewRouterStatusValues(),
 		lock:     sync.Mutex{},
@@ -143,6 +147,7 @@ func NewLockingRouterStatus() *LockingRouterState {
 }
 
 func (r *LockingRouterState) Values() RouterStateValues {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -158,6 +163,7 @@ func (r *LockingRouterState) Values() RouterStateValues {
 }
 
 func (r *LockingRouterState) SetIsOnline(isOnline bool) {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -165,6 +171,7 @@ func (r *LockingRouterState) SetIsOnline(isOnline bool) {
 }
 
 func (r *LockingRouterState) IsOnline() bool {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -172,6 +179,7 @@ func (r *LockingRouterState) IsOnline() bool {
 }
 
 func (r *LockingRouterState) SetHostname(hostname string) {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -179,6 +187,7 @@ func (r *LockingRouterState) SetHostname(hostname string) {
 }
 
 func (r *LockingRouterState) Hostname() string {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -186,6 +195,7 @@ func (r *LockingRouterState) Hostname() string {
 }
 
 func (r *LockingRouterState) SetProtocols(protocols map[string]string) {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -199,6 +209,7 @@ func (r *LockingRouterState) SetProtocols(protocols map[string]string) {
 }
 
 func (r *LockingRouterState) Protocols() map[string]string {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -213,6 +224,7 @@ func (r *LockingRouterState) Protocols() map[string]string {
 }
 
 func (r *LockingRouterState) SetSyncStatus(syncStatus RouterSyncStatus) {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -220,6 +232,7 @@ func (r *LockingRouterState) SetSyncStatus(syncStatus RouterSyncStatus) {
 }
 
 func (r *LockingRouterState) SyncStatus() RouterSyncStatus {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -227,6 +240,7 @@ func (r *LockingRouterState) SyncStatus() RouterSyncStatus {
 }
 
 func (r *LockingRouterState) SetVersionInfo(versionInfo versions.VersionInfo) {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
@@ -234,6 +248,7 @@ func (r *LockingRouterState) SetVersionInfo(versionInfo versions.VersionInfo) {
 }
 
 func (r *LockingRouterState) GetVersionInfo() versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	r.lock.Lock()
 	defer r.lock.Unlock()
 

@@ -17,11 +17,12 @@
 package loop2
 
 import (
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
-	"github.com/openziti/foundation/v2/info"
 	"crypto/sha512"
-	"github.com/michaelquigley/pfxlog"
 	"math/rand"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
 )
 
 type generator struct {
@@ -33,6 +34,7 @@ type generator struct {
 }
 
 func newGenerator(count, minSize, maxSize int) *generator {
+	logtrace.LogWithFunctionName()
 	g := &generator{
 		count:   count,
 		minSize: minSize,
@@ -44,6 +46,7 @@ func newGenerator(count, minSize, maxSize int) *generator {
 }
 
 func (g *generator) run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Debug("started")
 	defer log.Debug("complete")
@@ -72,6 +75,7 @@ func (g *generator) run() {
 }
 
 func newPool() [][]byte {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	start := info.NowInMilliseconds()
 	log.Debug("building")

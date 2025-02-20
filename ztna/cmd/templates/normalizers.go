@@ -17,6 +17,7 @@
 package templates
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
@@ -28,16 +29,19 @@ const Indentation = `  `
 
 // LongDesc normalizes a command's long description to follow the conventions.
 func LongDesc(s string) string {
+	logtrace.LogWithFunctionName()
 	return normalizer{s}.heredoc().markdown().trim().string
 }
 
 // Examples normalizes a command's examples to follow the conventions.
 func Examples(s string) string {
+	logtrace.LogWithFunctionName()
 	return normalizer{s}.trim().indent().string
 }
 
 // Normalize perform all required normalizations on a given command.
 func Normalize(cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	if len(cmd.Long) > 0 {
 		cmd.Long = LongDesc(cmd.Long)
 	}
@@ -49,6 +53,7 @@ func Normalize(cmd *cobra.Command) *cobra.Command {
 
 // NormalizeAll perform all required normalizations in the entire command tree.
 func NormalizeAll(cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	if cmd.HasSubCommands() {
 		for _, subCmd := range cmd.Commands() {
 			NormalizeAll(subCmd)
@@ -63,6 +68,7 @@ type normalizer struct {
 }
 
 func (s normalizer) markdown() normalizer {
+	logtrace.LogWithFunctionName()
 	bytes := []byte(s.string)
 	formatted := blackfriday.Markdown(bytes, &ASCIIRenderer{Indentation: Indentation}, 0)
 	s.string = string(formatted)
@@ -70,16 +76,19 @@ func (s normalizer) markdown() normalizer {
 }
 
 func (s normalizer) heredoc() normalizer {
+	logtrace.LogWithFunctionName()
 	s.string = heredoc.Doc(s.string)
 	return s
 }
 
 func (s normalizer) trim() normalizer {
+	logtrace.LogWithFunctionName()
 	s.string = strings.TrimSpace(s.string)
 	return s
 }
 
 func (s normalizer) indent() normalizer {
+	logtrace.LogWithFunctionName()
 	indentedLines := []string{}
 	for _, line := range strings.Split(s.string, "\n") {
 		trimmed := strings.TrimSpace(line)

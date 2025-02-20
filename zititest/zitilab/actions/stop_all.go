@@ -17,14 +17,18 @@
 package zitilib_actions
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/fablab/kernel/model"
 )
 
 func StopAll(hostSpec string) model.Action {
+	logtrace.LogWithFunctionName()
 	return StopAllInParallel(hostSpec, 1)
 }
 
 func StopAllInParallel(hostSpec string, concurrency int) model.Action {
+	logtrace.LogWithFunctionName()
 	return &stopAll{
 		hostSpec:    hostSpec,
 		concurrency: concurrency,
@@ -32,6 +36,7 @@ func StopAllInParallel(hostSpec string, concurrency int) model.Action {
 }
 
 func (stop *stopAll) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	return run.GetModel().ForEachHost(stop.hostSpec, stop.concurrency, func(c *model.Host) error {
 		return nil
 	})

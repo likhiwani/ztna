@@ -17,10 +17,12 @@
 package db
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 const (
@@ -56,6 +58,7 @@ type Enrollment struct {
 }
 
 func (entity *Enrollment) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeEnrollments
 }
 
@@ -73,6 +76,7 @@ type EnrollmentStore interface {
 }
 
 func newEnrollmentStore(stores *stores) *enrollmentStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &enrollmentStoreImpl{}
 	store.baseStore = newBaseStore[*Enrollment](stores, store)
 	store.InitImpl(store)
@@ -90,6 +94,7 @@ type enrollmentStoreImpl struct {
 }
 
 func (store *enrollmentStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	symbolToken := store.AddSymbol(FieldEnrollmentToken, ast.NodeTypeString)
@@ -101,6 +106,7 @@ func (store *enrollmentStoreImpl) initializeLocal() {
 }
 
 func (store *enrollmentStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddNullableFkIndex(store.symbolIdentity, store.stores.identity.symbolEnrollments)
 	store.AddNullableFkIndex(store.symbolEdgeRouter, store.stores.edgeRouter.symbolEnrollments)
 	store.AddNullableFkIndex(store.symbolTransitRouter, store.stores.transitRouter.symbolEnrollments)
@@ -108,10 +114,12 @@ func (store *enrollmentStoreImpl) initializeLinked() {
 }
 
 func (store *enrollmentStoreImpl) NewEntity() *Enrollment {
+	logtrace.LogWithFunctionName()
 	return &Enrollment{}
 }
 
 func (store *enrollmentStoreImpl) FillEntity(entity *Enrollment, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.Token = bucket.GetStringWithDefault(FieldEnrollmentToken, "")
 	entity.Method = bucket.GetStringWithDefault(FieldEnrollmentMethod, "")
 	entity.IdentityId = bucket.GetString(FieldEnrollIdentity)
@@ -125,6 +133,7 @@ func (store *enrollmentStoreImpl) FillEntity(entity *Enrollment, bucket *boltz.T
 }
 
 func (store *enrollmentStoreImpl) PersistEntity(entity *Enrollment, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	ctx.WithFieldOverrides(enrollmentFieldMappings)
 
 	ctx.SetString(FieldEnrollmentToken, entity.Token)
@@ -140,6 +149,7 @@ func (store *enrollmentStoreImpl) PersistEntity(entity *Enrollment, ctx *boltz.P
 }
 
 func (store *enrollmentStoreImpl) LoadOneByToken(tx *bbolt.Tx, token string) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	id := store.tokenIndex.Read(tx, []byte(token))
 	if id != nil {
 		return store.LoadById(tx, string(id))

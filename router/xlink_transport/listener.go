@@ -18,19 +18,21 @@ package xlink_transport
 
 import (
 	"fmt"
+	"io"
+	"sync"
+	"time"
+	fabricMetrics "ztna-core/ztna/common/metrics"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	fabricMetrics "ztna-core/ztna/common/metrics"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xlink"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"io"
-	"sync"
-	"time"
 )
 
 type listener struct {
@@ -47,6 +49,7 @@ type listener struct {
 }
 
 func (self *listener) Listen() error {
+	logtrace.LogWithFunctionName()
 	config := channel.ListenerConfig{
 		ConnectOptions:     self.config.options.ConnectOptions,
 		TransportConfig:    self.tcfg,
@@ -65,36 +68,44 @@ func (self *listener) Listen() error {
 }
 
 func (self *listener) GetAdvertisement() string {
+	logtrace.LogWithFunctionName()
 	return self.config.advertise.String()
 }
 
 func (self *listener) GetLinkProtocol() string {
+	logtrace.LogWithFunctionName()
 	return self.config.linkProtocol
 }
 
 func (self *listener) GetLinkCostTags() []string {
+	logtrace.LogWithFunctionName()
 	return self.config.linkCostTags
 }
 
 func (self *listener) GetGroups() []string {
+	logtrace.LogWithFunctionName()
 	return self.config.groups
 }
 
 func (self *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	return self.listener.Close()
 }
 
 func (self *listener) GetLocalBinding() string {
+	logtrace.LogWithFunctionName()
 	return self.config.bindInterface
 }
 
 func (self *listener) acceptNewUnderlay(underlay channel.Underlay) {
+	logtrace.LogWithFunctionName()
 	if _, err := channel.NewChannelWithUnderlay("link", underlay, self, self.config.options); err != nil {
 		logrus.WithError(err).Error("error creating link channel")
 	}
 }
 
 func (self *listener) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ChannelLogger("link", "linkListener").
 		WithField("linkProtocol", self.GetLinkProtocol()).
 		WithField("linkId", binding.GetChannel().Id())
@@ -145,6 +156,7 @@ func (self *listener) BindChannel(binding channel.Binding) error {
 }
 
 func (self *listener) bindSplitChannel(binding channel.Binding, chanType channelType, linkMeta *linkMetadata, log *logrus.Entry) error {
+	logtrace.LogWithFunctionName()
 	headers := binding.GetChannel().Underlay().Headers()
 	connId, ok := channel.Headers(headers).GetStringHeader(LinkHeaderConnId)
 	if !ok {
@@ -191,6 +203,7 @@ func (self *listener) bindSplitChannel(binding channel.Binding, chanType channel
 }
 
 func (self *listener) cleanupDeadPartialLink(id string) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -198,6 +211,7 @@ func (self *listener) cleanupDeadPartialLink(id string) {
 }
 
 func (self *listener) getOrCreateSplitLink(connId string, linkMeta *linkMetadata, binding channel.Binding, chanType channelType) (bool, *splitImpl, error) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -254,6 +268,7 @@ func (self *listener) getOrCreateSplitLink(connId string, linkMeta *linkMetadata
 }
 
 func (self *listener) bindNonSplitChannel(binding channel.Binding, linkMeta *linkMetadata, log *logrus.Entry) error {
+	logtrace.LogWithFunctionName()
 	xli := &impl{
 		id:            binding.GetChannel().Id(),
 		key:           self.xlinkRegistery.GetLinkKey(linkMeta.dialerBinding, self.GetLinkProtocol(), linkMeta.routerId, self.config.bindInterface),
@@ -292,6 +307,7 @@ func (self *listener) bindNonSplitChannel(binding channel.Binding, linkMeta *lin
 }
 
 func (self *listener) cleanupExpiredPartialLinks() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 

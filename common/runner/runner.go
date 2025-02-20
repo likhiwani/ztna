@@ -18,9 +18,11 @@ package runner
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	"time"
 )
 
 type ErrorHandler func(error, Operation)
@@ -43,6 +45,7 @@ type LimitedRunner struct {
 }
 
 func (r *LimitedRunner) IsRunning() bool {
+	logtrace.LogWithFunctionName()
 	return r.isRunning
 }
 
@@ -52,6 +55,7 @@ type tickerEnforcer struct {
 }
 
 func (r *LimitedRunner) AddOperation(e Operation) error {
+	logtrace.LogWithFunctionName()
 	d := e.GetFrequency()
 
 	if d < r.minFrequency {
@@ -75,12 +79,14 @@ func (r *LimitedRunner) AddOperation(e Operation) error {
 }
 
 func (r *LimitedRunner) RemoveOperation(e Operation) error {
+	logtrace.LogWithFunctionName()
 	_, err := r.RemovePolicyById(e.GetId())
 
 	return err
 }
 
 func (r *LimitedRunner) RemovePolicyById(id uuid.UUID) (Operation, error) {
+	logtrace.LogWithFunctionName()
 	te, ok := r.tickerEnforcers[id]
 
 	if !ok {
@@ -97,6 +103,7 @@ func (r *LimitedRunner) RemovePolicyById(id uuid.UUID) (Operation, error) {
 }
 
 func (r *LimitedRunner) Start(closeNotify <-chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	if r.isRunning {
 		return errors.New("already running")
 	}
@@ -138,6 +145,7 @@ func (r *LimitedRunner) Start(closeNotify <-chan struct{}) error {
 }
 
 func (r *LimitedRunner) Stop() error {
+	logtrace.LogWithFunctionName()
 	if !r.isRunning {
 		return errors.New("not running")
 	}
@@ -154,6 +162,7 @@ func (r *LimitedRunner) Stop() error {
 }
 
 func NewRunner(minF, maxF time.Duration, eh ErrorHandler) (Runner, error) {
+	logtrace.LogWithFunctionName()
 	if minF > maxF {
 		return nil, fmt.Errorf("min frequency may not be larger than max frequency")
 	}

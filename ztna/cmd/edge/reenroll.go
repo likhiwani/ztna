@@ -19,12 +19,14 @@ package edge
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
 	"github.com/spf13/cobra"
 )
 
 func newReEnrollCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "re-enroll",
 		Short: "re-enrolls various entities managed by the Ziti Edge Controller",

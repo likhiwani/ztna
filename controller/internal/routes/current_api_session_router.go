@@ -26,12 +26,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewCurrentSessionRouter()
 	env.AddRouter(r)
 }
@@ -40,10 +42,12 @@ type CurrentSessionRouter struct {
 }
 
 func NewCurrentSessionRouter() *CurrentSessionRouter {
+	logtrace.LogWithFunctionName()
 	return &CurrentSessionRouter{}
 }
 
 func (router *CurrentSessionRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//Client
 	ae.ClientApi.CurrentAPISessionGetCurrentAPISessionHandler = clientCurrentApiSession.GetCurrentAPISessionHandlerFunc(func(params clientCurrentApiSession.GetCurrentAPISessionParams, i interface{}) middleware.Responder {
 		return ae.IsAllowed(router.Detail, params.HTTPRequest, "", "", permissions.HasOneOf(permissions.IsAuthenticated(), permissions.IsPartiallyAuthenticated()))
@@ -87,12 +91,14 @@ func (router *CurrentSessionRouter) Register(ae *env.AppEnv) {
 }
 
 func (router *CurrentSessionRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	apiSession := MapToCurrentApiSessionRestModel(ae, rc, ae.GetConfig().Edge.SessionTimeoutDuration())
 
 	rc.Respond(rest_model.CurrentAPISessionDetailEnvelope{Data: apiSession, Meta: &rest_model.Meta{}}, http.StatusOK)
 }
 
 func (router *CurrentSessionRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	err := ae.GetManagers().ApiSession.Delete(rc.ApiSession.Id, rc.NewChangeContext())
 
 	if err != nil {
@@ -104,6 +110,7 @@ func (router *CurrentSessionRouter) Delete(ae *env.AppEnv, rc *response.RequestC
 }
 
 func (router *CurrentSessionRouter) ListCertificates(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, defaultToListEnvelope, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(ae.GetStores().ApiSessionCertificate)
 		if err != nil {
@@ -125,6 +132,7 @@ func (router *CurrentSessionRouter) ListCertificates(ae *env.AppEnv, rc *respons
 }
 
 func (router *CurrentSessionRouter) CreateCertificate(ae *env.AppEnv, rc *response.RequestContext, params clientCurrentApiSession.CreateCurrentAPISessionCertificateParams) {
+	logtrace.LogWithFunctionName()
 	responder := &ApiSessionCertificateCreateResponder{ae: ae, Responder: rc}
 	CreateWithResponder(rc, responder, CurrentApiSessionCertificateLinkFactory, func() (string, error) {
 		newApiSessionCert, err := ae.GetManagers().ApiSessionCertificate.CreateFromCSR(rc.Identity, rc.ApiSession, rc.IsJwtToken, 12*time.Hour, []byte(*params.SessionCertificate.Csr), rc.NewChangeContext())
@@ -140,6 +148,7 @@ func (router *CurrentSessionRouter) CreateCertificate(ae *env.AppEnv, rc *respon
 }
 
 func (router *CurrentSessionRouter) DetailCertificate(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	certId, _ := rc.GetEntityId()
 	cert, err := ae.GetManagers().ApiSessionCertificate.Read(certId)
 
@@ -164,6 +173,7 @@ func (router *CurrentSessionRouter) DetailCertificate(ae *env.AppEnv, rc *respon
 }
 
 func (router *CurrentSessionRouter) DeleteCertificate(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	certId, _ := rc.GetEntityId()
 	cert, err := ae.GetManagers().ApiSessionCertificate.Read(certId)
 
@@ -186,6 +196,7 @@ func (router *CurrentSessionRouter) DeleteCertificate(ae *env.AppEnv, rc *respon
 }
 
 func (router *CurrentSessionRouter) ListServiceUpdates(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	lastUpdate := rc.ApiSession.CreatedAt
 	if val, found := ae.IdentityRefreshMap.Get(rc.Identity.Id); found {
 		lastUpdate = val
@@ -206,6 +217,7 @@ type ApiSessionCertificateCreateResponder struct {
 }
 
 func (nsr *ApiSessionCertificateCreateResponder) RespondWithCreatedId(id string, _ rest_model.Link) {
+	logtrace.LogWithFunctionName()
 	certString := nsr.ApiSessionCertificate.PEM
 
 	newSessionEnvelope := &rest_model.CreateCurrentAPISessionCertificateEnvelope{

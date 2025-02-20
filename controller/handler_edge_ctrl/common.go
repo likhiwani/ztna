@@ -6,12 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/identity"
 	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
@@ -24,6 +19,13 @@ import (
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/oidc_auth"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/identity"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -48,18 +50,22 @@ type baseRequestHandler struct {
 }
 
 func (self *baseRequestHandler) getNetwork() *network.Network {
+	logtrace.LogWithFunctionName()
 	return self.appEnv.GetHostController().GetNetwork()
 }
 
 func (self *baseRequestHandler) getAppEnv() *env.AppEnv {
+	logtrace.LogWithFunctionName()
 	return self.appEnv
 }
 
 func (self *baseRequestHandler) getChannel() channel.Channel {
+	logtrace.LogWithFunctionName()
 	return self.ch
 }
 
 func (self *baseRequestHandler) returnError(ctx requestContext, err controllerError) {
+	logtrace.LogWithFunctionName()
 	responseMsg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_ErrorType), []byte(err.Error()))
 	responseMsg.PutUint32Header(edge.ErrorCodeHeader, err.ErrorCode())
 	responseMsg.ReplyTo(ctx.GetMessage())
@@ -81,6 +87,7 @@ func (self *baseRequestHandler) returnError(ctx requestContext, err controllerEr
 }
 
 func (self *baseRequestHandler) logResult(ctx requestContext, err error) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.
 		WithField("routerId", ctx.GetHandler().getChannel().Id()).
 		WithField("operation", ctx.GetHandler().Label())
@@ -121,6 +128,7 @@ type baseSessionRequestContext struct {
 }
 
 func (self *baseSessionRequestContext) getApiSessionId() string {
+	logtrace.LogWithFunctionName()
 	if self.apiSession != nil {
 		return self.apiSession.Id
 	}
@@ -128,6 +136,7 @@ func (self *baseSessionRequestContext) getApiSessionId() string {
 }
 
 func (self *baseSessionRequestContext) newChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	result := change.New().SetSourceType(change.SourceTypeControlChannel).
 		SetSourceMethod(self.handler.Label()).
 		SetSourceLocal(self.handler.getChannel().Underlay().GetLocalAddr().String()).
@@ -151,6 +160,7 @@ func (self *baseSessionRequestContext) newChangeContext() *change.Context {
 }
 
 func (self *baseSessionRequestContext) newTunnelChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return change.New().SetSourceType(change.SourceTypeControlChannel).
 		SetSourceMethod(self.handler.Label()).
 		SetSourceLocal(self.handler.getChannel().Underlay().GetLocalAddr().String()).
@@ -161,14 +171,17 @@ func (self *baseSessionRequestContext) newTunnelChangeContext() *change.Context 
 }
 
 func (self *baseSessionRequestContext) GetMessage() *channel.Message {
+	logtrace.LogWithFunctionName()
 	return self.msg
 }
 
 func (self *baseSessionRequestContext) GetHandler() requestHandler {
+	logtrace.LogWithFunctionName()
 	return self.handler
 }
 
 func (self *baseSessionRequestContext) loadRouter() bool {
+	logtrace.LogWithFunctionName()
 	routerId := self.handler.getChannel().Id()
 	var err error
 	self.sourceRouter, err = self.handler.getNetwork().GetRouter(routerId)
@@ -185,6 +198,7 @@ func (self *baseSessionRequestContext) loadRouter() bool {
 }
 
 func (self *baseSessionRequestContext) loadSession(sessionToken string, apiSessionToken string) {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(sessionToken, oidc_auth.JwtTokenPrefix) {
 		self.loadFromTokens(sessionToken, apiSessionToken)
 	} else {
@@ -223,6 +237,7 @@ func (self *baseSessionRequestContext) loadSession(sessionToken string, apiSessi
 }
 
 func (self *baseSessionRequestContext) loadFromTokens(sessionToken, apiSessionToken string) {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -286,6 +301,7 @@ func (self *baseSessionRequestContext) loadFromTokens(sessionToken, apiSessionTo
 }
 
 func (self *baseSessionRequestContext) loadFromBolt(token string) {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -321,6 +337,7 @@ func (self *baseSessionRequestContext) loadFromBolt(token string) {
 }
 
 func (self *baseSessionRequestContext) checkSessionType(sessionType string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		if self.session.Type != sessionType {
 			self.err = WrongSessionTypeError{}
@@ -333,6 +350,7 @@ func (self *baseSessionRequestContext) checkSessionType(sessionType string) {
 }
 
 func (self *baseSessionRequestContext) checkSessionFingerprints(fingerprints []string) {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -379,18 +397,21 @@ func (self *baseSessionRequestContext) checkSessionFingerprints(fingerprints []s
 }
 
 func (self *baseSessionRequestContext) verifyIdentityEdgeRouterAccess() {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		self.verifyEdgeRouterAccess(self.session.IdentityId, self.session.ServiceId)
 	}
 }
 
 func (self *baseSessionRequestContext) verifyEdgeRouterServiceBindAccess() {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		self.verifyServiceBindAccess(self.sourceRouter.Id, self.service.Id)
 	}
 }
 
 func (self *baseSessionRequestContext) verifyServiceBindAccess(identityId string, serviceId string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		// validate edge router
 		result, err := self.handler.getAppEnv().Managers.EdgeService.IsBindableByIdentity(serviceId, identityId)
@@ -410,12 +431,14 @@ func (self *baseSessionRequestContext) verifyServiceBindAccess(identityId string
 }
 
 func (self *baseSessionRequestContext) verifyRouterEdgeRouterAccess() {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		self.verifyEdgeRouterAccess(self.sourceRouter.Id, self.service.Id)
 	}
 }
 
 func (self *baseSessionRequestContext) verifyEdgeRouterAccess(identityId string, serviceId string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		// validate edge router
 		erMgr := self.handler.getAppEnv().Managers.EdgeRouter
@@ -438,6 +461,7 @@ func (self *baseSessionRequestContext) verifyEdgeRouterAccess(identityId string,
 }
 
 func (self *baseSessionRequestContext) loadService() {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		var err error
 		self.service, err = self.handler.getAppEnv().Managers.EdgeService.Read(self.session.ServiceId)
@@ -459,6 +483,7 @@ func (self *baseSessionRequestContext) loadService() {
 }
 
 func (self *baseSessionRequestContext) verifyTerminator(terminatorId string, binding string) *model.Terminator {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		var terminator *model.Terminator
 		var err error
@@ -523,6 +548,7 @@ func (self *baseSessionRequestContext) verifyTerminator(terminatorId string, bin
 }
 
 func (self *baseSessionRequestContext) verifyTerminatorId(id string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		if id == "" {
 			self.err = invalidTerminator("provided terminator id is blank")
@@ -531,6 +557,7 @@ func (self *baseSessionRequestContext) verifyTerminatorId(id string) {
 }
 
 func (self *baseSessionRequestContext) updateTerminator(terminator *model.Terminator, request UpdateTerminatorRequest, ctx *change.Context) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		checker := fields.UpdatedFieldsMap{}
 
@@ -563,6 +590,7 @@ func (self *baseSessionRequestContext) updateTerminator(terminator *model.Termin
 }
 
 func (self *baseSessionRequestContext) newCircuitCreateParms(serviceId string, peerData map[uint32][]byte) model.CreateCircuitParams {
+	logtrace.LogWithFunctionName()
 	return &sessionCircuitParams{
 		serviceId:    serviceId,
 		sourceRouter: self.sourceRouter,
@@ -574,6 +602,7 @@ func (self *baseSessionRequestContext) newCircuitCreateParms(serviceId string, p
 }
 
 func (self *baseSessionRequestContext) newTunnelCircuitCreateParms(serviceId string, peerData map[uint32][]byte) model.CreateCircuitParams {
+	logtrace.LogWithFunctionName()
 	return &tunnelCircuitParams{
 		serviceId:    serviceId,
 		sourceRouter: self.sourceRouter,
@@ -587,6 +616,7 @@ func (self *baseSessionRequestContext) newTunnelCircuitCreateParms(serviceId str
 type circuitParamsFactory = func(serviceId string, peerData map[uint32][]byte) model.CreateCircuitParams
 
 func (self *baseSessionRequestContext) createCircuit(terminatorInstanceId string, peerData map[uint32][]byte, paramsFactory circuitParamsFactory) (*model.Circuit, map[uint32][]byte) {
+	logtrace.LogWithFunctionName()
 	var circuit *model.Circuit
 	returnPeerData := map[uint32][]byte{}
 
@@ -646,18 +676,22 @@ type sessionCircuitParams struct {
 }
 
 func (self *sessionCircuitParams) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return self.serviceId
 }
 
 func (self *sessionCircuitParams) GetSourceRouter() *model.Router {
+	logtrace.LogWithFunctionName()
 	return self.sourceRouter
 }
 
 func (self *sessionCircuitParams) GetClientId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.clientId
 }
 
 func (self *sessionCircuitParams) GetCircuitTags(t xt.CostedTerminator) map[string]string {
+	logtrace.LogWithFunctionName()
 	if t == nil {
 		return map[string]string{
 			"serviceId": self.serviceId,
@@ -674,10 +708,12 @@ func (self *sessionCircuitParams) GetCircuitTags(t xt.CostedTerminator) map[stri
 }
 
 func (self *sessionCircuitParams) GetLogContext() logcontext.Context {
+	logtrace.LogWithFunctionName()
 	return self.logCtx
 }
 
 func (self *sessionCircuitParams) GetDeadline() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.deadline
 }
 
@@ -691,18 +727,22 @@ type tunnelCircuitParams struct {
 }
 
 func (self *tunnelCircuitParams) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return self.serviceId
 }
 
 func (self *tunnelCircuitParams) GetSourceRouter() *model.Router {
+	logtrace.LogWithFunctionName()
 	return self.sourceRouter
 }
 
 func (self *tunnelCircuitParams) GetClientId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.clientId
 }
 
 func (self *tunnelCircuitParams) GetCircuitTags(t xt.CostedTerminator) map[string]string {
+	logtrace.LogWithFunctionName()
 	if t == nil {
 		return map[string]string{
 			"serviceId": self.serviceId,
@@ -719,9 +759,11 @@ func (self *tunnelCircuitParams) GetCircuitTags(t xt.CostedTerminator) map[strin
 }
 
 func (self *tunnelCircuitParams) GetLogContext() logcontext.Context {
+	logtrace.LogWithFunctionName()
 	return self.logCtx
 }
 
 func (self *tunnelCircuitParams) GetDeadline() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.deadline
 }

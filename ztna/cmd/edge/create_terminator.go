@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"math"
@@ -39,6 +40,7 @@ type createTerminatorOptions struct {
 
 // newCreateTerminatorCmd creates the 'edge controller create Terminator local' command for the given entity type
 func newCreateTerminatorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createTerminatorOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -70,6 +72,7 @@ func newCreateTerminatorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateTerminator implements the command to create a Terminator
 func runCreateTerminator(o *createTerminatorOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	service, err := mapNameToID("services", o.Args[0], o.Options)
 	if err != nil {

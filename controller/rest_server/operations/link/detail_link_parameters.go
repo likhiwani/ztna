@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -41,6 +42,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewDetailLinkParams() DetailLinkParams {
+    logtrace.LogWithFunctionName()
 
 	return DetailLinkParams{}
 }
@@ -66,6 +68,7 @@ type DetailLinkParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewDetailLinkParams() beforehand.
 func (o *DetailLinkParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r
@@ -82,6 +85,7 @@ func (o *DetailLinkParams) BindRequest(r *http.Request, route *middleware.Matche
 
 // bindID binds and validates parameter ID from path.
 func (o *DetailLinkParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

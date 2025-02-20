@@ -19,8 +19,9 @@ package model
 import (
 	"crypto/x509"
 	"encoding/json"
-	"ztna-core/ztna/controller/change"
 	"net/http"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
 )
 
 type AuthResult interface {
@@ -47,10 +48,12 @@ type AuthProcessorRegistryImpl struct {
 }
 
 func (registry *AuthProcessorRegistryImpl) Add(processor AuthProcessor) {
+	logtrace.LogWithFunctionName()
 	registry.processors = append(registry.processors, processor)
 }
 
 func (registry *AuthProcessorRegistryImpl) GetByMethod(method string) AuthProcessor {
+	logtrace.LogWithFunctionName()
 	for _, processor := range registry.processors {
 		if processor.CanHandle(method) {
 			return processor
@@ -83,6 +86,7 @@ type AuthContextHttp struct {
 }
 
 func NewAuthContextHttp(request *http.Request, method string, data interface{}, ctx *change.Context) AuthContext {
+	logtrace.LogWithFunctionName()
 	//TODO: this is a giant hack to not deal w/ removing the AuthContext layer
 	sigh, _ := json.Marshal(data)
 	mapData := map[string]interface{}{}
@@ -103,28 +107,37 @@ func NewAuthContextHttp(request *http.Request, method string, data interface{}, 
 }
 
 func (context *AuthContextHttp) GetMethod() string {
+	logtrace.LogWithFunctionName()
 	return context.Method
 }
 
 func (context *AuthContextHttp) GetData() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return context.Data
 }
 
 func (context *AuthContextHttp) GetHeaders() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return context.Headers
 }
 
 func (context *AuthContextHttp) GetCerts() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return context.Certs
 }
 
 func (context *AuthContextHttp) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return context.ChangeContext
 }
 
-func (context *AuthContextHttp) GetPrimaryIdentity() *Identity { return context.PrimaryIdentity }
+func (context *AuthContextHttp) GetPrimaryIdentity() *Identity {
+	logtrace.LogWithFunctionName()
+	return context.PrimaryIdentity
+}
 
 func (context *AuthContextHttp) SetPrimaryIdentity(primaryIdentity *Identity) {
+	logtrace.LogWithFunctionName()
 	context.PrimaryIdentity = primaryIdentity
 }
 
@@ -140,18 +153,22 @@ type AuthResultBase struct {
 }
 
 func (a *AuthResultBase) AuthenticatorId() string {
+	logtrace.LogWithFunctionName()
 	return a.authenticatorId
 }
 
 func (a *AuthResultBase) SessionCerts() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return a.sessionCerts
 }
 
 func (a *AuthResultBase) Identity() *Identity {
+	logtrace.LogWithFunctionName()
 	return a.identity
 }
 
 func (a *AuthResultBase) Authenticator() *Authenticator {
+	logtrace.LogWithFunctionName()
 	if a.authenticator == nil {
 		a.authenticator, _ = a.env.GetManagers().Authenticator.Read(a.authenticatorId)
 	}
@@ -159,9 +176,11 @@ func (a *AuthResultBase) Authenticator() *Authenticator {
 }
 
 func (a *AuthResultBase) AuthPolicy() *AuthPolicy {
+	logtrace.LogWithFunctionName()
 	return a.authPolicy
 }
 
 func (a *AuthResultBase) IsSuccessful() bool {
+	logtrace.LogWithFunctionName()
 	return a.identity != nil
 }

@@ -18,6 +18,15 @@ package model
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/apierror"
+	fabricApiError "ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/lucsky/cuid"
@@ -25,17 +34,11 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/controller/apierror"
-	fabricApiError "ztna-core/ztna/controller/apierror"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 func NewSessionManager(env Env) *SessionManager {
+	logtrace.LogWithFunctionName()
 	manager := &SessionManager{
 		baseEntityManager: newBaseEntityManager[*Session, *db.Session](env, env.GetStores().Session),
 	}
@@ -48,6 +51,7 @@ type SessionManager struct {
 }
 
 func (self *SessionManager) newModelEntity() *Session {
+	logtrace.LogWithFunctionName()
 	return &Session{}
 }
 
@@ -59,6 +63,7 @@ type SessionPostureResult struct {
 }
 
 func (self *SessionManager) EvaluatePostureForService(identityId, apiSessionId, sessionType, serviceId, serviceName string) *SessionPostureResult {
+	logtrace.LogWithFunctionName()
 
 	failureByPostureCheckId := map[string]*PostureCheckFailure{} //cache individual check status
 	validPosture := false
@@ -155,6 +160,7 @@ func (self *SessionManager) EvaluatePostureForService(identityId, apiSessionId, 
 }
 
 func (self *SessionManager) CreateJwt(entity *Session, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	entity.Id = uuid.New().String()
 
 	service, err := self.GetEnv().GetManagers().EdgeService.ReadForIdentity(entity.ServiceId, entity.IdentityId, nil)
@@ -210,6 +216,7 @@ func (self *SessionManager) CreateJwt(entity *Session, ctx *change.Context) (str
 }
 
 func (self *SessionManager) Create(entity *Session, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	if self.getExistingSessionEntity(entity) {
 		return entity.Id, nil
 	}
@@ -263,6 +270,7 @@ func (self *SessionManager) Create(entity *Session, ctx *change.Context) (string
 }
 
 func (self *SessionManager) createSessionEntity(session *Session, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	var id string
 	err := self.GetDb().Update(ctx.NewMutateContext(), func(ctx boltz.MutateContext) error {
 		if self.getExistingSessionEntityInTx(ctx.Tx(), session) {
@@ -282,6 +290,7 @@ func (self *SessionManager) createSessionEntity(session *Session, ctx *change.Co
 }
 
 func (self *SessionManager) getExistingSessionEntity(session *Session) bool {
+	logtrace.LogWithFunctionName()
 	var result bool
 	_ = self.GetDb().View(func(tx *bbolt.Tx) error {
 		result = self.getExistingSessionEntityInTx(tx, session)
@@ -291,6 +300,7 @@ func (self *SessionManager) getExistingSessionEntity(session *Session) bool {
 }
 
 func (self *SessionManager) getExistingSessionEntityInTx(tx *bbolt.Tx, session *Session) bool {
+	logtrace.LogWithFunctionName()
 	sessionId := self.env.GetStores().ApiSession.GetCachedSessionId(tx, session.ApiSessionId, session.Type, session.ServiceId)
 	if sessionId != nil {
 		if existingSession, _ := self.readInTx(tx, *sessionId); existingSession != nil {
@@ -303,6 +313,7 @@ func (self *SessionManager) getExistingSessionEntityInTx(tx *bbolt.Tx, session *
 }
 
 func (self *SessionManager) ReadByToken(token string) (*Session, error) {
+	logtrace.LogWithFunctionName()
 	modelSession := &Session{}
 	tokenIndex := self.env.GetStores().Session.GetTokenIndex()
 	if err := self.readEntityWithIndex("token", []byte(token), tokenIndex, modelSession); err != nil {
@@ -312,6 +323,7 @@ func (self *SessionManager) ReadByToken(token string) (*Session, error) {
 }
 
 func (self *SessionManager) ReadForIdentity(id string, identityId string) (*Session, error) {
+	logtrace.LogWithFunctionName()
 	identity, err := self.GetEnv().GetManagers().Identity.Read(identityId)
 
 	if err != nil {
@@ -333,6 +345,7 @@ func (self *SessionManager) ReadForIdentity(id string, identityId string) (*Sess
 }
 
 func (self *SessionManager) Read(id string) (*Session, error) {
+	logtrace.LogWithFunctionName()
 	entity := &Session{}
 	if err := self.readEntity(id, entity); err != nil {
 		return nil, err
@@ -341,6 +354,7 @@ func (self *SessionManager) Read(id string) (*Session, error) {
 }
 
 func (self *SessionManager) DeleteForIdentity(id, identityId string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	session, err := self.ReadForIdentity(id, identityId)
 	if err != nil {
 		return err
@@ -352,10 +366,12 @@ func (self *SessionManager) DeleteForIdentity(id, identityId string, ctx *change
 }
 
 func (self *SessionManager) Delete(id string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.deleteEntity(id, ctx)
 }
 
 func (self *SessionManager) PublicQueryForIdentity(sessionIdentity *Identity, query ast.Query) (*SessionListResult, error) {
+	logtrace.LogWithFunctionName()
 	if sessionIdentity.IsAdmin {
 		return self.querySessions(query)
 	}
@@ -369,6 +385,7 @@ func (self *SessionManager) PublicQueryForIdentity(sessionIdentity *Identity, qu
 }
 
 func (self *SessionManager) Query(query string) (*SessionListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &SessionListResult{manager: self}
 	err := self.ListWithHandler(query, result.collect)
 	if err != nil {
@@ -378,6 +395,7 @@ func (self *SessionManager) Query(query string) (*SessionListResult, error) {
 }
 
 func (self *SessionManager) querySessions(query ast.Query) (*SessionListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &SessionListResult{manager: self}
 	err := self.PreparedListWithHandler(query, result.collect)
 	if err != nil {
@@ -387,6 +405,7 @@ func (self *SessionManager) querySessions(query ast.Query) (*SessionListResult, 
 }
 
 func (self *SessionManager) ListSessionsForEdgeRouter(edgeRouterId string) (*SessionListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &SessionListResult{manager: self}
 	query := fmt.Sprintf(`anyOf(apiSession.identity.edgeRouterPolicies.routers) = "%v" and `+
 		`anyOf(service.serviceEdgeRouterPolicies.routers) = "%v"`, edgeRouterId, edgeRouterId)
@@ -404,6 +423,7 @@ type SessionListResult struct {
 }
 
 func (result *SessionListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		entity, err := result.manager.readInTx(tx, key)

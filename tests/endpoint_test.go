@@ -2,6 +2,7 @@ package tests
 
 import (
 	"testing"
+	"ztna-core/ztna/logtrace"
 )
 
 // Test_Endpoints does HTTP testing against public entry URLs to ensure they continue to function.
@@ -9,6 +10,7 @@ import (
 // The .well-known path has many handlers among different APIs and tests for those should exist
 // perpetuity.
 func Test_Endpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

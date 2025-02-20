@@ -25,12 +25,14 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 	"github.com/openziti/foundation/v2/errorz"
 )
 
 func Test_Configs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

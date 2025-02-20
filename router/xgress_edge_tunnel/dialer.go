@@ -17,18 +17,21 @@
 package xgress_edge_tunnel
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/xgress_common"
-	"ztna-core/ztna/tunnel"
-	"ztna-core/ztna/controller/xt"
+	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
-	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/router/xgress_common"
+	"ztna-core/ztna/tunnel"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
 )
 
 func (self *tunneler) IsTerminatorValid(_ string, destination string) bool {
+	logtrace.LogWithFunctionName()
 	terminator, found := self.terminators.Get(destination)
 	if terminator != nil {
 		terminator.created.Store(true)
@@ -38,6 +41,7 @@ func (self *tunneler) IsTerminatorValid(_ string, destination string) bool {
 }
 
 func (self *tunneler) Dial(params xgress.DialParams) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	destination := params.GetDestination()
 	circuitId := params.GetCircuitId()
 

@@ -6,14 +6,17 @@ import (
 	service2 "ztna-core/edge-api/rest_client_api_client/service"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/oidc_auth"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 
 	"github.com/golang-jwt/jwt/v5"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
 	"github.com/zitadel/oidc/v2/pkg/oidc"
 	"golang.org/x/oauth2"
 )
 
 func Test_Authenticate_OIDC_Refresh(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

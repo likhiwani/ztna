@@ -7,22 +7,25 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/ztna/controller/event"
-	"gopkg.in/go-jose/go-jose.v2"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/foundation/v2/errorz"
+	"gopkg.in/go-jose/go-jose.v2"
+
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/stringz"
 	cmap "github.com/orcaman/concurrent-map/v2"
 
 	"github.com/google/uuid"
@@ -65,6 +68,7 @@ type Storage interface {
 }
 
 func NewRevocation(tokenId string, expiresAt time.Time) *model.Revocation {
+	logtrace.LogWithFunctionName()
 	return &model.Revocation{
 		BaseEntity: models.BaseEntity{
 			Id: tokenId,
@@ -97,6 +101,7 @@ type HybridStorage struct {
 }
 
 func (s *HybridStorage) StartTotpEnrollment(changeCtx *change.Context, authRequestId string) (string, error) {
+	logtrace.LogWithFunctionName()
 	authRequest, err := s.GetAuthRequest(authRequestId)
 
 	if err != nil {
@@ -107,6 +112,7 @@ func (s *HybridStorage) StartTotpEnrollment(changeCtx *change.Context, authReque
 }
 
 func (s *HybridStorage) CompleteTotpEnrollment(changeCtx *change.Context, authRequestId, code string) error {
+	logtrace.LogWithFunctionName()
 	authRequest, err := s.GetAuthRequest(authRequestId)
 
 	if err != nil {
@@ -117,12 +123,14 @@ func (s *HybridStorage) CompleteTotpEnrollment(changeCtx *change.Context, authRe
 }
 
 func (s *HybridStorage) AddClient(client *Client) {
+	logtrace.LogWithFunctionName()
 	s.clients.Set(client.id, client)
 }
 
 var _ Storage = &HybridStorage{}
 
 func NewStorage(kid string, publicKey crypto.PublicKey, privateKey crypto.PrivateKey, singingMethod jwt.SigningMethod, config *Config, env model.Env) *HybridStorage {
+	logtrace.LogWithFunctionName()
 	store := &HybridStorage{
 		env: env,
 		signingKey: key{
@@ -147,6 +155,7 @@ func NewStorage(kid string, publicKey crypto.PublicKey, privateKey crypto.Privat
 
 // start will run Clean every 10 seconds
 func (s *HybridStorage) start() {
+	logtrace.LogWithFunctionName()
 	s.startOnce.Do(func() {
 		closeNotify := s.env.GetCloseNotifyChannel()
 		ticker := time.NewTicker(10 * time.Second)
@@ -166,6 +175,7 @@ func (s *HybridStorage) start() {
 
 // Clean removes abandoned auth requests and associated data
 func (s *HybridStorage) Clean() {
+	logtrace.LogWithFunctionName()
 	var deleteKeys []string
 	oldest := time.Now().Add(-10 * time.Minute)
 	s.authRequests.IterCb(func(key string, v *AuthRequest) {
@@ -194,6 +204,7 @@ func (s *HybridStorage) Clean() {
 
 // Authenticate will verify supplied credentials and update the primary authentication status of an AuthRequest
 func (s *HybridStorage) Authenticate(authCtx model.AuthContext, id string, configTypes []string) (*AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	authRequest, ok := s.authRequests.Get(id)
 
 	if !ok {
@@ -252,6 +263,7 @@ func (s *HybridStorage) Authenticate(authCtx model.AuthContext, id string, confi
 
 // IsTokenRevoked returns true or false if a token has been revoked
 func (s *HybridStorage) IsTokenRevoked(tokenId string) bool {
+	logtrace.LogWithFunctionName()
 	revocation, _ := s.env.GetManagers().Revocation.Read(tokenId)
 
 	return revocation != nil
@@ -259,6 +271,7 @@ func (s *HybridStorage) IsTokenRevoked(tokenId string) bool {
 
 // VerifyTotp will update and return the AuthRequest associated with `id`
 func (s *HybridStorage) VerifyTotp(ctx *change.Context, code string, id string) (*AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	code = strings.TrimSpace(code)
 	id = strings.TrimSpace(id)
 
@@ -308,6 +321,7 @@ func (s *HybridStorage) VerifyTotp(ctx *change.Context, code string, id string) 
 
 // CreateAuthRequest creates a new AuthRequest based on an incoming request, implements the op.Storage interface
 func (s *HybridStorage) CreateAuthRequest(ctx context.Context, authReq *oidc.AuthRequest, identityId string) (op.AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	httpRequest, err := HttpRequestFromContext(ctx)
 
 	if httpRequest == nil || err != nil {
@@ -354,11 +368,13 @@ func (s *HybridStorage) CreateAuthRequest(ctx context.Context, authReq *oidc.Aut
 
 // AuthRequestByID implements the op.Storage interface
 func (s *HybridStorage) AuthRequestByID(_ context.Context, id string) (op.AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	return s.GetAuthRequest(id)
 }
 
 // GetAuthRequest returns an AuthRequest by id
 func (s *HybridStorage) GetAuthRequest(id string) (*AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	request, ok := s.authRequests.Get(id)
 	if !ok {
 		return nil, fmt.Errorf("request not found")
@@ -368,6 +384,7 @@ func (s *HybridStorage) GetAuthRequest(id string) (*AuthRequest, error) {
 
 // AuthRequestByCode implements the op.Storage interface
 func (s *HybridStorage) AuthRequestByCode(ctx context.Context, code string) (op.AuthRequest, error) {
+	logtrace.LogWithFunctionName()
 	requestID, ok := func() (string, bool) {
 		requestID, ok := s.codes.Get(code)
 		return requestID, ok
@@ -380,12 +397,14 @@ func (s *HybridStorage) AuthRequestByCode(ctx context.Context, code string) (op.
 
 // SaveAuthCode implements the op.Storage interface
 func (s *HybridStorage) SaveAuthCode(_ context.Context, id string, code string) error {
+	logtrace.LogWithFunctionName()
 	s.codes.Set(code, id)
 	return nil
 }
 
 // DeleteAuthRequest implements the op.Storage interface
 func (s *HybridStorage) DeleteAuthRequest(_ context.Context, id string) error {
+	logtrace.LogWithFunctionName()
 	s.authRequests.Remove(id)
 
 	var toRemove []string
@@ -404,6 +423,7 @@ func (s *HybridStorage) DeleteAuthRequest(_ context.Context, id string) error {
 
 // CreateAccessToken implements the op.Storage interface
 func (s *HybridStorage) CreateAccessToken(ctx context.Context, request op.TokenRequest) (string, time.Time, error) {
+	logtrace.LogWithFunctionName()
 	accessTokenId, accessClaims, err := s.createAccessToken(ctx, request)
 
 	if err != nil {
@@ -423,6 +443,7 @@ func (s *HybridStorage) CreateAccessToken(ctx context.Context, request op.TokenR
 
 // createAccessToken converts an op.TokenRequest into an access token
 func (s *HybridStorage) createAccessToken(ctx context.Context, request op.TokenRequest) (string, *common.AccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 
 	claims := &common.AccessClaims{
@@ -539,6 +560,7 @@ func (s *HybridStorage) createAccessToken(ctx context.Context, request op.TokenR
 
 // CreateAccessAndRefreshTokens implements the op.Storage interface
 func (s *HybridStorage) CreateAccessAndRefreshTokens(ctx context.Context, request op.TokenRequest, currentRefreshToken string) (accessTokenID string, newRefreshToken string, expiration time.Time, err error) {
+	logtrace.LogWithFunctionName()
 	accessTokenId, accessClaims, err := s.createAccessToken(ctx, request)
 
 	if err != nil {
@@ -575,6 +597,7 @@ func (s *HybridStorage) CreateAccessAndRefreshTokens(ctx context.Context, reques
 
 // parseRefreshToken parses a JWT refresh token
 func (s *HybridStorage) parseRefreshToken(tokenStr string) (*jwt.Token, *common.RefreshClaims, error) {
+	logtrace.LogWithFunctionName()
 	refreshClaims := &common.RefreshClaims{}
 	parsedToken, err := jwt.ParseWithClaims(tokenStr, refreshClaims, s.env.JwtSignerKeyFunc)
 
@@ -595,6 +618,7 @@ func (s *HybridStorage) parseRefreshToken(tokenStr string) (*jwt.Token, *common.
 
 // parseAccessToken parses a JWT access token
 func (s *HybridStorage) parseAccessToken(tokenStr string) (*jwt.Token, *common.AccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	accessClaims := &common.AccessClaims{}
 	parsedToken, err := jwt.ParseWithClaims(tokenStr, accessClaims, s.env.JwtSignerKeyFunc)
 
@@ -611,6 +635,7 @@ func (s *HybridStorage) parseAccessToken(tokenStr string) (*jwt.Token, *common.A
 
 // TokenRequestByRefreshToken implements the op.Storage interface
 func (s *HybridStorage) TokenRequestByRefreshToken(_ context.Context, refreshToken string) (op.RefreshTokenRequest, error) {
+	logtrace.LogWithFunctionName()
 	_, token, err := s.parseRefreshToken(refreshToken)
 	if err != nil {
 		return nil, err
@@ -620,12 +645,14 @@ func (s *HybridStorage) TokenRequestByRefreshToken(_ context.Context, refreshTok
 
 // TerminateSession implements the op.Storage interface
 func (s *HybridStorage) TerminateSession(_ context.Context, identityId string, clientID string) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	return s.saveRevocation(NewRevocation(identityId+","+clientID, now.Add(s.config.MaxTokenDuration())))
 }
 
 // GetRefreshTokenInfo implements the op.Storage interface
 func (s *HybridStorage) GetRefreshTokenInfo(_ context.Context, _ string, token string) (identityId string, tokenID string, err error) {
+	logtrace.LogWithFunctionName()
 	_, refreshClaims, err := s.parseRefreshToken(token)
 
 	if err != nil {
@@ -636,6 +663,7 @@ func (s *HybridStorage) GetRefreshTokenInfo(_ context.Context, _ string, token s
 
 // RevokeToken implements the op.Storage interface
 func (s *HybridStorage) RevokeToken(_ context.Context, tokenIDOrToken string, _ string, _ string) *oidc.Error {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(tokenIDOrToken, JwtTokenPrefix) {
 		_, claims, err := s.parseRefreshToken(tokenIDOrToken)
 
@@ -659,16 +687,19 @@ func (s *HybridStorage) RevokeToken(_ context.Context, tokenIDOrToken string, _ 
 
 // SigningKey implements the op.Storage interface
 func (s *HybridStorage) SigningKey(_ context.Context) (op.SigningKey, error) {
+	logtrace.LogWithFunctionName()
 	return &s.signingKey, nil
 }
 
 // SignatureAlgorithms implements the op.Storage interface
 func (s *HybridStorage) SignatureAlgorithms(context.Context) ([]jose.SignatureAlgorithm, error) {
+	logtrace.LogWithFunctionName()
 	return []jose.SignatureAlgorithm{s.signingKey.Algorithm()}, nil
 }
 
 // KeySet implements the op.Storage interface
 func (s *HybridStorage) KeySet(_ context.Context) ([]op.Key, error) {
+	logtrace.LogWithFunctionName()
 	signers := s.env.GetPeerSigners()
 
 	for _, cert := range signers {
@@ -709,6 +740,7 @@ func (s *HybridStorage) KeySet(_ context.Context) ([]op.Key, error) {
 
 // GetClientByClientID implements the op.Storage interface
 func (s *HybridStorage) GetClientByClientID(_ context.Context, clientID string) (op.Client, error) {
+	logtrace.LogWithFunctionName()
 	client, ok := s.clients.Get(clientID)
 	if !ok {
 		return nil, fmt.Errorf("client not found")
@@ -718,6 +750,7 @@ func (s *HybridStorage) GetClientByClientID(_ context.Context, clientID string) 
 
 // AuthorizeClientIDSecret implements the op.Storage interface
 func (s *HybridStorage) AuthorizeClientIDSecret(_ context.Context, clientID, clientSecret string) error {
+	logtrace.LogWithFunctionName()
 	client, ok := s.clients.Get(clientID)
 	if !ok {
 		return fmt.Errorf("client not found")
@@ -732,16 +765,19 @@ func (s *HybridStorage) AuthorizeClientIDSecret(_ context.Context, clientID, cli
 
 // SetUserinfoFromScopes implements the op.Storage interface.
 func (s *HybridStorage) SetUserinfoFromScopes(_ context.Context, _ *oidc.UserInfo, _, _ string, _ []string) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 // SetUserinfoFromRequest implements the op.CanSetUserinfoFromRequest interface.
 func (s *HybridStorage) SetUserinfoFromRequest(_ context.Context, userinfo *oidc.UserInfo, token op.IDTokenRequest, scopes []string) error {
+	logtrace.LogWithFunctionName()
 	return s.setInfo(userinfo, token.GetSubject(), scopes)
 }
 
 // SetUserinfoFromToken implements the op.Storage interface
 func (s *HybridStorage) SetUserinfoFromToken(ctx context.Context, userinfo *oidc.UserInfo, tokenID, subject, _ string) error {
+	logtrace.LogWithFunctionName()
 	httpRequest, err := HttpRequestFromContext(ctx)
 
 	if s.IsTokenRevoked(tokenID) {
@@ -773,15 +809,18 @@ func (s *HybridStorage) SetUserinfoFromToken(ctx context.Context, userinfo *oidc
 
 // SetIntrospectionFromToken implements the op.Storage interface
 func (s *HybridStorage) SetIntrospectionFromToken(_ context.Context, _ *oidc.IntrospectionResponse, _, _, _ string) error {
+	logtrace.LogWithFunctionName()
 	return fmt.Errorf("unsupported")
 }
 
 // GetPrivateClaimsFromScopes implements the op.Storage interface
 func (s *HybridStorage) GetPrivateClaimsFromScopes(ctx context.Context, identityId, clientID string, scopes []string) (claims map[string]interface{}, err error) {
+	logtrace.LogWithFunctionName()
 	return s.getPrivateClaims(ctx, identityId, clientID, scopes)
 }
 
 func (s *HybridStorage) getPrivateClaims(ctx context.Context, _, clientId string, scopes []string) (claims map[string]interface{}, err error) {
+	logtrace.LogWithFunctionName()
 	tokenState, err := TokenStateFromContext(ctx)
 
 	if err != nil {
@@ -795,6 +834,7 @@ func (s *HybridStorage) getPrivateClaims(ctx context.Context, _, clientId string
 
 // GetKeyByIDAndClientID implements the op.Storage interface
 func (s *HybridStorage) GetKeyByIDAndClientID(_ context.Context, keyID, _ string) (*jose.JSONWebKey, error) {
+	logtrace.LogWithFunctionName()
 	targetKey, found := s.keys.Get(keyID)
 
 	if !found {
@@ -810,6 +850,7 @@ func (s *HybridStorage) GetKeyByIDAndClientID(_ context.Context, keyID, _ string
 
 // ValidateJWTProfileScopes implements the op.Storage interface
 func (s *HybridStorage) ValidateJWTProfileScopes(_ context.Context, _ string, scopes []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	allowedScopes := make([]string, 0)
 	for _, scope := range scopes {
 		if scope == oidc.ScopeOpenID || scope == oidc.ScopeOfflineAccess {
@@ -821,10 +862,12 @@ func (s *HybridStorage) ValidateJWTProfileScopes(_ context.Context, _ string, sc
 
 // Health implements the op.Storage interface
 func (s *HybridStorage) Health(_ context.Context) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (s *HybridStorage) createRefreshClaims(accessClaims *common.AccessClaims) (string, *common.RefreshClaims, error) {
+	logtrace.LogWithFunctionName()
 	claims := &common.RefreshClaims{
 		IDTokenClaims: oidc.IDTokenClaims{
 			TokenClaims: accessClaims.TokenClaims,
@@ -842,10 +885,12 @@ func (s *HybridStorage) createRefreshClaims(accessClaims *common.AccessClaims) (
 }
 
 func (s *HybridStorage) saveRevocation(revocation *model.Revocation) error {
+	logtrace.LogWithFunctionName()
 	return s.env.GetManagers().Revocation.Create(revocation, change.New())
 }
 
 func (s *HybridStorage) renewRefreshToken(currentRefreshToken string) (string, *common.RefreshClaims, error) {
+	logtrace.LogWithFunctionName()
 	_, refreshClaims, err := s.parseRefreshToken(currentRefreshToken)
 
 	if err != nil {
@@ -872,6 +917,7 @@ func (s *HybridStorage) renewRefreshToken(currentRefreshToken string) (string, *
 }
 
 func (s *HybridStorage) setInfo(userInfo *oidc.UserInfo, identityId string, scopes []string) (err error) {
+	logtrace.LogWithFunctionName()
 	identity, err := s.env.GetManagers().Identity.Read(identityId)
 
 	if err != nil {
@@ -898,6 +944,7 @@ func (s *HybridStorage) setInfo(userInfo *oidc.UserInfo, identityId string, scop
 }
 
 func tokenTypeToName(oidcType oidc.TokenType) string {
+	logtrace.LogWithFunctionName()
 	switch oidcType {
 	case oidc.AccessTokenType:
 		return "access_token"
@@ -913,6 +960,7 @@ func tokenTypeToName(oidcType oidc.TokenType) string {
 
 // ValidateTokenExchangeRequest implements the op.TokenExchangeStorage interface
 func (s *HybridStorage) ValidateTokenExchangeRequest(ctx context.Context, request op.TokenExchangeRequest) error {
+	logtrace.LogWithFunctionName()
 	if request.GetRequestedTokenType() == "" {
 		request.SetRequestedTokenType(oidc.RefreshTokenType)
 	}
@@ -957,11 +1005,13 @@ func (s *HybridStorage) ValidateTokenExchangeRequest(ctx context.Context, reques
 }
 
 func (s *HybridStorage) CreateTokenExchangeRequest(_ context.Context, req op.TokenExchangeRequest) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 // GetPrivateClaimsFromTokenExchangeRequest implements the op.TokenExchangeStorage interface
 func (s *HybridStorage) GetPrivateClaimsFromTokenExchangeRequest(ctx context.Context, request op.TokenExchangeRequest) (claims map[string]interface{}, err error) {
+	logtrace.LogWithFunctionName()
 	claims, err = s.getPrivateClaims(ctx, "", request.GetClientID(), request.GetScopes())
 	if err != nil {
 		return nil, err
@@ -976,6 +1026,7 @@ func (s *HybridStorage) GetPrivateClaimsFromTokenExchangeRequest(ctx context.Con
 
 // SetUserinfoFromTokenExchangeRequest implements the op.TokenExchangeStorage interface
 func (s *HybridStorage) SetUserinfoFromTokenExchangeRequest(ctx context.Context, userinfo *oidc.UserInfo, request op.TokenExchangeRequest) error {
+	logtrace.LogWithFunctionName()
 	err := s.setInfo(userinfo, request.GetSubject(), request.GetScopes())
 	if err != nil {
 		return err
@@ -989,10 +1040,12 @@ func (s *HybridStorage) SetUserinfoFromTokenExchangeRequest(ctx context.Context,
 }
 
 func (s *HybridStorage) getTokenExchangeClaims(_ context.Context, _ op.TokenExchangeRequest) (claims map[string]interface{}) {
+	logtrace.LogWithFunctionName()
 	return claims
 }
 
 func appendClaim(claims map[string]interface{}, claim string, value interface{}) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if claims == nil {
 		claims = make(map[string]interface{})
 	}
@@ -1008,6 +1061,7 @@ type deviceAuthorizationEntry struct {
 
 // StoreDeviceAuthorization implements op.DeviceAuthorizationStorage
 func (s *HybridStorage) StoreDeviceAuthorization(_ context.Context, clientID, deviceCode, userCode string, expires time.Time, scopes []string) error {
+	logtrace.LogWithFunctionName()
 
 	if _, ok := s.clients.Get(clientID); !ok {
 		return errors.New("client not found")
@@ -1035,6 +1089,7 @@ func (s *HybridStorage) StoreDeviceAuthorization(_ context.Context, clientID, de
 
 // GetDeviceAuthorizatonState implements op.DeviceAuthorizationStorage
 func (s *HybridStorage) GetDeviceAuthorizatonState(ctx context.Context, clientID, deviceCode string) (*op.DeviceAuthorizationState, error) {
+	logtrace.LogWithFunctionName()
 	if ctx.Err() != nil {
 		return nil, ctx.Err()
 	}
@@ -1049,6 +1104,7 @@ func (s *HybridStorage) GetDeviceAuthorizatonState(ctx context.Context, clientID
 
 // GetDeviceAuthorizationByUserCode implements op.DeviceAuthorizationStorage
 func (s *HybridStorage) GetDeviceAuthorizationByUserCode(_ context.Context, userCode string) (*op.DeviceAuthorizationState, error) {
+	logtrace.LogWithFunctionName()
 	code, ok := s.userCodes.Get(userCode)
 
 	if !ok {
@@ -1065,6 +1121,7 @@ func (s *HybridStorage) GetDeviceAuthorizationByUserCode(_ context.Context, user
 
 // CompleteDeviceAuthorization implements op.DeviceAuthorizationStorage
 func (s *HybridStorage) CompleteDeviceAuthorization(_ context.Context, userCode, subject string) error {
+	logtrace.LogWithFunctionName()
 	code, ok := s.userCodes.Get(userCode)
 
 	if !ok {
@@ -1084,6 +1141,7 @@ func (s *HybridStorage) CompleteDeviceAuthorization(_ context.Context, userCode,
 
 // DenyDeviceAuthorization implements op.DeviceAuthorizationStorage
 func (s *HybridStorage) DenyDeviceAuthorization(_ context.Context, userCode string) error {
+	logtrace.LogWithFunctionName()
 	code, ok := s.userCodes.Get(userCode)
 
 	if !ok {
@@ -1102,6 +1160,7 @@ func (s *HybridStorage) DenyDeviceAuthorization(_ context.Context, userCode stri
 
 // AuthRequestDone is used by testing and is not required to implement op.Storage
 func (s *HybridStorage) AuthRequestDone(id string) error {
+	logtrace.LogWithFunctionName()
 	if req, ok := s.authRequests.Get(id); ok {
 		if req.HasFullAuth() {
 			return nil
@@ -1114,6 +1173,7 @@ func (s *HybridStorage) AuthRequestDone(id string) error {
 
 // ClientCredentials implements op.ClientCredentialsStorage
 func (s *HybridStorage) ClientCredentials(_ context.Context, clientID, clientSecret string) (op.Client, error) {
+	logtrace.LogWithFunctionName()
 	client, ok := s.serviceUsers.Get(clientID)
 
 	if !ok {
@@ -1129,6 +1189,7 @@ func (s *HybridStorage) ClientCredentials(_ context.Context, clientID, clientSec
 
 // ClientCredentialsTokenRequest implements op.ClientCredentialsStorage
 func (s *HybridStorage) ClientCredentialsTokenRequest(_ context.Context, clientID string, scopes []string) (op.TokenRequest, error) {
+	logtrace.LogWithFunctionName()
 	client, ok := s.serviceUsers.Get(clientID)
 	if !ok {
 		return nil, errors.New("wrong service user or password")
@@ -1142,6 +1203,7 @@ func (s *HybridStorage) ClientCredentialsTokenRequest(_ context.Context, clientI
 }
 
 func getAccessToken(r *http.Request) (string, error) {
+	logtrace.LogWithFunctionName()
 	authHeader := r.Header.Get("authorization")
 	if authHeader == "" {
 		return "", errors.New("no auth header")

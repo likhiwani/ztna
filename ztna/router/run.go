@@ -18,27 +18,30 @@ package router
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/agent"
-	"github.com/openziti/foundation/v2/debugz"
+	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/version"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router"
 	"ztna-core/ztna/router/debugops"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_edge"
 	"ztna-core/ztna/router/xgress_edge_transport"
 	"ztna-core/ztna/router/xgress_edge_tunnel"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/agent"
+	"github.com/openziti/foundation/v2/debugz"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"net"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 func NewRunCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	var runCmd = &cobra.Command{
 		Use:   "run <config>",
 		Short: "Run router configuration",
@@ -52,6 +55,7 @@ func NewRunCmd() *cobra.Command {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	startLogger := logrus.WithField("version", version.GetVersion()).
 		WithField("go-version", version.GetGoVersion()).
 		WithField("os", version.GetOS()).
@@ -123,6 +127,7 @@ func run(cmd *cobra.Command, args []string) {
 }
 
 func getFlags(cmd *cobra.Command) map[string]*pflag.Flag {
+	logtrace.LogWithFunctionName()
 	ret := map[string]*pflag.Flag{}
 	cmd.Flags().Visit(func(f *pflag.Flag) {
 		ret[f.Name] = f
@@ -131,6 +136,7 @@ func getFlags(cmd *cobra.Command) map[string]*pflag.Flag {
 }
 
 func waitForShutdown(r *router.Router) {
+	logtrace.LogWithFunctionName()
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
 

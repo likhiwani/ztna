@@ -8,12 +8,15 @@ import (
 	"testing"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestExecuteCreateConfigRouterFabricHasNonBlankTemplateValues(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	routerName := "MyFabricRouter"
 
@@ -44,6 +47,7 @@ func TestExecuteCreateConfigRouterFabricHasNonBlankTemplateValues(t *testing.T) 
 }
 
 func TestFabricRouterIPOverrideIsConsumed(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	routerName := "MyFabricRouter"
 	externalIP := "123.456.78.9"
@@ -68,6 +72,7 @@ func TestFabricRouterIPOverrideIsConsumed(t *testing.T) {
 }
 
 func TestFabricRouterHasNoListeners(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 
 	// Create and run the CLI command
@@ -78,6 +83,7 @@ func TestFabricRouterHasNoListeners(t *testing.T) {
 }
 
 func TestBlankFabricRouterNameBecomesHostname(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	hostname, _ := os.Hostname()
 	blank := ""
@@ -96,6 +102,7 @@ func TestBlankFabricRouterNameBecomesHostname(t *testing.T) {
 }
 
 func TestFabricRouterOutputPathDoesNotExist(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 
 	// Set the router options
@@ -110,6 +117,7 @@ func TestFabricRouterOutputPathDoesNotExist(t *testing.T) {
 }
 
 func TestDefaultZitiFabricRouterListenerBindPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	expectedDefaultPortStr := strconv.Itoa(testDefaultRouterListenerPort)
 
@@ -134,6 +142,7 @@ func TestDefaultZitiFabricRouterListenerBindPort(t *testing.T) {
 }
 
 func TestSetZitiFabricRouterListenerBindPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	myPortValue := "1234"
 

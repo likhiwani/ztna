@@ -17,10 +17,12 @@
 package handler_link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type errorHandler struct {
@@ -29,10 +31,12 @@ type errorHandler struct {
 }
 
 func newErrorHandler(link xlink.Xlink, ctrl env.NetworkControllers) *errorHandler {
+	logtrace.LogWithFunctionName()
 	return &errorHandler{link: link, ctrl: ctrl}
 }
 
 func (self *errorHandler) HandleError(err error, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).
 		WithField("linkId", self.link.Id()).
 		WithField("routerId", self.link.DestinationId())

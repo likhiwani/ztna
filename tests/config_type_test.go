@@ -20,14 +20,17 @@
 package tests
 
 import (
-	"ztna-core/ztna/common/eid"
-	"github.com/openziti/foundation/v2/errorz"
 	"math"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 func Test_ConfigTypes(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

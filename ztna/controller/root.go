@@ -21,15 +21,18 @@ import (
 
 	"ztna-core/ztna/common/version"
 	edgeSubCmd "ztna-core/ztna/controller/subcmd"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/constants"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 func NewControllerCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "controller",
 		Short: "Ziti Controller",
@@ -80,6 +83,7 @@ var cliAgentAlias string
 var logFormatter string
 
 func Execute() {
+	logtrace.LogWithFunctionName()
 	if err := NewControllerCmd().Execute(); err != nil {
 		fmt.Printf("error: %s\n", err)
 	}

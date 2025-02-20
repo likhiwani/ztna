@@ -17,14 +17,16 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
-	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -32,6 +34,7 @@ func newRouterChangeContext(router interface {
 	models.Named
 	GetId() string
 }, ch channel.Channel) *change.Context {
+	logtrace.LogWithFunctionName()
 	return change.New().SetSourceType(change.SourceTypeControlChannel).
 		SetSourceMethod("extend.router.enrollment").
 		SetSourceLocal(ch.Underlay().GetLocalAddr().String()).
@@ -46,16 +49,19 @@ type extendEnrollmentHandler struct {
 }
 
 func NewExtendEnrollmentHandler(appEnv *env.AppEnv) *extendEnrollmentHandler {
+	logtrace.LogWithFunctionName()
 	return &extendEnrollmentHandler{
 		appEnv: appEnv,
 	}
 }
 
 func (h *extendEnrollmentHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.EnrollmentExtendRouterRequestType
 }
 
 func (h *extendEnrollmentHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		req := &edge_ctrl_pb.EnrollmentExtendRouterRequest{}
 		certs := ch.Underlay().Certificates()

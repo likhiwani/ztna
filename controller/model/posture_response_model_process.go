@@ -19,6 +19,7 @@ package model
 import (
 	"strings"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type PostureResponseProcess struct {
@@ -30,6 +31,7 @@ type PostureResponseProcess struct {
 }
 
 func (pr *PostureResponseProcess) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 	found := false
 
 	for i, fingerprint := range pr.SignerFingerprints {
@@ -58,6 +60,7 @@ func (pr *PostureResponseProcess) Apply(postureData *PostureData) {
 }
 
 func (pr *PostureResponseProcess) VerifyMultiCriteria(process *ProcessMulti) bool {
+	logtrace.LogWithFunctionName()
 	if !pr.IsRunning {
 		return false
 	}

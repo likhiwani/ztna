@@ -18,9 +18,11 @@ package webapis
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/xweb/v2"
 	log "github.com/sirupsen/logrus"
-	"strings"
 )
 
 const (
@@ -33,18 +35,22 @@ type ZitiAdminConsoleFactory struct {
 var _ xweb.ApiHandlerFactory = &ZitiAdminConsoleFactory{}
 
 func NewZitiAdminConsoleFactory() *ZitiAdminConsoleFactory {
+	logtrace.LogWithFunctionName()
 	return &ZitiAdminConsoleFactory{}
 }
 
 func (factory *ZitiAdminConsoleFactory) Validate(*xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (factory *ZitiAdminConsoleFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return Binding
 }
 
 func (factory *ZitiAdminConsoleFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	locVal := options["location"]
 	if locVal == nil || locVal == "" {
 		return nil, fmt.Errorf("location must be supplied in the %s options", Binding)

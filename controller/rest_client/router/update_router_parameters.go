@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateRouterParams() *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateRouterParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewUpdateRouterParams() *UpdateRouterParams {
 // NewUpdateRouterParamsWithTimeout creates a new UpdateRouterParams object
 // with the ability to set a timeout on a request.
 func NewUpdateRouterParamsWithTimeout(timeout time.Duration) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateRouterParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewUpdateRouterParamsWithTimeout(timeout time.Duration) *UpdateRouterParams
 // NewUpdateRouterParamsWithContext creates a new UpdateRouterParams object
 // with the ability to set a context for a request.
 func NewUpdateRouterParamsWithContext(ctx context.Context) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateRouterParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewUpdateRouterParamsWithContext(ctx context.Context) *UpdateRouterParams {
 // NewUpdateRouterParamsWithHTTPClient creates a new UpdateRouterParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewUpdateRouterParamsWithHTTPClient(client *http.Client) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateRouterParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type UpdateRouterParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateRouterParams) WithDefaults() *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *UpdateRouterParams) WithDefaults() *UpdateRouterParams {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateRouterParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the update router params
 func (o *UpdateRouterParams) WithTimeout(timeout time.Duration) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the update router params
 func (o *UpdateRouterParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the update router params
 func (o *UpdateRouterParams) WithContext(ctx context.Context) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the update router params
 func (o *UpdateRouterParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the update router params
 func (o *UpdateRouterParams) WithHTTPClient(client *http.Client) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the update router params
 func (o *UpdateRouterParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the update router params
 func (o *UpdateRouterParams) WithID(id string) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the update router params
 func (o *UpdateRouterParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithRouter adds the router to the update router params
 func (o *UpdateRouterParams) WithRouter(router *rest_model.RouterUpdate) *UpdateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetRouter(router)
 	return o
 }
 
 // SetRouter adds the router to the update router params
 func (o *UpdateRouterParams) SetRouter(router *rest_model.RouterUpdate) {
+    logtrace.LogWithFunctionName()
 	o.Router = router
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *UpdateRouterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

@@ -17,16 +17,20 @@
 package xgress_geneve
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
 	"github.com/pkg/errors"
 )
 
 type listener struct{}
 
 func (self *listener) Listen(string, xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("geneve not supported in windows")
 }
 
 func (self *listener) Close() error {
-    return nil
+	logtrace.LogWithFunctionName()
+	return nil
 }

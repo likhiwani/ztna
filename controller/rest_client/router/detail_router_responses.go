@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DetailRouterReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DetailRouterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDetailRouterOK()
@@ -78,6 +80,7 @@ func (o *DetailRouterReader) ReadResponse(response runtime.ClientResponse, consu
 
 // NewDetailRouterOK creates a DetailRouterOK with default headers values
 func NewDetailRouterOK() *DetailRouterOK {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterOK{}
 }
 
@@ -90,13 +93,16 @@ type DetailRouterOK struct {
 }
 
 func (o *DetailRouterOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers/{id}][%d] detailRouterOK  %+v", 200, o.Payload)
 }
 func (o *DetailRouterOK) GetPayload() *rest_model.DetailRouterEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailRouterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.DetailRouterEnvelope)
 
@@ -110,6 +116,7 @@ func (o *DetailRouterOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewDetailRouterUnauthorized creates a DetailRouterUnauthorized with default headers values
 func NewDetailRouterUnauthorized() *DetailRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterUnauthorized{}
 }
 
@@ -122,13 +129,16 @@ type DetailRouterUnauthorized struct {
 }
 
 func (o *DetailRouterUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers/{id}][%d] detailRouterUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DetailRouterUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailRouterUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *DetailRouterUnauthorized) readResponse(response runtime.ClientResponse,
 
 // NewDetailRouterNotFound creates a DetailRouterNotFound with default headers values
 func NewDetailRouterNotFound() *DetailRouterNotFound {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterNotFound{}
 }
 
@@ -154,13 +165,16 @@ type DetailRouterNotFound struct {
 }
 
 func (o *DetailRouterNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers/{id}][%d] detailRouterNotFound  %+v", 404, o.Payload)
 }
 func (o *DetailRouterNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailRouterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *DetailRouterNotFound) readResponse(response runtime.ClientResponse, con
 
 // NewDetailRouterTooManyRequests creates a DetailRouterTooManyRequests with default headers values
 func NewDetailRouterTooManyRequests() *DetailRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type DetailRouterTooManyRequests struct {
 }
 
 func (o *DetailRouterTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers/{id}][%d] detailRouterTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DetailRouterTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailRouterTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

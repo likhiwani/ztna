@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"fmt"
 	"math"
@@ -42,6 +43,7 @@ type updateTerminatorOptions struct {
 }
 
 func newUpdateTerminatorCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateTerminatorOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -74,6 +76,7 @@ func newUpdateTerminatorCmd(p common.OptionsProvider) *cobra.Command {
 
 // runUpdateTerminator implements the command to update a Terminator
 func runUpdateTerminator(o *updateTerminatorOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 
 	change := false

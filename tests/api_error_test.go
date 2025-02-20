@@ -22,11 +22,13 @@ package tests
 import (
 	"net/http"
 	"testing"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 )
 
 func Test_Api_Errors(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

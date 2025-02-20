@@ -16,7 +16,10 @@
 
 package handler_edge_ctrl
 
-import "ztna-core/sdk-golang/ziti/edge"
+import (
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+)
 
 type controllerError interface {
 	error
@@ -24,6 +27,7 @@ type controllerError interface {
 }
 
 func internalError(err error) controllerError {
+	logtrace.LogWithFunctionName()
 	if err == nil {
 		return nil
 	}
@@ -35,70 +39,84 @@ type internalErrorWrapper struct {
 }
 
 func (internalErrorWrapper) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeInternal
 }
 
 type InvalidApiSessionError struct{}
 
 func (InvalidApiSessionError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "invalid api session"
 }
 
 func (self InvalidApiSessionError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeInvalidApiSession
 }
 
 type InvalidSessionError struct{}
 
 func (InvalidSessionError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "invalid session"
 }
 
 func (self InvalidSessionError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeInvalidSession
 }
 
 type WrongSessionTypeError struct{}
 
 func (WrongSessionTypeError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "incorrect session type"
 }
 
 func (self WrongSessionTypeError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeWrongSessionType
 }
 
 type InvalidEdgeRouterForSessionError struct{}
 
 func (InvalidEdgeRouterForSessionError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "invalid edge router for session"
 }
 
 func (self InvalidEdgeRouterForSessionError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeInvalidEdgeRouterForSession
 }
 
 type InvalidServiceError struct{}
 
 func (InvalidServiceError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "invalid service"
 }
 
 func (self InvalidServiceError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeInvalidService
 }
 
 type TunnelingNotEnabledError struct{}
 
 func (TunnelingNotEnabledError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "tunneling not enabled"
 }
 
 func (self TunnelingNotEnabledError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return edge.ErrorCodeTunnelingNotEnabled
 }
 
 func invalidTerminator(msg string) controllerError {
+	logtrace.LogWithFunctionName()
 	return &genericControllerError{
 		msg:       msg,
 		errorCode: edge.ErrorCodeInvalidTerminator,
@@ -106,6 +124,7 @@ func invalidTerminator(msg string) controllerError {
 }
 
 func invalidCost(msg string) controllerError {
+	logtrace.LogWithFunctionName()
 	return &genericControllerError{
 		msg:       msg,
 		errorCode: edge.ErrorCodeInvalidCost,
@@ -113,6 +132,7 @@ func invalidCost(msg string) controllerError {
 }
 
 func invalidPrecedence(msg string) controllerError {
+	logtrace.LogWithFunctionName()
 	return &genericControllerError{
 		msg:       msg,
 		errorCode: edge.ErrorCodeInvalidPrecedence,
@@ -120,6 +140,7 @@ func invalidPrecedence(msg string) controllerError {
 }
 
 func encryptionDataMissing(msg string) controllerError {
+	logtrace.LogWithFunctionName()
 	return &genericControllerError{
 		msg:       msg,
 		errorCode: edge.ErrorCodeEncryptionDataMissing,
@@ -132,9 +153,11 @@ type genericControllerError struct {
 }
 
 func (self *genericControllerError) Error() string {
+	logtrace.LogWithFunctionName()
 	return self.msg
 }
 
 func (self *genericControllerError) ErrorCode() uint32 {
+	logtrace.LogWithFunctionName()
 	return self.errorCode
 }

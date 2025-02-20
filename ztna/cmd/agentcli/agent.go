@@ -1,6 +1,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"net"
@@ -29,6 +30,7 @@ const (
 )
 
 func NewAgentCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	agentCmd := &cobra.Command{
 		Use:   "agent",
 		Short: "Interact with ziti processes using the the IPC agent",
@@ -126,6 +128,7 @@ type AgentOptions struct {
 }
 
 func (self *AgentOptions) AddAgentOptions(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().Uint32VarP(&self.pid, "pid", "p", 0, "Process ID of host application to talk to")
 	cmd.Flags().StringVarP(&self.processName, "process-name", "n", "", "Process name of host application to talk to")
 	cmd.Flags().StringVarP(&self.appId, "app-id", "i", "", "Id of host application to talk to (like controller or router id)")
@@ -136,6 +139,7 @@ func (self *AgentOptions) AddAgentOptions(cmd *cobra.Command) {
 }
 
 func (self *AgentOptions) GetProcess() (*agent.Process, error) {
+	logtrace.LogWithFunctionName()
 	procList, err := agent.GetGopsProcesses()
 	if err != nil {
 		return nil, err
@@ -180,10 +184,12 @@ func (self *AgentOptions) GetProcess() (*agent.Process, error) {
 }
 
 func (self *AgentOptions) MakeChannelRequest(appId byte, f func(ch channel.Channel) error) error {
+	logtrace.LogWithFunctionName()
 	return self.MakeRequest(agent.CustomOpAsync, []byte{appId}, connToChannelMapper(f))
 }
 
 func (self *AgentOptions) MakeRequest(signal byte, params []byte, f func(c net.Conn) error) error {
+	logtrace.LogWithFunctionName()
 	if self.Cmd.Flags().Changed("tcp-addr") {
 		conn, err := net.Dial("tcp", self.tcpAddr)
 		if err != nil {
@@ -200,6 +206,7 @@ func (self *AgentOptions) MakeRequest(signal byte, params []byte, f func(c net.C
 }
 
 func (self *AgentOptions) CopyToWriter(out io.Writer) func(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	return func(conn net.Conn) error {
 		_, err := io.Copy(out, conn)
 		return err
@@ -207,6 +214,7 @@ func (self *AgentOptions) CopyToWriter(out io.Writer) func(conn net.Conn) error 
 }
 
 func (self *AgentOptions) RunCopyOut(op byte, params []byte, out io.Writer) error {
+	logtrace.LogWithFunctionName()
 	if self.Cmd.Flags().Changed("timeout") {
 		time.AfterFunc(self.timeout, func() {
 			fmt.Println("operation timed out")
@@ -218,6 +226,7 @@ func (self *AgentOptions) RunCopyOut(op byte, params []byte, out io.Writer) erro
 }
 
 func NewAgentChannel(conn net.Conn) (channel.Channel, error) {
+	logtrace.LogWithFunctionName()
 	options := channel.DefaultOptions()
 	options.ConnectTimeout = time.Second
 	dialer := channel.NewExistingConnDialer(&identity.TokenId{Token: "agent"}, conn, nil)
@@ -225,10 +234,12 @@ func NewAgentChannel(conn net.Conn) (channel.Channel, error) {
 }
 
 func MakeAgentChannelRequest(addr string, appId byte, f func(ch channel.Channel) error) error {
+	logtrace.LogWithFunctionName()
 	return agent.MakeRequestF(addr, agent.CustomOpAsync, []byte{appId}, connToChannelMapper(f))
 }
 
 func connToChannelMapper(f func(ch channel.Channel) error) func(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	return func(conn net.Conn) error {
 		ch, err := NewAgentChannel(conn)
 		if err != nil {

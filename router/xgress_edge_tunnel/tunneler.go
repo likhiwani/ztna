@@ -17,7 +17,11 @@
 package xgress_edge_tunnel
 
 import (
-	"github.com/michaelquigley/pfxlog"
+	"math"
+	"net"
+	"strings"
+	"time"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/tunnel/dns"
@@ -25,12 +29,10 @@ import (
 	"ztna-core/ztna/tunnel/intercept/host"
 	"ztna-core/ztna/tunnel/intercept/proxy"
 	"ztna-core/ztna/tunnel/intercept/tproxy"
+
+	"github.com/michaelquigley/pfxlog"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
-	"math"
-	"net"
-	"strings"
-	"time"
 )
 
 type tunneler struct {
@@ -47,6 +49,7 @@ type tunneler struct {
 }
 
 func newTunneler(factory *Factory, stateManager state.Manager) *tunneler {
+	logtrace.LogWithFunctionName()
 	result := &tunneler{
 		stateManager:    stateManager,
 		terminators:     cmap.New[*tunnelTerminator](),
@@ -62,6 +65,7 @@ func newTunneler(factory *Factory, stateManager state.Manager) *tunneler {
 }
 
 func (self *tunneler) Start(notifyClose <-chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	self.servicePoller.serviceListenerLock.Lock()
 	defer self.servicePoller.serviceListenerLock.Unlock()
 
@@ -120,6 +124,7 @@ func (self *tunneler) Start(notifyClose <-chan struct{}) error {
 }
 
 func (self *tunneler) removeStaleConnections(notifyClose <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 
@@ -148,11 +153,13 @@ func (self *tunneler) removeStaleConnections(notifyClose <-chan struct{}) {
 }
 
 func (self *tunneler) Listen(_ string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	self.bindHandler = bindHandler
 	return nil
 }
 
 func (self *tunneler) Close() error {
+	logtrace.LogWithFunctionName()
 	if self.interceptor != nil {
 		self.interceptor.Stop()
 	}
@@ -160,6 +167,7 @@ func (self *tunneler) Close() error {
 }
 
 func (self *tunneler) HandleReconnect() {
+	logtrace.LogWithFunctionName()
 	terminators := self.terminators.Items()
 	for _, terminator := range terminators {
 		terminator.created.Store(false)
@@ -172,6 +180,7 @@ func (self *tunneler) HandleReconnect() {
 }
 
 func (self *tunneler) ReestablishmentRunner() {
+	logtrace.LogWithFunctionName()
 	for {
 		<-self.notifyReconnect
 		self.ReestablishTerminators()
@@ -179,6 +188,7 @@ func (self *tunneler) ReestablishmentRunner() {
 }
 
 func (self *tunneler) ReestablishTerminators() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	terminators := self.terminators.Items()
 

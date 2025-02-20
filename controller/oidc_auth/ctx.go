@@ -3,10 +3,12 @@ package oidc_auth
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/zitadel/oidc/v2/pkg/oidc"
-	"net/http"
 )
 
 // contextKey is a private type used to restrict context value access
@@ -18,6 +20,7 @@ const contextKeyTokenState contextKey = "oidc_token_state"
 
 // NewChangeCtx creates a change.Context scoped to oidc_auth package
 func NewChangeCtx() *change.Context {
+	logtrace.LogWithFunctionName()
 	ctx := change.New()
 
 	ctx.SetSourceType(SourceTypeOidc).
@@ -28,6 +31,7 @@ func NewChangeCtx() *change.Context {
 
 // NewHttpChangeCtx creates a change.Context scoped to oidc_auth package and supplied http.Request
 func NewHttpChangeCtx(r *http.Request) *change.Context {
+	logtrace.LogWithFunctionName()
 	ctx := NewChangeCtx()
 
 	ctx.SetSourceLocal(r.Host).
@@ -43,6 +47,7 @@ type TokenState struct {
 }
 
 func TokenStateFromContext(ctx context.Context) (*TokenState, error) {
+	logtrace.LogWithFunctionName()
 	val := ctx.Value(contextKeyTokenState)
 
 	if val == nil {
@@ -64,6 +69,7 @@ func TokenStateFromContext(ctx context.Context) (*TokenState, error) {
 
 // HttpRequestFromContext returns the initiating http.Request for the current OIDC context
 func HttpRequestFromContext(ctx context.Context) (*http.Request, error) {
+	logtrace.LogWithFunctionName()
 	httpVal := ctx.Value(contextKeyHttpRequest)
 
 	if httpVal == nil {

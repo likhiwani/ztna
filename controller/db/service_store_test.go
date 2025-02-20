@@ -18,10 +18,12 @@ package db
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/openziti/storage/boltztest"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/openziti/storage/boltztest"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/openziti/storage/boltz"
@@ -29,6 +31,7 @@ import (
 )
 
 func Test_ServiceStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -41,6 +44,7 @@ func Test_ServiceStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidServices(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -65,6 +69,7 @@ func (ctx *TestContext) testCreateInvalidServices(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateServices(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -84,6 +89,7 @@ type serviceTestEntities struct {
 }
 
 func (ctx *TestContext) createServiceTestEntities() *serviceTestEntities {
+	logtrace.LogWithFunctionName()
 	service1 := ctx.requireNewService()
 	service2 := ctx.requireNewService()
 	service2.Tags = map[string]interface{}{
@@ -113,6 +119,7 @@ func (ctx *TestContext) createServiceTestEntities() *serviceTestEntities {
 }
 
 func (ctx *TestContext) testLoadQueryServices(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.cleanupAll()
 
@@ -153,6 +160,7 @@ func (ctx *TestContext) testLoadQueryServices(t *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateServices(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.cleanupAll()
 	entities := ctx.createServiceTestEntities()
@@ -191,6 +199,7 @@ func (ctx *TestContext) testUpdateServices(t *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteServices(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 
 	ctx.cleanupAll()

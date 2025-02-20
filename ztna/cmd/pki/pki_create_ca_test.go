@@ -17,13 +17,16 @@ package pki
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestTrustDomain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 	name := uuid.New().String()
@@ -48,6 +51,7 @@ func TestTrustDomain(t *testing.T) {
 }
 
 func TestNoTrustDomain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 	name := uuid.New().String()
@@ -71,6 +75,7 @@ func TestNoTrustDomain(t *testing.T) {
 }
 
 func TestTrustDomainSpiffeAppended(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 	name := uuid.New().String()
@@ -95,6 +100,7 @@ func TestTrustDomainSpiffeAppended(t *testing.T) {
 }
 
 func TestTrustDomainWithPath(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 	name := uuid.New().String()

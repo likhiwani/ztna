@@ -22,14 +22,16 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/identity"
-	"github.com/openziti/xweb/v2"
-	"ztna-core/ztna/controller/api_impl"
-	"ztna-core/ztna/controller/network"
 	"net/http"
 	"os"
 	"strings"
+	"ztna-core/ztna/controller/api_impl"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/identity"
+	"github.com/openziti/xweb/v2"
 )
 
 var _ xweb.ApiHandlerFactory = &MetricsApiFactory{}
@@ -40,10 +42,12 @@ type MetricsApiFactory struct {
 }
 
 func (factory *MetricsApiFactory) Validate(_ *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func NewMetricsApiFactory(nodeId identity.Identity, network *network.Network) *MetricsApiFactory {
+	logtrace.LogWithFunctionName()
 	return &MetricsApiFactory{
 		network: network,
 		nodeId:  nodeId,
@@ -51,10 +55,12 @@ func NewMetricsApiFactory(nodeId identity.Identity, network *network.Network) *M
 }
 
 func (factory *MetricsApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return api_impl.MetricApiBinding
 }
 
 func (factory *MetricsApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 
 	metricsApiHandler, err := NewMetricsApiHandler(factory.network, options)
 
@@ -66,6 +72,7 @@ func (factory *MetricsApiFactory) New(_ *xweb.ServerConfig, options map[interfac
 }
 
 func NewMetricsApiHandler(n *network.Network, options map[interface{}]interface{}) (*MetricsApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	metricsApi := &MetricsApiHandler{
 		options:    options,
 		network:    n,
@@ -121,26 +128,32 @@ type MetricsApiHandler struct {
 }
 
 func (metricsApi *MetricsApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return api_impl.MetricApiBinding
 }
 
 func (metricsApi *MetricsApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return metricsApi.options
 }
 
 func (metricsApi *MetricsApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return "/metrics"
 }
 
 func (metricsApi *MetricsApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, metricsApi.RootPath())
 }
 
 func (metricsApi *MetricsApiHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	metricsApi.handler.ServeHTTP(writer, request)
 }
 
 func (metricsApi *MetricsApiHandler) newHandler() http.Handler {
+	logtrace.LogWithFunctionName()
 	handler := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 
 		if nil != metricsApi.scrapeCert {

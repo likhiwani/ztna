@@ -18,21 +18,24 @@ package db
 
 import (
 	"fmt"
+	"testing"
+	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/change"
 	"go.etcd.io/bbolt"
-	"testing"
-	"time"
 )
 
 const apiSessionsSessionsIdxPath = "/" + RootBucket + "/" + boltz.IndexesBucket + "/" + EntityTypeApiSessions + "/" + EntityTypeSessions
 
 func Test_SessionStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -46,6 +49,7 @@ func Test_SessionStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidSessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer ctx.CleanupAll()
 
 	identity := ctx.RequireNewIdentity("test-user", false)
@@ -79,6 +83,7 @@ func (ctx *TestContext) testCreateInvalidSessions(_ *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateInvalidSessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer ctx.CleanupAll()
 
 	identity := ctx.RequireNewIdentity("test-user", false)
@@ -119,6 +124,7 @@ func (ctx *TestContext) testUpdateInvalidSessions(_ *testing.T) {
 }
 
 func (ctx *TestContext) testCreateSessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	compareOpts := cmpopts.IgnoreFields(Session{}, "ApiSession")
@@ -170,6 +176,7 @@ type sessionTestEntities struct {
 }
 
 func (ctx *TestContext) createSessionTestEntities() *sessionTestEntities {
+	logtrace.LogWithFunctionName()
 	identity1 := ctx.RequireNewIdentity("admin1", true)
 
 	apiSession1 := NewApiSession(identity1.Id)
@@ -205,6 +212,7 @@ func (ctx *TestContext) createSessionTestEntities() *sessionTestEntities {
 }
 
 func (ctx *TestContext) testLoadQuerySessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	entities := ctx.createSessionTestEntities()
@@ -228,6 +236,7 @@ func (ctx *TestContext) testLoadQuerySessions(_ *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateSessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 	entities := ctx.createSessionTestEntities()
 	earlier := time.Now()
@@ -266,6 +275,7 @@ func (ctx *TestContext) testUpdateSessions(_ *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteSessions(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 	entities := ctx.createSessionTestEntities()
 	boltztest.RequireDelete(ctx, entities.session1, apiSessionsSessionsIdxPath)
@@ -274,6 +284,7 @@ func (ctx *TestContext) testDeleteSessions(_ *testing.T) {
 }
 
 func NewSession(apiSessionId, serviceId string) *Session {
+	logtrace.LogWithFunctionName()
 	return &Session{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Token:         eid.New(),

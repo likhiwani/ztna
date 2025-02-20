@@ -2,13 +2,15 @@ package handler_edge_ctrl
 
 import (
 	"encoding/json"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/storage/ast"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/storage/ast"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type listTunnelServicesHandler struct {
@@ -17,6 +19,7 @@ type listTunnelServicesHandler struct {
 }
 
 func NewListTunnelServicesHandler(appEnv *env.AppEnv, ch channel.Channel, tunnelState *TunnelState) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &listTunnelServicesHandler{
 		baseRequestHandler: baseRequestHandler{ch: ch, appEnv: appEnv},
 		TunnelState:        tunnelState,
@@ -24,18 +27,22 @@ func NewListTunnelServicesHandler(appEnv *env.AppEnv, ch channel.Channel, tunnel
 }
 
 func (self *listTunnelServicesHandler) getTunnelState() *TunnelState {
+	logtrace.LogWithFunctionName()
 	return self.TunnelState
 }
 
 func (self *listTunnelServicesHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_ListServicesRequestType)
 }
 
 func (self *listTunnelServicesHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.list.services"
 }
 
 func (self *listTunnelServicesHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.WithField("router", self.ch.Id())
 
 	ctx := &listTunnelServicesRequestContext{
@@ -60,6 +67,7 @@ func (self *listTunnelServicesHandler) HandleReceive(msg *channel.Message, _ cha
 }
 
 func (self *listTunnelServicesHandler) listServices(ctx *listTunnelServicesRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}

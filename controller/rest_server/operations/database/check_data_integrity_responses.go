@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type CheckDataIntegrityAccepted struct {
 
 // NewCheckDataIntegrityAccepted creates CheckDataIntegrityAccepted with default headers values
 func NewCheckDataIntegrityAccepted() *CheckDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 
 	return &CheckDataIntegrityAccepted{}
 }
 
 // WithPayload adds the payload to the check data integrity accepted response
 func (o *CheckDataIntegrityAccepted) WithPayload(payload *rest_model.Empty) *CheckDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the check data integrity accepted response
 func (o *CheckDataIntegrityAccepted) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CheckDataIntegrityAccepted) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(202)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type CheckDataIntegrityUnauthorized struct {
 
 // NewCheckDataIntegrityUnauthorized creates CheckDataIntegrityUnauthorized with default headers values
 func NewCheckDataIntegrityUnauthorized() *CheckDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &CheckDataIntegrityUnauthorized{}
 }
 
 // WithPayload adds the payload to the check data integrity unauthorized response
 func (o *CheckDataIntegrityUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *CheckDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the check data integrity unauthorized response
 func (o *CheckDataIntegrityUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CheckDataIntegrityUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type CheckDataIntegrityTooManyRequests struct {
 
 // NewCheckDataIntegrityTooManyRequests creates CheckDataIntegrityTooManyRequests with default headers values
 func NewCheckDataIntegrityTooManyRequests() *CheckDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &CheckDataIntegrityTooManyRequests{}
 }
 
 // WithPayload adds the payload to the check data integrity too many requests response
 func (o *CheckDataIntegrityTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *CheckDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the check data integrity too many requests response
 func (o *CheckDataIntegrityTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CheckDataIntegrityTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

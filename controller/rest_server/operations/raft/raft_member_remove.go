@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type RaftMemberRemoveHandlerFunc func(RaftMemberRemoveParams) middleware.Respond
 
 // Handle executing the request and returning a response
 func (fn RaftMemberRemoveHandlerFunc) Handle(params RaftMemberRemoveParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type RaftMemberRemoveHandler interface {
 
 // NewRaftMemberRemove creates a new http.Handler for the raft member remove operation
 func NewRaftMemberRemove(ctx *middleware.Context, handler RaftMemberRemoveHandler) *RaftMemberRemove {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemove{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type RaftMemberRemove struct {
 }
 
 func (o *RaftMemberRemove) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

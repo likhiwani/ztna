@@ -19,17 +19,19 @@ package actions
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
-	"os"
-	"time"
 )
 
 const DomainName = "controller.testing.openziti.org"
@@ -60,11 +62,13 @@ type Payload struct {
 }
 
 func NewBootstrapAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := &bootstrapAction{}
 	return action.bind
 }
 
 func Route53StringCreator(m *model.Model, action string) string {
+	logtrace.LogWithFunctionName()
 	var payload = Payload{
 		Changes: []Change{
 			{
@@ -92,6 +96,7 @@ func Route53StringCreator(m *model.Model, action string) string {
 }
 
 func (a *bootstrapAction) bind(m *model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	workflow := actions.Workflow()
 	// Set AWS config remotely
 	accessKey := os.Getenv("S3_KEY")

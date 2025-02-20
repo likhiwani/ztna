@@ -27,6 +27,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime"
 	"github.com/michaelquigley/pfxlog"
@@ -42,6 +43,7 @@ import (
 // This proxy ResponseWriter is ignored on timeout and panics. On panic, a blank response is returned with a
 // 500 Internal Error status code. Downstream handlers are encouraged to implement their own panic recovery.
 func TimeoutHandler(next http.Handler, timeout time.Duration, apiErr *errorz.ApiError, mapper ResponseMapper) http.Handler {
+	logtrace.LogWithFunctionName()
 	return &timeoutHandler{
 		next:           next,
 		apiError:       apiErr,
@@ -60,6 +62,7 @@ type timeoutHandler struct {
 }
 
 func (h *timeoutHandler) errorBody(w http.ResponseWriter, r *http.Request) error {
+	logtrace.LogWithFunctionName()
 	if h.apiError != nil {
 		requestId := ""
 		rc, _ := GetRequestContextFromHttpContext(r)
@@ -75,6 +78,7 @@ func (h *timeoutHandler) errorBody(w http.ResponseWriter, r *http.Request) error
 }
 
 func (h *timeoutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelCtx := context.WithTimeout(r.Context(), h.timeout)
 	defer cancelCtx()
 
@@ -149,15 +153,20 @@ type timeoutWriter struct {
 var _ http.Pusher = (*timeoutWriter)(nil)
 
 func (tw *timeoutWriter) Push(target string, opts *http.PushOptions) error {
+	logtrace.LogWithFunctionName()
 	if pusher, ok := tw.writer.(http.Pusher); ok {
 		return pusher.Push(target, opts)
 	}
 	return http.ErrNotSupported
 }
 
-func (tw *timeoutWriter) Header() http.Header { return tw.header }
+func (tw *timeoutWriter) Header() http.Header {
+	logtrace.LogWithFunctionName()
+	return tw.header
+}
 
 func (tw *timeoutWriter) Write(p []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	tw.mu.Lock()
 	defer tw.mu.Unlock()
 	if tw.timedOut {
@@ -170,6 +179,7 @@ func (tw *timeoutWriter) Write(p []byte) (int, error) {
 }
 
 func (tw *timeoutWriter) writeHeaderLocked(code int) {
+	logtrace.LogWithFunctionName()
 	checkWriteHeaderCode(code)
 
 	switch {
@@ -187,18 +197,21 @@ func (tw *timeoutWriter) writeHeaderLocked(code int) {
 }
 
 func (tw *timeoutWriter) WriteHeader(code int) {
+	logtrace.LogWithFunctionName()
 	tw.mu.Lock()
 	defer tw.mu.Unlock()
 	tw.writeHeaderLocked(code)
 }
 
 func checkWriteHeaderCode(code int) {
+	logtrace.LogWithFunctionName()
 	if code < 100 || code > 999 {
 		panic(fmt.Sprintf("invalid WriteHeader code %v", code))
 	}
 }
 
 func relevantCaller() goruntime.Frame {
+	logtrace.LogWithFunctionName()
 	pc := make([]uintptr, 16)
 	n := goruntime.Callers(1, pc)
 	frames := goruntime.CallersFrames(pc[:n])

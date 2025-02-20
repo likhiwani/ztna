@@ -17,14 +17,17 @@
 package network
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/model"
 	"sort"
 	"time"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func (network *Network) smart() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Trace("smart network processing")
 
@@ -38,6 +41,7 @@ func (network *Network) smart() {
 }
 
 func (network *Network) calculateCircuitCost(path *model.Path) int64 {
+	logtrace.LogWithFunctionName()
 	var cost int64
 	for _, l := range path.Links {
 		cost += l.GetCost()
@@ -53,6 +57,7 @@ func (network *Network) calculateCircuitCost(path *model.Path) int64 {
 }
 
 func (network *Network) getRerouteCandidates() []*newCircuitPath {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	/*

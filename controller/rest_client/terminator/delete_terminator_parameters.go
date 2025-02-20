@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteTerminatorParams() *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDeleteTerminatorParams() *DeleteTerminatorParams {
 // NewDeleteTerminatorParamsWithTimeout creates a new DeleteTerminatorParams object
 // with the ability to set a timeout on a request.
 func NewDeleteTerminatorParamsWithTimeout(timeout time.Duration) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDeleteTerminatorParamsWithTimeout(timeout time.Duration) *DeleteTerminat
 // NewDeleteTerminatorParamsWithContext creates a new DeleteTerminatorParams object
 // with the ability to set a context for a request.
 func NewDeleteTerminatorParamsWithContext(ctx context.Context) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDeleteTerminatorParamsWithContext(ctx context.Context) *DeleteTerminator
 // NewDeleteTerminatorParamsWithHTTPClient creates a new DeleteTerminatorParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDeleteTerminatorParamsWithHTTPClient(client *http.Client) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DeleteTerminatorParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteTerminatorParams) WithDefaults() *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DeleteTerminatorParams) WithDefaults() *DeleteTerminatorParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteTerminatorParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete terminator params
 func (o *DeleteTerminatorParams) WithTimeout(timeout time.Duration) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the delete terminator params
 func (o *DeleteTerminatorParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the delete terminator params
 func (o *DeleteTerminatorParams) WithContext(ctx context.Context) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the delete terminator params
 func (o *DeleteTerminatorParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the delete terminator params
 func (o *DeleteTerminatorParams) WithHTTPClient(client *http.Client) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the delete terminator params
 func (o *DeleteTerminatorParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the delete terminator params
 func (o *DeleteTerminatorParams) WithID(id string) *DeleteTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the delete terminator params
 func (o *DeleteTerminatorParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DeleteTerminatorParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

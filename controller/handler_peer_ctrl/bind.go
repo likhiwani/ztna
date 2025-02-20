@@ -17,18 +17,21 @@
 package handler_peer_ctrl
 
 import (
+	"time"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/controller/raft"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/latency"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/metrics"
-	"ztna-core/ztna/controller/network"
-	"ztna-core/ztna/controller/raft"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func NewBindHandler(n *network.Network, raftCtrl *raft.Controller, heartbeatOptions *channel.HeartbeatOptions) channel.BindHandler {
+	logtrace.LogWithFunctionName()
 	bindHandler := func(binding channel.Binding) error {
 		binding.AddTypedReceiveHandler(newCommandHandler(raftCtrl))
 		binding.AddTypedReceiveHandler(newAddPeerHandler(raftCtrl))
@@ -68,23 +71,32 @@ type heartbeatCallback struct {
 	closeUnresponsiveTimeout time.Duration
 }
 
-func (self *heartbeatCallback) HeartbeatTx(int64) {}
+func (self *heartbeatCallback) HeartbeatTx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
-func (self *heartbeatCallback) HeartbeatRx(int64) {}
+func (self *heartbeatCallback) HeartbeatRx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
-func (self *heartbeatCallback) HeartbeatRespTx(int64) {}
+func (self *heartbeatCallback) HeartbeatRespTx(int64) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *heartbeatCallback) HeartbeatRespRx(ts int64) {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	self.lastResponse = now.UnixMilli()
 	self.latencyMetric.Update(now.UnixNano() - ts)
 }
 
 func (self *heartbeatCallback) timeSinceLastResponse(nowUnixMillis int64) time.Duration {
+	logtrace.LogWithFunctionName()
 	return time.Duration(nowUnixMillis-self.lastResponse) * time.Millisecond
 }
 
 func (self *heartbeatCallback) CheckHeartBeat() {
+	logtrace.LogWithFunctionName()
 	now := time.Now().UnixMilli()
 	if self.timeSinceLastResponse(now) > self.closeUnresponsiveTimeout {
 		log := self.logger()
@@ -97,6 +109,7 @@ func (self *heartbeatCallback) CheckHeartBeat() {
 }
 
 func (self *heartbeatCallback) checkQueueTime() {
+	logtrace.LogWithFunctionName()
 	if !self.latencySemaphore.TryAcquire() {
 		self.logger().Warn("unable to check queue time, too many check already running")
 		return
@@ -116,5 +129,6 @@ func (self *heartbeatCallback) checkQueueTime() {
 }
 
 func (self *heartbeatCallback) logger() *logrus.Entry {
+	logtrace.LogWithFunctionName()
 	return pfxlog.Logger().WithField("channelType", "router").WithField("channelId", self.ch.Id())
 }

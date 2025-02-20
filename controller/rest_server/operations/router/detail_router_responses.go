@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DetailRouterOK struct {
 
 // NewDetailRouterOK creates DetailRouterOK with default headers values
 func NewDetailRouterOK() *DetailRouterOK {
+    logtrace.LogWithFunctionName()
 
 	return &DetailRouterOK{}
 }
 
 // WithPayload adds the payload to the detail router o k response
 func (o *DetailRouterOK) WithPayload(payload *rest_model.DetailRouterEnvelope) *DetailRouterOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail router o k response
 func (o *DetailRouterOK) SetPayload(payload *rest_model.DetailRouterEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailRouterOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DetailRouterUnauthorized struct {
 
 // NewDetailRouterUnauthorized creates DetailRouterUnauthorized with default headers values
 func NewDetailRouterUnauthorized() *DetailRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DetailRouterUnauthorized{}
 }
 
 // WithPayload adds the payload to the detail router unauthorized response
 func (o *DetailRouterUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail router unauthorized response
 func (o *DetailRouterUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailRouterUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DetailRouterNotFound struct {
 
 // NewDetailRouterNotFound creates DetailRouterNotFound with default headers values
 func NewDetailRouterNotFound() *DetailRouterNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &DetailRouterNotFound{}
 }
 
 // WithPayload adds the payload to the detail router not found response
 func (o *DetailRouterNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailRouterNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail router not found response
 func (o *DetailRouterNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailRouterNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type DetailRouterTooManyRequests struct {
 
 // NewDetailRouterTooManyRequests creates DetailRouterTooManyRequests with default headers values
 func NewDetailRouterTooManyRequests() *DetailRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DetailRouterTooManyRequests{}
 }
 
 // WithPayload adds the payload to the detail router too many requests response
 func (o *DetailRouterTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail router too many requests response
 func (o *DetailRouterTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailRouterTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

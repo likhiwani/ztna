@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"io"
 
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
@@ -26,6 +27,7 @@ import (
 
 // newVerifyCmd creates a command object for the "controller verify" command
 func newVerifyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "verify",
 		Short: "verifies various entities managed by the Ziti Edge Controller",

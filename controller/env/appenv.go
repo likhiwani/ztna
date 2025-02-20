@@ -52,6 +52,9 @@ import (
 	"ztna-core/ztna/controller/response"
 	"ztna-core/ztna/controller/xctrl"
 	"ztna-core/ztna/controller/xmgmt"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/go-openapi/loads"
 	"github.com/go-openapi/runtime"
@@ -66,7 +69,6 @@ import (
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/xweb/v2"
 	cmap "github.com/orcaman/concurrent-map/v2"
@@ -119,12 +121,14 @@ type AppEnv struct {
 }
 
 func (ae *AppEnv) GetPeerControllerAddresses() []string {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetPeerAddresses()
 }
 
 // JwtSignerKeyFunc is used in combination with jwt.Parse or jwt.ParseWithClaims to
 // facilitate verifying JWTs from the current controller or any peer controllers.
 func (ae *AppEnv) JwtSignerKeyFunc(token *jwt.Token) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	kidToPubKey := ae.Broker.GetPublicKeys()
 
 	val := token.Header["kid"]
@@ -144,6 +148,7 @@ func (ae *AppEnv) JwtSignerKeyFunc(token *jwt.Token) (interface{}, error) {
 }
 
 func (ae *AppEnv) ValidateAccessToken(token string) (*common.AccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	accessClaims := &common.AccessClaims{}
 
 	parsedToken, err := jwt.ParseWithClaims(token, accessClaims, ae.JwtSignerKeyFunc)
@@ -188,6 +193,7 @@ func (ae *AppEnv) ValidateAccessToken(token string) (*common.AccessClaims, error
 }
 
 func (ae *AppEnv) ValidateServiceAccessToken(token string, apiSessionId *string) (*common.ServiceAccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	serviceAccessClaims := &common.ServiceAccessClaims{}
 
 	parsedToken, err := jwt.ParseWithClaims(token, serviceAccessClaims, ae.JwtSignerKeyFunc)
@@ -242,34 +248,42 @@ func (ae *AppEnv) ValidateServiceAccessToken(token string, apiSessionId *string)
 }
 
 func (ae *AppEnv) GetServerCert() (serverCert *tls.Certificate, kid string, signingMethod jwt.SigningMethod) {
+	logtrace.LogWithFunctionName()
 	return ae.ServerCert, ae.serverSigner.KeyId(), ae.serverSigner.SigningMethod()
 }
 
 func (ae *AppEnv) GetApiServerCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	return ae.ApiServerCsrSigner
 }
 
 func (ae *AppEnv) GetControlClientCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	return ae.ControlClientCsrSigner
 }
 
 func (ae *AppEnv) GetApiClientCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	return ae.ApiClientCsrSigner
 }
 
 func (ae *AppEnv) GetHostController() HostController {
+	logtrace.LogWithFunctionName()
 	return ae.HostController
 }
 
 func (ae *AppEnv) GetManagers() *model.Managers {
+	logtrace.LogWithFunctionName()
 	return ae.Managers
 }
 
 func (ae *AppEnv) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetEventDispatcher()
 }
 
 func (ae *AppEnv) GetConfig() *config.Config {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetConfig()
 }
 
@@ -277,6 +291,7 @@ func (ae *AppEnv) GetConfig() *config.Config {
 // or an error if one cannot be located that matches. Hostname matching is done across all identity server
 // certificates, including alternate server certificates.
 func (ae *AppEnv) GetEnrollmentJwtSigner() (jwtsigner.Signer, error) {
+	logtrace.LogWithFunctionName()
 	enrollmentCert, err := ae.getEnrollmentTlsCert()
 
 	if err != nil {
@@ -289,6 +304,7 @@ func (ae *AppEnv) GetEnrollmentJwtSigner() (jwtsigner.Signer, error) {
 }
 
 func (ae *AppEnv) getEnrollmentTlsCert() (*tls.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	host, _, err := net.SplitHostPort(ae.GetConfig().Edge.Api.Address)
 
 	var hostnameErrors []error
@@ -337,6 +353,7 @@ func (ae *AppEnv) getEnrollmentTlsCert() (*tls.Certificate, error) {
 }
 
 func (ae *AppEnv) getCertForHostname(tlsCerts []*tls.Certificate, hostname string) (*tls.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	for i, tlsCert := range tlsCerts {
 		if tlsCert.Leaf == nil {
 			if len(tlsCert.Certificate) > 0 {
@@ -359,62 +376,77 @@ func (ae *AppEnv) getCertForHostname(tlsCerts []*tls.Certificate, hostname strin
 }
 
 func (ae *AppEnv) GetServerJwtSigner() jwtsigner.Signer {
+	logtrace.LogWithFunctionName()
 	return ae.serverSigner
 }
 
 func (ae *AppEnv) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetDb()
 }
 
 func (ae *AppEnv) GetStores() *db.Stores {
+	logtrace.LogWithFunctionName()
 	return ae.Stores
 }
 
 func (ae *AppEnv) GetAuthRegistry() model.AuthRegistry {
+	logtrace.LogWithFunctionName()
 	return ae.AuthRegistry
 }
 
 func (ae *AppEnv) GetEnrollRegistry() model.EnrollmentRegistry {
+	logtrace.LogWithFunctionName()
 	return ae.EnrollRegistry
 }
 
 func (ae *AppEnv) IsEdgeRouterOnline(id string) bool {
+	logtrace.LogWithFunctionName()
 	return ae.Broker.IsEdgeRouterOnline(id)
 }
 
 func (ae *AppEnv) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetMetricsRegistry()
 }
 
 func (ae *AppEnv) GetFingerprintGenerator() cert.FingerprintGenerator {
+	logtrace.LogWithFunctionName()
 	return ae.FingerprintGenerator
 }
 
 func (ae *AppEnv) GetRaftInfo() (string, string, string) {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetRaftInfo()
 }
 
 func (ae *AppEnv) GetApiAddresses() (map[string][]event.ApiAddress, []byte) {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetApiAddresses()
 }
 
 func (ae *AppEnv) GetCloseNotifyChannel() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetCloseNotifyChannel()
 }
 
 func (ae *AppEnv) GetPeerSigners() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetPeerSigners()
 }
 
 func (ae *AppEnv) GetCommandDispatcher() command.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetCommandDispatcher()
 }
 
 func (ae *AppEnv) AddRouterPresenceHandler(h model.RouterPresenceHandler) {
+	logtrace.LogWithFunctionName()
 	ae.HostController.GetNetwork().AddRouterPresenceHandler(h)
 }
 
 func (ae *AppEnv) GetId() string {
+	logtrace.LogWithFunctionName()
 	return ae.HostController.GetNetwork().GetAppId()
 }
 
@@ -464,10 +496,12 @@ type Schemes struct {
 }
 
 func (s Schemes) GetEnrollErPost() *gojsonschema.Schema {
+	logtrace.LogWithFunctionName()
 	return s.EnrollEr.Post
 }
 
 func (s Schemes) GetEnrollUpdbPost() *gojsonschema.Schema {
+	logtrace.LogWithFunctionName()
 	return s.EnrollUpdb.Post
 }
 
@@ -496,6 +530,7 @@ const (
 )
 
 func (a authorizer) Authorize(request *http.Request, principal interface{}) error {
+	logtrace.LogWithFunctionName()
 	//principal is an API Session
 	_, ok := principal.(*model.ApiSession)
 
@@ -519,6 +554,7 @@ func (a authorizer) Authorize(request *http.Request, principal interface{}) erro
 }
 
 func (ae *AppEnv) ProcessZtSession(rc *response.RequestContext, ztSession string) error {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 
 	rc.SessionToken = ztSession
@@ -602,6 +638,7 @@ func (ae *AppEnv) ProcessZtSession(rc *response.RequestContext, ztSession string
 }
 
 func (ae *AppEnv) ProcessJwt(rc *response.RequestContext, token *jwt.Token) error {
+	logtrace.LogWithFunctionName()
 	rc.SessionToken = token.Raw
 	rc.Jwt = token
 	rc.Claims = token.Claims.(*common.AccessClaims)
@@ -678,6 +715,7 @@ func (ae *AppEnv) ProcessJwt(rc *response.RequestContext, token *jwt.Token) erro
 }
 
 func (ae *AppEnv) FillRequestContext(rc *response.RequestContext) error {
+	logtrace.LogWithFunctionName()
 	// do no process auth headers on authenticate request
 	if strings.HasSuffix(rc.Request.URL.Path, "/v1/authenticate") && !strings.HasSuffix(rc.Request.URL.Path, "/authenticate/mfa") {
 		return nil
@@ -700,6 +738,7 @@ func (ae *AppEnv) FillRequestContext(rc *response.RequestContext) error {
 }
 
 func NewAuthQueryZitiMfa() *rest_model.AuthQueryDetail {
+	logtrace.LogWithFunctionName()
 	provider := rest_model.MfaProvidersZiti
 	return &rest_model.AuthQueryDetail{
 		TypeID:     rest_model.AuthQueryTypeMFA,
@@ -713,6 +752,7 @@ func NewAuthQueryZitiMfa() *rest_model.AuthQueryDetail {
 }
 
 func NewAuthQueryExtJwt(signer *model.ExternalJwtSigner) *rest_model.AuthQueryDetail {
+	logtrace.LogWithFunctionName()
 	provider := rest_model.MfaProvidersURL
 
 	if signer == nil {
@@ -735,6 +775,7 @@ func NewAuthQueryExtJwt(signer *model.ExternalJwtSigner) *rest_model.AuthQueryDe
 // ProcessAuthQueries will inspect a response.RequestContext and set the AuthQueries
 // with the current outstanding authentication queries.
 func ProcessAuthQueries(ae *AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	if rc.ApiSession == nil || rc.AuthPolicy == nil {
 		return
 	}
@@ -768,6 +809,7 @@ func ProcessAuthQueries(ae *AppEnv, rc *response.RequestContext) {
 }
 
 func NewAppEnv(host HostController) (*AppEnv, error) {
+	logtrace.LogWithFunctionName()
 	var signingCert *x509.Certificate
 	cfg := host.GetConfig()
 
@@ -893,6 +935,7 @@ func NewAppEnv(host HostController) (*AppEnv, error) {
 }
 
 func (ae *AppEnv) InitPersistence() error {
+	logtrace.LogWithFunctionName()
 	var err error
 
 	stores := ae.GetStores()
@@ -933,6 +976,7 @@ func (ae *AppEnv) InitPersistence() error {
 }
 
 func getJwtSigningMethod(cert *tls.Certificate) jwt.SigningMethod {
+	logtrace.LogWithFunctionName()
 
 	var sm jwt.SigningMethod = jwt.SigningMethodNone
 
@@ -959,10 +1003,12 @@ func getJwtSigningMethod(cert *tls.Certificate) jwt.SigningMethod {
 }
 
 func (ae *AppEnv) getZtSessionFromRequest(r *http.Request) string {
+	logtrace.LogWithFunctionName()
 	return r.Header.Get(ZitiSession)
 }
 
 func (ae *AppEnv) getJwtTokenFromRequest(r *http.Request) *jwt.Token {
+	logtrace.LogWithFunctionName()
 	headers := r.Header.Values("authorization")
 
 	for _, header := range headers {
@@ -986,6 +1032,7 @@ func (ae *AppEnv) getJwtTokenFromRequest(r *http.Request) *jwt.Token {
 }
 
 func (ae *AppEnv) ControllersKeyFunc(token *jwt.Token) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	kidVal, ok := token.Header["kid"]
 
 	if !ok {
@@ -1008,11 +1055,13 @@ func (ae *AppEnv) ControllersKeyFunc(token *jwt.Token) (interface{}, error) {
 }
 
 func (ae *AppEnv) GetControllerPublicKey(kid string) crypto.PublicKey {
+	logtrace.LogWithFunctionName()
 	signers := ae.Broker.GetPublicKeys()
 	return signers[kid]
 }
 
 func (ae *AppEnv) CreateRequestContext(rw http.ResponseWriter, r *http.Request) *response.RequestContext {
+	logtrace.LogWithFunctionName()
 	rid := eid.New()
 
 	body, _ := io.ReadAll(r.Body)
@@ -1035,6 +1084,7 @@ func (ae *AppEnv) CreateRequestContext(rw http.ResponseWriter, r *http.Request) 
 }
 
 func GetRequestContextFromHttpContext(r *http.Request) (*response.RequestContext, error) {
+	logtrace.LogWithFunctionName()
 	val := r.Context().Value(api.ZitiContextKey)
 	if val == nil {
 		return nil, fmt.Errorf("value for key %s no found in context", api.ZitiContextKey)
@@ -1053,6 +1103,7 @@ func GetRequestContextFromHttpContext(r *http.Request) (*response.RequestContext
 // Unique ids are removed from the URL and replaced with :id and :subid to group metrics from the same
 // endpoint that happen to be working on different ids.
 func getMetricTimerName(r *http.Request) string {
+	logtrace.LogWithFunctionName()
 	cleanUrl := r.URL.Path
 
 	rc, _ := api.GetRequestContextFromHttpContext(r)
@@ -1071,6 +1122,7 @@ func getMetricTimerName(r *http.Request) string {
 }
 
 func (ae *AppEnv) IsAllowed(responderFunc func(ae *AppEnv, rc *response.RequestContext), request *http.Request, entityId string, entitySubId string, permissions ...permissions.Resolver) openApiMiddleware.Responder {
+	logtrace.LogWithFunctionName()
 	return openApiMiddleware.ResponderFunc(func(writer http.ResponseWriter, producer runtime.Producer) {
 
 		rc, err := GetRequestContextFromHttpContext(request)
@@ -1124,15 +1176,18 @@ func (ae *AppEnv) IsAllowed(responderFunc func(ae *AppEnv, rc *response.RequestC
 }
 
 func (ae *AppEnv) HandleServiceEvent(event *db.ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	ae.HandleServiceUpdatedEventForIdentityId(event.IdentityId)
 }
 
 func (ae *AppEnv) HandleServiceUpdatedEventForIdentityId(identityId string) {
+	logtrace.LogWithFunctionName()
 	ae.IdentityRefreshMap.Set(identityId, time.Now().UTC())
 	ae.identityRefreshMeter.Mark(1)
 }
 
 func (ae *AppEnv) SetServerCert(serverCert *tls.Certificate) {
+	logtrace.LogWithFunctionName()
 	ae.ServerCert = serverCert
 
 	signMethod := getJwtSigningMethod(serverCert)
@@ -1141,9 +1196,11 @@ func (ae *AppEnv) SetServerCert(serverCert *tls.Certificate) {
 }
 
 func (ae *AppEnv) OidcIssuer() string {
+	logtrace.LogWithFunctionName()
 	return ae.RootIssuer() + "/oidc"
 }
 
 func (ae *AppEnv) RootIssuer() string {
+	logtrace.LogWithFunctionName()
 	return "https://" + ae.GetConfig().Edge.Api.Address
 }

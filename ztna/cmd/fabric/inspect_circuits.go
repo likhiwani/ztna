@@ -1,6 +1,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"github.com/spf13/cobra"
 )
 
@@ -10,12 +11,14 @@ type InspectCircuitsAction struct {
 }
 
 func (self *InspectCircuitsAction) addFlags(cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	self.InspectAction.addFlags(cmd)
 	cmd.Flags().BoolVar(&self.includeStacks, "include-stacks", false, "Include stack information")
 	return cmd
 }
 
 func (self *InspectCircuitsAction) newCobraCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "circuit",
 		Short: "query routers to get diagnostic information for a circuit",
@@ -26,6 +29,7 @@ func (self *InspectCircuitsAction) newCobraCmd() *cobra.Command {
 }
 
 func (self *InspectCircuitsAction) runInspectCircuit(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	requestedValue := "circuit:"
 	if self.includeStacks {
 		requestedValue = "circuitAndStacks:"

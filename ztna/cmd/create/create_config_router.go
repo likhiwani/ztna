@@ -21,7 +21,9 @@ import (
 	"os"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -49,6 +51,7 @@ type NewCreateConfigRouterCmd struct {
 
 // NewCmdCreateConfigRouter creates a command object for the "router" command
 func NewCmdCreateConfigRouter(routerOptions *CreateConfigRouterOptions) *NewCreateConfigRouterCmd {
+	logtrace.LogWithFunctionName()
 	data := &ConfigTemplateValues{}
 	if routerOptions == nil {
 		routerOptions = &CreateConfigRouterOptions{}
@@ -94,6 +97,7 @@ func NewCmdCreateConfigRouter(routerOptions *CreateConfigRouterOptions) *NewCrea
 }
 
 func (options *CreateConfigRouterOptions) addFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.PersistentFlags().StringVarP(&options.RouterName, optionRouterName, "n", "", "name of the router")
 	err := cmd.MarkPersistentFlagRequired(optionRouterName)
 	if err != nil {

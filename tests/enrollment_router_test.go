@@ -27,21 +27,25 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/Jeffail/gabs"
 	"github.com/google/uuid"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/transport/v2"
 
-	identity2 "github.com/openziti/identity"
-	"github.com/pkg/errors"
 	"math/big"
 	"net"
 	"net/http"
 	"testing"
 	"time"
+
+	identity2 "github.com/openziti/identity"
+	"github.com/pkg/errors"
 )
 
 func Test_RouterEnrollment(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -591,6 +595,7 @@ func Test_RouterEnrollment(t *testing.T) {
 }
 
 func generateSelfSignedClientCert(commonName string) (*x509.Certificate, crypto.Signer, error) {
+	logtrace.LogWithFunctionName()
 	id, _ := rand.Int(rand.Reader, big.NewInt(100000000000000000))
 	cert := &x509.Certificate{
 		SerialNumber: id,
@@ -624,6 +629,7 @@ func generateSelfSignedClientCert(commonName string) (*x509.Certificate, crypto.
 }
 
 func parsePEMBundle(bundle []byte) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	var certificates []*x509.Certificate
 	var certDERBlock *pem.Block
 
@@ -650,6 +656,7 @@ func parsePEMBundle(bundle []byte) ([]*x509.Certificate, error) {
 }
 
 func createEnrollmentClientCsrPem(commonName string, key crypto.PrivateKey) (string, error) {
+	logtrace.LogWithFunctionName()
 	subject := pkix.Name{
 		CommonName:         commonName,
 		Country:            []string{"US"},
@@ -675,6 +682,7 @@ func createEnrollmentClientCsrPem(commonName string, key crypto.PrivateKey) (str
 }
 
 func createEnrollmentServerCsrPem(commonName string, key crypto.PrivateKey) (string, error) {
+	logtrace.LogWithFunctionName()
 	subject := pkix.Name{
 		CommonName:         commonName,
 		Country:            []string{"US"},
@@ -704,11 +712,13 @@ func createEnrollmentServerCsrPem(commonName string, key crypto.PrivateKey) (str
 }
 
 func generateEcKey() crypto.PrivateKey {
+	logtrace.LogWithFunctionName()
 	key, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 
 	return key
 }
 
 func sliceOf[T any](vals ...T) []T {
+	logtrace.LogWithFunctionName()
 	return vals
 }

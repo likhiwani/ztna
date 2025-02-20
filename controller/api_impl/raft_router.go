@@ -18,22 +18,26 @@ package api_impl
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/ztna/common/pb/cmd_pb"
-	"ztna-core/ztna/controller/apierror"
 	"net/http"
 	"time"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/go-openapi/runtime/middleware"
+	"github.com/openziti/foundation/v2/errorz"
+
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/network"
 	nfraft "ztna-core/ztna/controller/raft"
 	"ztna-core/ztna/controller/rest_model"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/raft"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewRaftRouter()
 	AddRouter(r)
 }
@@ -42,10 +46,12 @@ type RaftRouter struct {
 }
 
 func NewRaftRouter() *RaftRouter {
+	logtrace.LogWithFunctionName()
 	return &RaftRouter{}
 }
 
 func (r *RaftRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.RaftRaftListMembersHandler = raft.RaftListMembersHandlerFunc(func(params raft.RaftListMembersParams) middleware.Responder {
 		return wrapper.WrapRequest(r.listMembers, params.HTTPRequest, "", "")
 	})
@@ -70,6 +76,7 @@ func (r *RaftRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper Reque
 }
 
 func (r *RaftRouter) getRaftController(n *network.Network) *nfraft.Controller {
+	logtrace.LogWithFunctionName()
 	if n.Dispatcher == nil {
 		return nil
 	}
@@ -82,6 +89,7 @@ func (r *RaftRouter) getRaftController(n *network.Network) *nfraft.Controller {
 }
 
 func (r *RaftRouter) listMembers(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	raftController := r.getRaftController(n)
 	if raftController != nil {
 		vals := make([]*rest_model.RaftMemberListValue, 0)
@@ -112,6 +120,7 @@ func (r *RaftRouter) listMembers(n *network.Network, rc api.RequestContext) {
 }
 
 func (r *RaftRouter) addMember(n *network.Network, rc api.RequestContext, params raft.RaftMemberAddParams) {
+	logtrace.LogWithFunctionName()
 	raftController := r.getRaftController(n)
 	if raftController != nil {
 		addr := *params.Member.Address
@@ -145,6 +154,7 @@ func (r *RaftRouter) addMember(n *network.Network, rc api.RequestContext, params
 }
 
 func (r *RaftRouter) removeMember(n *network.Network, rc api.RequestContext, params raft.RaftMemberRemoveParams) {
+	logtrace.LogWithFunctionName()
 	raftController := r.getRaftController(n)
 	if raftController != nil {
 		req := &cmd_pb.RemovePeerRequest{
@@ -165,6 +175,7 @@ func (r *RaftRouter) removeMember(n *network.Network, rc api.RequestContext, par
 }
 
 func (r *RaftRouter) transferLeadership(n *network.Network, rc api.RequestContext, params raft.RaftTransferLeadershipParams) {
+	logtrace.LogWithFunctionName()
 	raftController := r.getRaftController(n)
 	if raftController != nil {
 		req := &cmd_pb.TransferLeadershipRequest{

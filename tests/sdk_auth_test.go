@@ -14,14 +14,17 @@ import (
 	management_identity "ztna-core/edge-api/rest_management_api_client/identity"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/edge-api/rest_util"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
 )
 
 func TestSdkAuth(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

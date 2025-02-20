@@ -21,8 +21,10 @@ import (
 	"strings"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
@@ -41,14 +43,17 @@ type ZrokLoopTestType struct {
 }
 
 func (self *ZrokLoopTestType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "zrok-loop-test"
 }
 
 func (self *ZrokLoopTestType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ZrokLoopTestType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 	if self.Iterations == 0 {
 		self.Iterations = 1
@@ -59,6 +64,7 @@ func (self *ZrokLoopTestType) InitType(*model.Component) {
 }
 
 func (self *ZrokLoopTestType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":    "zrok-test-loop",
 		"version":    self.Version,
@@ -67,10 +73,12 @@ func (self *ZrokLoopTestType) Dump() any {
 }
 
 func (self *ZrokLoopTestType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return stageziti.StageZrokOnce(r, c, self.Version, self.LocalPath)
 }
 
 func (self *ZrokLoopTestType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, "zrok") &&
 			strings.Contains(s, " test loop public") &&
@@ -80,6 +88,7 @@ func (self *ZrokLoopTestType) getProcessFilter(c *model.Component) func(string) 
 }
 
 func (self *ZrokLoopTestType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -88,6 +97,7 @@ func (self *ZrokLoopTestType) IsRunning(_ model.Run, c *model.Component) (bool, 
 }
 
 func (self *ZrokLoopTestType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 	userId := self.getUnixUser(c)
 
@@ -116,14 +126,17 @@ func (self *ZrokLoopTestType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *ZrokLoopTestType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter(c))
 }
 
 func (self *ZrokLoopTestType) getUnixUser(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("zrok%v", c.ScaleIndex)
 }
 
 func (self *ZrokLoopTestType) InitializeHost(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	userId := self.getUnixUser(c)
 
 	if _, err := c.GetHost().ExecLogged(fmt.Sprintf("id -u %s", userId)); err != nil {
@@ -137,6 +150,7 @@ func (self *ZrokLoopTestType) InitializeHost(_ model.Run, c *model.Component) er
 }
 
 func (self *ZrokLoopTestType) Init(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	userId := self.getUnixUser(c)
 
 	binaryPath := getBinaryPath(c, constants.ZROK, self.Version)

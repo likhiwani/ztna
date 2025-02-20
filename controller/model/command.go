@@ -24,10 +24,13 @@ import (
 	"ztna-core/ztna/controller/idgen"
 	"ztna-core/ztna/controller/ioc"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"google.golang.org/protobuf/proto"
 )
 
 func newCommandManager(env Env, registry ioc.Registry) *CommandManager {
+	logtrace.LogWithFunctionName()
 	command.GetDefaultDecoders().Clear()
 	result := &CommandManager{
 		env:      env,
@@ -44,12 +47,14 @@ type CommandManager struct {
 }
 
 func (self *CommandManager) registerGenericCommands() {
+	logtrace.LogWithFunctionName()
 	self.Decoders.RegisterF(int32(cmd_pb.CommandType_CreateEntityType), self.decodeCreateEntityCommand)
 	self.Decoders.RegisterF(int32(cmd_pb.CommandType_UpdateEntityType), self.decodeUpdateEntityCommand)
 	self.Decoders.RegisterF(int32(cmd_pb.CommandType_DeleteEntityType), self.decodeDeleteEntityCommand)
 }
 
 func (self *CommandManager) decodeCreateEntityCommand(_ int32, data []byte) (command.Command, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.CreateEntityCommand{}
 	if err := proto.Unmarshal(data, msg); err != nil {
 		return nil, err
@@ -64,6 +69,7 @@ func (self *CommandManager) decodeCreateEntityCommand(_ int32, data []byte) (com
 }
 
 func (self *CommandManager) decodeUpdateEntityCommand(_ int32, data []byte) (command.Command, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.UpdateEntityCommand{}
 	if err := proto.Unmarshal(data, msg); err != nil {
 		return nil, err
@@ -78,6 +84,7 @@ func (self *CommandManager) decodeUpdateEntityCommand(_ int32, data []byte) (com
 }
 
 func (self *CommandManager) decodeDeleteEntityCommand(_ int32, data []byte) (command.Command, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.DeleteEntityCommand{}
 	if err := proto.Unmarshal(data, msg); err != nil {
 		return nil, err
@@ -111,6 +118,7 @@ type updater[T models.Entity] interface {
 }
 
 func DispatchCreate[T models.Entity](c creator[T], entity T, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if entity.GetId() == "" {
 		id := idgen.NewUUIDString()
 		entity.SetId(id)
@@ -126,6 +134,7 @@ func DispatchCreate[T models.Entity](c creator[T], entity T, ctx *change.Context
 }
 
 func DispatchUpdate[T models.Entity](u updater[T], entity T, updatedFields fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &command.UpdateEntityCommand[T]{
 		Context:       ctx,
 		Updater:       u,

@@ -18,16 +18,18 @@ package trace
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/trace/pb"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/router/xgress"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"google.golang.org/protobuf/proto"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"google.golang.org/protobuf/proto"
 )
 
 var decoders = []channel.TraceMessageDecoder{channel.Decoder{}, ctrl_pb.Decoder{}, xgress.Decoder{}, mgmt_pb.Decoder{}}
@@ -42,14 +44,17 @@ type ChannelPeekHandler struct {
 }
 
 func (self *ChannelPeekHandler) EnableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	self.ToggleTracing(sourceType, matcher, true, handler, resultChan)
 }
 
 func (self *ChannelPeekHandler) DisableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	self.ToggleTracing(sourceType, matcher, false, handler, resultChan)
 }
 
 func (self *ChannelPeekHandler) ToggleTracing(sourceType SourceType, matcher SourceMatcher, enable bool, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	name := self.ch.LogicalName()
 	matched := sourceType == SourceTypePipe && matcher.Matches(name)
 	prevState := self.IsEnabled()
@@ -74,6 +79,7 @@ func (self *ChannelPeekHandler) ToggleTracing(sourceType SourceType, matcher Sou
 }
 
 func NewChannelPeekHandler(appId string, ch channel.Channel, controller Controller) *ChannelPeekHandler {
+	logtrace.LogWithFunctionName()
 	handler := &ChannelPeekHandler{
 		appId:      appId,
 		ch:         ch,
@@ -85,25 +91,31 @@ func NewChannelPeekHandler(appId string, ch channel.Channel, controller Controll
 }
 
 func (self *ChannelPeekHandler) IsEnabled() bool {
+	logtrace.LogWithFunctionName()
 	return self.enabled.Load()
 }
 
 func (*ChannelPeekHandler) Connect(channel.Channel, string) {
+	logtrace.LogWithFunctionName()
 }
 
 func (self *ChannelPeekHandler) Rx(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.trace(msg, ch, false)
 }
 
 func (self *ChannelPeekHandler) Tx(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.trace(msg, ch, true)
 }
 
 func (self *ChannelPeekHandler) Close(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.controller.RemoveSource(self)
 }
 
 func (self *ChannelPeekHandler) trace(msg *channel.Message, ch channel.Channel, rx bool) {
+	logtrace.LogWithFunctionName()
 	if !self.IsEnabled() || msg.ContentType == int32(ctrl_pb.ContentType_TraceEventType) ||
 		msg.ContentType == int32(mgmt_pb.ContentType_StreamTracesEventType) {
 		return
@@ -136,6 +148,7 @@ func (self *ChannelPeekHandler) trace(msg *channel.Message, ch channel.Channel, 
 }
 
 func NewChannelSink(ch channel.Channel) EventHandler {
+	logtrace.LogWithFunctionName()
 	return &channelSink{ch}
 }
 
@@ -144,6 +157,7 @@ type channelSink struct {
 }
 
 func (sink *channelSink) Accept(event *trace_pb.ChannelMessage) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	bytes, err := proto.Marshal(event)

@@ -17,9 +17,11 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/ctrl_pb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,10 +31,12 @@ type settingsHandler struct {
 }
 
 func (handler *settingsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_SettingsType)
 }
 
 func (handler *settingsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	settings := &ctrl_pb.Settings{}
 	if err := proto.Unmarshal(msg.Body, settings); err == nil {
 		for settingType, settingValue := range settings.Data {
@@ -55,6 +59,7 @@ func (handler *settingsHandler) HandleReceive(msg *channel.Message, ch channel.C
 }
 
 func newSettingsHandler(updater CtrlAddressUpdater) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &settingsHandler{
 		updater: updater,
 	}

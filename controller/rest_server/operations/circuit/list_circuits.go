@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type ListCircuitsHandlerFunc func(ListCircuitsParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn ListCircuitsHandlerFunc) Handle(params ListCircuitsParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type ListCircuitsHandler interface {
 
 // NewListCircuits creates a new http.Handler for the list circuits operation
 func NewListCircuits(ctx *middleware.Context, handler ListCircuitsHandler) *ListCircuits {
+    logtrace.LogWithFunctionName()
 	return &ListCircuits{Context: ctx, Handler: handler}
 }
 
@@ -67,6 +70,7 @@ type ListCircuits struct {
 }
 
 func (o *ListCircuits) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

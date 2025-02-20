@@ -17,23 +17,28 @@
 package events
 
 import (
+	"reflect"
+	"time"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
-	"reflect"
-	"time"
 )
 
 func (self *Dispatcher) AddRouterEventHandler(handler event.RouterEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.routerEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveRouterEventHandler(handler event.RouterEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.routerEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AcceptRouterEvent(event *event.RouterEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.routerEventHandlers.Value() {
 			handler.AcceptRouterEvent(event)
@@ -42,6 +47,7 @@ func (self *Dispatcher) AcceptRouterEvent(event *event.RouterEvent) {
 }
 
 func (self *Dispatcher) initRouterEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	routerEvtAdapter := &routerEventAdapter{
 		Dispatcher: self,
 	}
@@ -49,6 +55,7 @@ func (self *Dispatcher) initRouterEvents(n *network.Network) {
 }
 
 func (self *Dispatcher) registerRouterEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.RouterEventHandler)
 
 	if !ok {
@@ -61,6 +68,7 @@ func (self *Dispatcher) registerRouterEventHandler(val interface{}, _ map[string
 }
 
 func (self *Dispatcher) unregisterRouterEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.RouterEventHandler); ok {
 		self.RemoveRouterEventHandler(handler)
 	}
@@ -72,14 +80,17 @@ type routerEventAdapter struct {
 }
 
 func (self *routerEventAdapter) RouterConnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChange(event.RouterOnline, r, true)
 }
 
 func (self *routerEventAdapter) RouterDisconnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChange(event.RouterOffline, r, false)
 }
 
 func (self *routerEventAdapter) routerChange(eventType event.RouterEventType, r *model.Router, online bool) {
+	logtrace.LogWithFunctionName()
 	evt := &event.RouterEvent{
 		Namespace:    event.RouterEventsNs,
 		EventSrcId:   self.ctrlId,

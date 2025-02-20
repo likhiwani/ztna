@@ -17,15 +17,17 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/controller/env"
-	"ztna-core/ztna/controller/event"
-	"google.golang.org/protobuf/proto"
 	"slices"
 	"sync"
 	"time"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"google.golang.org/protobuf/proto"
 )
 
 type connectEventsHandler struct {
@@ -34,16 +36,19 @@ type connectEventsHandler struct {
 }
 
 func NewConnectEventsHandler(appEnv *env.AppEnv) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &connectEventsHandler{
 		appEnv: appEnv,
 	}
 }
 
 func (h *connectEventsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_ConnectEventsTypes)
 }
 
 func (h *connectEventsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		// process per-router events in order
 		h.Lock()

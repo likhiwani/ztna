@@ -17,6 +17,8 @@
 package apierror
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/Jeffail/gabs"
 )
 
@@ -26,10 +28,12 @@ type GenericCauseError struct {
 }
 
 func (e *GenericCauseError) Error() string {
+	logtrace.LogWithFunctionName()
 	return e.Message
 }
 
 func (e *GenericCauseError) MarshalJSON() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	data, err := gabs.Consume(e.DataMap) //gabs to avoid zero values being omitted
 
 	if err != nil {

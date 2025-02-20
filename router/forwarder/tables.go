@@ -18,11 +18,13 @@ package forwarder
 
 import (
 	"fmt"
-	"ztna-core/ztna/router/xgress"
-	"github.com/orcaman/concurrent-map/v2"
 	"reflect"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 // circuitTable implements a directory of forwardTables, keyed by circuitId.
@@ -31,17 +33,20 @@ type circuitTable struct {
 }
 
 func newCircuitTable() *circuitTable {
+	logtrace.LogWithFunctionName()
 	return &circuitTable{
 		circuits: cmap.New[*forwardTable](),
 	}
 }
 
 func (st *circuitTable) setForwardTable(circuitId string, ft *forwardTable) {
+	logtrace.LogWithFunctionName()
 	atomic.StoreInt64(&ft.last, time.Now().UnixMilli())
 	st.circuits.Set(circuitId, ft)
 }
 
 func (st *circuitTable) getForwardTable(circuitId string, markActive bool) (*forwardTable, bool) {
+	logtrace.LogWithFunctionName()
 	if ft, found := st.circuits.Get(circuitId); found {
 		if markActive {
 			atomic.StoreInt64(&ft.last, time.Now().UnixMilli())
@@ -52,10 +57,12 @@ func (st *circuitTable) getForwardTable(circuitId string, markActive bool) (*for
 }
 
 func (st *circuitTable) removeForwardTable(circuitId string) {
+	logtrace.LogWithFunctionName()
 	st.circuits.Remove(circuitId)
 }
 
 func (st *circuitTable) debug() string {
+	logtrace.LogWithFunctionName()
 	out := fmt.Sprintf("circuits (%d):\n", st.circuits.Count())
 	for i := range st.circuits.IterBuffered() {
 		out += "\n"
@@ -73,6 +80,7 @@ type forwardTable struct {
 }
 
 func newForwardTable(ctrlId string) *forwardTable {
+	logtrace.LogWithFunctionName()
 	return &forwardTable{
 		ctrlId:       ctrlId,
 		destinations: cmap.New[string](),
@@ -80,10 +88,12 @@ func newForwardTable(ctrlId string) *forwardTable {
 }
 
 func (ft *forwardTable) setForwardAddress(src, dst xgress.Address) {
+	logtrace.LogWithFunctionName()
 	ft.destinations.Set(string(src), string(dst))
 }
 
 func (ft *forwardTable) getForwardAddress(src xgress.Address) (xgress.Address, bool) {
+	logtrace.LogWithFunctionName()
 	if dst, found := ft.destinations.Get(string(src)); found {
 		return xgress.Address(dst), true
 	}
@@ -91,6 +101,7 @@ func (ft *forwardTable) getForwardAddress(src xgress.Address) (xgress.Address, b
 }
 
 func (ft *forwardTable) debug() string {
+	logtrace.LogWithFunctionName()
 	out := ""
 	for i := range ft.destinations.IterBuffered() {
 		out += fmt.Sprintf("\t\t@/%s -> @/%s\n", i.Key, i.Val)
@@ -105,6 +116,7 @@ type destinationTable struct {
 }
 
 func newDestinationTable() *destinationTable {
+	logtrace.LogWithFunctionName()
 	return &destinationTable{
 		destinations: cmap.New[Destination](),
 		xgress:       cmap.New[[]xgress.Address](),
@@ -112,10 +124,12 @@ func newDestinationTable() *destinationTable {
 }
 
 func (dt *destinationTable) addDestination(addr xgress.Address, destination Destination) {
+	logtrace.LogWithFunctionName()
 	dt.destinations.Set(string(addr), destination)
 }
 
 func (dt *destinationTable) getDestination(addr xgress.Address) (Destination, bool) {
+	logtrace.LogWithFunctionName()
 	if dst, found := dt.destinations.Get(string(addr)); found {
 		return dst, true
 	}
@@ -123,16 +137,19 @@ func (dt *destinationTable) getDestination(addr xgress.Address) (Destination, bo
 }
 
 func (dt *destinationTable) removeDestination(addr xgress.Address) {
+	logtrace.LogWithFunctionName()
 	dt.destinations.Remove(string(addr))
 }
 
 func (dt *destinationTable) removeDestinationIfMatches(addr xgress.Address, destination Destination) {
+	logtrace.LogWithFunctionName()
 	dt.destinations.RemoveCb(string(addr), func(key string, v Destination, exists bool) bool {
 		return exists && destination == v
 	})
 }
 
 func (dt *destinationTable) linkDestinationToCircuit(circuitId string, address xgress.Address) {
+	logtrace.LogWithFunctionName()
 	var addresses []xgress.Address
 	if i, found := dt.xgress.Get(circuitId); found {
 		addresses = i
@@ -144,6 +161,7 @@ func (dt *destinationTable) linkDestinationToCircuit(circuitId string, address x
 }
 
 func (dt *destinationTable) getAddressesForCircuit(circuitId string) ([]xgress.Address, bool) {
+	logtrace.LogWithFunctionName()
 	if addresses, found := dt.xgress.Get(circuitId); found {
 		return addresses, found
 	}
@@ -151,10 +169,12 @@ func (dt *destinationTable) getAddressesForCircuit(circuitId string) ([]xgress.A
 }
 
 func (dt *destinationTable) unlinkCircuit(circuitId string) {
+	logtrace.LogWithFunctionName()
 	dt.xgress.Remove(circuitId)
 }
 
 func (dt *destinationTable) debug() string {
+	logtrace.LogWithFunctionName()
 	out := fmt.Sprintf("\ndestinations (%d):\n\n", dt.destinations.Count())
 	for i := range dt.destinations.IterBuffered() {
 		out += fmt.Sprintf("\t@/%s -> (%s (%p))\n", i.Key, reflect.TypeOf(i.Val).String(), i.Val)

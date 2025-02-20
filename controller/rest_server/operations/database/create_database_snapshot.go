@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type CreateDatabaseSnapshotHandlerFunc func(CreateDatabaseSnapshotParams, interf
 
 // Handle executing the request and returning a response
 func (fn CreateDatabaseSnapshotHandlerFunc) Handle(params CreateDatabaseSnapshotParams, principal interface{}) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params, principal)
 }
 
@@ -50,6 +52,7 @@ type CreateDatabaseSnapshotHandler interface {
 
 // NewCreateDatabaseSnapshot creates a new http.Handler for the create database snapshot operation
 func NewCreateDatabaseSnapshot(ctx *middleware.Context, handler CreateDatabaseSnapshotHandler) *CreateDatabaseSnapshot {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshot{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type CreateDatabaseSnapshot struct {
 }
 
 func (o *CreateDatabaseSnapshot) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

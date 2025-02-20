@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/ztna/cmd/common"
@@ -30,6 +31,7 @@ type SimpleChAgentCmdAction struct {
 }
 
 func NewSimpleChAgentCustomCmd(name string, appId AgentAppId, op int32, p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &SimpleChAgentCmdAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -54,10 +56,12 @@ func NewSimpleChAgentCustomCmd(name string, appId AgentAppId, op int32, p common
 
 // Run implements the command
 func (self *SimpleChAgentCmdAction) Run(appId AgentAppId) error {
+	logtrace.LogWithFunctionName()
 	return self.MakeChannelRequest(byte(appId), self.makeRequest)
 }
 
 func (self *SimpleChAgentCmdAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(self.requestType, nil)
 	reply, err := msg.WithTimeout(self.timeout).SendForReply(ch)
 	if err != nil {

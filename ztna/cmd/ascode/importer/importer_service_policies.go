@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/service_policy"
@@ -27,11 +28,13 @@ import (
 )
 
 func (importer *Importer) IsServicePolicyImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "service-policy")
 }
 
 func (importer *Importer) ProcessServicePolicies(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["servicePolicies"] {

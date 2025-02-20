@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DetailCircuitHandlerFunc func(DetailCircuitParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn DetailCircuitHandlerFunc) Handle(params DetailCircuitParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DetailCircuitHandler interface {
 
 // NewDetailCircuit creates a new http.Handler for the detail circuit operation
 func NewDetailCircuit(ctx *middleware.Context, handler DetailCircuitHandler) *DetailCircuit {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuit{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DetailCircuit struct {
 }
 
 func (o *DetailCircuit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

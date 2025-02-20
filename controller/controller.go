@@ -22,17 +22,10 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/identity"
-	"github.com/openziti/metrics"
-	"github.com/openziti/storage/boltz"
-	"github.com/openziti/transport/v2"
-	"github.com/openziti/transport/v2/tls"
-	"github.com/openziti/xweb/v2"
+	"math/big"
+	"os"
+	"sync"
+	"sync/atomic"
 	"ztna-core/ztna/common/capabilities"
 	"ztna-core/ztna/common/concurrency"
 	fabricMetrics "ztna-core/ztna/common/metrics"
@@ -57,12 +50,21 @@ import (
 	"ztna-core/ztna/controller/xt_smartrouting"
 	"ztna-core/ztna/controller/xt_sticky"
 	"ztna-core/ztna/controller/xt_weighted"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/identity"
+	"github.com/openziti/metrics"
+	"github.com/openziti/storage/boltz"
+	"github.com/openziti/transport/v2"
+	"github.com/openziti/transport/v2/tls"
+	"github.com/openziti/xweb/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"math/big"
-	"os"
-	"sync"
-	"sync/atomic"
 )
 
 type Controller struct {
@@ -96,6 +98,7 @@ type Controller struct {
 }
 
 func (c *Controller) GetPeerSigners() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	if c.raftController == nil || c.raftController.Mesh == nil {
 		return nil
 	}
@@ -110,6 +113,7 @@ func (c *Controller) GetPeerSigners() []*x509.Certificate {
 }
 
 func (c *Controller) GetPeerAddresses() []string {
+	logtrace.LogWithFunctionName()
 	if c.raftController == nil || c.raftController.Mesh == nil {
 		return nil
 	}
@@ -125,22 +129,27 @@ func (c *Controller) GetPeerAddresses() []string {
 }
 
 func (c *Controller) GetId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return c.config.Id
 }
 
 func (c *Controller) GetConfig() *config.Config {
+	logtrace.LogWithFunctionName()
 	return c.config
 }
 
 func (c *Controller) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return c.metricsRegistry
 }
 
 func (c *Controller) GetOptions() *config.NetworkConfig {
+	logtrace.LogWithFunctionName()
 	return c.config.Network
 }
 
 func (c *Controller) GetCommandDispatcher() command.Dispatcher {
+	logtrace.LogWithFunctionName()
 	if c.raftController == nil {
 		if c.localDispatcher != nil {
 			return c.localDispatcher
@@ -157,10 +166,12 @@ func (c *Controller) GetCommandDispatcher() command.Dispatcher {
 }
 
 func (c *Controller) IsRaftEnabled() bool {
+	logtrace.LogWithFunctionName()
 	return c.raftController != nil
 }
 
 func (c *Controller) IsRaftLeader() bool {
+	logtrace.LogWithFunctionName()
 	if c.raftController == nil {
 		return false
 	}
@@ -168,10 +179,12 @@ func (c *Controller) IsRaftLeader() bool {
 }
 
 func (c *Controller) GetRaftIndex() uint64 {
+	logtrace.LogWithFunctionName()
 	return c.raftController.Raft.LastIndex()
 }
 
 func (c *Controller) GetRaftInfo() (string, string, string) {
+	logtrace.LogWithFunctionName()
 	id := c.config.Id.Token
 	addr := c.raftController.Mesh.Addr().String()
 
@@ -181,34 +194,42 @@ func (c *Controller) GetRaftInfo() (string, string, string) {
 }
 
 func (c *Controller) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return c.config.Db
 }
 
 func (c *Controller) GetVersionProvider() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return c.versionProvider
 }
 
 func (c *Controller) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return c.shutdownC
 }
 
 func (c *Controller) GetRaftConfig() *config.RaftConfig {
+	logtrace.LogWithFunctionName()
 	return c.config.Raft
 }
 
 func (c *Controller) GetCommandRateLimiterConfig() command.RateLimiterConfig {
+	logtrace.LogWithFunctionName()
 	return c.config.CommandRateLimiter
 }
 
 func (c *Controller) RenderJsonConfig() (string, error) {
+	logtrace.LogWithFunctionName()
 	return c.config.ToJson()
 }
 
 func (c *Controller) GetEnv() *env.AppEnv {
+	logtrace.LogWithFunctionName()
 	return c.env
 }
 
 func NewController(cfg *config.Config, versionProvider versions.VersionProvider) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	metricRegistry := metrics.NewRegistry(cfg.Id.Token, nil)
 
 	shutdownC := make(chan struct{})
@@ -294,6 +315,7 @@ func NewController(cfg *config.Config, versionProvider versions.VersionProvider)
 }
 
 func (c *Controller) initWeb() {
+	logtrace.LogWithFunctionName()
 	healthChecker, err := c.initializeHealthChecks()
 	if err != nil {
 		logrus.WithError(err).Fatalf("failed to create health checker")
@@ -342,10 +364,12 @@ func (c *Controller) initWeb() {
 }
 
 func (c *Controller) IsEdgeEnabled() bool {
+	logtrace.LogWithFunctionName()
 	return c.config.Edge.Enabled
 }
 
 func (c *Controller) Run() error {
+	logtrace.LogWithFunctionName()
 	c.startProfiling()
 
 	if err := c.registerComponents(); err != nil {
@@ -434,6 +458,7 @@ func (c *Controller) Run() error {
 }
 
 func (c *Controller) getEventHandlerConfigs() []*events.EventHandlerConfig {
+	logtrace.LogWithFunctionName()
 	var result []*events.EventHandlerConfig
 
 	if e, ok := c.config.Src["events"]; ok {
@@ -452,10 +477,12 @@ func (c *Controller) getEventHandlerConfigs() []*events.EventHandlerConfig {
 }
 
 func (c *Controller) GetCloseNotifyChannel() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return c.shutdownC
 }
 
 func (c *Controller) Shutdown() {
+	logtrace.LogWithFunctionName()
 	if c.isShutdown.CompareAndSwap(false, true) {
 		close(c.shutdownC)
 
@@ -482,6 +509,7 @@ func (c *Controller) Shutdown() {
 }
 
 func (c *Controller) showOptions() error {
+	logtrace.LogWithFunctionName()
 	if ctrl, err := json.MarshalIndent(c.config.Ctrl.Options, "", "  "); err == nil {
 		pfxlog.Logger().Infof("ctrl = %s", string(ctrl))
 	} else {
@@ -491,6 +519,7 @@ func (c *Controller) showOptions() error {
 }
 
 func (c *Controller) startProfiling() {
+	logtrace.LogWithFunctionName()
 	if c.config.Profile.Memory.Path != "" {
 		go profiler.NewMemoryWithShutdown(c.config.Profile.Memory.Path, c.config.Profile.Memory.Interval, c.shutdownC).Run()
 	}
@@ -504,6 +533,7 @@ func (c *Controller) startProfiling() {
 }
 
 func (c *Controller) registerXts() {
+	logtrace.LogWithFunctionName()
 	xt.GlobalRegistry().RegisterFactory(xt_smartrouting.NewFactory())
 	xt.GlobalRegistry().RegisterFactory(xt_random.NewFactory())
 	xt.GlobalRegistry().RegisterFactory(xt_weighted.NewFactory())
@@ -511,12 +541,14 @@ func (c *Controller) registerXts() {
 }
 
 func (c *Controller) registerComponents() error {
+	logtrace.LogWithFunctionName()
 	c.ctrlConnectHandler = handler_ctrl.NewConnectHandler(c.config.Id, c.network)
 	c.eventDispatcher.AddClusterEventHandler(event.ClusterEventHandlerF(c.routerDispatchCallback))
 	return nil
 }
 
 func (c *Controller) RegisterXctrl(x xctrl.Xctrl) error {
+	logtrace.LogWithFunctionName()
 	if err := c.config.Configure(x); err != nil {
 		return err
 	}
@@ -532,6 +564,7 @@ func (c *Controller) RegisterXctrl(x xctrl.Xctrl) error {
 }
 
 func (c *Controller) RegisterXmgmt(x xmgmt.Xmgmt) error {
+	logtrace.LogWithFunctionName()
 	if err := c.config.Configure(x); err != nil {
 		return err
 	}
@@ -543,22 +576,27 @@ func (c *Controller) RegisterXmgmt(x xmgmt.Xmgmt) error {
 }
 
 func (c *Controller) GetXWebInstance() xweb.Instance {
+	logtrace.LogWithFunctionName()
 	return c.xweb
 }
 
 func (c *Controller) GetNetwork() *network.Network {
+	logtrace.LogWithFunctionName()
 	return c.network
 }
 
 func (c *Controller) Identity() identity.Identity {
+	logtrace.LogWithFunctionName()
 	return c.config.Id
 }
 
 func (c *Controller) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return c.eventDispatcher
 }
 
 func (c *Controller) routerDispatchCallback(evt *event.ClusterEvent) {
+	logtrace.LogWithFunctionName()
 	if evt.EventType == event.ClusterLeadershipGained {
 		req := &ctrl_pb.UpdateClusterLeader{
 			Index: evt.Index,
@@ -608,6 +646,7 @@ func (c *Controller) routerDispatchCallback(evt *event.ClusterEvent) {
 }
 
 func (c *Controller) getMigrationDb() (*string, error) {
+	logtrace.LogWithFunctionName()
 	val, found := c.config.Src["db"]
 	if !found {
 		return nil, nil
@@ -625,11 +664,13 @@ func (c *Controller) getMigrationDb() (*string, error) {
 }
 
 func (c *Controller) ValidateMigrationEnvironment() error {
+	logtrace.LogWithFunctionName()
 	_, err := c.getMigrationDb()
 	return err
 }
 
 func (c *Controller) TryInitializeRaftFromBoltDb() error {
+	logtrace.LogWithFunctionName()
 	path, err := c.getMigrationDb()
 	if err != nil || path == nil {
 		return err
@@ -638,6 +679,7 @@ func (c *Controller) TryInitializeRaftFromBoltDb() error {
 }
 
 func (c *Controller) InitializeRaftFromBoltDb(sourceDbPath string) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	if c.raftController == nil {
@@ -693,6 +735,7 @@ func (c *Controller) InitializeRaftFromBoltDb(sourceDbPath string) error {
 
 // TODO: this functions is a temporary hack and should be provided by xweb
 func getApiPath(binding string) string {
+	logtrace.LogWithFunctionName()
 	switch binding {
 	case "edge-client":
 		return "/edge/client/v1"
@@ -710,6 +753,7 @@ func getApiPath(binding string) string {
 }
 
 func (c *Controller) GetApiAddresses() (map[string][]event.ApiAddress, []byte) {
+	logtrace.LogWithFunctionName()
 	c.apiDataOnce.Do(func() {
 		c.xwebInitialized.WaitTillInitialized()
 		xwebConfig := c.xweb.GetConfig()
@@ -734,6 +778,7 @@ func (c *Controller) GetApiAddresses() (map[string][]event.ApiAddress, []byte) {
 }
 
 func (c *Controller) GetHelloHeaderProviders() []mesh.HeaderProvider {
+	logtrace.LogWithFunctionName()
 	providerFunc := func(headers map[int32][]byte) {
 		_, apiDataBytes := c.GetApiAddresses()
 		headers[mesh.ApiAddressesHeader] = apiDataBytes

@@ -17,11 +17,13 @@
 package handler_link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type payloadHandler struct {
@@ -30,6 +32,7 @@ type payloadHandler struct {
 }
 
 func newPayloadHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *payloadHandler {
+	logtrace.LogWithFunctionName()
 	return &payloadHandler{
 		link:      link,
 		forwarder: forwarder,
@@ -37,10 +40,12 @@ func newPayloadHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *payloa
 }
 
 func (self *payloadHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return xgress.ContentTypePayloadType
 }
 
 func (self *payloadHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).
 		WithField("linkId", self.link.Id()).
 		WithField("routerId", self.link.DestinationId())

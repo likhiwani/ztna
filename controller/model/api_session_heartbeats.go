@@ -17,11 +17,13 @@
 package model
 
 import (
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
 	cmap "github.com/orcaman/concurrent-map/v2"
-	"sync/atomic"
-	"time"
 )
 
 type HeartbeatCollector struct {
@@ -43,6 +45,7 @@ type Heartbeat struct {
 // writes. The heartbeat collector aggregates all of those calls into a single write and acts as an in memory
 // buffer for last update times.
 func NewHeartbeatCollector(env Env, batchSize int, updateInterval time.Duration, action func([]*Heartbeat)) *HeartbeatCollector {
+	logtrace.LogWithFunctionName()
 	collector := &HeartbeatCollector{
 		apiSessionLastAccessedAtMap: cmap.New[*HeartbeatStatus](),
 		updateInterval:              updateInterval,
@@ -64,6 +67,7 @@ type HeartbeatStatus struct {
 }
 
 func (self *HeartbeatCollector) Mark(apiSessionId string) {
+	logtrace.LogWithFunctionName()
 	newStatus := &HeartbeatStatus{
 		lastAccessedAt: time.Now().UTC(),
 		flushed:        false,
@@ -75,6 +79,7 @@ func (self *HeartbeatCollector) Mark(apiSessionId string) {
 // or made a REST API call and true. If no such action has happened or the API Session no longer exists
 // nil and false will be returned.
 func (self *HeartbeatCollector) LastAccessedAt(apiSessionId string) (*time.Time, bool) {
+	logtrace.LogWithFunctionName()
 	if status, ok := self.apiSessionLastAccessedAtMap.Get(apiSessionId); ok {
 		lastAccessedAt := status.lastAccessedAt
 		return &lastAccessedAt, true
@@ -84,10 +89,12 @@ func (self *HeartbeatCollector) LastAccessedAt(apiSessionId string) (*time.Time,
 }
 
 func (self *HeartbeatCollector) Start() {
+	logtrace.LogWithFunctionName()
 	go self.run()
 }
 
 func (self *HeartbeatCollector) run() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-self.closeNotify:
@@ -100,11 +107,13 @@ func (self *HeartbeatCollector) run() {
 }
 
 func (self *HeartbeatCollector) Stop() {
+	logtrace.LogWithFunctionName()
 	close(self.closeNotify)
 
 }
 
 func (self *HeartbeatCollector) flush() {
+	logtrace.LogWithFunctionName()
 	if self.isFlushing.CompareAndSwap(false, true) {
 		defer self.isFlushing.CompareAndSwap(true, false)
 		pfxlog.Logger().Trace("flushing heartbeat collector")
@@ -142,5 +151,6 @@ func (self *HeartbeatCollector) flush() {
 }
 
 func (self *HeartbeatCollector) Remove(id string) {
+	logtrace.LogWithFunctionName()
 	self.apiSessionLastAccessedAtMap.Remove(id)
 }

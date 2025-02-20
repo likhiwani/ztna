@@ -17,20 +17,22 @@
 package proxy
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"github.com/openziti/foundation/v2/mempool"
-	"ztna-core/ztna/tunnel"
-	"ztna-core/ztna/tunnel/dns"
-	"ztna-core/ztna/tunnel/entities"
-	"ztna-core/ztna/tunnel/intercept"
-	"ztna-core/ztna/tunnel/udp_vconn"
-	"github.com/pkg/errors"
 	"io"
 	"net"
 	"strconv"
 	"strings"
 	"sync"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/dns"
+	"ztna-core/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/intercept"
+	"ztna-core/ztna/tunnel/udp_vconn"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/openziti/foundation/v2/mempool"
+	"github.com/pkg/errors"
 )
 
 type Service struct {
@@ -43,12 +45,14 @@ type Service struct {
 }
 
 func (self *Service) setCloser(c io.Closer) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	self.Closer = c
 }
 
 func (self *Service) Stop() error {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	if self.Closer != nil {
@@ -63,6 +67,7 @@ type interceptor struct {
 }
 
 func New(ip net.IP, serviceList []string) (intercept.Interceptor, error) {
+	logtrace.LogWithFunctionName()
 	services := make(map[string]*Service, len(serviceList))
 
 	for _, arg := range serviceList {
@@ -101,6 +106,7 @@ func New(ip net.IP, serviceList []string) (intercept.Interceptor, error) {
 }
 
 func (p *interceptor) Intercept(service *entities.Service, _ dns.Resolver, _ intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", service.Name)
 
 	proxiedService, ok := p.services[*service.Name]
@@ -118,6 +124,7 @@ func (p *interceptor) Intercept(service *entities.Service, _ dns.Resolver, _ int
 }
 
 func (p *interceptor) runServiceListener(service *Service) error {
+	logtrace.LogWithFunctionName()
 	if service.Protocol == intercept.TCP {
 		return p.handleTCP(service)
 	}
@@ -125,6 +132,7 @@ func (p *interceptor) runServiceListener(service *Service) error {
 }
 
 func (p *interceptor) handleTCP(service *Service) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", service.Name)
 
 	listenAddr := net.TCPAddr{IP: p.interceptIP, Port: service.Port}
@@ -157,6 +165,7 @@ func (p *interceptor) handleTCP(service *Service) error {
 }
 
 func (p *interceptor) handleUDP(service *Service) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", service.Name)
 
 	listenAddr := &net.UDPAddr{IP: p.interceptIP, Port: service.Port}
@@ -180,6 +189,7 @@ func (p *interceptor) handleUDP(service *Service) error {
 }
 
 func (p *interceptor) Stop() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("stopping proxy interceptor")
 
 	for _, service := range p.services {
@@ -188,6 +198,7 @@ func (p *interceptor) Stop() {
 }
 
 func (p *interceptor) StopIntercepting(serviceName string, _ intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	if service, ok := p.services[serviceName]; ok {
 		return service.Stop()
 	}
@@ -200,6 +211,7 @@ type udpReader struct {
 }
 
 func (reader *udpReader) generateReadEvents(manager udp_vconn.Manager) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", reader.service.Name)
 	bufPool := mempool.NewPool(16, info.MaxUdpPacketSize)
 	for {
@@ -229,6 +241,7 @@ type udpReadEvent struct {
 }
 
 func (event *udpReadEvent) Handle(manager udp_vconn.Manager) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	writeQueue := manager.GetWriteQueue(event.srcAddr)

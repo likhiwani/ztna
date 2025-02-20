@@ -20,15 +20,17 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/versions"
-	"ztna-core/ztna/controller/event"
 	"math/rand"
 	"net"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/versions"
 
 	"github.com/hashicorp/raft"
 	"github.com/michaelquigley/pfxlog"
@@ -66,12 +68,14 @@ type Peer struct {
 }
 
 func (self *Peer) nextRaftPeerId() uint32 {
+	logtrace.LogWithFunctionName()
 	// dialing peers use odd ids, dialed peers use even, so we
 	// shouldn't get any conflict
 	return atomic.AddUint32(&self.raftPeerIdGen, 2)
 }
 
 func (self *Peer) newRaftPeerConn(id uint32) *raftPeerConn {
+	logtrace.LogWithFunctionName()
 	result := &raftPeerConn{
 		id:          id,
 		peer:        self,
@@ -85,6 +89,7 @@ func (self *Peer) newRaftPeerConn(id uint32) *raftPeerConn {
 }
 
 func (self *Peer) HandleClose(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	conns := self.RaftConns.AsMap()
 	self.RaftConns.Clear()
 	for _, v := range conns {
@@ -94,6 +99,7 @@ func (self *Peer) HandleClose(channel.Channel) {
 }
 
 func (self *Peer) handleReceiveConnect(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		log := pfxlog.Logger().WithField("peerId", ch.Id())
 		log.Info("received connect request from raft peer")
@@ -137,6 +143,7 @@ func (self *Peer) handleReceiveConnect(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Peer) handleReceiveDisconnect(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		log := pfxlog.ContextLogger(ch.Label())
 
@@ -170,6 +177,7 @@ func (self *Peer) handleReceiveDisconnect(m *channel.Message, ch channel.Channel
 }
 
 func (self *Peer) handleReceiveData(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	id, ok := m.GetUint32Header(RaftConnIdHeader)
 	if !ok {
 		pfxlog.Logger().WithField("peerId", ch.Id()).Error("no conn id in data request")
@@ -187,6 +195,7 @@ func (self *Peer) handleReceiveData(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Peer) Connect(timeout time.Duration) (net.Conn, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("peerId", string(self.Id)).WithField("address", self.Address)
 	log.Info("sending connect msg to raft peer")
 
@@ -217,6 +226,7 @@ func (self *Peer) Connect(timeout time.Duration) (net.Conn, error) {
 }
 
 func (self *Peer) closeRaftConn(peerConn *raftPeerConn, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	isCurrentPeer := self.RaftConns.DeleteIf(func(key uint32, val *raftPeerConn) bool {
 		return key == peerConn.id && val == peerConn
 	})
@@ -262,10 +272,12 @@ type meshAddr struct {
 }
 
 func (self meshAddr) Network() string {
+	logtrace.LogWithFunctionName()
 	return self.network
 }
 
 func (self meshAddr) String() string {
+	logtrace.LogWithFunctionName()
 	return self.addr
 }
 
@@ -303,6 +315,7 @@ type Mesh interface {
 }
 
 func New(env Env, raftAddr raft.ServerAddress, helloHeaderProviders []HeaderProvider) Mesh {
+	logtrace.LogWithFunctionName()
 	versionEncoded, err := env.GetVersionProvider().EncoderDecoder().Encode(env.GetVersionProvider().AsVersionInfo())
 	if err != nil {
 		panic(err)
@@ -346,20 +359,24 @@ type impl struct {
 }
 
 func (self *impl) RegisterClusterStateHandler(f func(state ClusterState)) {
+	logtrace.LogWithFunctionName()
 	self.clusterStateHandlers.Append(f)
 }
 
 func (self *impl) Init(bindHandler channel.BindHandler) {
+	logtrace.LogWithFunctionName()
 	if self.bindHandler.Load() == nil {
 		self.bindHandler.Store(bindHandler)
 	}
 }
 
 func (self *impl) GetAdvertiseAddr() raft.ServerAddress {
+	logtrace.LogWithFunctionName()
 	return self.raftAddr
 }
 
 func (self *impl) Close() error {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		close(self.closeNotify)
 	}
@@ -367,10 +384,12 @@ func (self *impl) Close() error {
 }
 
 func (self *impl) Addr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return self.netAddr
 }
 
 func (self *impl) Accept() (net.Conn, error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case conn := <-self.raftAccepts:
 		pfxlog.Logger().WithField("peerId", conn.peer.Id).Info("new raft peer connection return to raft layer")
@@ -382,6 +401,7 @@ func (self *impl) Accept() (net.Conn, error) {
 }
 
 func (self *impl) Dial(address raft.ServerAddress, timeout time.Duration) (net.Conn, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("address", address)
 	log.Info("dialing raft peer channel")
 	peer, err := self.GetOrConnectPeer(string(address), timeout)
@@ -396,6 +416,7 @@ func (self *impl) Dial(address raft.ServerAddress, timeout time.Duration) (net.C
 }
 
 func (self *impl) GetOrConnectPeer(address string, timeout time.Duration) (*Peer, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("address", address)
 
 	if address == "" {
@@ -510,6 +531,7 @@ func (self *impl) GetOrConnectPeer(address string, timeout time.Duration) (*Peer
 }
 
 func (self *impl) validateConnection(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	if err := self.checkClusterIds(ch); err != nil {
 		return err
 	}
@@ -518,6 +540,7 @@ func (self *impl) validateConnection(ch channel.Channel) error {
 }
 
 func (self *impl) checkClusterIds(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	clusterId := string(ch.Underlay().Headers()[ClusterIdHeader])
 	if clusterId != "" && self.env.GetClusterId() != "" && clusterId != self.env.GetClusterId() {
 		return fmt.Errorf("local cluster id %s doesn't match peer cluster id %s", self.env.GetClusterId(), clusterId)
@@ -526,6 +549,7 @@ func (self *impl) checkClusterIds(ch channel.Channel) error {
 }
 
 func (self *impl) checkCerts(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	certs := ch.Underlay().Certificates()
 	if len(certs) == 0 {
 		return errors.New("unable to validate peer connection, no certs presented")
@@ -541,6 +565,7 @@ func (self *impl) checkCerts(ch channel.Channel) error {
 }
 
 func (self *impl) GetPeerInfo(address string, timeout time.Duration) (raft.ServerID, raft.ServerAddress, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("address", address)
 	addr, err := transport.ParseAddress(address)
 	if err != nil {
@@ -604,6 +629,7 @@ func (self *impl) GetPeerInfo(address string, timeout time.Duration) (raft.Serve
 }
 
 func (self *impl) extractPeerId(peerAddr string, certs []*x509.Certificate) (string, error) {
+	logtrace.LogWithFunctionName()
 	if len(certs) == 0 {
 		return "", errors.Errorf("no certificates for peer at %v", peerAddr)
 	}
@@ -612,6 +638,7 @@ func (self *impl) extractPeerId(peerAddr string, certs []*x509.Certificate) (str
 }
 
 func ExtractSpiffeId(certs []*x509.Certificate) (string, error) {
+	logtrace.LogWithFunctionName()
 	if len(certs) > 0 {
 		leaf := certs[0]
 		for _, uri := range leaf.URIs {
@@ -625,6 +652,7 @@ func ExtractSpiffeId(certs []*x509.Certificate) (string, error) {
 }
 
 func (self *impl) PeerConnected(peer *Peer, dial bool) error {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	if self.Peers[peer.Address] != nil {
 		defer self.lock.Unlock()
@@ -669,6 +697,7 @@ func (self *impl) PeerConnected(peer *Peer, dial bool) error {
 }
 
 func (self *impl) GetEventPeerList(peers ...*Peer) []*event.ClusterPeer {
+	logtrace.LogWithFunctionName()
 	if len(peers) == 0 {
 		return nil
 	}
@@ -686,12 +715,14 @@ func (self *impl) GetEventPeerList(peers ...*Peer) []*event.ClusterPeer {
 }
 
 func (self *impl) GetPeer(addr raft.ServerAddress) *Peer {
+	logtrace.LogWithFunctionName()
 	self.lock.RLock()
 	defer self.lock.RUnlock()
 	return self.Peers[string(addr)]
 }
 
 func (self *impl) PeerDisconnected(peer *Peer) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	currentPeer := self.Peers[peer.Address]
 	if currentPeer == nil || currentPeer != peer {
@@ -714,6 +745,7 @@ func (self *impl) PeerDisconnected(peer *Peer) {
 }
 
 func (self *impl) updateClusterState() {
+	logtrace.LogWithFunctionName()
 	readOnlyPrevious := self.readonly.Load()
 
 	log := pfxlog.Logger()
@@ -742,6 +774,7 @@ func (self *impl) updateClusterState() {
 }
 
 func (self *impl) AcceptUnderlay(underlay channel.Underlay) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Info("started")
 	defer log.Warn("exited")
@@ -828,6 +861,7 @@ func (self *impl) AcceptUnderlay(underlay channel.Underlay) error {
 }
 
 func (self *impl) GetPeers() map[string]*Peer {
+	logtrace.LogWithFunctionName()
 	self.lock.RLock()
 	defer self.lock.RUnlock()
 
@@ -841,6 +875,7 @@ func (self *impl) GetPeers() map[string]*Peer {
 }
 
 func (self *impl) IsReadOnly() bool {
+	logtrace.LogWithFunctionName()
 	return self.readonly.Load()
 }
 
@@ -851,5 +886,6 @@ type HeaderProvider interface {
 type HeaderProviderFunc func(map[int32][]byte)
 
 func (self HeaderProviderFunc) Apply(headers map[int32][]byte) {
+	logtrace.LogWithFunctionName()
 	self(headers)
 }

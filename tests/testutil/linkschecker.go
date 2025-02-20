@@ -5,10 +5,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/errorz"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/errorz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
@@ -31,6 +33,7 @@ type LinkStateChecker struct {
 }
 
 func (self *LinkStateChecker) reportError(err error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.errorC <- err:
 	default:
@@ -38,6 +41,7 @@ func (self *LinkStateChecker) reportError(err error) {
 }
 
 func (self *LinkStateChecker) HandleLink(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -68,6 +72,7 @@ func (self *LinkStateChecker) HandleLink(msg *channel.Message, ch channel.Channe
 }
 
 func (self *LinkStateChecker) HandleFault(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -90,6 +95,7 @@ func (self *LinkStateChecker) HandleFault(msg *channel.Message, _ channel.Channe
 }
 
 func (self *LinkStateChecker) HandleOther(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	//  -33 = reconnect ping
 	//    5 = heartbeat
 	// 1007 = metrics message
@@ -102,6 +108,7 @@ func (self *LinkStateChecker) HandleOther(msg *channel.Message, _ channel.Channe
 }
 
 func (self *LinkStateChecker) RequireNoErrors() {
+	logtrace.LogWithFunctionName()
 	var errList errorz.MultipleErrors
 
 	done := false
@@ -120,6 +127,7 @@ func (self *LinkStateChecker) RequireNoErrors() {
 }
 
 func (self *LinkStateChecker) RequireOneActiveLink() *TestLink {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -136,6 +144,7 @@ func (self *LinkStateChecker) RequireOneActiveLink() *TestLink {
 }
 
 func NewLinkChecker(assertions *require.Assertions) *LinkStateChecker {
+	logtrace.LogWithFunctionName()
 	checker := &LinkStateChecker{
 		errorC: make(chan error, 4),
 		links:  map[string]*TestLink{},
@@ -145,6 +154,7 @@ func NewLinkChecker(assertions *require.Assertions) *LinkStateChecker {
 }
 
 func StartLinkTest(checker *LinkStateChecker, id string, uf channel.UnderlayFactory, assertions *require.Assertions) channel.Channel {
+	logtrace.LogWithFunctionName()
 	bindHandler := func(binding channel.Binding) error {
 		binding.AddReceiveHandlerF(channel.AnyContentType, checker.HandleOther)
 		binding.AddReceiveHandlerF(int32(ctrl_pb.ContentType_VerifyRouterType), func(msg *channel.Message, ch channel.Channel) {

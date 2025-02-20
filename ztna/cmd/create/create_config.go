@@ -20,12 +20,14 @@ import (
 	"regexp"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdHelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/constants"
 
 	edge "ztna-core/ztna/controller/config"
 	fabForwarder "ztna-core/ztna/router/forwarder"
+
 	"github.com/openziti/channel/v3"
 	foundation "github.com/openziti/transport/v2"
 	fabXweb "github.com/openziti/xweb/v2"
@@ -214,6 +216,7 @@ type RouterListenerTemplateValues struct {
 
 // NewCmdCreateConfig creates a command object for the "config" command
 func NewCmdCreateConfig() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     "config",
 		Short:   "Creates a config file for specified Ziti component using environment variables",
@@ -233,11 +236,13 @@ func NewCmdCreateConfig() *cobra.Command {
 
 // Add flags that are global to all "create config" commands
 func (options *CreateConfigOptions) addCreateFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.PersistentFlags().BoolVarP(&options.Verbose, optionVerbose, "v", defaultVerbose, verboseDescription)
 	cmd.PersistentFlags().StringVarP(&options.Output, optionOutput, "o", defaultOutput, outputDescription)
 }
 
 func (data *ConfigTemplateValues) PopulateConfigValues() {
+	logtrace.LogWithFunctionName()
 
 	// Get and add hostname to the params
 	data.HostnameOrNetworkName = cmdHelper.HostnameOrNetworkName()

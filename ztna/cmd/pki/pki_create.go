@@ -30,6 +30,7 @@ import (
 	"sync"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/pki/pki"
@@ -49,6 +50,7 @@ type PKICreateOptions struct {
 
 // NewCmdPKICreate creates a command object for the "create" command
 func NewCmdPKICreate(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateOptions{
 		PKIOptions: PKIOptions{
 			CommonOptions: cmd2.CommonOptions{
@@ -80,6 +82,7 @@ func NewCmdPKICreate(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (options *PKICreateOptions) addPKICreateFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	viperLock.Lock()
 	defer viperLock.Unlock()
 
@@ -118,11 +121,13 @@ func (options *PKICreateOptions) addPKICreateFlags(cmd *cobra.Command) {
 
 // Run implements this command
 func (o *PKICreateOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	return o.Cmd.Help()
 }
 
 // ObtainPKIRoot returns the value for pki-root
 func (o *PKICreateOptions) ObtainPKIRoot() (string, error) {
+	logtrace.LogWithFunctionName()
 	pkiRoot := o.Flags.PKIRoot
 	if pkiRoot == "" {
 		pkiRoot = viper.GetString("pki-root")
@@ -142,6 +147,7 @@ func (o *PKICreateOptions) ObtainPKIRoot() (string, error) {
 
 // ObtainCAFile returns the value for ca-file
 func (o *PKICreateOptions) ObtainCAFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	caFile := o.Flags.CAFile
 	if caFile == "" {
 		caFile = viper.GetString("ca-file")
@@ -158,6 +164,7 @@ func (o *PKICreateOptions) ObtainCAFile() (string, error) {
 
 // ObtainIntermediateCAFile returns the value for intermediate-file
 func (o *PKICreateOptions) ObtainIntermediateCAFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	intermediateFile := o.Flags.IntermediateFile
 	if intermediateFile == "" {
 		intermediateFile = viper.GetString("intermediate-file")
@@ -174,6 +181,7 @@ func (o *PKICreateOptions) ObtainIntermediateCAFile() (string, error) {
 
 // ObtainIntermediateCSRFile returns the value for intermediate-file
 func (o *PKICreateOptions) ObtainIntermediateCSRFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	intermediateCsrFile := viper.GetString("intermediate-csr-file")
 	if intermediateCsrFile == "" {
 		var err error
@@ -187,6 +195,7 @@ func (o *PKICreateOptions) ObtainIntermediateCSRFile() (string, error) {
 
 // ObtainCSRFile returns the value for csr-file
 func (o *PKICreateOptions) ObtainCSRFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	csrFile := viper.GetString("csr-file")
 	if csrFile == "" {
 		var err error
@@ -200,6 +209,7 @@ func (o *PKICreateOptions) ObtainCSRFile() (string, error) {
 
 // ObtainServerCertFile returns the value for server-file
 func (o *PKICreateOptions) ObtainServerCertFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	serverFile := o.Flags.ServerFile
 	if serverFile == "" {
 		serverFile = viper.GetString("server-file")
@@ -216,6 +226,7 @@ func (o *PKICreateOptions) ObtainServerCertFile() (string, error) {
 
 // ObtainClientCertFile returns the value for client-file
 func (o *PKICreateOptions) ObtainClientCertFile() (string, error) {
+	logtrace.LogWithFunctionName()
 	clientFile := o.Flags.ClientFile
 	if clientFile == "" {
 		clientFile = viper.GetString("client-file")
@@ -232,6 +243,7 @@ func (o *PKICreateOptions) ObtainClientCertFile() (string, error) {
 
 // ObtainKeyFile returns the value for key-file
 func (o *PKICreateOptions) ObtainKeyFile(required bool) (string, error) {
+	logtrace.LogWithFunctionName()
 	keyfile := o.Flags.KeyFile
 	if keyfile == "" {
 		keyfile = viper.GetString("key-file")
@@ -250,6 +262,7 @@ func (o *PKICreateOptions) ObtainKeyFile(required bool) (string, error) {
 
 // ObtainCAName returns the value for ca-name
 func (o *PKICreateOptions) ObtainCAName(pkiRoot string) (string, error) {
+	logtrace.LogWithFunctionName()
 	caName := o.Flags.CAName
 	if caName == "" {
 		caName = viper.GetString("ca-name")
@@ -279,6 +292,7 @@ func (o *PKICreateOptions) ObtainCAName(pkiRoot string) (string, error) {
 
 // ObtainCommonName returns the value for CN
 func (o *PKICreateOptions) ObtainCommonName() (string, error) {
+	logtrace.LogWithFunctionName()
 	var commonName string
 	if o.Flags.CommonName == "" {
 		commonName = strings.Join(o.Args, " ")
@@ -295,6 +309,7 @@ func (o *PKICreateOptions) ObtainCommonName() (string, error) {
 
 // ObtainFileName returns the value for the 'name' used in the PKI request
 func (o *PKICreateOptions) ObtainFileName(caFile string, commonName string) string {
+	logtrace.LogWithFunctionName()
 	var filename string
 	if filename = caFile; len(caFile) == 0 {
 		filename = strings.Replace(commonName, " ", "_", -1)
@@ -305,6 +320,7 @@ func (o *PKICreateOptions) ObtainFileName(caFile string, commonName string) stri
 
 // ObtainPKIRequestTemplate returns the 'template' used in the PKI request
 func (o *PKICreateOptions) ObtainPKIRequestTemplate(commonName string) *x509.Certificate {
+	logtrace.LogWithFunctionName()
 
 	subject := pkix.Name{CommonName: commonName}
 	if str := viper.GetString("pki-organization"); str != "" {
@@ -334,6 +350,7 @@ func (o *PKICreateOptions) ObtainPKIRequestTemplate(commonName string) *x509.Cer
 
 // ObtainKeyName returns the private key from the key-file
 func (o *PKICreateOptions) ObtainKeyName(pkiRoot string) (string, error) {
+	logtrace.LogWithFunctionName()
 	keyName := viper.GetString("key-name")
 	if keyName == "" {
 		var err error
@@ -358,6 +375,7 @@ func (o *PKICreateOptions) ObtainKeyName(pkiRoot string) (string, error) {
 
 // ObtainPKICSRRequestTemplate returns the CSR 'template' used in the PKI request
 func (o *PKICreateOptions) ObtainPKICSRRequestTemplate(commonName string) *x509.CertificateRequest {
+	logtrace.LogWithFunctionName()
 
 	subject := pkix.Name{CommonName: commonName}
 	if str := viper.GetString("pki-organization"); str != "" {
@@ -399,6 +417,7 @@ func (o *PKICreateOptions) ObtainPKICSRRequestTemplate(commonName string) *x509.
 
 // ObtainIPsAndDNSNames returns the IP address and/or DNS names used in the PKI request template
 func (o *PKICreateOptions) ObtainIPsAndDNSNames() ([]net.IP, []string, error) {
+	logtrace.LogWithFunctionName()
 
 	if (len(o.Flags.IP) == 0) && (len(o.Flags.DNSName) == 0) {
 		return nil, nil, errors.New("neither --ip or --dns were specified (either one, or both, must be specified)")
@@ -416,6 +435,7 @@ func (o *PKICreateOptions) ObtainIPsAndDNSNames() ([]net.IP, []string, error) {
 
 // ObtainPrivateKeyOptions returns the private key options necessary to generate a private key
 func (o *PKICreateOptions) ObtainPrivateKeyOptions() (pki.PrivateKeyOptions, error) {
+	logtrace.LogWithFunctionName()
 	isEc := o.Flags.EcCurve != ""
 
 	if isEc {
@@ -426,6 +446,7 @@ func (o *PKICreateOptions) ObtainPrivateKeyOptions() (pki.PrivateKeyOptions, err
 }
 
 func (o *PKICreateOptions) obtainEcOptions() (pki.PrivateKeyOptions, error) {
+	logtrace.LogWithFunctionName()
 	target := strings.Replace(strings.ToLower(o.Flags.EcCurve), "-", "", -1)
 
 	validCurves := []elliptic.Curve{
@@ -457,12 +478,14 @@ func (o *PKICreateOptions) obtainEcOptions() (pki.PrivateKeyOptions, error) {
 }
 
 func (o *PKICreateOptions) obtainRsaOptions() (pki.PrivateKeyOptions, error) {
+	logtrace.LogWithFunctionName()
 	return &pki.RsaPrivateKeyOptions{
 		Size: o.Flags.CAPrivateKeySize,
 	}, nil
 }
 
 func (options *PKICreateOptions) panicOnErr(err error) {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		panic(err)
 	}

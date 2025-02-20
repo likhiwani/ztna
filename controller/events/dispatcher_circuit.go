@@ -18,16 +18,20 @@ package events
 
 import (
 	"fmt"
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddCircuitEventHandler(handler event.CircuitEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.circuitEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveCircuitEventHandler(handler event.CircuitEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.circuitEventHandlers.DeleteIf(func(val event.CircuitEventHandler) bool {
 		if val == handler {
 			return true
@@ -40,6 +44,7 @@ func (self *Dispatcher) RemoveCircuitEventHandler(handler event.CircuitEventHand
 }
 
 func (self *Dispatcher) AcceptCircuitEvent(event *event.CircuitEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.circuitEventHandlers.Value() {
 			handler.AcceptCircuitEvent(event)
@@ -48,6 +53,7 @@ func (self *Dispatcher) AcceptCircuitEvent(event *event.CircuitEvent) {
 }
 
 func (self *Dispatcher) registerCircuitEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.CircuitEventHandler)
 
 	if !ok {
@@ -95,6 +101,7 @@ func (self *Dispatcher) registerCircuitEventHandler(val interface{}, config map[
 }
 
 func (self *Dispatcher) unregisterCircuitEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.CircuitEventHandler); ok {
 		self.RemoveCircuitEventHandler(handler)
 	}
@@ -106,6 +113,7 @@ type filteredCircuitEventHandler struct {
 }
 
 func (self *filteredCircuitEventHandler) IsWrapping(value event.CircuitEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.wrapped == value {
 		return true
 	}
@@ -116,6 +124,7 @@ func (self *filteredCircuitEventHandler) IsWrapping(value event.CircuitEventHand
 }
 
 func (self *filteredCircuitEventHandler) AcceptCircuitEvent(event *event.CircuitEvent) {
+	logtrace.LogWithFunctionName()
 	if _, found := self.accepted[event.EventType]; found {
 		self.wrapped.AcceptCircuitEvent(event)
 	}

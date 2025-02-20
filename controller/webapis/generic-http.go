@@ -21,6 +21,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"ztna-core/ztna/logtrace"
 )
 
 type GenericHttpHandler struct {
@@ -30,22 +31,27 @@ type GenericHttpHandler struct {
 }
 
 func (spa *GenericHttpHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return spa.BindingKey
 }
 
 func (spa *GenericHttpHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (spa *GenericHttpHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return "/" + spa.BindingKey
 }
 
 func (spa *GenericHttpHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, spa.ContextRoot) || strings.HasPrefix(r.URL.Path, "/assets")
 }
 
 func (spa *GenericHttpHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	spa.HttpHandler.ServeHTTP(writer, request)
 }
 
@@ -62,6 +68,7 @@ type spaHandler struct {
 // (2) Request path is a directory
 // Otherwise serves the requested file.
 func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	r.URL.Path = strings.TrimPrefix(r.URL.Path, h.contextRoot)
 	p := filepath.Join(h.content, filepath.Clean(r.URL.Path))
 
@@ -79,5 +86,6 @@ func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // SpaHandler returns a request handler (http.Handler) that serves a single
 // page application from a given public directory (location).
 func SpaHandler(location string, contextRoot string, indexFile string) http.Handler {
+	logtrace.LogWithFunctionName()
 	return &spaHandler{location, contextRoot, indexFile}
 }

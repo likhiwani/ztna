@@ -18,6 +18,8 @@ package xlink_transport
 
 import (
 	"crypto/x509"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/identity"
@@ -29,6 +31,7 @@ type ConnectionHandler struct {
 }
 
 func (self *ConnectionHandler) HandleConnection(_ *channel.Hello, certificates []*x509.Certificate) error {
+	logtrace.LogWithFunctionName()
 	if len(certificates) == 0 {
 		return errors.New("no certificates provided, unable to verify dialer")
 	}

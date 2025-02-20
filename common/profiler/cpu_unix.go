@@ -23,6 +23,7 @@ import (
 	"os/signal"
 	"runtime/pprof"
 	"syscall"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 )
@@ -34,10 +35,12 @@ type CPU struct {
 }
 
 func NewCPU(path string) (*CPU, error) {
+	logtrace.LogWithFunctionName()
 	return NewCPUWithShutdown(path, nil)
 }
 
 func NewCPUWithShutdown(path string, shutdownC <-chan struct{}) (*CPU, error) {
+	logtrace.LogWithFunctionName()
 	f, err := os.Create(path)
 	if err != nil {
 		return nil, err
@@ -50,6 +53,7 @@ func NewCPUWithShutdown(path string, shutdownC <-chan struct{}) (*CPU, error) {
 }
 
 func (cpu *CPU) Run() {
+	logtrace.LogWithFunctionName()
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGUSR2)
 

@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type UpdateServiceReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *UpdateServiceReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewUpdateServiceOK()
@@ -84,6 +86,7 @@ func (o *UpdateServiceReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewUpdateServiceOK creates a UpdateServiceOK with default headers values
 func NewUpdateServiceOK() *UpdateServiceOK {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceOK{}
 }
 
@@ -96,13 +99,16 @@ type UpdateServiceOK struct {
 }
 
 func (o *UpdateServiceOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /services/{id}][%d] updateServiceOK  %+v", 200, o.Payload)
 }
 func (o *UpdateServiceOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateServiceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *UpdateServiceOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewUpdateServiceBadRequest creates a UpdateServiceBadRequest with default headers values
 func NewUpdateServiceBadRequest() *UpdateServiceBadRequest {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type UpdateServiceBadRequest struct {
 }
 
 func (o *UpdateServiceBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /services/{id}][%d] updateServiceBadRequest  %+v", 400, o.Payload)
 }
 func (o *UpdateServiceBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateServiceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *UpdateServiceBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewUpdateServiceUnauthorized creates a UpdateServiceUnauthorized with default headers values
 func NewUpdateServiceUnauthorized() *UpdateServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type UpdateServiceUnauthorized struct {
 }
 
 func (o *UpdateServiceUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /services/{id}][%d] updateServiceUnauthorized  %+v", 401, o.Payload)
 }
 func (o *UpdateServiceUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateServiceUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *UpdateServiceUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewUpdateServiceNotFound creates a UpdateServiceNotFound with default headers values
 func NewUpdateServiceNotFound() *UpdateServiceNotFound {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceNotFound{}
 }
 
@@ -192,13 +207,16 @@ type UpdateServiceNotFound struct {
 }
 
 func (o *UpdateServiceNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /services/{id}][%d] updateServiceNotFound  %+v", 404, o.Payload)
 }
 func (o *UpdateServiceNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateServiceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *UpdateServiceNotFound) readResponse(response runtime.ClientResponse, co
 
 // NewUpdateServiceTooManyRequests creates a UpdateServiceTooManyRequests with default headers values
 func NewUpdateServiceTooManyRequests() *UpdateServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type UpdateServiceTooManyRequests struct {
 }
 
 func (o *UpdateServiceTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /services/{id}][%d] updateServiceTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *UpdateServiceTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateServiceTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

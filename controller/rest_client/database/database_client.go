@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new database API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -73,6 +75,7 @@ type ClientService interface {
   Starts a data integrity scan on the datastore. Requires admin access. Only once instance may run at a time, including runs of fixDataIntegrity.
 */
 func (a *Client) CheckDataIntegrity(params *CheckDataIntegrityParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CheckDataIntegrityAccepted, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCheckDataIntegrityParams()
@@ -114,6 +117,7 @@ func (a *Client) CheckDataIntegrity(params *CheckDataIntegrityParams, authInfo r
   Create a new database snapshot. Requires admin access.
 */
 func (a *Client) CreateDatabaseSnapshot(params *CreateDatabaseSnapshotParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*CreateDatabaseSnapshotOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateDatabaseSnapshotParams()
@@ -155,6 +159,7 @@ func (a *Client) CreateDatabaseSnapshot(params *CreateDatabaseSnapshotParams, au
   Create a new database snapshot with path. Requires admin access.
 */
 func (a *Client) CreateDatabaseSnapshotWithPath(params *CreateDatabaseSnapshotWithPathParams, opts ...ClientOption) (*CreateDatabaseSnapshotWithPathOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateDatabaseSnapshotWithPathParams()
@@ -195,6 +200,7 @@ func (a *Client) CreateDatabaseSnapshotWithPath(params *CreateDatabaseSnapshotWi
   Returns any results found from in-progress integrity checks. Requires admin access.
 */
 func (a *Client) DataIntegrityResults(params *DataIntegrityResultsParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DataIntegrityResultsOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDataIntegrityResultsParams()
@@ -236,6 +242,7 @@ func (a *Client) DataIntegrityResults(params *DataIntegrityResultsParams, authIn
   Runs a data integrity scan on the datastore, attempts to fix any issues it can, and returns any found issues. Requires admin access. Only once instance may run at a time, including runs of checkDataIntegrity.
 */
 func (a *Client) FixDataIntegrity(params *FixDataIntegrityParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*FixDataIntegrityAccepted, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewFixDataIntegrityParams()
@@ -273,5 +280,6 @@ func (a *Client) FixDataIntegrity(params *FixDataIntegrityParams, authInfo runti
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

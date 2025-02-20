@@ -1,9 +1,10 @@
 package posture
 
 import (
+	"time"
 	"ztna-core/sdk-golang/pb/edge_client_pb"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type Cache struct {
@@ -21,6 +22,7 @@ type Check interface {
 }
 
 func CtrlCheckToLogic(postureCheck *edge_ctrl_pb.DataState_PostureCheck) Check {
+	logtrace.LogWithFunctionName()
 	switch subCheck := postureCheck.Subtype.(type) {
 	case *edge_ctrl_pb.DataState_PostureCheck_Mac_:
 		return &MacCheck{

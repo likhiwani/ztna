@@ -1,24 +1,27 @@
 package network
 
 import (
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/model"
-	"github.com/pkg/errors"
 	"runtime"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
+
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/controller/xt"
 
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/transport/v2/tcp"
-	"ztna-core/ztna/common/logcontext"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
-	"ztna-core/ztna/controller/xt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,10 +35,12 @@ type testConfig struct {
 }
 
 func (self *testConfig) RenderJsonConfig() (string, error) {
+	logtrace.LogWithFunctionName()
 	panic(errors.New("not implemented"))
 }
 
 func newTestConfig(ctx *model.TestContext) *testConfig {
+	logtrace.LogWithFunctionName()
 	options := config.DefaultNetworkConfig()
 	options.MinRouterCost = 0
 
@@ -50,40 +55,49 @@ func newTestConfig(ctx *model.TestContext) *testConfig {
 }
 
 func (self *testConfig) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return event.DispatcherMock{}
 }
 
 func (self *testConfig) GetId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return &identity.TokenId{Token: "test"}
 }
 
 func (self *testConfig) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return self.metricsRegistry
 }
 
 func (self *testConfig) GetOptions() *config.NetworkConfig {
+	logtrace.LogWithFunctionName()
 	return self.options
 }
 
 func (self *testConfig) GetCommandDispatcher() command.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return &command.LocalDispatcher{
 		Limiter: command.NoOpRateLimiter{},
 	}
 }
 
 func (self *testConfig) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return self.ctx.GetDb()
 }
 
 func (self *testConfig) GetVersionProvider() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return self.versionProvider
 }
 
 func (self *testConfig) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.closeNotify
 }
 
 func TestNetwork_parseServiceAndIdentity(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 	instanceId, serviceId := parseInstanceIdAndService("hello")
 	req.Equal("", instanceId)
@@ -115,6 +129,7 @@ func TestNetwork_parseServiceAndIdentity(t *testing.T) {
 }
 
 func TestCreateCircuit(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -176,22 +191,27 @@ type VersionProviderTest struct {
 }
 
 func (v VersionProviderTest) EncoderDecoder() versions.VersionEncDec {
+	logtrace.LogWithFunctionName()
 	return &versions.StdVersionEncDec
 }
 
 func (v VersionProviderTest) Version() string {
+	logtrace.LogWithFunctionName()
 	return "v0.0.0"
 }
 
 func (v VersionProviderTest) BuildDate() string {
+	logtrace.LogWithFunctionName()
 	return time.Now().String()
 }
 
 func (v VersionProviderTest) Revision() string {
+	logtrace.LogWithFunctionName()
 	return ""
 }
 
 func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	return &versions.VersionInfo{
 		Version:   v.Version(),
 		Revision:  v.Revision(),
@@ -202,10 +222,12 @@ func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
 }
 
 func NewVersionProviderTest() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return &VersionProviderTest{}
 }
 
 func newCircuitParams(service *model.Service, router *model.Router) model.CreateCircuitParams {
+	logtrace.LogWithFunctionName()
 	return testCreateCircuitParams{
 		svc:    service,
 		router: router,
@@ -218,25 +240,31 @@ type testCreateCircuitParams struct {
 }
 
 func (t testCreateCircuitParams) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return t.svc.Id
 }
 
 func (t testCreateCircuitParams) GetSourceRouter() *model.Router {
+	logtrace.LogWithFunctionName()
 	return t.router
 }
 
 func (t testCreateCircuitParams) GetClientId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testCreateCircuitParams) GetCircuitTags(terminator xt.CostedTerminator) map[string]string {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testCreateCircuitParams) GetLogContext() logcontext.Context {
+	logtrace.LogWithFunctionName()
 	return logcontext.NewContext()
 }
 
 func (t testCreateCircuitParams) GetDeadline() time.Time {
+	logtrace.LogWithFunctionName()
 	return time.Now().Add(time.Second)
 }

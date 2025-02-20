@@ -2,11 +2,13 @@ package posture
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/sdk-golang/pb/edge_client_pb"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 type ProcessCheck struct {
@@ -15,6 +17,7 @@ type ProcessCheck struct {
 }
 
 func (p *ProcessCheck) Evaluate(cache *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	switch p.Semantic {
 	case db.SemanticAllOf:
 		return p.requireAll(cache)
@@ -27,6 +30,7 @@ func (p *ProcessCheck) Evaluate(cache *Cache) *CheckError {
 }
 
 func (p *ProcessCheck) requireAll(cache *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	if cache == nil {
 		return &CheckError{
 			Id:    p.Id,
@@ -89,6 +93,7 @@ func (p *ProcessCheck) requireAll(cache *Cache) *CheckError {
 }
 
 func (p *ProcessCheck) requireOne(cache *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	if cache == nil {
 		return &CheckError{
 			Id:    p.Id,
@@ -133,6 +138,7 @@ func (p *ProcessCheck) requireOne(cache *Cache) *CheckError {
 }
 
 func (p *ProcessCheck) compareProcesses(osType string, given *edge_client_pb.PostureResponse_Process, valid *edge_ctrl_pb.DataState_PostureCheck_Process) *FailedValueError[*edge_ctrl_pb.DataState_PostureCheck_Process] {
+	logtrace.LogWithFunctionName()
 	result := &FailedValueError[*edge_ctrl_pb.DataState_PostureCheck_Process]{
 		ExpectedValue: valid,
 		GivenValue:    nil,

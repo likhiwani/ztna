@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -50,6 +51,7 @@ type DatabaseSnapshotCreateDetails struct {
 
 // Validate validates this database snapshot create details
 func (m *DatabaseSnapshotCreateDetails) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validatePath(formats); err != nil {
@@ -63,6 +65,7 @@ func (m *DatabaseSnapshotCreateDetails) Validate(formats strfmt.Registry) error 
 }
 
 func (m *DatabaseSnapshotCreateDetails) validatePath(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("path", "body", m.Path); err != nil {
 		return err
@@ -73,11 +76,13 @@ func (m *DatabaseSnapshotCreateDetails) validatePath(formats strfmt.Registry) er
 
 // ContextValidate validates this database snapshot create details based on context it is used
 func (m *DatabaseSnapshotCreateDetails) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *DatabaseSnapshotCreateDetails) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -86,6 +91,7 @@ func (m *DatabaseSnapshotCreateDetails) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *DatabaseSnapshotCreateDetails) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res DatabaseSnapshotCreateDetails
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

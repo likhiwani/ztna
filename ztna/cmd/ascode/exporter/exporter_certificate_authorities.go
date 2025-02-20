@@ -17,18 +17,21 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/certificate_authority"
 	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsCertificateAuthorityExportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "ca") ||
 		slices.Contains(args, "certificate-authority")
 }
 
 func (exporter Exporter) GetCertificateAuthorities() ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	return exporter.getEntities(
 		"CertificateAuthorities",

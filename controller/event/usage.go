@@ -1,6 +1,9 @@
 package event
 
-import "fmt"
+import (
+	"fmt"
+	"ztna-core/ztna/logtrace"
+)
 
 const (
 	UsageEventsNs      = "fabric.usage"
@@ -21,6 +24,7 @@ type UsageEvent struct {
 }
 
 func (event *UsageEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v source=%v session=%v usage=%v intervalStart=%v intervalLength=%v",
 		event.EventType, event.SourceId, event.CircuitId, event.Usage, event.IntervalStartUTC, event.IntervalLength)
 }
@@ -42,6 +46,7 @@ type UsageEventV3 struct {
 }
 
 func (event *UsageEventV3) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("source=%v session=%v usage=%v intervalStart=%v intervalLength=%v",
 		event.SourceId, event.CircuitId, event.Usage, event.IntervalStartUTC, event.IntervalLength)
 }

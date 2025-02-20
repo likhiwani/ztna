@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -32,6 +34,7 @@ type ServiceEdgeRouterPolicy struct {
 }
 
 func (entity *ServiceEdgeRouterPolicy) toBoltEntity() (*db.ServiceEdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	return &db.ServiceEdgeRouterPolicy{
 		BaseExtEntity:   *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:            entity.Name,
@@ -42,14 +45,17 @@ func (entity *ServiceEdgeRouterPolicy) toBoltEntity() (*db.ServiceEdgeRouterPoli
 }
 
 func (entity *ServiceEdgeRouterPolicy) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.ServiceEdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ServiceEdgeRouterPolicy) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.ServiceEdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ServiceEdgeRouterPolicy) fillFrom(_ Env, _ *bbolt.Tx, boltServiceEdgeRouterPolicy *db.ServiceEdgeRouterPolicy) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltServiceEdgeRouterPolicy)
 	entity.Name = boltServiceEdgeRouterPolicy.Name
 	entity.Semantic = boltServiceEdgeRouterPolicy.Semantic

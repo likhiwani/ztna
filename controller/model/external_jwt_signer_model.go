@@ -17,13 +17,15 @@
 package model
 
 import (
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type ExternalJwtSigner struct {
@@ -48,6 +50,7 @@ type ExternalJwtSigner struct {
 }
 
 func (entity *ExternalJwtSigner) toBoltEntity() (*db.ExternalJwtSigner, error) {
+	logtrace.LogWithFunctionName()
 	signer := &db.ExternalJwtSigner{
 		BaseExtEntity:   *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:            entity.Name,
@@ -83,14 +86,17 @@ func (entity *ExternalJwtSigner) toBoltEntity() (*db.ExternalJwtSigner, error) {
 }
 
 func (entity *ExternalJwtSigner) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.ExternalJwtSigner, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ExternalJwtSigner) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.ExternalJwtSigner, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ExternalJwtSigner) fillFrom(_ Env, _ *bbolt.Tx, boltExternalJwtSigner *db.ExternalJwtSigner) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltExternalJwtSigner)
 	entity.Name = boltExternalJwtSigner.Name
 	entity.CommonName = boltExternalJwtSigner.CommonName
@@ -113,6 +119,7 @@ func (entity *ExternalJwtSigner) fillFrom(_ Env, _ *bbolt.Tx, boltExternalJwtSig
 }
 
 func timeOrEmpty(t *time.Time) time.Time {
+	logtrace.LogWithFunctionName()
 	if t == nil {
 		return time.Time{}
 	}

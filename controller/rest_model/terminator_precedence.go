@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"encoding/json"
 
@@ -44,11 +45,13 @@ import (
 type TerminatorPrecedence string
 
 func NewTerminatorPrecedence(value TerminatorPrecedence) *TerminatorPrecedence {
+    logtrace.LogWithFunctionName()
 	return &value
 }
 
 // Pointer returns a pointer to a freshly-allocated TerminatorPrecedence.
 func (m TerminatorPrecedence) Pointer() *TerminatorPrecedence {
+    logtrace.LogWithFunctionName()
 	return &m
 }
 
@@ -68,6 +71,7 @@ const (
 var terminatorPrecedenceEnum []interface{}
 
 func init() {
+    logtrace.LogWithFunctionName()
 	var res []TerminatorPrecedence
 	if err := json.Unmarshal([]byte(`["default","required","failed"]`), &res); err != nil {
 		panic(err)
@@ -78,6 +82,7 @@ func init() {
 }
 
 func (m TerminatorPrecedence) validateTerminatorPrecedenceEnum(path, location string, value TerminatorPrecedence) error {
+    logtrace.LogWithFunctionName()
 	if err := validate.EnumCase(path, location, value, terminatorPrecedenceEnum, true); err != nil {
 		return err
 	}
@@ -86,6 +91,7 @@ func (m TerminatorPrecedence) validateTerminatorPrecedenceEnum(path, location st
 
 // Validate validates this terminator precedence
 func (m TerminatorPrecedence) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	// value enum
@@ -101,5 +107,6 @@ func (m TerminatorPrecedence) Validate(formats strfmt.Registry) error {
 
 // ContextValidate validates this terminator precedence based on context it is used
 func (m TerminatorPrecedence) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }

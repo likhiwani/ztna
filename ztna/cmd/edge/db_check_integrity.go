@@ -5,11 +5,13 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
+	"github.com/Jeffail/gabs"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -20,6 +22,7 @@ type dbCheckIntegrityOptions struct {
 }
 
 func newDbCheckIntegrityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbCheckIntegrityOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -48,6 +51,7 @@ func newDbCheckIntegrityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCheckIntegrityDb(o *dbCheckIntegrityOptions) error {
+	logtrace.LogWithFunctionName()
 	var target string
 	if o.fix {
 		target = "database/fix-data-integrity"
@@ -64,6 +68,7 @@ func runCheckIntegrityDb(o *dbCheckIntegrityOptions) error {
 }
 
 func newDbCheckIntegrityStatusCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbCheckIntegrityOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -91,6 +96,7 @@ func newDbCheckIntegrityStatusCmd(out io.Writer, errOut io.Writer) *cobra.Comman
 }
 
 func runCheckIntegrityStatus(o *dbCheckIntegrityOptions) error {
+	logtrace.LogWithFunctionName()
 	body, err := util.EdgeControllerList("database/data-integrity-results", nil, o.OutputJSONResponse, o.Out, o.Options.Timeout, o.Options.Verbose)
 	if err != nil {
 		return err

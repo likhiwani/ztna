@@ -19,6 +19,12 @@
 package main
 
 import (
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
+	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/client"
+	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2"
+	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
@@ -26,14 +32,11 @@ import (
 	"github.com/openziti/transport/v2/transwarp"
 	"github.com/openziti/transport/v2/transwarptls"
 	"github.com/openziti/transport/v2/wss"
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
-	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/client"
-	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2"
-	_ "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3"
 	"github.com/sirupsen/logrus"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	pfxlog.GlobalInit(logrus.InfoLevel, pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").NoColor())
 	transport.AddAddressParser(tls.AddressParser{})
 	transport.AddAddressParser(tcp.AddressParser{})
@@ -43,5 +46,6 @@ func init() {
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	subcmd.Execute()
 }

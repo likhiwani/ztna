@@ -18,20 +18,24 @@ package chaos
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zitirest"
 	"math/rand"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zitirest"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func StaticNumber(val int) func(int) int {
+	logtrace.LogWithFunctionName()
 	return func(int) int {
 		return val
 	}
 }
 
 func RandomInRange(min, max int) func(int) int {
+	logtrace.LogWithFunctionName()
 	return func(count int) int {
 		if count > max {
 			count = max
@@ -46,12 +50,14 @@ func RandomInRange(min, max int) func(int) int {
 }
 
 func RandomOfTotal() func(count int) int {
+	logtrace.LogWithFunctionName()
 	return func(count int) int {
 		return rand.Intn(count) + 1
 	}
 }
 
 func Percentage(pct uint8) func(count int) int {
+	logtrace.LogWithFunctionName()
 	adjustedPct := float64(pct) / 100
 	return func(count int) int {
 		return int(float64(count) * adjustedPct)
@@ -59,6 +65,7 @@ func Percentage(pct uint8) func(count int) int {
 }
 
 func PercentageRange(a uint8, b uint8) func(count int) int {
+	logtrace.LogWithFunctionName()
 	minVal := min(a, b)
 	maxVal := max(a, b)
 	delta := maxVal - minVal
@@ -73,6 +80,7 @@ func PercentageRange(a uint8, b uint8) func(count int) int {
 }
 
 func SelectRandom(run model.Run, selector string, f func(count int) int) ([]*model.Component, error) {
+	logtrace.LogWithFunctionName()
 	list := run.GetModel().SelectComponents(selector)
 	toSelect := f(len(list))
 
@@ -92,6 +100,7 @@ func SelectRandom(run model.Run, selector string, f func(count int) int) ([]*mod
 }
 
 func StopSelected(run model.Run, list []*model.Component, concurrency int) error {
+	logtrace.LogWithFunctionName()
 	if len(list) == 0 {
 		return nil
 	}
@@ -120,6 +129,7 @@ func StopSelected(run model.Run, list []*model.Component, concurrency int) error
 }
 
 func RestartSelected(run model.Run, concurrency int, list ...*model.Component) error {
+	logtrace.LogWithFunctionName()
 	if len(list) == 0 {
 		return nil
 	}
@@ -148,6 +158,7 @@ func RestartSelected(run model.Run, concurrency int, list ...*model.Component) e
 }
 
 func ValidateUp(run model.Run, spec string, concurrency int, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	components := run.GetModel().SelectComponents(spec)
 	pfxlog.Logger().Infof("checking if all %v components for spec '%s' are running", len(components), spec)
@@ -173,6 +184,7 @@ func ValidateUp(run model.Run, spec string, concurrency int, timeout time.Durati
 }
 
 func EnsureLoggedIntoCtrl(run model.Run, c *model.Component, timeout time.Duration) (*zitirest.Clients, error) {
+	logtrace.LogWithFunctionName()
 	username := c.MustStringVariable("credentials.edge.username")
 	password := c.MustStringVariable("credentials.edge.password")
 	edgeApiBaseUrl := c.Host.PublicIp + ":1280"
@@ -211,6 +223,7 @@ func EnsureLoggedIntoCtrl(run model.Run, c *model.Component, timeout time.Durati
 }
 
 func EnsureRunning(c *model.Component, run model.Run) error {
+	logtrace.LogWithFunctionName()
 	if sc, ok := c.Type.(model.ServerComponent); ok {
 		isRunning, err := c.IsRunning(run)
 		if err != nil {
@@ -226,6 +239,7 @@ func EnsureRunning(c *model.Component, run model.Run) error {
 }
 
 func Randomize[T any](s []T) {
+	logtrace.LogWithFunctionName()
 	for i := 0; i < len(s); i++ {
 		idx := rand.Intn(len(s))
 		e1 := s[i]

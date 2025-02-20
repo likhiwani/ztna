@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"time"
@@ -40,6 +41,7 @@ type validateRouterSdkTerminatorsAction struct {
 }
 
 func NewValidateRouterSdkTerminatorsCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateRouterSdkTerminatorsAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -61,6 +63,7 @@ func NewValidateRouterSdkTerminatorsCmd(p common.OptionsProvider) *cobra.Command
 }
 
 func (self *validateRouterSdkTerminatorsAction) validateRouterSdkTerminators(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	self.eventNotify = make(chan *mgmt_pb.RouterSdkTerminatorsDetails, 1)
 
@@ -149,6 +152,7 @@ func (self *validateRouterSdkTerminatorsAction) validateRouterSdkTerminators(_ *
 }
 
 func (self *validateRouterSdkTerminatorsAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.RouterSdkTerminatorsDetails{}
 	if err := proto.Unmarshal(msg.Body, detail); err != nil {
 		pfxlog.Logger().WithError(err).Error("unable to unmarshal router sdk terminator details")

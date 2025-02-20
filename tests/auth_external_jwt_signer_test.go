@@ -30,6 +30,7 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/golang-jwt/jwt/v5"
@@ -56,6 +57,7 @@ type jwksServer struct {
 }
 
 func newJwksServer(certificates []*x509.Certificate) *jwksServer {
+	logtrace.LogWithFunctionName()
 	srv := &jwksServer{
 		certificates: certificates,
 	}
@@ -68,6 +70,7 @@ func newJwksServer(certificates []*x509.Certificate) *jwksServer {
 }
 
 func (js *jwksServer) AddCertificate(certificate *x509.Certificate) {
+	logtrace.LogWithFunctionName()
 	js.mutex.Lock()
 	defer js.mutex.Unlock()
 
@@ -75,6 +78,7 @@ func (js *jwksServer) AddCertificate(certificate *x509.Certificate) {
 }
 
 func (js *jwksServer) RemoveCertificate(certificate *x509.Certificate) {
+	logtrace.LogWithFunctionName()
 	js.mutex.Lock()
 	defer js.mutex.Unlock()
 
@@ -87,10 +91,12 @@ func (js *jwksServer) RemoveCertificate(certificate *x509.Certificate) {
 }
 
 func (js *jwksServer) GetJwksUrl() string {
+	logtrace.LogWithFunctionName()
 	return "http://localhost:" + strconv.Itoa(js.port) + "/jwks"
 }
 
 func (js *jwksServer) GetRequestCount() int {
+	logtrace.LogWithFunctionName()
 	js.mutex.Lock()
 	defer js.mutex.Unlock()
 
@@ -98,6 +104,7 @@ func (js *jwksServer) GetRequestCount() int {
 }
 
 func (js *jwksServer) Start() error {
+	logtrace.LogWithFunctionName()
 	listener, err := net.Listen("tcp", ":0")
 	if err != nil {
 		return err
@@ -114,10 +121,12 @@ func (js *jwksServer) Start() error {
 }
 
 func (js *jwksServer) Stop() error {
+	logtrace.LogWithFunctionName()
 	return js.server.Close()
 }
 
 func (js *jwksServer) handleJWKS(w http.ResponseWriter, _ *http.Request) {
+	logtrace.LogWithFunctionName()
 	js.mutex.Lock()
 	defer js.mutex.Unlock()
 
@@ -141,6 +150,7 @@ func (js *jwksServer) handleJWKS(w http.ResponseWriter, _ *http.Request) {
 }
 
 func Test_Authenticate_External_Jwt(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

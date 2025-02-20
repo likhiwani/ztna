@@ -1,17 +1,20 @@
 package env
 
 import (
+	"net/http"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
 	openApiErrors "github.com/go-openapi/errors"
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/controller/apierror"
 	"github.com/openziti/foundation/v2/errorz"
-	"net/http"
 )
 
 // ServeError is a wrapper for the OpenAPI REST server to allow the Edge API Error message responses to be used
 // when errors are raised from the OpenAPI internal runtimes. This includes input validation methods,
 // unsupported media types, etc.
 func ServeError(rw http.ResponseWriter, r *http.Request, inErr error) {
+	logtrace.LogWithFunctionName()
 	if openApiError, ok := inErr.(openApiErrors.Error); ok {
 		//openApiErrors from the Open API framework mean that we never hit any of the Edge logic and thus
 		//do not have any context established (i.e. no request id)

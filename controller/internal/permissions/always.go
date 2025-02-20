@@ -16,14 +16,18 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type AlwaysAllow struct{}
 
 var always = &AlwaysAllow{}
 
 func (a *AlwaysAllow) IsAllowed(_ ...string) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func Always() *AlwaysAllow {
+	logtrace.LogWithFunctionName()
 	return always
 }

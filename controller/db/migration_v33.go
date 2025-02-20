@@ -17,11 +17,14 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) migrateIdentityTypesToDefault(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	step.SetError(m.stores.IdentityType.Create(step.Ctx, &IdentityType{
 		BaseExtEntity: *boltz.NewExtEntity(DefaultIdentityType, nil),
 		Name:          DefaultIdentityType,

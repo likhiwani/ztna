@@ -5,6 +5,8 @@ import (
 	"crypto/ecdsa"
 	"crypto/rsa"
 	"crypto/x509"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/golang-jwt/jwt/v5"
 	"gopkg.in/go-jose/go-jose.v2"
 )
@@ -18,23 +20,28 @@ type key struct {
 }
 
 func (p *key) Algorithm() jose.SignatureAlgorithm {
+	logtrace.LogWithFunctionName()
 	return p.algorithm
 }
 
 func (p *key) Use() string {
+	logtrace.LogWithFunctionName()
 	return "sig"
 }
 
 func (s *key) SignatureAlgorithm() jose.SignatureAlgorithm {
+	logtrace.LogWithFunctionName()
 	return s.algorithm
 }
 
 // Key returns the private key for the key pair.
 func (s *key) Key() interface{} {
+	logtrace.LogWithFunctionName()
 	return s.privateKey
 }
 
 func (s *key) ID() string {
+	logtrace.LogWithFunctionName()
 	return s.id
 }
 
@@ -45,11 +52,13 @@ type pubKey struct {
 
 // Key returns the public key for the key pair.
 func (s *pubKey) Key() interface{} {
+	logtrace.LogWithFunctionName()
 	return s.publicKey
 }
 
 // newKeyFromCert will create a new PubKey from an x509.Certificate
 func newKeyFromCert(cert *x509.Certificate, kid string) *pubKey {
+	logtrace.LogWithFunctionName()
 	signingMethod := getSigningMethod(cert)
 
 	if signingMethod == nil {
@@ -67,6 +76,7 @@ func newKeyFromCert(cert *x509.Certificate, kid string) *pubKey {
 
 // getSigningMethod determines the jwt.SigningMethod necessary for certificate
 func getSigningMethod(cert *x509.Certificate) jwt.SigningMethod {
+	logtrace.LogWithFunctionName()
 	switch pubKey := cert.PublicKey.(type) {
 	case *ecdsa.PublicKey:
 		switch pubKey.Params().BitSize {

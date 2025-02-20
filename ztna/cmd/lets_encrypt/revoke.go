@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"io"
 
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
@@ -27,6 +28,7 @@ import (
 
 // newListCmd creates a command object for the "controller list" command
 func newRevokeCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &leOptions{}
 
 	cmd := &cobra.Command{
@@ -60,6 +62,7 @@ func newRevokeCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runRevoke(options *leOptions) (err error) {
+	logtrace.LogWithFunctionName()
 
 	if options.staging {
 		options.acmeserver = acmeStaging

@@ -17,10 +17,11 @@
 package xt_sticky
 
 import (
+	"time"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/controller/xt_common"
-	"time"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 const (
@@ -35,16 +36,19 @@ will be selected and a different token will be returned.
 */
 
 func NewFactory() xt.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{}
 }
 
 type factory struct{}
 
 func (self *factory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return Name
 }
 
 func (self *factory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	strategy := strategy{
 		CostVisitor: *xt_common.NewCostVisitor(2, 20, 2),
 	}
@@ -57,6 +61,7 @@ type strategy struct {
 }
 
 func (self *strategy) Select(params xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	id := params.GetClientId()
 	var result xt.CostedTerminator
 

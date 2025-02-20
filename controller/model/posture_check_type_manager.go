@@ -18,9 +18,11 @@ package model
 
 import (
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 )
 
 func NewPostureCheckTypeManager(env Env) *PostureCheckTypeManager {
+	logtrace.LogWithFunctionName()
 	manager := &PostureCheckTypeManager{
 		baseEntityManager: newBaseEntityManager[*PostureCheckType, *db.PostureCheckType](env, env.GetStores().PostureCheckType),
 	}
@@ -33,5 +35,6 @@ type PostureCheckTypeManager struct {
 }
 
 func (self *PostureCheckTypeManager) newModelEntity() *PostureCheckType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckType{}
 }

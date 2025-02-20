@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
@@ -35,6 +37,7 @@ type PostureCheckMfa struct {
 }
 
 func newPostureCheckMfa() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckMfa{
 		TimeoutSeconds:        0,
 		PromptOnWake:          false,
@@ -44,6 +47,7 @@ func newPostureCheckMfa() PostureCheckSubType {
 }
 
 func (entity *PostureCheckMfa) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.TimeoutSeconds = bucket.GetInt64WithDefault(FieldPostureCheckMfaTimeoutSeconds, -1)
 
 	if entity.TimeoutSeconds <= 0 {
@@ -56,6 +60,7 @@ func (entity *PostureCheckMfa) LoadValues(bucket *boltz.TypedBucket) {
 }
 
 func (entity *PostureCheckMfa) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	if entity.TimeoutSeconds <= 0 {
 		entity.TimeoutSeconds = -1
 	}

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"unicode/utf8"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/errorz"
 )
@@ -24,6 +25,7 @@ type updbCreds struct {
 }
 
 func (u *updbCreds) Translate(in string, paths ...string) (string, bool) {
+	logtrace.LogWithFunctionName()
 	if len(paths) > 0 {
 		last := paths[len(paths)-1:][0]
 
@@ -42,10 +44,12 @@ type AuthRequestBody struct {
 }
 
 func (a *AuthRequestBody) SetAuthRequestId(id string) {
+	logtrace.LogWithFunctionName()
 	a.AuthRequestId = id
 }
 
 func (a *AuthRequestBody) GetAuthRequestId() string {
+	logtrace.LogWithFunctionName()
 	return a.AuthRequestId
 }
 
@@ -61,11 +65,13 @@ type FieldTranslator interface {
 }
 
 func MapToStruct(m map[string][]string, dst interface{}) error {
+	logtrace.LogWithFunctionName()
 	translator, _ := dst.(FieldTranslator)
 	return mapToStruct(0, m, dst, translator)
 }
 
 func mapToStruct(depth int, src map[string][]string, dst interface{}, translator FieldTranslator, paths ...string) error {
+	logtrace.LogWithFunctionName()
 	if paths == nil {
 		paths = []string{}
 	}
@@ -175,6 +181,7 @@ func mapToStruct(depth int, src map[string][]string, dst interface{}, translator
 }
 
 func parsePayload(r *http.Request, out AuthRequestIdHolder) error {
+	logtrace.LogWithFunctionName()
 	contentType, err := negotiateBodyContentType(r)
 
 	if err != nil {
@@ -225,6 +232,7 @@ func parsePayload(r *http.Request, out AuthRequestIdHolder) error {
 }
 
 func upperCaseInitial(in string) string {
+	logtrace.LogWithFunctionName()
 	if in != "" {
 		r, size := utf8.DecodeRuneInString(in)
 		return strings.ToUpper(string(r)) + in[size:]

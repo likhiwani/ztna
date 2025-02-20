@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"errors"
 	"slices"
@@ -31,12 +32,14 @@ import (
 )
 
 func (importer *Importer) IsConfigImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "config") ||
 		slices.Contains(args, "service")
 }
 
 func (importer *Importer) ProcessConfigs(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["configs"] {

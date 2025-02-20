@@ -17,17 +17,20 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewRevocationManager(env Env) *RevocationManager {
+	logtrace.LogWithFunctionName()
 	manager := &RevocationManager{
 		baseEntityManager: newBaseEntityManager[*Revocation, *db.Revocation](env, env.GetStores().Revocation),
 	}
@@ -43,23 +46,28 @@ type RevocationManager struct {
 }
 
 func (self *RevocationManager) ApplyUpdate(_ *command.UpdateEntityCommand[*Revocation], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("unsupported")
 }
 
 func (self *RevocationManager) Create(entity *Revocation, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Revocation](self, entity, ctx)
 }
 
 func (self *RevocationManager) ApplyCreate(cmd *command.CreateEntityCommand[*Revocation], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *RevocationManager) newModelEntity() *Revocation {
+	logtrace.LogWithFunctionName()
 	return &Revocation{}
 }
 
 func (self *RevocationManager) Read(id string) (*Revocation, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Revocation{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -68,6 +76,7 @@ func (self *RevocationManager) Read(id string) (*Revocation, error) {
 }
 
 func (self *RevocationManager) Marshall(entity *Revocation) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -83,6 +92,7 @@ func (self *RevocationManager) Marshall(entity *Revocation) ([]byte, error) {
 }
 
 func (self *RevocationManager) Unmarshall(bytes []byte) (*Revocation, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Revocation{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

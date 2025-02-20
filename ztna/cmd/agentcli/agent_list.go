@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 
@@ -33,6 +34,7 @@ type AgentListAction struct {
 
 // NewListCmd Pss a command object for the "list" command
 func NewListCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentListAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -55,6 +57,7 @@ func NewListCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentListAction) Run() error {
+	logtrace.LogWithFunctionName()
 	processes, err := agent.GetGopsProcesses()
 	if err != nil {
 		return err

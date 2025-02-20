@@ -32,6 +32,7 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/fullsailor/pkcs7"
 	"github.com/go-openapi/runtime"
@@ -41,6 +42,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewEnrollRouter()
 	env.AddRouter(r)
 }
@@ -49,10 +51,12 @@ type EnrollRouter struct {
 }
 
 func NewEnrollRouter() *EnrollRouter {
+	logtrace.LogWithFunctionName()
 	return &EnrollRouter{}
 }
 
 func (ro *EnrollRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 
 	//Enroll
 	ae.ClientApi.EnrollEnrollHandler = enroll.EnrollHandlerFunc(func(params enroll.EnrollParams) middleware.Responder {
@@ -93,6 +97,7 @@ func (ro *EnrollRouter) Register(ae *env.AppEnv) {
 }
 
 func (ro *EnrollRouter) getCaCerts(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	rc.ResponseWriter.Header().Set("content-type", "application/pkcs7-mime")
 	rc.ResponseWriter.Header().Set("Content-Transfer-Encoding", "base64")
 	rc.ResponseWriter.WriteHeader(http.StatusOK)
@@ -135,6 +140,7 @@ func (ro *EnrollRouter) getCaCerts(ae *env.AppEnv, rc *response.RequestContext) 
 }
 
 func (ro *EnrollRouter) enrollHandler(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 
 	enrollContext := &model.EnrollmentContextHttp{}
 	err := enrollContext.FillFromHttpRequest(rc.Request, rc.NewChangeContext())
@@ -183,6 +189,7 @@ func (ro *EnrollRouter) enrollHandler(ae *env.AppEnv, rc *response.RequestContex
 }
 
 func (ro *EnrollRouter) extendRouterEnrollment(ae *env.AppEnv, rc *response.RequestContext, params enroll.ExtendRouterEnrollmentParams) {
+	logtrace.LogWithFunctionName()
 	peerCerts := rc.Request.TLS.PeerCertificates
 
 	if len(peerCerts) == 0 {

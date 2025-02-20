@@ -18,19 +18,22 @@ package client
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/xgress_transport"
-	"github.com/openziti/identity/dotziti"
-	"github.com/openziti/identity"
-	"github.com/openziti/foundation/v2/info"
-	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress_transport"
+	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/openziti/identity"
+	"github.com/openziti/identity/dotziti"
+	"github.com/openziti/transport/v2"
+	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	ncCmd.Flags().StringVarP(&ncCmdIdentity, "identityName", "i", "default", "dotzeet identity name")
 	ncCmd.Flags().StringVarP(&ncCmdIngress, "ingressEndpoint", "e", "tls:127.0.0.1:7002", "ingress endpoint address")
 	subcmd.Root.AddCommand(ncCmd)
@@ -46,6 +49,7 @@ var ncCmdIdentity string
 var ncCmdIngress string
 
 func doNC(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	_, id, err := dotziti.LoadIdentity(ncCmdIdentity)
 	if err != nil {
 		panic(err)
@@ -71,6 +75,7 @@ func doNC(cmd *cobra.Command, args []string) {
 }
 
 func Copy(writer io.Writer, reader io.Reader) {
+	logtrace.LogWithFunctionName()
 	buf := make([]byte, info.MaxUdpPacketSize)
 	bytesCopied, err := io.CopyBuffer(writer, reader, buf)
 	pfxlog.Logger().Infof("Copied %v bytes", bytesCopied)
@@ -81,6 +86,7 @@ func Copy(writer io.Writer, reader io.Reader) {
 
 // CopyAndLog does what io.Copy does but with additional logging
 func CopyAndLog(context string, writer io.Writer, reader io.Reader) {
+	logtrace.LogWithFunctionName()
 	buf := make([]byte, info.MaxUdpPacketSize)
 
 	var bytesRead, totalBytesRead, bytesWritten, totalBytesWritten int

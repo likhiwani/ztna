@@ -18,17 +18,19 @@ package db
 
 import (
 	"fmt"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/kataras/go-events"
 	"github.com/lucsky/cuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 // An EventualEventer provides a method for storing events in a persistent manner
@@ -298,6 +300,7 @@ var _ EventualEventer = &EventualEventerBbolt{}
 // NewEventualEventerBbolt creates a new bbolt backed asynchronous eventer that will check for new events at the given interval
 // or when triggered. On each interval/trigger, the number of events processed is determined by batchSize.
 func NewEventualEventerBbolt(dbProvider DbProvider, store EventualEventStore, interval time.Duration, batchSize int) *EventualEventerBbolt {
+	logtrace.LogWithFunctionName()
 	outstanding := int64(0)
 
 	result := &EventualEventerBbolt{
@@ -315,6 +318,7 @@ func NewEventualEventerBbolt(dbProvider DbProvider, store EventualEventStore, in
 }
 
 func (a *EventualEventerBbolt) initOutstandingEventCount() {
+	logtrace.LogWithFunctionName()
 	err := a.db.GetDb().View(func(tx *bbolt.Tx) error {
 		_, count, err := a.store.QueryIds(tx, "true limit 1")
 		if err != nil {
@@ -329,6 +333,7 @@ func (a *EventualEventerBbolt) initOutstandingEventCount() {
 }
 
 func (a *EventualEventerBbolt) AddEventualEventWithCtx(ctx boltz.MutateContext, eventType string, data []byte) error {
+	logtrace.LogWithFunctionName()
 	newId := cuid.New()
 
 	event := &EventualEvent{
@@ -366,10 +371,12 @@ func (a *EventualEventerBbolt) AddEventualEventWithCtx(ctx boltz.MutateContext, 
 }
 
 func (a *EventualEventerBbolt) AddEventualEvent(eventType string, data []byte) {
+	logtrace.LogWithFunctionName()
 	_ = a.AddEventualEventWithCtx(nil, eventType, data)
 }
 
 func (a *EventualEventerBbolt) AddEventualListener(eventType string, listener EventListenerFunc) {
+	logtrace.LogWithFunctionName()
 	a.handlerMap.Upsert(eventType, nil, func(exist bool, handlers []EventListenerFunc, _ []EventListenerFunc) []EventListenerFunc {
 		handlers = append(handlers, listener)
 		return handlers
@@ -377,6 +384,7 @@ func (a *EventualEventerBbolt) AddEventualListener(eventType string, listener Ev
 }
 
 func (a *EventualEventerBbolt) Start(closeNotify <-chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	if !a.running.CompareAndSwap(false, true) {
 		return errors.New("already started")
 	}
@@ -392,6 +400,7 @@ func (a *EventualEventerBbolt) Start(closeNotify <-chan struct{}) error {
 // channels provided during creation. Processing is triggered
 // when Trigger() is called or on the configured interval.
 func (a *EventualEventerBbolt) run() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-a.closeNotify:
@@ -409,6 +418,7 @@ func (a *EventualEventerBbolt) run() {
 }
 
 func (a *EventualEventerBbolt) Stop() error {
+	logtrace.LogWithFunctionName()
 	if a.running.CompareAndSwap(true, false) {
 		close(a.stopNotify)
 		return nil
@@ -418,6 +428,7 @@ func (a *EventualEventerBbolt) Stop() error {
 }
 
 func (a *EventualEventerBbolt) Trigger() (<-chan struct{}, error) {
+	logtrace.LogWithFunctionName()
 	if a.running.Load() {
 		doneNotify := make(chan struct{})
 		a.waiters.Store(cuid.New(), doneNotify)
@@ -436,6 +447,7 @@ func (a *EventualEventerBbolt) Trigger() (<-chan struct{}, error) {
 
 // deleteEventualEvent removes an eventual event by id from the bbolt backend store.
 func (a *EventualEventerBbolt) deleteEventualEvent(id string) error {
+	logtrace.LogWithFunctionName()
 	ctx := change.New().SetSourceType("eventual.eventer").SetChangeAuthorType(change.AuthorTypeController).NewMutateContext()
 	err := a.db.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		return a.store.DeleteById(ctx, id)
@@ -455,6 +467,7 @@ func (a *EventualEventerBbolt) deleteEventualEvent(id string) error {
 // notifyWaiters closes all signaling channels returned in calls
 // to Trigger().
 func (a *EventualEventerBbolt) notifyWaiters() {
+	logtrace.LogWithFunctionName()
 	var waiterIds []string
 
 	a.waiters.Range(func(key, value interface{}) bool {
@@ -476,6 +489,7 @@ func (a *EventualEventerBbolt) notifyWaiters() {
 // getEventualEvents returns eventual events up from the persistent bbolt store. The number
 // returned is determined by batchSize and the order of the events are based on key sorting
 func (a *EventualEventerBbolt) getEventualEvents() ([]string, []*EventualEvent, error) {
+	logtrace.LogWithFunctionName()
 	var ids []string
 	var eventualEvents []*EventualEvent
 	err := a.db.GetDb().View(func(tx *bbolt.Tx) error {
@@ -518,6 +532,7 @@ type runInfo struct {
 // intentionally adds 2500 microseconds (2.5ms) when new events have been added, but
 // none are returned when queried
 func (a *EventualEventerBbolt) resolveEventualEvents() (int, []string, []*EventualEvent) {
+	logtrace.LogWithFunctionName()
 	var numIds int
 	var ids []string
 	var eventualEvents []*EventualEvent
@@ -550,6 +565,7 @@ func (a *EventualEventerBbolt) resolveEventualEvents() (int, []string, []*Eventu
 // process is the main execution look for dealing with batches of eventual events, triggering listeners for
 // the eventual events and emitting normal processing events
 func (a *EventualEventerBbolt) process() {
+	logtrace.LogWithFunctionName()
 	info := &runInfo{
 		processId: cuid.New(),
 	}
@@ -602,6 +618,7 @@ func (a *EventualEventerBbolt) process() {
 }
 
 func (a *EventualEventerBbolt) processBatch(info *runInfo, eventualEvents []*EventualEvent) {
+	logtrace.LogWithFunctionName()
 	info.totalBatches++
 	startTime := time.Now()
 	a.Emit(EventualEventProcessingBatchStartName, &EventualEventProcessingBatchStart{
@@ -642,6 +659,7 @@ func (a *EventualEventerBbolt) processBatch(info *runInfo, eventualEvents []*Eve
 }
 
 func (a *EventualEventerBbolt) deleteEvents(ids []string) {
+	logtrace.LogWithFunctionName()
 	for _, id := range ids {
 		if err := a.deleteEventualEvent(id); err != nil {
 			pfxlog.Logger().WithError(err).
@@ -652,6 +670,7 @@ func (a *EventualEventerBbolt) deleteEvents(ids []string) {
 }
 
 func (a *EventualEventerBbolt) executeHandler(info *runInfo, eventualEvent *EventualEvent, handler EventListenerFunc) {
+	logtrace.LogWithFunctionName()
 	listenerExecId := cuid.New()
 	info.totalListenersExecuted++
 

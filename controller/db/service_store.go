@@ -17,12 +17,14 @@
 package db
 
 import (
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 const (
@@ -39,10 +41,12 @@ type Service struct {
 }
 
 func (entity *Service) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeServices
 }
 
 func (entity *Service) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
@@ -54,6 +58,7 @@ type ServiceStore interface {
 }
 
 func newServiceStore(stores *stores) *serviceStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &serviceStoreImpl{}
 	store.baseStore = baseStore[*Service]{
 		stores:    stores,
@@ -70,6 +75,7 @@ type serviceStoreImpl struct {
 }
 
 func (store *serviceStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	symbolName := store.AddSymbol(FieldName, ast.NodeTypeString)
@@ -80,17 +86,21 @@ func (store *serviceStoreImpl) initializeLocal() {
 }
 
 func (store *serviceStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 }
 
 func (store *serviceStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *serviceStoreImpl) NewEntity() *Service {
+	logtrace.LogWithFunctionName()
 	return &Service{}
 }
 
 func (store *serviceStoreImpl) FillEntity(entity *Service, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.TerminatorStrategy = bucket.GetStringWithDefault(FieldServiceTerminatorStrategy, "")
@@ -98,6 +108,7 @@ func (store *serviceStoreImpl) FillEntity(entity *Service, bucket *boltz.TypedBu
 }
 
 func (store *serviceStoreImpl) PersistEntity(entity *Service, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetInt64(FieldServiceMaxIdleTime, int64(entity.MaxIdleTime))
@@ -125,6 +136,7 @@ func (store *serviceStoreImpl) PersistEntity(entity *Service, ctx *boltz.Persist
 }
 
 func (store *serviceStoreImpl) FindByName(tx *bbolt.Tx, name string) (*Service, error) {
+	logtrace.LogWithFunctionName()
 	id := store.indexName.Read(tx, []byte(name))
 	if id != nil {
 		entity, _, err := store.FindById(tx, string(id))
@@ -134,6 +146,7 @@ func (store *serviceStoreImpl) FindByName(tx *bbolt.Tx, name string) (*Service, 
 }
 
 func (store *serviceStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	terminatorIds := store.GetRelatedEntitiesIdList(ctx.Tx(), id, EntityTypeTerminators)
 	for _, terminatorId := range terminatorIds {
 		if err := store.stores.terminator.DeleteById(ctx, terminatorId); err != nil {
@@ -144,6 +157,7 @@ func (store *serviceStoreImpl) DeleteById(ctx boltz.MutateContext, id string) er
 }
 
 func (store *serviceStoreImpl) getTerminators(tx *bbolt.Tx, serviceId string) ([]xt.Terminator, error) {
+	logtrace.LogWithFunctionName()
 	var terminators []xt.Terminator
 	for _, tId := range store.GetRelatedEntitiesIdList(tx, serviceId, EntityTypeTerminators) {
 		terminator, _, err := store.stores.terminator.FindById(tx, tId)

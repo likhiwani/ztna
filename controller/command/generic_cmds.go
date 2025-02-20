@@ -1,10 +1,12 @@
 package command
 
 import (
+	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
-	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 )
@@ -64,10 +66,12 @@ type CreateEntityCommand[T models.Entity] struct {
 }
 
 func (self *CreateEntityCommand[T]) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.Creator.ApplyCreate(self, ctx)
 }
 
 func (self *CreateEntityCommand[T]) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	entityType := self.Creator.GetEntityTypeId()
 	encodedEntity, err := self.Creator.Marshall(self.Entity)
 	if err != nil {
@@ -82,6 +86,7 @@ func (self *CreateEntityCommand[T]) Encode() ([]byte, error) {
 }
 
 func (self *CreateEntityCommand[T]) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.Context
 }
 
@@ -94,10 +99,12 @@ type UpdateEntityCommand[T models.Entity] struct {
 }
 
 func (self *UpdateEntityCommand[T]) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.Updater.ApplyUpdate(self, ctx)
 }
 
 func (self *UpdateEntityCommand[T]) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	entityType := self.Updater.GetEntityTypeId()
 	encodedEntity, err := self.Updater.Marshall(self.Entity)
 	if err != nil {
@@ -125,14 +132,17 @@ type DeleteEntityCommand struct {
 }
 
 func (self *UpdateEntityCommand[T]) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.Context
 }
 
 func (self *DeleteEntityCommand) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.Deleter.ApplyDelete(self, ctx)
 }
 
 func (self *DeleteEntityCommand) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return cmd_pb.EncodeProtobuf(&cmd_pb.DeleteEntityCommand{
 		Ctx:        self.Context.ToProtoBuf(),
 		EntityId:   self.Id,
@@ -141,6 +151,7 @@ func (self *DeleteEntityCommand) Encode() ([]byte, error) {
 }
 
 func (self *DeleteEntityCommand) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.Context
 }
 
@@ -151,10 +162,12 @@ type SyncSnapshotCommand struct {
 }
 
 func (self *SyncSnapshotCommand) Apply(boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.SnapshotSink(self)
 }
 
 func (self *SyncSnapshotCommand) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return cmd_pb.EncodeProtobuf(&cmd_pb.SyncSnapshotCommand{
 		SnapshotId: self.SnapshotId,
 		Snapshot:   self.Snapshot,
@@ -162,5 +175,6 @@ func (self *SyncSnapshotCommand) Encode() ([]byte, error) {
 }
 
 func (self *SyncSnapshotCommand) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return nil
 }

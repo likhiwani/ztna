@@ -7,12 +7,14 @@ import (
 	rest_identity "ztna-core/edge-api/rest_management_api_client/identity"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/webapis"
+	"ztna-core/ztna/logtrace"
 
 	edge_apis "ztna-core/sdk-golang/edge-apis"
 	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_Identity_HasErConnection(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

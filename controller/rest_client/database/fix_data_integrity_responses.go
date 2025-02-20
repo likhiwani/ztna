@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type FixDataIntegrityReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *FixDataIntegrityReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 202:
 		result := NewFixDataIntegrityAccepted()
@@ -72,6 +74,7 @@ func (o *FixDataIntegrityReader) ReadResponse(response runtime.ClientResponse, c
 
 // NewFixDataIntegrityAccepted creates a FixDataIntegrityAccepted with default headers values
 func NewFixDataIntegrityAccepted() *FixDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityAccepted{}
 }
 
@@ -84,13 +87,16 @@ type FixDataIntegrityAccepted struct {
 }
 
 func (o *FixDataIntegrityAccepted) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/fix-data-integrity][%d] fixDataIntegrityAccepted  %+v", 202, o.Payload)
 }
 func (o *FixDataIntegrityAccepted) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *FixDataIntegrityAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -104,6 +110,7 @@ func (o *FixDataIntegrityAccepted) readResponse(response runtime.ClientResponse,
 
 // NewFixDataIntegrityUnauthorized creates a FixDataIntegrityUnauthorized with default headers values
 func NewFixDataIntegrityUnauthorized() *FixDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type FixDataIntegrityUnauthorized struct {
 }
 
 func (o *FixDataIntegrityUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/fix-data-integrity][%d] fixDataIntegrityUnauthorized  %+v", 401, o.Payload)
 }
 func (o *FixDataIntegrityUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *FixDataIntegrityUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *FixDataIntegrityUnauthorized) readResponse(response runtime.ClientRespo
 
 // NewFixDataIntegrityTooManyRequests creates a FixDataIntegrityTooManyRequests with default headers values
 func NewFixDataIntegrityTooManyRequests() *FixDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type FixDataIntegrityTooManyRequests struct {
 }
 
 func (o *FixDataIntegrityTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/fix-data-integrity][%d] fixDataIntegrityTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *FixDataIntegrityTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *FixDataIntegrityTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

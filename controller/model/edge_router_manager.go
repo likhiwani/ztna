@@ -19,8 +19,6 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/cmd_pb"
@@ -31,12 +29,17 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewEdgeRouterManager(env Env) *EdgeRouterManager {
+	logtrace.LogWithFunctionName()
 	manager := &EdgeRouterManager{
 		baseEntityManager: newBaseEntityManager[*EdgeRouter, *db.EdgeRouter](env, env.GetStores().EdgeRouter),
 		allowedFieldsChecker: fields.UpdatedFieldsMap{
@@ -84,14 +87,17 @@ type EdgeRouterManager struct {
 }
 
 func (self *EdgeRouterManager) GetEntityTypeId() string {
+	logtrace.LogWithFunctionName()
 	return "edgeRouters"
 }
 
 func (self *EdgeRouterManager) newModelEntity() *EdgeRouter {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouter{}
 }
 
 func (self *EdgeRouterManager) Create(edgeRouter *EdgeRouter, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if edgeRouter.Id == "" {
 		edgeRouter.Id = eid.New()
 	}
@@ -113,6 +119,7 @@ func (self *EdgeRouterManager) Create(edgeRouter *EdgeRouter, ctx *change.Contex
 }
 
 func (self *EdgeRouterManager) ApplyCreate(cmd *CreateEdgeRouterCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	edgeRouter := cmd.edgeRouter
 	enrollment := cmd.enrollment
 
@@ -141,6 +148,7 @@ func (self *EdgeRouterManager) ApplyCreate(cmd *CreateEdgeRouterCmd, ctx boltz.M
 }
 
 func (self *EdgeRouterManager) Update(entity *EdgeRouter, unrestricted bool, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &command.UpdateEntityCommand[*EdgeRouter]{
 		Updater:       self,
 		Entity:        entity,
@@ -154,6 +162,7 @@ func (self *EdgeRouterManager) Update(entity *EdgeRouter, unrestricted bool, che
 }
 
 func (self *EdgeRouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*EdgeRouter], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = cmd.UpdatedFields
 	if cmd.Flags != updateUnrestricted {
 		if checker == nil {
@@ -166,6 +175,7 @@ func (self *EdgeRouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Edg
 }
 
 func (self *EdgeRouterManager) Read(id string) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &EdgeRouter{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -174,6 +184,7 @@ func (self *EdgeRouterManager) Read(id string) (*EdgeRouter, error) {
 }
 
 func (self *EdgeRouterManager) readInTx(tx *bbolt.Tx, id string) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &EdgeRouter{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -182,6 +193,7 @@ func (self *EdgeRouterManager) readInTx(tx *bbolt.Tx, id string) (*EdgeRouter, e
 }
 
 func (self *EdgeRouterManager) ReadOneByQuery(query string) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	result, err := self.readEntityByQuery(query)
 	if err != nil {
 		return nil, err
@@ -193,10 +205,12 @@ func (self *EdgeRouterManager) ReadOneByQuery(query string) (*EdgeRouter, error)
 }
 
 func (self *EdgeRouterManager) ReadOneByFingerprint(fingerprint string) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	return self.ReadOneByQuery(fmt.Sprintf(`fingerprint = "%v"`, fingerprint))
 }
 
 func (self *EdgeRouterManager) Query(query string) (*EdgeRouterListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &EdgeRouterListResult{manager: self}
 	err := self.ListWithHandler(query, result.collect)
 	if err != nil {
@@ -206,6 +220,7 @@ func (self *EdgeRouterManager) Query(query string) (*EdgeRouterListResult, error
 }
 
 func (self *EdgeRouterManager) ListForIdentityAndService(identityId, serviceId string) (*EdgeRouterListResult, error) {
+	logtrace.LogWithFunctionName()
 	var list *EdgeRouterListResult
 	var err error
 	if txErr := self.env.GetDb().View(func(tx *bbolt.Tx) error {
@@ -219,6 +234,7 @@ func (self *EdgeRouterManager) ListForIdentityAndService(identityId, serviceId s
 }
 
 func (self *EdgeRouterManager) IsAccessToEdgeRouterAllowed(identityId, serviceId, edgeRouterId string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	var result bool
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		identityEdgeRouters := self.env.GetStores().Identity.GetRefCountedLinkCollection(db.EntityTypeRouters)
@@ -236,6 +252,7 @@ func (self *EdgeRouterManager) IsAccessToEdgeRouterAllowed(identityId, serviceId
 }
 
 func (self *EdgeRouterManager) ListForIdentityAndServiceWithTx(tx *bbolt.Tx, identityId, serviceId string) (*EdgeRouterListResult, error) {
+	logtrace.LogWithFunctionName()
 	query := fmt.Sprintf(`anyOf(identities) = "%v" and anyOf(services) = "%v" SORT BY connected DESC LIMIT 25`, identityId, serviceId)
 
 	result := &EdgeRouterListResult{manager: self}
@@ -246,6 +263,7 @@ func (self *EdgeRouterManager) ListForIdentityAndServiceWithTx(tx *bbolt.Tx, ide
 }
 
 func (self *EdgeRouterManager) IsSharedEdgeRouterPresent(identityId, serviceId string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	var result bool
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		identityEdgeRouters := self.env.GetStores().Identity.GetRefCountedLinkCollection(db.EntityTypeRouters)
@@ -268,17 +286,20 @@ func (self *EdgeRouterManager) IsSharedEdgeRouterPresent(identityId, serviceId s
 }
 
 func (self *EdgeRouterManager) QueryRoleAttributes(queryString string) ([]string, *models.QueryMetaData, error) {
+	logtrace.LogWithFunctionName()
 	index := self.env.GetStores().EdgeRouter.GetRoleAttributesIndex()
 	return self.queryRoleAttributes(index, queryString)
 }
 
 func (self *EdgeRouterManager) CollectEnrollments(id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().View(func(tx *bbolt.Tx) error {
 		return self.collectEnrollmentsInTx(tx, id, collector)
 	})
 }
 
 func (self *EdgeRouterManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.readInTx(tx, id)
 	if err != nil {
 		return err
@@ -303,6 +324,7 @@ func (self *EdgeRouterManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string, c
 // with a JWT, a new JWT is created. If the edge router was already enrolled, all record of the enrollment is
 // reset and the edge router is disconnected forcing the edge router to complete enrollment before connecting.
 func (self *EdgeRouterManager) ReEnroll(router *EdgeRouter, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &ReEnrollEdgeRouterCmd{
 		ctx:          ctx,
 		manager:      self.env.GetManagers().Enrollment,
@@ -317,6 +339,7 @@ type ExtendedCerts struct {
 }
 
 func (self *EdgeRouterManager) ExtendEnrollment(router *EdgeRouter, clientCsrPem []byte, serverCertCsrPem []byte, ctx *change.Context) (*ExtendedCerts, error) {
+	logtrace.LogWithFunctionName()
 	enrollmentModule := self.env.GetEnrollRegistry().GetByMethod("erott").(*EnrollModuleEr)
 
 	clientCertRaw, err := enrollmentModule.ProcessClientCsrPem(clientCsrPem, router.Id)
@@ -362,6 +385,7 @@ func (self *EdgeRouterManager) ExtendEnrollment(router *EdgeRouter, clientCsrPem
 }
 
 func (self *EdgeRouterManager) ExtendEnrollmentWithVerify(router *EdgeRouter, clientCsrPem []byte, serverCertCsrPem []byte, ctx *change.Context) (*ExtendedCerts, error) {
+	logtrace.LogWithFunctionName()
 	enrollmentModule := self.env.GetEnrollRegistry().GetByMethod("erott").(*EnrollModuleEr)
 
 	clientCertRaw, err := enrollmentModule.ProcessClientCsrPem(clientCsrPem, router.Id)
@@ -407,10 +431,12 @@ func (self *EdgeRouterManager) ExtendEnrollmentWithVerify(router *EdgeRouter, cl
 }
 
 func (self *EdgeRouterManager) ReadOneByUnverifiedFingerprint(fingerprint string) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	return self.ReadOneByQuery(fmt.Sprintf(`%s = "%v"`, db.FieldEdgeRouterUnverifiedFingerprint, fingerprint))
 }
 
 func (self *EdgeRouterManager) ExtendEnrollmentVerify(router *EdgeRouter, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if router.UnverifiedFingerprint != nil && router.UnverifiedCertPem != nil {
 		router.Fingerprint = router.UnverifiedFingerprint
 		router.CertPem = router.UnverifiedCertPem
@@ -430,6 +456,7 @@ func (self *EdgeRouterManager) ExtendEnrollmentVerify(router *EdgeRouter, ctx *c
 }
 
 func (self *EdgeRouterManager) EdgeRouterToProtobuf(entity *EdgeRouter) (*edge_cmd_pb.EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -462,6 +489,7 @@ func (self *EdgeRouterManager) EdgeRouterToProtobuf(entity *EdgeRouter) (*edge_c
 }
 
 func (self *EdgeRouterManager) Marshall(entity *EdgeRouter) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg, err := self.EdgeRouterToProtobuf(entity)
 	if err != nil {
 		return nil, err
@@ -470,6 +498,7 @@ func (self *EdgeRouterManager) Marshall(entity *EdgeRouter) ([]byte, error) {
 }
 
 func (self *EdgeRouterManager) ProtobufToEdgeRouter(msg *edge_cmd_pb.EdgeRouter) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	appData := map[string]interface{}{}
 	if err := json.Unmarshal(msg.AppData, &appData); err != nil {
 		return nil, err
@@ -497,6 +526,7 @@ func (self *EdgeRouterManager) ProtobufToEdgeRouter(msg *edge_cmd_pb.EdgeRouter)
 }
 
 func (self *EdgeRouterManager) Unmarshall(bytes []byte) (*EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.EdgeRouter{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -511,6 +541,7 @@ type EdgeRouterListResult struct {
 }
 
 func (result *EdgeRouterListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		entity, err := result.manager.readInTx(tx, key)
@@ -530,10 +561,12 @@ type CreateEdgeRouterCmd struct {
 }
 
 func (self *CreateEdgeRouterCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.manager.ApplyCreate(self, ctx)
 }
 
 func (self *CreateEdgeRouterCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	edgeRouterMsg, err := self.manager.EdgeRouterToProtobuf(self.edgeRouter)
 	if err != nil {
 		return nil, err
@@ -554,6 +587,7 @@ func (self *CreateEdgeRouterCmd) Encode() ([]byte, error) {
 }
 
 func (self *CreateEdgeRouterCmd) Decode(env Env, msg *edge_cmd_pb.CreateEdgeRouterCmd) error {
+	logtrace.LogWithFunctionName()
 	self.manager = env.GetManagers().EdgeRouter
 	edgeRouter, err := self.manager.ProtobufToEdgeRouter(msg.EdgeRouter)
 	if err != nil {
@@ -573,5 +607,6 @@ func (self *CreateEdgeRouterCmd) Decode(env Env, msg *edge_cmd_pb.CreateEdgeRout
 }
 
 func (self *CreateEdgeRouterCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }

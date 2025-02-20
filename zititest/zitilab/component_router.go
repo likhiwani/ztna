@@ -18,15 +18,17 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/lib"
-	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"io/fs"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+	"ztna-core/ztna/logtrace"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
+	"github.com/openziti/fablab/kernel/lib"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 var _ model.ComponentType = (*RouterType)(nil)
@@ -46,18 +48,22 @@ type RouterType struct {
 }
 
 func (self *RouterType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "ziti-router"
 }
 
 func (self *RouterType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *RouterType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 }
 
 func (self *RouterType) GetActions() map[string]model.ComponentAction {
+	logtrace.LogWithFunctionName()
 	return map[string]model.ComponentAction{
 		RouterActionsCreateAndEnroll: model.ComponentActionF(self.CreateAndEnroll),
 		RouterActionsReEnroll:        model.ComponentActionF(self.ReEnroll),
@@ -65,6 +71,7 @@ func (self *RouterType) GetActions() map[string]model.ComponentAction {
 }
 
 func (self *RouterType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":       "router",
 		"config_source": self.ConfigSource,
@@ -75,6 +82,7 @@ func (self *RouterType) Dump() any {
 }
 
 func (self *RouterType) InitializeHost(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	if self.isTunneler(c) {
 		return setupDnsForTunneler(c)
 	}
@@ -82,6 +90,7 @@ func (self *RouterType) InitializeHost(run model.Run, c *model.Component) error 
 }
 
 func (self *RouterType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	configSource := self.ConfigSource
 	if configSource == "" {
 		configSource = "router.yml.tmpl"
@@ -97,10 +106,12 @@ func (self *RouterType) StageFiles(r model.Run, c *model.Component) error {
 }
 
 func (self *RouterType) isTunneler(c *model.Component) bool {
+	logtrace.LogWithFunctionName()
 	return c.HasLocalOrAncestralTag("tunneler")
 }
 
 func (self *RouterType) GetConfigName(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	configName := self.ConfigName
 	if configName == "" {
 		configName = c.Id + ".yml"
@@ -109,10 +120,12 @@ func (self *RouterType) GetConfigName(c *model.Component) string {
 }
 
 func (self *RouterType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return getZitiProcessFilter(c, "router")
 }
 
 func (self *RouterType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -121,6 +134,7 @@ func (self *RouterType) IsRunning(_ model.Run, c *model.Component) (bool, error)
 }
 
 func (self *RouterType) Start(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	isRunninng, err := self.IsRunning(r, c)
 	if err != nil {
 		return err
@@ -137,6 +151,7 @@ func (self *RouterType) Start(r model.Run, c *model.Component) error {
 }
 
 func (self *RouterType) Stop(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	if err := c.GetHost().KillProcesses("-TERM", self.getProcessFilter(c)); err != nil {
 		return err
 	}
@@ -150,6 +165,7 @@ func (self *RouterType) Stop(run model.Run, c *model.Component) error {
 }
 
 func (self *RouterType) CreateAndEnroll(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	jwtFileName := filepath.Join(run.GetTmpDir(), c.Id+".jwt")
 
 	attributes := strings.Join(c.Tags, ",")
@@ -187,6 +203,7 @@ func (self *RouterType) CreateAndEnroll(run model.Run, c *model.Component) error
 }
 
 func (self *RouterType) ReEnroll(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	jwtFileName := filepath.Join(model.ConfigBuild(), c.Id+".jwt")
 
 	args := []string{"re-enroll", "edge-router", "-j", "--jwt-output-file", jwtFileName, "--", c.Id}

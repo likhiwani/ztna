@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"bytes"
 	"crypto/x509"
 	"encoding/json"
@@ -61,6 +62,7 @@ type CertificatesStorage struct {
 
 // NewCertificatesStorage create a new certificates storage.
 func NewCertificatesStorage(path string) *CertificatesStorage {
+	logtrace.LogWithFunctionName()
 	abspath, err := filepath.Abs(path)
 	if err != nil {
 		log.Fatalf("Could not check/create path: %v", err)
@@ -74,6 +76,7 @@ func NewCertificatesStorage(path string) *CertificatesStorage {
 }
 
 func (s *CertificatesStorage) CreateRootFolder() {
+	logtrace.LogWithFunctionName()
 	err := createNonExistingFolder(s.rootPath)
 	if err != nil {
 		log.Fatalf("Could not check/create path: %v", err)
@@ -81,6 +84,7 @@ func (s *CertificatesStorage) CreateRootFolder() {
 }
 
 func (s *CertificatesStorage) CreateArchiveFolder() {
+	logtrace.LogWithFunctionName()
 	err := createNonExistingFolder(s.archivePath)
 	if err != nil {
 		log.Fatalf("Could not check/create path: %v", err)
@@ -88,10 +92,12 @@ func (s *CertificatesStorage) CreateArchiveFolder() {
 }
 
 func (s *CertificatesStorage) GetRootPath() string {
+	logtrace.LogWithFunctionName()
 	return s.rootPath
 }
 
 func (s *CertificatesStorage) SaveResource(certRes *certificate.Resource) {
+	logtrace.LogWithFunctionName()
 	domain := certRes.Domain
 
 	// We store the certificate, private key and metadata in different files
@@ -140,6 +146,7 @@ func (s *CertificatesStorage) SaveResource(certRes *certificate.Resource) {
 }
 
 func (s *CertificatesStorage) ReadResource(domain string) certificate.Resource {
+	logtrace.LogWithFunctionName()
 	raw, err := s.ReadFile(domain, ".json")
 	if err != nil {
 		log.Fatalf("Error while loading the meta data for domain %s\n\t%v", domain, err)
@@ -154,6 +161,7 @@ func (s *CertificatesStorage) ReadResource(domain string) certificate.Resource {
 }
 
 func (s *CertificatesStorage) ExistsFile(domain, extension string) bool {
+	logtrace.LogWithFunctionName()
 	filePath := s.GetFileName(domain, extension)
 
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -165,15 +173,18 @@ func (s *CertificatesStorage) ExistsFile(domain, extension string) bool {
 }
 
 func (s *CertificatesStorage) ReadFile(domain, extension string) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return os.ReadFile(s.GetFileName(domain, extension))
 }
 
 func (s *CertificatesStorage) GetFileName(domain, extension string) string {
+	logtrace.LogWithFunctionName()
 	filename := sanitizedDomain(domain) + extension
 	return filepath.Join(s.rootPath, filename)
 }
 
 func (s *CertificatesStorage) ReadCertificate(domain, extension string) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	content, err := s.ReadFile(domain, extension)
 	if err != nil {
 		return nil, err
@@ -184,12 +195,14 @@ func (s *CertificatesStorage) ReadCertificate(domain, extension string) ([]*x509
 }
 
 func (s *CertificatesStorage) WriteFile(domain, extension string, data []byte) error {
+	logtrace.LogWithFunctionName()
 	baseFileName := sanitizedDomain(domain)
 	filePath := filepath.Join(s.rootPath, baseFileName+extension)
 	return os.WriteFile(filePath, data, filePerm)
 }
 
 func (s *CertificatesStorage) MoveToArchive(domain string) error {
+	logtrace.LogWithFunctionName()
 	matches, err := filepath.Glob(filepath.Join(s.rootPath, sanitizedDomain(domain)+".*"))
 	if err != nil {
 		return err
@@ -211,6 +224,7 @@ func (s *CertificatesStorage) MoveToArchive(domain string) error {
 
 // sanitizedDomain Make sure no funny chars are in the cert names (like wildcards ;)).
 func sanitizedDomain(domain string) string {
+	logtrace.LogWithFunctionName()
 	safe, err := idna.ToASCII(strings.ReplaceAll(domain, "*", "_"))
 	if err != nil {
 		log.Fatalf("%v", err)

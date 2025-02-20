@@ -19,12 +19,14 @@
 package tests
 
 import (
-	"ztna-core/ztna/common/eid"
 	"sort"
 	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_ApiSession(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

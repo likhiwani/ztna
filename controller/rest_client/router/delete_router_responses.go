@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DeleteRouterReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DeleteRouterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDeleteRouterOK()
@@ -84,6 +86,7 @@ func (o *DeleteRouterReader) ReadResponse(response runtime.ClientResponse, consu
 
 // NewDeleteRouterOK creates a DeleteRouterOK with default headers values
 func NewDeleteRouterOK() *DeleteRouterOK {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterOK{}
 }
 
@@ -96,13 +99,16 @@ type DeleteRouterOK struct {
 }
 
 func (o *DeleteRouterOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /routers/{id}][%d] deleteRouterOK  %+v", 200, o.Payload)
 }
 func (o *DeleteRouterOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteRouterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *DeleteRouterOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewDeleteRouterBadRequest creates a DeleteRouterBadRequest with default headers values
 func NewDeleteRouterBadRequest() *DeleteRouterBadRequest {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type DeleteRouterBadRequest struct {
 }
 
 func (o *DeleteRouterBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /routers/{id}][%d] deleteRouterBadRequest  %+v", 400, o.Payload)
 }
 func (o *DeleteRouterBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteRouterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *DeleteRouterBadRequest) readResponse(response runtime.ClientResponse, c
 
 // NewDeleteRouterUnauthorized creates a DeleteRouterUnauthorized with default headers values
 func NewDeleteRouterUnauthorized() *DeleteRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type DeleteRouterUnauthorized struct {
 }
 
 func (o *DeleteRouterUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /routers/{id}][%d] deleteRouterUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DeleteRouterUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteRouterUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *DeleteRouterUnauthorized) readResponse(response runtime.ClientResponse,
 
 // NewDeleteRouterConflict creates a DeleteRouterConflict with default headers values
 func NewDeleteRouterConflict() *DeleteRouterConflict {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterConflict{}
 }
 
@@ -192,13 +207,16 @@ type DeleteRouterConflict struct {
 }
 
 func (o *DeleteRouterConflict) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /routers/{id}][%d] deleteRouterConflict  %+v", 409, o.Payload)
 }
 func (o *DeleteRouterConflict) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteRouterConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *DeleteRouterConflict) readResponse(response runtime.ClientResponse, con
 
 // NewDeleteRouterTooManyRequests creates a DeleteRouterTooManyRequests with default headers values
 func NewDeleteRouterTooManyRequests() *DeleteRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type DeleteRouterTooManyRequests struct {
 }
 
 func (o *DeleteRouterTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /routers/{id}][%d] deleteRouterTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DeleteRouterTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteRouterTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

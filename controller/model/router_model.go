@@ -17,16 +17,18 @@
 package model
 
 import (
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/genext"
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
-	"sync/atomic"
-	"time"
 )
 
 type Listener interface {
@@ -52,14 +54,17 @@ type Router struct {
 }
 
 func (entity *Router) GetLinks() []*Link {
+	logtrace.LogWithFunctionName()
 	return entity.routerLinks.GetLinks()
 }
 
 func (entity *Router) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Router, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }
 
 func (entity *Router) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Router, error) {
+	logtrace.LogWithFunctionName()
 	return &db.Router{
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:          entity.Name,
@@ -71,6 +76,7 @@ func (entity *Router) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Router, error) 
 }
 
 func (entity *Router) fillFrom(_ Env, _ *bbolt.Tx, boltRouter *db.Router) error {
+	logtrace.LogWithFunctionName()
 	entity.Name = boltRouter.Name
 	entity.Fingerprint = boltRouter.Fingerprint
 	entity.Cost = boltRouter.Cost
@@ -81,6 +87,7 @@ func (entity *Router) fillFrom(_ Env, _ *bbolt.Tx, boltRouter *db.Router) error 
 }
 
 func (entity *Router) AddLinkListener(addr, linkProtocol string, linkCostTags []string, groups []string) {
+	logtrace.LogWithFunctionName()
 	entity.Listeners = append(entity.Listeners, &ctrl_pb.Listener{
 		Address:  addr,
 		Protocol: linkProtocol,
@@ -90,18 +97,22 @@ func (entity *Router) AddLinkListener(addr, linkProtocol string, linkCostTags []
 }
 
 func (entity *Router) SetLinkListeners(listeners []*ctrl_pb.Listener) {
+	logtrace.LogWithFunctionName()
 	entity.Listeners = listeners
 }
 
 func (entity *Router) SetMetadata(metadata *ctrl_pb.RouterMetadata) {
+	logtrace.LogWithFunctionName()
 	entity.Metadata = metadata
 }
 
 func (entity *Router) HasCapability(capability ctrl_pb.RouterCapability) bool {
+	logtrace.LogWithFunctionName()
 	return entity.Metadata != nil && genext.Contains(entity.Metadata.Capabilities, capability)
 }
 
 func (entity *Router) SupportsRouterLinkMgmt() bool {
+	logtrace.LogWithFunctionName()
 	if entity.VersionInfo == nil {
 		return true
 	}

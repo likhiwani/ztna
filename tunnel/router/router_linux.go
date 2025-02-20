@@ -19,27 +19,32 @@ package router
 import (
 	"errors"
 	"fmt"
+	"net"
+	"os"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/mdlayher/netlink"
 	"github.com/mdlayher/netlink/nlenc"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"
-	"net"
-	"os"
 )
 
 // AddLocalAddress adds an address (or prefix) to the specified network interface.
 func AddLocalAddress(prefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("adding local address '%v' to interface %v", prefix.String(), ifName)
 	return nlAddrReq(prefix, nil, ifName, unix.RTM_NEWADDR)
 }
 
 func RemoveLocalAddress(prefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("removing local address '%v' from interface %v", prefix.String(), ifName)
 	return nlAddrReq(prefix, nil, ifName, unix.RTM_DELADDR)
 }
 
 func ipToIPNet(ip net.IP) *net.IPNet {
+	logtrace.LogWithFunctionName()
 	var prefixLen int
 	if ip.To4() != nil {
 		prefixLen = 32
@@ -51,14 +56,17 @@ func ipToIPNet(ip net.IP) *net.IPNet {
 }
 
 func AddPointToPointAddress(localIP net.IP, peerPrefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return nlAddrReq(ipToIPNet(localIP), peerPrefix, ifName, unix.RTM_NEWADDR)
 }
 
 func RemovePointToPointAddress(localIP net.IP, peerPrefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return nlAddrReq(ipToIPNet(localIP), peerPrefix, ifName, unix.RTM_DELADDR)
 }
 
 func nlAddrReq(localPrefix, peerPrefix *net.IPNet, ifName string, t netlink.HeaderType) error {
+	logtrace.LogWithFunctionName()
 	netIf, err := net.InterfaceByName(ifName)
 	if err != nil {
 		return fmt.Errorf("failed to find interface %s: %v", ifName, err)
@@ -137,6 +145,7 @@ func nlAddrReq(localPrefix, peerPrefix *net.IPNet, ifName string, t netlink.Head
 // marshalIfAddrmsg packs a unix.IfAddrmsg into a byte slice using host byte order.
 // The returned slice can be included in the payload of a netlink message.
 func marshalIfAddrmsg(m *unix.IfAddrmsg) []byte {
+	logtrace.LogWithFunctionName()
 	b := make([]byte, unix.SizeofIfAddrmsg)
 
 	b[0] = m.Family
@@ -149,6 +158,7 @@ func marshalIfAddrmsg(m *unix.IfAddrmsg) []byte {
 }
 
 func closeNetlink(conn *netlink.Conn) {
+	logtrace.LogWithFunctionName()
 	err := conn.Close()
 	if err != nil {
 		pfxlog.Logger().Errorf("failure closing netlink connection (%v)", err)

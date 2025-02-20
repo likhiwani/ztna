@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DetailCircuitReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DetailCircuitReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDetailCircuitOK()
@@ -78,6 +80,7 @@ func (o *DetailCircuitReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewDetailCircuitOK creates a DetailCircuitOK with default headers values
 func NewDetailCircuitOK() *DetailCircuitOK {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitOK{}
 }
 
@@ -90,13 +93,16 @@ type DetailCircuitOK struct {
 }
 
 func (o *DetailCircuitOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits/{id}][%d] detailCircuitOK  %+v", 200, o.Payload)
 }
 func (o *DetailCircuitOK) GetPayload() *rest_model.DetailCircuitEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailCircuitOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.DetailCircuitEnvelope)
 
@@ -110,6 +116,7 @@ func (o *DetailCircuitOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewDetailCircuitUnauthorized creates a DetailCircuitUnauthorized with default headers values
 func NewDetailCircuitUnauthorized() *DetailCircuitUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitUnauthorized{}
 }
 
@@ -122,13 +129,16 @@ type DetailCircuitUnauthorized struct {
 }
 
 func (o *DetailCircuitUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits/{id}][%d] detailCircuitUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DetailCircuitUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailCircuitUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *DetailCircuitUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewDetailCircuitNotFound creates a DetailCircuitNotFound with default headers values
 func NewDetailCircuitNotFound() *DetailCircuitNotFound {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitNotFound{}
 }
 
@@ -154,13 +165,16 @@ type DetailCircuitNotFound struct {
 }
 
 func (o *DetailCircuitNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits/{id}][%d] detailCircuitNotFound  %+v", 404, o.Payload)
 }
 func (o *DetailCircuitNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailCircuitNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *DetailCircuitNotFound) readResponse(response runtime.ClientResponse, co
 
 // NewDetailCircuitTooManyRequests creates a DetailCircuitTooManyRequests with default headers values
 func NewDetailCircuitTooManyRequests() *DetailCircuitTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type DetailCircuitTooManyRequests struct {
 }
 
 func (o *DetailCircuitTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits/{id}][%d] detailCircuitTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DetailCircuitTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailCircuitTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

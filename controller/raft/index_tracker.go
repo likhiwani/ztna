@@ -17,9 +17,11 @@
 package raft
 
 import (
-	"github.com/pkg/errors"
 	"sync"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 type IndexTracker interface {
@@ -29,6 +31,7 @@ type IndexTracker interface {
 }
 
 func NewIndexTracker() IndexTracker {
+	logtrace.LogWithFunctionName()
 	return &indexTrackerImpl{
 		notify: make(chan struct{}),
 	}
@@ -41,17 +44,20 @@ type indexTrackerImpl struct {
 }
 
 func (self *indexTrackerImpl) Index() uint64 {
+	logtrace.LogWithFunctionName()
 	idx, _ := self.getState()
 	return idx
 }
 
 func (self *indexTrackerImpl) getState() (uint64, <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	return self.index, self.notify
 }
 
 func (self *indexTrackerImpl) WaitForIndex(index uint64, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	for {
 		currentIndex, notifier := self.getState()
 		if currentIndex >= index {
@@ -70,6 +76,7 @@ func (self *indexTrackerImpl) WaitForIndex(index uint64, deadline time.Time) err
 }
 
 func (self *indexTrackerImpl) NotifyOfIndex(index uint64) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 

@@ -18,12 +18,15 @@ package tests
 
 import (
 	"fmt"
-	"ztna-core/ztna/zititest/models/smoke"
-	"github.com/stretchr/testify/require"
 	"testing"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/smoke"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestDownloadFiles(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	zetHostsTested := 0
 	zetClientsTest := 0
 
@@ -101,6 +104,7 @@ func TestDownloadFiles(t *testing.T) {
 }
 
 func testFileDownload(t *testing.T, hostSelector string, client smoke.HttpClient, hostType string, encrypted bool, fileSize string) bool {
+	logtrace.LogWithFunctionName()
 	encDesk := "encrypted"
 	if !encrypted {
 		encDesk = "unencrypted"

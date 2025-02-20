@@ -17,16 +17,19 @@
 package network
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/info"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/info"
 )
 
 func (network *Network) assemble() {
+	logtrace.LogWithFunctionName()
 	if !network.options.EnableLegacyLinkMgmt {
 		return
 	}
@@ -74,6 +77,7 @@ func (network *Network) assemble() {
 }
 
 func (network *Network) NotifyLinkEvent(link *model.Link, eventType event.LinkEventType) {
+	logtrace.LogWithFunctionName()
 	linkEvent := &event.LinkEvent{
 		Namespace:   event.LinkEventsNs,
 		EventType:   eventType,
@@ -90,6 +94,7 @@ func (network *Network) NotifyLinkEvent(link *model.Link, eventType event.LinkEv
 }
 
 func (network *Network) NotifyLinkConnected(link *model.Link, msg *ctrl_pb.LinkConnected) {
+	logtrace.LogWithFunctionName()
 	linkEvent := &event.LinkEvent{
 		Namespace:   event.LinkEventsNs,
 		EventType:   event.LinkConnected,
@@ -115,6 +120,7 @@ func (network *Network) NotifyLinkConnected(link *model.Link, msg *ctrl_pb.LinkC
 }
 
 func (network *Network) NotifyLinkIdEvent(linkId string, eventType event.LinkEventType) {
+	logtrace.LogWithFunctionName()
 	linkEvent := &event.LinkEvent{
 		Namespace:  event.LinkEventsNs,
 		EventType:  eventType,
@@ -126,6 +132,7 @@ func (network *Network) NotifyLinkIdEvent(linkId string, eventType event.LinkEve
 }
 
 func (network *Network) clean() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	failedLinks := network.Link.LinksInMode(model.Failed)

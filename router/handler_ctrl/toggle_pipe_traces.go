@@ -17,16 +17,19 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	trace_pb "github.com/openziti/channel/v3/trace/pb"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/trace"
 	"github.com/openziti/identity"
 	"google.golang.org/protobuf/proto"
 )
 
 func newTraceHandler(appId *identity.TokenId, controller trace.Controller, ctrlCh channel.Channel) *traceHandler {
+	logtrace.LogWithFunctionName()
 	return &traceHandler{
 		appId:        appId,
 		controller:   controller,
@@ -43,10 +46,12 @@ type traceHandler struct {
 }
 
 func (*traceHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_TogglePipeTracesRequestType)
 }
 
 func (handler *traceHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	request := &trace_pb.TogglePipeTracesRequest{}
 
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
@@ -81,14 +86,17 @@ func (handler *traceHandler) HandleReceive(msg *channel.Message, ch channel.Chan
 }
 
 func (handler *traceHandler) sendSuccess(request *channel.Message, ch channel.Channel, message string) {
+	logtrace.LogWithFunctionName()
 	handler.sendResult(request, ch, message, true)
 }
 
 func (handler *traceHandler) sendFailure(request *channel.Message, ch channel.Channel, message string) {
+	logtrace.LogWithFunctionName()
 	handler.sendResult(request, ch, message, false)
 }
 
 func (handler *traceHandler) sendResult(request *channel.Message, ch channel.Channel, message string, success bool) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).WithField("operation", "togglePipeTraces")
 	if !success {
 		log.Errorf("ctrl error (%s)", message)

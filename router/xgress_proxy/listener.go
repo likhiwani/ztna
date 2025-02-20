@@ -19,14 +19,17 @@ package xgress_proxy
 import (
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 )
 
 func newListener(id *identity.TokenId, ctrl env.NetworkControllers, options *xgress.Options, tcfg transport.Configuration, service string) xgress.Listener {
+	logtrace.LogWithFunctionName()
 	return &listener{
 		id:          id,
 		ctrl:        ctrl,
@@ -38,6 +41,7 @@ func newListener(id *identity.TokenId, ctrl env.NetworkControllers, options *xgr
 }
 
 func (listener *listener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	if address == "" {
 		return errors.New("address must be specified for proxy listeners")
 	}
@@ -55,6 +59,7 @@ func (listener *listener) Listen(address string, bindHandler xgress.BindHandler)
 }
 
 func (listener *listener) handleConnect(peer transport.Conn, bindHandler xgress.BindHandler) {
+	logtrace.LogWithFunctionName()
 	conn := &proxyXgressConnection{peer}
 	log := pfxlog.ContextLogger(conn.LogContext())
 	request := &xgress.Request{ServiceId: listener.service}
@@ -75,5 +80,6 @@ type listener struct {
 }
 
 func (listener *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	return listener.closeHelper.Close()
 }

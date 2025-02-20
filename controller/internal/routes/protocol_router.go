@@ -22,11 +22,13 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewProtocolRouter()
 	env.AddRouter(r)
 }
@@ -36,18 +38,21 @@ type ProtocolRouter struct {
 }
 
 func NewProtocolRouter() *ProtocolRouter {
+	logtrace.LogWithFunctionName()
 	return &ProtocolRouter{
 		BasePath: "/Protocol",
 	}
 }
 
 func (router *ProtocolRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ClientApi.InformationalListProtocolsHandler = informational.ListProtocolsHandlerFunc(func(params informational.ListProtocolsParams) middleware.Responder {
 		return ae.IsAllowed(router.List, params.HTTPRequest, "", "", permissions.Always())
 	})
 }
 
 func (router *ProtocolRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	data := rest_model.ListProtocols{
 		"https": rest_model.Protocol{
 			Address: &ae.GetConfig().Edge.Api.Address,

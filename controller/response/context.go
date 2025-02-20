@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/golang-jwt/jwt/v5"
 
@@ -61,18 +62,22 @@ type RequestContext struct {
 }
 
 func (rc *RequestContext) GetId() string {
+	logtrace.LogWithFunctionName()
 	return rc.Id
 }
 
 func (rc *RequestContext) GetBody() []byte {
+	logtrace.LogWithFunctionName()
 	return rc.Body
 }
 
 func (rc *RequestContext) GetRequest() *http.Request {
+	logtrace.LogWithFunctionName()
 	return rc.Request
 }
 
 func (rc *RequestContext) GetResponseWriter() http.ResponseWriter {
+	logtrace.LogWithFunctionName()
 	return rc.ResponseWriter
 }
 
@@ -81,14 +86,17 @@ type EventLogger interface {
 }
 
 func (rc *RequestContext) SetEntityId(id string) {
+	logtrace.LogWithFunctionName()
 	rc.entityId = id
 }
 
 func (rc *RequestContext) SetEntitySubId(id string) {
+	logtrace.LogWithFunctionName()
 	rc.entitySubId = id
 }
 
 func (rc *RequestContext) GetEntityId() (string, error) {
+	logtrace.LogWithFunctionName()
 	if rc.entityId == "" {
 		return "", errors.New("id not found")
 	}
@@ -96,6 +104,7 @@ func (rc *RequestContext) GetEntityId() (string, error) {
 }
 
 func (rc *RequestContext) GetEntitySubId() (string, error) {
+	logtrace.LogWithFunctionName()
 	if rc.entitySubId == "" {
 		return "", errors.New("subId not found")
 	}
@@ -104,6 +113,7 @@ func (rc *RequestContext) GetEntitySubId() (string, error) {
 }
 
 func (rc *RequestContext) NewChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	changeCtx := change.New().SetSourceType(change.SourceTypeRest).
 		SetSourceAuth("edge").
 		SetSourceMethod(rc.GetRequest().Method).

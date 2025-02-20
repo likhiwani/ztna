@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"time"
 
@@ -40,6 +41,7 @@ type validateTerminatorsAction struct {
 }
 
 func NewValidateTerminatorsCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateTerminatorsAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -62,6 +64,7 @@ func NewValidateTerminatorsCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *validateTerminatorsAction) validateTerminators(cmd *cobra.Command, _ []string) error {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	self.eventNotify = make(chan *mgmt_pb.TerminatorDetail, 1)
 
@@ -115,6 +118,7 @@ func (self *validateTerminatorsAction) validateTerminators(cmd *cobra.Command, _
 }
 
 func (self *validateTerminatorsAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.TerminatorDetail{}
 	if err := proto.Unmarshal(msg.Body, detail); err != nil {
 		pfxlog.Logger().WithError(err).Error("unable to unmarshal terminator detail")

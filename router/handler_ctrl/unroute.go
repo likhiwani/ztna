@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/forwarder"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/forwarder"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,14 +31,17 @@ type unrouteHandler struct {
 }
 
 func newUnrouteHandler(forwarder *forwarder.Forwarder) *unrouteHandler {
+	logtrace.LogWithFunctionName()
 	return &unrouteHandler{forwarder: forwarder}
 }
 
 func (h *unrouteHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_UnrouteType)
 }
 
 func (h *unrouteHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	removeRoute := &ctrl_pb.Unroute{}
 	if err := proto.Unmarshal(msg.Body, removeRoute); err == nil {
 		pfxlog.ContextLogger(ch.Label()).WithField("circuitId", removeRoute.CircuitId).Debug("received unroute")

@@ -18,19 +18,23 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/identity/dotziti"
 	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func Mesh(closer <-chan struct{}) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &mesh{closer: closer}
 }
 
 func (mesh *mesh) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	if endpoint, id, err := dotziti.LoadIdentity(model.ActiveInstanceId()); err == nil {
 		if address, err := transport.ParseAddress(endpoint); err == nil {
 			dialer := channel.NewClassicDialer(channel.DialerConfig{Identity: id, Endpoint: address})
@@ -54,6 +58,7 @@ func (mesh *mesh) Execute(run model.Run) error {
 }
 
 func (mesh *mesh) runMesh() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
@@ -73,6 +78,7 @@ func (mesh *mesh) runMesh() {
 
 // TODO: Update to use REST client
 func (mesh *mesh) interrogate() error {
+	logtrace.LogWithFunctionName()
 	/*
 		var err error
 		var body []byte

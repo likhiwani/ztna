@@ -2,20 +2,24 @@ package edge
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab"
 	"github.com/pkg/errors"
 )
 
 func InitController(componentSpec string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &edgeInit{
 		componentSpec: componentSpec,
 	}
 }
 
 func (init *edgeInit) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	return component.Exec(init.componentSpec, zitilab.ControllerActionInitStandalone).Execute(run)
 }
 
@@ -24,12 +28,14 @@ type edgeInit struct {
 }
 
 func InitRaftController(componentSpec string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &raftInit{
 		componentSpec: componentSpec,
 	}
 }
 
 func (init *raftInit) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	m := run.GetModel()
 	username := m.MustStringVariable("credentials.edge.username")
 	password := m.MustStringVariable("credentials.edge.password")

@@ -21,11 +21,14 @@ import (
 	"os"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
+
 	"github.com/pkg/errors"
 )
 
 func mapNameToID(entityType string, val string, o api.Options) (string, error) {
+	logtrace.LogWithFunctionName()
 	list, _, err := filterEntitiesOfType(entityType, fmt.Sprintf("id=\"%s\"", val), false, nil, o.Timeout, o.Verbose)
 	if err != nil {
 		return "", err
@@ -57,6 +60,7 @@ func mapNameToID(entityType string, val string, o api.Options) (string, error) {
 }
 
 func mapIdToName(entityType string, val string, o api.Options) (string, error) {
+	logtrace.LogWithFunctionName()
 	list, _, err := filterEntitiesOfType(entityType, fmt.Sprintf(`id="%s"`, val), false, nil, o.Timeout, o.Verbose)
 	if err != nil {
 		return "", err
@@ -72,6 +76,7 @@ func mapIdToName(entityType string, val string, o api.Options) (string, error) {
 }
 
 func mapNamesToIDs(entityType string, o api.Options, skipNotFound bool, list ...string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	var result []string
 	for _, val := range list {
 		if strings.HasPrefix(val, "id:") {
@@ -112,9 +117,11 @@ func mapNamesToIDs(entityType string, o api.Options, skipNotFound bool, list ...
 }
 
 func mapIdentityNameToID(nameOrId string, o api.Options) (string, error) {
+	logtrace.LogWithFunctionName()
 	return mapNameToID("identities", nameOrId, o)
 }
 
 func mapCaNameToID(nameOrId string, o api.Options) (string, error) {
+	logtrace.LogWithFunctionName()
 	return mapNameToID("cas", nameOrId, o)
 }

@@ -18,13 +18,16 @@ package policy
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"time"
 	"ztna-core/ztna/common/runner"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 
 	"ztna-core/ztna/controller/env"
+
 	"go.etcd.io/bbolt"
 )
 
@@ -42,6 +45,7 @@ type ServicePolicyEnforcer struct {
 }
 
 func NewServicePolicyEnforcer(appEnv *env.AppEnv, f time.Duration) *ServicePolicyEnforcer {
+	logtrace.LogWithFunctionName()
 	result := &ServicePolicyEnforcer{
 		appEnv:        appEnv,
 		BaseOperation: runner.NewBaseOperation("ServicePolicyEnforcer", f),
@@ -53,6 +57,7 @@ func NewServicePolicyEnforcer(appEnv *env.AppEnv, f time.Duration) *ServicePolic
 }
 
 func (enforcer *ServicePolicyEnforcer) handleServiceEvent(event *db.ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	policyType := ""
 
 	if event.Type == db.ServiceDialAccessLost {
@@ -112,6 +117,7 @@ func (enforcer *ServicePolicyEnforcer) handleServiceEvent(event *db.ServiceEvent
 }
 
 func (enforcer *ServicePolicyEnforcer) Run() error {
+	logtrace.LogWithFunctionName()
 	// if we haven't been notified to run b/c of startup or handler error, skip run
 	select {
 	case <-enforcer.notify:

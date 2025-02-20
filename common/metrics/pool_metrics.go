@@ -17,17 +17,21 @@
 package metrics
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/openziti/metrics"
-	"time"
 )
 
 func ConfigureGoroutinesPoolMetrics(config *goroutines.PoolConfig, registry metrics.Registry, poolType string) {
+	logtrace.LogWithFunctionName()
 	GoroutinesPoolMetricsConfigF(registry, poolType)(config)
 }
 
 func GoroutinesPoolMetricsConfigF(registry metrics.Registry, poolType string) func(config *goroutines.PoolConfig) {
+	logtrace.LogWithFunctionName()
 	return func(config *goroutines.PoolConfig) {
 		config.OnCreate = func(pool goroutines.Pool) {
 			registry.FuncGauge(poolType+".queue_size", func() int64 {

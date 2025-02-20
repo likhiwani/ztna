@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"io"
 	"net/http"
 
@@ -32,6 +33,7 @@ type dbSnapshotOptions struct {
 }
 
 func newDbSnapshotCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbSnapshotOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -59,6 +61,7 @@ func newDbSnapshotCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runSnapshotDb(o *dbSnapshotOptions) error {
+	logtrace.LogWithFunctionName()
 	_, err := util.ControllerUpdate("edge", "database/snapshot", "", o.Out, http.MethodPost, false, false, o.Options.Timeout, o.Options.Verbose)
 	return err
 }

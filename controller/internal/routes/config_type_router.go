@@ -23,12 +23,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewConfigTypeRouter()
 	env.AddRouter(r)
 }
@@ -38,12 +40,14 @@ type ConfigTypeRouter struct {
 }
 
 func NewConfigTypeRouter() *ConfigTypeRouter {
+	logtrace.LogWithFunctionName()
 	return &ConfigTypeRouter{
 		BasePath: "/" + EntityNameConfigType,
 	}
 }
 
 func (r *ConfigTypeRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.ConfigDeleteConfigTypeHandler = config.DeleteConfigTypeHandlerFunc(func(params config.DeleteConfigTypeParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -74,14 +78,17 @@ func (r *ConfigTypeRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ConfigTypeRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.ConfigType](ae, rc, ae.Managers.ConfigType, MapConfigTypeToRestEntity)
 }
 
 func (r *ConfigTypeRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.ConfigType](ae, rc, ae.Managers.ConfigType, MapConfigTypeToRestEntity)
 }
 
 func (r *ConfigTypeRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params config.CreateConfigTypeParams) {
+	logtrace.LogWithFunctionName()
 	if params.ConfigType.Schema != nil {
 		if _, ok := params.ConfigType.Schema.(map[string]interface{}); !ok {
 			ae.ManagementApi.ServeErrorFor("")(rc.ResponseWriter, rc.Request, errors.InvalidType("schema", "body", "object", params.ConfigType.Schema))
@@ -95,10 +102,12 @@ func (r *ConfigTypeRouter) Create(ae *env.AppEnv, rc *response.RequestContext, p
 }
 
 func (r *ConfigTypeRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.ConfigType)
 }
 
 func (r *ConfigTypeRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params config.UpdateConfigTypeParams) {
+	logtrace.LogWithFunctionName()
 	if params.ConfigType.Schema != nil {
 		if _, ok := params.ConfigType.Schema.(map[string]interface{}); !ok {
 			ae.ManagementApi.ServeErrorFor("")(rc.ResponseWriter, rc.Request, errors.InvalidType("schema", "body", "object", params.ConfigType.Schema))
@@ -112,6 +121,7 @@ func (r *ConfigTypeRouter) Update(ae *env.AppEnv, rc *response.RequestContext, p
 }
 
 func (r *ConfigTypeRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params config.PatchConfigTypeParams) {
+	logtrace.LogWithFunctionName()
 	if _, ok := params.ConfigType.Schema.(map[string]interface{}); !ok {
 		ae.ManagementApi.ServeErrorFor("")(rc.ResponseWriter, rc.Request, errors.InvalidType("schema", "body", "object", params.ConfigType.Schema))
 		return
@@ -127,5 +137,6 @@ func (r *ConfigTypeRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, pa
 }
 
 func (r *ConfigTypeRouter) ListConfigs(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.ConfigType, *model.Config](ae, rc, ae.Managers.ConfigType, ae.Managers.Config, MapConfigToRestEntity)
 }

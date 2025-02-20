@@ -23,11 +23,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewEdgeRouterPolicyRouter()
 	env.AddRouter(r)
 }
@@ -37,12 +39,14 @@ type EdgeRouterPolicyRouter struct {
 }
 
 func NewEdgeRouterPolicyRouter() *EdgeRouterPolicyRouter {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouterPolicyRouter{
 		BasePath: "/" + EntityNameEdgeRouterPolicy,
 	}
 }
 
 func (r *EdgeRouterPolicyRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//CRUD
 	ae.ManagementApi.EdgeRouterPolicyDeleteEdgeRouterPolicyHandler = edge_router_policy.DeleteEdgeRouterPolicyHandlerFunc(func(params edge_router_policy.DeleteEdgeRouterPolicyParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
@@ -79,39 +83,47 @@ func (r *EdgeRouterPolicyRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *EdgeRouterPolicyRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.EdgeRouterPolicy](ae, rc, ae.Managers.EdgeRouterPolicy, MapEdgeRouterPolicyToRestEntity)
 }
 
 func (r *EdgeRouterPolicyRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.EdgeRouterPolicy](ae, rc, ae.Managers.EdgeRouterPolicy, MapEdgeRouterPolicyToRestEntity)
 }
 
 func (r *EdgeRouterPolicyRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params edge_router_policy.CreateEdgeRouterPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, EdgeRouterPolicyLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.EdgeRouterPolicy.Create, MapCreateEdgeRouterPolicyToModel(params.Policy), rc)
 	})
 }
 
 func (r *EdgeRouterPolicyRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.EdgeRouterPolicy)
 }
 
 func (r *EdgeRouterPolicyRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params edge_router_policy.UpdateEdgeRouterPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.EdgeRouterPolicy.Update(MapUpdateEdgeRouterPolicyToModel(params.ID, params.Policy), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *EdgeRouterPolicyRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params edge_router_policy.PatchEdgeRouterPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.EdgeRouterPolicy.Update(MapPatchEdgeRouterPolicyToModel(params.ID, params.Policy), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})
 }
 
 func (r *EdgeRouterPolicyRouter) ListEdgeRouters(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeRouterPolicy, *model.EdgeRouter](ae, rc, ae.Managers.EdgeRouterPolicy, ae.Managers.EdgeRouter, MapEdgeRouterToRestEntity)
 }
 
 func (r *EdgeRouterPolicyRouter) ListIdentities(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeRouterPolicy, *model.Identity](ae, rc, ae.Managers.EdgeRouterPolicy, ae.Managers.Identity, MapIdentityToRestEntity)
 }

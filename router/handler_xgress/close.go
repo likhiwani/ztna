@@ -17,13 +17,15 @@
 package handler_xgress
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3/protobufs"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
-	"time"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3/protobufs"
 )
 
 type closeHandler struct {
@@ -32,10 +34,12 @@ type closeHandler struct {
 }
 
 func NewCloseHandler(ctrl env.NetworkControllers, forwarder *forwarder.Forwarder) xgress.CloseHandler {
+	logtrace.LogWithFunctionName()
 	return &closeHandler{ctrls: ctrl, forwarder: forwarder}
 }
 
 func (txc *closeHandler) HandleXgressClose(x *xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(x.Label())
 	log.Debug("running")
 	defer log.Debug("complete")

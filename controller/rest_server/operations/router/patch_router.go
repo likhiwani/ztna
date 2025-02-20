@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type PatchRouterHandlerFunc func(PatchRouterParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn PatchRouterHandlerFunc) Handle(params PatchRouterParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type PatchRouterHandler interface {
 
 // NewPatchRouter creates a new http.Handler for the patch router operation
 func NewPatchRouter(ctx *middleware.Context, handler PatchRouterHandler) *PatchRouter {
+    logtrace.LogWithFunctionName()
 	return &PatchRouter{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type PatchRouter struct {
 }
 
 func (o *PatchRouter) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

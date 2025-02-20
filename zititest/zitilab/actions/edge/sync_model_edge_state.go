@@ -1,20 +1,24 @@
 package edge
 
 import (
+	"strings"
+	"ztna-core/ztna/logtrace"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+
 	"github.com/Jeffail/gabs"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 func SyncModelEdgeState(componentSpec string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &syncModelEdgeStateAction{
 		componentSpec: componentSpec,
 	}
 }
 
 func (action *syncModelEdgeStateAction) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	routerComponents := run.GetModel().SelectComponents(action.componentSpec)
 	if len(routerComponents) == 0 {
 		return errors.Errorf("no router components found for selector '%v'", action.componentSpec)

@@ -27,6 +27,7 @@ import (
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
@@ -40,6 +41,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewServiceRouter()
 	env.AddRouter(r)
 }
@@ -50,12 +52,14 @@ type ServiceRouter struct {
 }
 
 func NewServiceRouter() *ServiceRouter {
+	logtrace.LogWithFunctionName()
 	return &ServiceRouter{
 		BasePath: "/" + EntityNameService,
 	}
 }
 
 func (r *ServiceRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	r.listTimer = ae.GetHostController().GetNetwork().GetMetricsRegistry().Timer("services.list")
 
 	//Client
@@ -133,6 +137,7 @@ func (r *ServiceRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ServiceRouter) ListManagementServices(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	//always admin
 	List(rc, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		identity := rc.Identity
@@ -199,6 +204,7 @@ func (r *ServiceRouter) ListManagementServices(ae *env.AppEnv, rc *response.Requ
 }
 
 func (r *ServiceRouter) ListClientServices(ae *env.AppEnv, rc *response.RequestContext, params clientService.ListServicesParams) {
+	logtrace.LogWithFunctionName()
 	//never in an admin capacity
 	start := time.Now()
 	// ListWithHandler won't do search limiting by logged in user
@@ -232,6 +238,7 @@ func (r *ServiceRouter) ListClientServices(ae *env.AppEnv, rc *response.RequestC
 }
 
 func (r *ServiceRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	// DetailWithHandler won't do search limiting by logged in user
 	Detail(rc, func(rc *response.RequestContext, id string) (interface{}, error) {
 		svc, err := ae.Managers.EdgeService.ReadForIdentity(id, rc.ApiSession.IdentityId, rc.ApiSession.ConfigTypes)
@@ -243,44 +250,53 @@ func (r *ServiceRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *ServiceRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params managementService.CreateServiceParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, ServiceLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.EdgeService.Create, MapCreateServiceToModel(params.Service), rc)
 	})
 }
 
 func (r *ServiceRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.EdgeService)
 }
 
 func (r *ServiceRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params managementService.UpdateServiceParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.EdgeService.Update(MapUpdateServiceToModel(params.ID, params.Service), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *ServiceRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params managementService.PatchServiceParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.EdgeService.Update(MapPatchServiceToModel(params.ID, params.Service), fields.FilterMaps("tags").MapField("maxIdleTimeMillis", "maxIdleTime"), rc.NewChangeContext())
 	})
 }
 
 func (r *ServiceRouter) listServiceEdgeRouterPolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeService, *model.ServiceEdgeRouterPolicy](ae, rc, ae.Managers.EdgeService, ae.Managers.ServiceEdgeRouterPolicy, MapServiceEdgeRouterPolicyToRestEntity)
 }
 
 func (r *ServiceRouter) listServicePolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeService, *model.ServicePolicy](ae, rc, ae.Managers.EdgeService, ae.Managers.ServicePolicy, MapServicePolicyToRestEntity)
 }
 
 func (r *ServiceRouter) listConfigs(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeService, *model.Config](ae, rc, ae.Managers.EdgeService, ae.Managers.Config, MapConfigToRestEntity)
 }
 
 func (r *ServiceRouter) listManagementTerminators(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListTerminatorAssociations(ae, rc, ae.Managers.EdgeService, ae.Managers.Terminator, MapTerminatorToRestEntity)
 }
 
 func (r *ServiceRouter) listClientTerminators(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	serviceId, err := rc.GetEntityId()
 
 	if err != nil {
@@ -308,6 +324,7 @@ func (r *ServiceRouter) listClientTerminators(ae *env.AppEnv, rc *response.Reque
 }
 
 func (r *ServiceRouter) listIdentities(ae *env.AppEnv, rc *response.RequestContext, params managementService.ListServiceIdentitiesParams) {
+	logtrace.LogWithFunctionName()
 	typeFilter := ""
 	if params.PolicyType != nil {
 		if strings.EqualFold(*params.PolicyType, db.PolicyTypeBind.String()) {
@@ -324,11 +341,13 @@ func (r *ServiceRouter) listIdentities(ae *env.AppEnv, rc *response.RequestConte
 }
 
 func (r *ServiceRouter) listEdgeRouters(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `not isEmpty(from serviceEdgeRouterPolicies where anyOf(services) = "%v")`
 	ListAssociationsWithFilter[*model.EdgeRouter](ae, rc, filterTemplate, ae.Managers.EdgeRouter, MapEdgeRouterToRestEntity)
 }
 
 func (r *ServiceRouter) listClientEdgeRouters(ae *env.AppEnv, rc *response.RequestContext, params clientService.ListServiceEdgeRoutersParams) {
+	logtrace.LogWithFunctionName()
 	serviceId, err := rc.GetEntityId()
 
 	if err != nil {
@@ -368,6 +387,7 @@ func (r *ServiceRouter) listClientEdgeRouters(ae *env.AppEnv, rc *response.Reque
 }
 
 func getServiceEdgeRouters(ae *env.AppEnv, rc *response.RequestContext, serviceId string) (*rest_model.ServiceEdgeRouters, error) {
+	logtrace.LogWithFunctionName()
 	edgeRouters := &rest_model.ServiceEdgeRouters{}
 
 	edgeRoutersForSvc, err := ae.Managers.EdgeRouter.ListForIdentityAndService(rc.Identity.Id, serviceId)

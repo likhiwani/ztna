@@ -17,10 +17,12 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -43,10 +45,12 @@ type EdgeRouter struct {
 }
 
 func (self *EdgeRouter) GetName() string {
+	logtrace.LogWithFunctionName()
 	return self.Name
 }
 
 func (entity *EdgeRouter) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.EdgeRouter{
 		Router: db.Router{
 			BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
@@ -65,6 +69,7 @@ func (entity *EdgeRouter) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.EdgeRouter,
 }
 
 func (entity *EdgeRouter) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.EdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	return &db.EdgeRouter{
 		Router: db.Router{
 			BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
@@ -85,6 +90,7 @@ func (entity *EdgeRouter) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldCheck
 }
 
 func (entity *EdgeRouter) fillFrom(_ Env, _ *bbolt.Tx, boltEdgeRouter *db.EdgeRouter) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltEdgeRouter)
 	entity.Name = boltEdgeRouter.Name
 	entity.RoleAttributes = boltEdgeRouter.RoleAttributes

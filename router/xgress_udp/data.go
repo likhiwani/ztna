@@ -16,9 +16,13 @@
 
 package xgress_udp
 
-import "net"
+import (
+	"net"
+	"ztna-core/ztna/logtrace"
+)
 
 func NewPacketData(buffer []byte, source net.Addr) *PacketData {
+	logtrace.LogWithFunctionName()
 	return &PacketData{
 		Buffer: buffer,
 		Source: source,

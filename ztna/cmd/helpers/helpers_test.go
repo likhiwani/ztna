@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -12,21 +13,25 @@ import (
 var hostname string
 
 func init() {
+	logtrace.LogWithFunctionName()
 	hn, _ := os.Hostname()
 	hostname = hn
 }
 
 func TestHomeDirHasNoWindowsSlashes(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	value := HomeDir()
 	assert.Zero(t, strings.Count(value, "\\"))
 }
 
 func TestWorkingDirHasNoWindowsSlashes(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	value, _ := WorkingDir()
 	assert.Zero(t, strings.Count(value, "\\"))
 }
 
 func TestGetZitiHomeWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_HOME"
 
@@ -41,6 +46,7 @@ func TestGetZitiHomeWhenUnset(t *testing.T) {
 }
 
 func TestGetZitiHomeWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_HOME"
 	expectedValue := "/path/to/ziti/home"
@@ -54,6 +60,7 @@ func TestGetZitiHomeWhenSet(t *testing.T) {
 }
 
 func TestGetHomeWhenSetWithWindowsSlashes(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_HOME"
 	expectedValue := "/path/to/ziti/home"
@@ -67,6 +74,7 @@ func TestGetHomeWhenSetWithWindowsSlashes(t *testing.T) {
 }
 
 func TestGetCtrlEdgeAdvertisedAddressWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_EDGE_ADVERTISED_ADDRESS"
 
@@ -80,6 +88,7 @@ func TestGetCtrlEdgeAdvertisedAddressWhenUnset(t *testing.T) {
 }
 
 func TestGetCtrlEdgeAdvertisedAddressWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_EDGE_ADVERTISED_ADDRESS"
 	expectedValue := "localhost"
@@ -93,6 +102,7 @@ func TestGetCtrlEdgeAdvertisedAddressWhenSet(t *testing.T) {
 }
 
 func TestGetCtrlAdvertisedPortWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_ADVERTISED_PORT"
 
@@ -106,6 +116,7 @@ func TestGetCtrlAdvertisedPortWhenUnset(t *testing.T) {
 }
 
 func TestGetCtrlAdvertisedPortWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_ADVERTISED_PORT"
 	expectedValue := "1234"
@@ -119,6 +130,7 @@ func TestGetCtrlAdvertisedPortWhenSet(t *testing.T) {
 }
 
 func TestGetCtrlAdvertisedAddressWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_ADVERTISED_ADDRESS"
 
@@ -132,6 +144,7 @@ func TestGetCtrlAdvertisedAddressWhenUnset(t *testing.T) {
 }
 
 func TestGetCtrlAdvertisedAddressWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_ADVERTISED_ADDRESS"
 	expectedValue := "localhost"
@@ -145,6 +158,7 @@ func TestGetCtrlAdvertisedAddressWhenSet(t *testing.T) {
 }
 
 func TestGetEdgeRouterPortWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_ROUTER_PORT"
 
@@ -158,6 +172,7 @@ func TestGetEdgeRouterPortWhenUnset(t *testing.T) {
 }
 
 func TestGetEdgeRouterPortWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_ROUTER_PORT"
 	expectedValue := "4321"
@@ -171,6 +186,7 @@ func TestGetEdgeRouterPortWhenSet(t *testing.T) {
 }
 
 func TestGetCtrlEdgeAdvertisedPortWhenNotSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_EDGE_ADVERTISED_PORT"
 	expectedValue := "1280"
@@ -184,6 +200,7 @@ func TestGetCtrlEdgeAdvertisedPortWhenNotSet(t *testing.T) {
 }
 
 func TestGetCtrlEdgeAdvertisedPortWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_CTRL_EDGE_ADVERTISED_PORT"
 	expectedValue := "1234"
@@ -197,6 +214,7 @@ func TestGetCtrlEdgeAdvertisedPortWhenSet(t *testing.T) {
 }
 
 func TestGetEdgeIdentityEnrollmentDurationWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_EDGE_IDENTITY_ENROLLMENT_DURATION"
 	expectedValue := 5 * time.Minute
@@ -211,6 +229,7 @@ func TestGetEdgeIdentityEnrollmentDurationWhenSet(t *testing.T) {
 
 /*  Ensure that the default value is returned even if the environment variable is set but is blank. */
 func TestGetEdgeIdentityEnrollmentDurationWhenSetToBlank(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_EDGE_IDENTITY_ENROLLMENT_DURATION"
 	// Expect the default, hard coding the value to act as an alert if default is changed in edge project
@@ -225,6 +244,7 @@ func TestGetEdgeIdentityEnrollmentDurationWhenSetToBlank(t *testing.T) {
 }
 
 func TestGetEdgeIdentityEnrollmentDurationWhenNotSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_EDGE_IDENTITY_ENROLLMENT_DURATION"
 	// Expect the default, hard coding the value to act as an alert if default is changed in edge project
@@ -239,6 +259,7 @@ func TestGetEdgeIdentityEnrollmentDurationWhenNotSet(t *testing.T) {
 }
 
 func TestGetEdgeRouterEnrollmentDurationWhenSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_ROUTER_ENROLLMENT_DURATION"
 	expectedValue := 5 * time.Minute
@@ -253,6 +274,7 @@ func TestGetEdgeRouterEnrollmentDurationWhenSet(t *testing.T) {
 
 /*  Ensure that the default value is returned even if the environment variable is set but is blank. */
 func TestGetEdgeRouterEnrollmentDurationWhenSetToBlank(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_ROUTER_ENROLLMENT_DURATION"
 	// Expect the default, hard coding the value to act as an alert if default is changed in edge project
@@ -267,6 +289,7 @@ func TestGetEdgeRouterEnrollmentDurationWhenSetToBlank(t *testing.T) {
 }
 
 func TestGetEdgeRouterEnrollmentDurationWhenNotSet(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	varName := "ZITI_ROUTER_ENROLLMENT_DURATION"
 	// Expect the default, hard coding the value to act as an alert if default is changed in edge project

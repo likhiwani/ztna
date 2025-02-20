@@ -17,29 +17,36 @@
 package version
 
 import (
-	"github.com/openziti/foundation/v2/versions"
 	"runtime"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/versions"
 )
 
 type cmdBuildInfo struct{}
 
 func (c cmdBuildInfo) EncoderDecoder() versions.VersionEncDec {
+	logtrace.LogWithFunctionName()
 	return &versions.StdVersionEncDec
 }
 
 func (c cmdBuildInfo) Version() string {
+	logtrace.LogWithFunctionName()
 	return Version
 }
 
 func (c cmdBuildInfo) Revision() string {
+	logtrace.LogWithFunctionName()
 	return Revision
 }
 
 func (c cmdBuildInfo) BuildDate() string {
+	logtrace.LogWithFunctionName()
 	return BuildDate
 }
 
 func (c cmdBuildInfo) AsVersionInfo() *versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	return &versions.VersionInfo{
 		Version:   c.Version(),
 		Revision:  c.Revision(),
@@ -50,29 +57,36 @@ func (c cmdBuildInfo) AsVersionInfo() *versions.VersionInfo {
 }
 
 func GetCmdBuildInfo() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return cmdBuildInfo{}
 }
 
 func GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return Version
 }
 
 func GetRevision() string {
+	logtrace.LogWithFunctionName()
 	return Revision
 }
 
 func GetBuildDate() string {
+	logtrace.LogWithFunctionName()
 	return BuildDate
 }
 
 func GetGoVersion() string {
+	logtrace.LogWithFunctionName()
 	return runtime.Version()
 }
 
 func GetOS() string {
+	logtrace.LogWithFunctionName()
 	return runtime.GOOS
 }
 
 func GetArchitecture() string {
+	logtrace.LogWithFunctionName()
 	return runtime.GOARCH
 }

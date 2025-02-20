@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/google/uuid"
@@ -37,12 +38,14 @@ type CaLinkFactoryImpl struct {
 }
 
 func NewCaLinkFactory() *CaLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &CaLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameCa),
 	}
 }
 
 func (factory *CaLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	ca := entity.(*model.Ca)
 
 	links := factory.BasicLinkFactory.Links(entity)
@@ -60,6 +63,7 @@ func (factory *CaLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
 }
 
 func MapCreateCaToModel(ca *rest_model.CaCreate) *model.Ca {
+	logtrace.LogWithFunctionName()
 	ret := &model.Ca{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(ca.Tags),
@@ -90,6 +94,7 @@ func MapCreateCaToModel(ca *rest_model.CaCreate) *model.Ca {
 }
 
 func MapUpdateCaToModel(id string, ca *rest_model.CaUpdate) *model.Ca {
+	logtrace.LogWithFunctionName()
 	ret := &model.Ca{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(ca.Tags),
@@ -117,6 +122,7 @@ func MapUpdateCaToModel(id string, ca *rest_model.CaUpdate) *model.Ca {
 }
 
 func MapPatchCaToModel(id string, ca *rest_model.CaPatch) *model.Ca {
+	logtrace.LogWithFunctionName()
 	ret := &model.Ca{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(ca.Tags),
@@ -144,10 +150,12 @@ func MapPatchCaToModel(id string, ca *rest_model.CaPatch) *model.Ca {
 }
 
 func MapCaToRestEntity(_ *env.AppEnv, _ *response.RequestContext, e *model.Ca) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapCaToRestModel(e)
 }
 
 func MapCaToRestModel(i *model.Ca) (*rest_model.CaDetail, error) {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.CaDetail{
 		BaseEntity:                BaseEntityToRestModel(i, CaLinkFactory),
 		CertPem:                   &i.CertPem,

@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteServiceParams() *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDeleteServiceParams() *DeleteServiceParams {
 // NewDeleteServiceParamsWithTimeout creates a new DeleteServiceParams object
 // with the ability to set a timeout on a request.
 func NewDeleteServiceParamsWithTimeout(timeout time.Duration) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDeleteServiceParamsWithTimeout(timeout time.Duration) *DeleteServicePara
 // NewDeleteServiceParamsWithContext creates a new DeleteServiceParams object
 // with the ability to set a context for a request.
 func NewDeleteServiceParamsWithContext(ctx context.Context) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDeleteServiceParamsWithContext(ctx context.Context) *DeleteServiceParams
 // NewDeleteServiceParamsWithHTTPClient creates a new DeleteServiceParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDeleteServiceParamsWithHTTPClient(client *http.Client) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DeleteServiceParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteServiceParams) WithDefaults() *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DeleteServiceParams) WithDefaults() *DeleteServiceParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteServiceParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete service params
 func (o *DeleteServiceParams) WithTimeout(timeout time.Duration) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the delete service params
 func (o *DeleteServiceParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the delete service params
 func (o *DeleteServiceParams) WithContext(ctx context.Context) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the delete service params
 func (o *DeleteServiceParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the delete service params
 func (o *DeleteServiceParams) WithHTTPClient(client *http.Client) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the delete service params
 func (o *DeleteServiceParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the delete service params
 func (o *DeleteServiceParams) WithID(id string) *DeleteServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the delete service params
 func (o *DeleteServiceParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DeleteServiceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

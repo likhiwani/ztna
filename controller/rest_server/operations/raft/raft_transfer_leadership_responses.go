@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type RaftTransferLeadershipOK struct {
 
 // NewRaftTransferLeadershipOK creates RaftTransferLeadershipOK with default headers values
 func NewRaftTransferLeadershipOK() *RaftTransferLeadershipOK {
+    logtrace.LogWithFunctionName()
 
 	return &RaftTransferLeadershipOK{}
 }
 
 // WithPayload adds the payload to the raft transfer leadership o k response
 func (o *RaftTransferLeadershipOK) WithPayload(payload *rest_model.Empty) *RaftTransferLeadershipOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft transfer leadership o k response
 func (o *RaftTransferLeadershipOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftTransferLeadershipOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type RaftTransferLeadershipUnauthorized struct {
 
 // NewRaftTransferLeadershipUnauthorized creates RaftTransferLeadershipUnauthorized with default headers values
 func NewRaftTransferLeadershipUnauthorized() *RaftTransferLeadershipUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &RaftTransferLeadershipUnauthorized{}
 }
 
 // WithPayload adds the payload to the raft transfer leadership unauthorized response
 func (o *RaftTransferLeadershipUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftTransferLeadershipUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft transfer leadership unauthorized response
 func (o *RaftTransferLeadershipUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftTransferLeadershipUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type RaftTransferLeadershipNotFound struct {
 
 // NewRaftTransferLeadershipNotFound creates RaftTransferLeadershipNotFound with default headers values
 func NewRaftTransferLeadershipNotFound() *RaftTransferLeadershipNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &RaftTransferLeadershipNotFound{}
 }
 
 // WithPayload adds the payload to the raft transfer leadership not found response
 func (o *RaftTransferLeadershipNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftTransferLeadershipNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft transfer leadership not found response
 func (o *RaftTransferLeadershipNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftTransferLeadershipNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type RaftTransferLeadershipTooManyRequests struct {
 
 // NewRaftTransferLeadershipTooManyRequests creates RaftTransferLeadershipTooManyRequests with default headers values
 func NewRaftTransferLeadershipTooManyRequests() *RaftTransferLeadershipTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &RaftTransferLeadershipTooManyRequests{}
 }
 
 // WithPayload adds the payload to the raft transfer leadership too many requests response
 func (o *RaftTransferLeadershipTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftTransferLeadershipTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft transfer leadership too many requests response
 func (o *RaftTransferLeadershipTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftTransferLeadershipTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type RaftTransferLeadershipInternalServerError struct {
 
 // NewRaftTransferLeadershipInternalServerError creates RaftTransferLeadershipInternalServerError with default headers values
 func NewRaftTransferLeadershipInternalServerError() *RaftTransferLeadershipInternalServerError {
+    logtrace.LogWithFunctionName()
 
 	return &RaftTransferLeadershipInternalServerError{}
 }
 
 // WithPayload adds the payload to the raft transfer leadership internal server error response
 func (o *RaftTransferLeadershipInternalServerError) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftTransferLeadershipInternalServerError {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft transfer leadership internal server error response
 func (o *RaftTransferLeadershipInternalServerError) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftTransferLeadershipInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(500)
 	if o.Payload != nil {

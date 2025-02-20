@@ -19,8 +19,10 @@ package demo
 import (
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/spf13/cobra"
 )
 
@@ -31,6 +33,7 @@ type plainEchoServerOptions struct {
 }
 
 func (self *plainEchoServerOptions) run() error {
+	logtrace.LogWithFunctionName()
 	echoServer := &plainEchoServer{
 		Port: int(self.port),
 	}
@@ -42,6 +45,7 @@ func (self *plainEchoServerOptions) run() error {
 }
 
 func newPlainEchoServerCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &plainEchoServerOptions{
 		CommonOptions: p(),
 	}

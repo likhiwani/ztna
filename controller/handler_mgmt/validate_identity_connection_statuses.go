@@ -20,20 +20,22 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/concurrenz"
+	"strings"
+	"sync"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/concurrenz"
 	"google.golang.org/protobuf/proto"
-	"strings"
-	"sync"
-	"time"
 )
 
 type validateIdentityConnectionStatusesHandler struct {
@@ -41,18 +43,22 @@ type validateIdentityConnectionStatusesHandler struct {
 }
 
 func newValidateIdentityConnectionStatusesHandler(appEnv *env.AppEnv) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &validateIdentityConnectionStatusesHandler{appEnv: appEnv}
 }
 
 func (*validateIdentityConnectionStatusesHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_ValidateIdentityConnectionStatusesRequestType)
 }
 
 func (handler *validateIdentityConnectionStatusesHandler) getNetwork() *network.Network {
+	logtrace.LogWithFunctionName()
 	return handler.appEnv.GetHostController().GetNetwork()
 }
 
 func (handler *validateIdentityConnectionStatusesHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &mgmt_pb.ValidateIdentityConnectionStatusesRequest{}
 
@@ -98,6 +104,7 @@ func (handler *validateIdentityConnectionStatusesHandler) HandleReceive(msg *cha
 type EdgeConnectionsValidationCallback func(detail *mgmt_pb.RouterIdentityConnectionStatusesDetails)
 
 func (handler *validateIdentityConnectionStatusesHandler) ValidateEdgeConnections(filter string, cb EdgeConnectionsValidationCallback) (int64, func(), error) {
+	logtrace.LogWithFunctionName()
 	result, err := handler.appEnv.Managers.Router.BaseList(filter)
 	if err != nil {
 		return 0, nil, err
@@ -132,6 +139,7 @@ func (handler *validateIdentityConnectionStatusesHandler) validRouterEdgeConnect
 	lock *sync.Mutex,
 	cb EdgeConnectionsValidationCallback) {
 
+	logtrace.LogWithFunctionName()
 	var identityConnections *inspect.RouterIdentityConnections
 
 	if router.Control != nil && !router.Control.IsClosed() {
@@ -239,6 +247,7 @@ func (handler *validateIdentityConnectionStatusesHandler) validRouterEdgeConnect
 }
 
 func (handler *validateIdentityConnectionStatusesHandler) reportError(router *model.Router, err error, cb EdgeConnectionsValidationCallback) {
+	logtrace.LogWithFunctionName()
 	result := &mgmt_pb.RouterIdentityConnectionStatusesDetails{
 		ComponentId:     router.Id,
 		ComponentName:   router.Name,

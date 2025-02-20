@@ -34,14 +34,17 @@ import (
 	"ztna-core/edge-api/rest_client_api_client/current_api_session"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/spiffehlp"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 
 	"github.com/Jeffail/gabs"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity/certtools"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
 )
 
 func Test_Api_Session_Certs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -307,6 +310,7 @@ func Test_Api_Session_Certs(t *testing.T) {
 }
 
 func generateCsr() ([]byte, crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	p384 := elliptic.P384()
 	pfxlog.Logger().Infof("generating %s EC key", p384.Params().Name)
 	privateKey, err := ecdsa.GenerateKey(p384, rand.Reader)

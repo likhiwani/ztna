@@ -4,19 +4,23 @@ import (
 	"errors"
 	"path/filepath"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/cli"
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/openziti/fablab/kernel/model"
 )
 
 func Login(componentSelector string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &login{
 		componentSelector: componentSelector,
 	}
 }
 
 func (l *login) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	m := run.GetModel()
 	ctrl, err := m.SelectComponent(l.componentSelector)
 	if err != nil {

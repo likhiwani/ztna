@@ -17,6 +17,7 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/config"
@@ -26,11 +27,13 @@ import (
 )
 
 func (exporter Exporter) IsServiceExportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "service")
 }
 
 func (exporter Exporter) GetServices() ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	return exporter.getEntities(
 		"Services",

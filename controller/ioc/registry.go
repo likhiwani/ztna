@@ -20,6 +20,8 @@
 package ioc
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/pkg/errors"
 )
@@ -34,6 +36,7 @@ type Provider interface {
 type ProviderF func() any
 
 func (f ProviderF) Get() any {
+	logtrace.LogWithFunctionName()
 	return f()
 }
 
@@ -52,6 +55,7 @@ type Registry interface {
 
 // NewRegistry returns a new Registry instance
 func NewRegistry() Registry {
+	logtrace.LogWithFunctionName()
 	return &registry{}
 }
 
@@ -60,14 +64,17 @@ type registry struct {
 }
 
 func (self *registry) GetProvider(name string) Provider {
+	logtrace.LogWithFunctionName()
 	return self.m.Get(name)
 }
 
 func (self *registry) Register(name string, provider Provider) {
+	logtrace.LogWithFunctionName()
 	self.m.Put(name, provider)
 }
 
 func (self *registry) RegisterSingleton(name string, val any) {
+	logtrace.LogWithFunctionName()
 	if self.GetProvider(name) != nil {
 		panic(errors.Errorf("provider for %v already registered", name))
 	}
@@ -80,6 +87,7 @@ func (self *registry) RegisterSingleton(name string, val any) {
 // If no provider for the given name exists, or if the instance is not of the type
 // requested an error will be returned
 func Get[T any](r Registry, name string) (T, error) {
+	logtrace.LogWithFunctionName()
 	provider := r.GetProvider(name)
 	if provider == nil {
 		var result T

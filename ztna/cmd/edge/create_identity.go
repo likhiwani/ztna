@@ -25,8 +25,10 @@ import (
 	"strings"
 
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/pkg/errors"
 
 	"github.com/Jeffail/gabs"
@@ -50,6 +52,7 @@ type createIdentityOptions struct {
 
 // newCreateIdentityCmd creates the 'edge controller create identity' command
 func newCreateIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	newOptions := func() *createIdentityOptions {
 		return &createIdentityOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -66,6 +69,7 @@ func newCreateIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func newCreateIdentityOfTypeCmd(name string, options *createIdentityOptions) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   name + " <name>",
 		Short: "creates a new identity managed by the Ziti Edge Controller",
@@ -105,6 +109,7 @@ func newCreateIdentityOfTypeCmd(name string, options *createIdentityOptions) *co
 }
 
 func runCreateIdentity(o *createIdentityOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	api.SetJSONValue(entityData, o.Args[0], "name")
 	api.SetJSONValue(entityData, "Default", "type")
@@ -197,6 +202,7 @@ func runCreateIdentity(o *createIdentityOptions) error {
 }
 
 func getIdentityJwt(o *api.Options, id string, outputFile string, enrollmentType string, timeout int, verbose bool) error {
+	logtrace.LogWithFunctionName()
 	newIdentity, err := DetailEntityOfType("identities", id, o.OutputJSONResponse, o.Out, timeout, verbose)
 	if err != nil {
 		return err

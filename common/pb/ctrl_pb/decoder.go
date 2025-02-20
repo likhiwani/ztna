@@ -18,13 +18,15 @@ package ctrl_pb
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics/metrics_pb"
-	"ztna-core/ztna/common/ctrl_msg"
 	"google.golang.org/protobuf/proto"
-	"strconv"
-	"strings"
 )
 
 type Decoder struct{}
@@ -32,6 +34,7 @@ type Decoder struct{}
 const DECODER = "ctrl"
 
 func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
+	logtrace.LogWithFunctionName()
 	switch msg.ContentType {
 	case int32(ContentType_CircuitRequestType):
 		circuitRequest := &CircuitRequest{}
@@ -346,5 +349,6 @@ func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
 }
 
 func terminatorToString(request *CreateTerminatorRequest) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("{serviceId=[%s], binding=[%s], address=[%v]}", request.ServiceId, request.Binding, request.Address)
 }

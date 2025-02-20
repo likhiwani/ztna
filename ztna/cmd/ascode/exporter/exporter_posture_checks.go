@@ -17,17 +17,20 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/edge-api/rest_management_api_client/posture_checks"
 
 	"golang.org/x/exp/slices"
 )
 
 func (exporter Exporter) IsPostureCheckExportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "posture-check")
 }
 
 func (exporter Exporter) GetPostureChecks() ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	return exporter.getEntities(
 		"PostureChecks",

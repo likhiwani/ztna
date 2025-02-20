@@ -18,18 +18,21 @@ package db
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/controller/fields"
-	"ztna-core/ztna/controller/xt"
-	"go.etcd.io/bbolt"
 	"math"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/storage/boltztest"
+	"go.etcd.io/bbolt"
 )
 
 func Test_TerminatorStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -45,6 +48,7 @@ func Test_TerminatorStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -103,6 +107,7 @@ type terminatorTestEntities struct {
 }
 
 func (ctx *TestContext) createTestTerminators() *terminatorTestEntities {
+	logtrace.LogWithFunctionName()
 	e := &terminatorTestEntities{}
 
 	e.service = ctx.requireNewService()
@@ -140,6 +145,7 @@ func (ctx *TestContext) createTestTerminators() *terminatorTestEntities {
 }
 
 func (ctx *TestContext) testCreateTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -170,6 +176,7 @@ func (ctx *TestContext) testCreateTerminators(t *testing.T) {
 }
 
 func (ctx *TestContext) testLoadQueryTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -215,6 +222,7 @@ func (ctx *TestContext) testLoadQueryTerminators(t *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -238,6 +246,7 @@ func (ctx *TestContext) testUpdateTerminators(t *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -254,6 +263,7 @@ func (ctx *TestContext) testDeleteTerminators(t *testing.T) {
 }
 
 func (ctx *TestContext) testPatchTerminator(*testing.T) {
+	logtrace.LogWithFunctionName()
 	service := ctx.requireNewService()
 	router := ctx.requireNewRouter()
 
@@ -289,6 +299,7 @@ func (ctx *TestContext) testPatchTerminator(*testing.T) {
 }
 
 func (ctx *TestContext) testFindSiblings(*testing.T) {
+	logtrace.LogWithFunctionName()
 	service := ctx.requireNewService()
 	router := ctx.requireNewRouter()
 
@@ -330,22 +341,27 @@ func (ctx *TestContext) testFindSiblings(*testing.T) {
 type testStrategyFactory struct{}
 
 func (t testStrategyFactory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return "smartrouting"
 }
 
 func (t testStrategyFactory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	return &testStrategy{}
 }
 
 type testStrategy struct{}
 
 func (t testStrategy) Select(param xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	return terminators[0], nil, nil
 }
 
 func (t testStrategy) HandleTerminatorChange(xt.StrategyChangeEvent) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testStrategy) NotifyEvent(xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 }

@@ -20,14 +20,16 @@
 package tests
 
 import (
+	"testing"
+	"time"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
-	"testing"
-	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_TransitRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

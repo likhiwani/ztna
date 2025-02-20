@@ -17,16 +17,20 @@
 package events
 
 import (
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddConnectEventHandler(handler event.ConnectEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.connectEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveConnectEventHandler(handler event.ConnectEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.connectEventHandlers.DeleteIf(func(val event.ConnectEventHandler) bool {
 		if val == handler {
 			return true
@@ -39,6 +43,7 @@ func (self *Dispatcher) RemoveConnectEventHandler(handler event.ConnectEventHand
 }
 
 func (self *Dispatcher) AcceptConnectEvent(evt *event.ConnectEvent) {
+	logtrace.LogWithFunctionName()
 	evt.EventSrcId = self.ctrlId
 	for _, handler := range self.connectEventHandlers.Value() {
 		go handler.AcceptConnectEvent(evt)
@@ -46,6 +51,7 @@ func (self *Dispatcher) AcceptConnectEvent(evt *event.ConnectEvent) {
 }
 
 func (self *Dispatcher) registerConnectEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.ConnectEventHandler)
 
 	if !ok {
@@ -57,6 +63,7 @@ func (self *Dispatcher) registerConnectEventHandler(val interface{}, _ map[strin
 }
 
 func (self *Dispatcher) unregisterConnectEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.ConnectEventHandler); ok {
 		self.RemoveConnectEventHandler(handler)
 	}

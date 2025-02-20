@@ -20,19 +20,22 @@
 package tests
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/common/eid"
-	"github.com/pkg/errors"
 	"math/rand"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/pkg/errors"
 )
 
 func Test_HSRotatingDataflow(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("test client first smart routing", func(t *testing.T) {
 		testClientFirstWithStrategy(t, "smartrouting")
 	})
@@ -59,6 +62,7 @@ func Test_HSRotatingDataflow(t *testing.T) {
 }
 
 func testClientFirstWithStrategy(t *testing.T, strategy string) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -165,6 +169,7 @@ type clientFirstRotatingService struct {
 }
 
 func (service *clientFirstRotatingService) Handle(conn *testServerConn) error {
+	logtrace.LogWithFunctionName()
 	requests := atomic.AddUint32(&service.requests, 1)
 	doClose := requests >= service.maxRequests
 	logger := pfxlog.Logger()
@@ -205,6 +210,7 @@ func (service *clientFirstRotatingService) Handle(conn *testServerConn) error {
 }
 
 func testServerFirstWithStrategy(t *testing.T, strategy string) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -270,7 +276,7 @@ func testServerFirstWithStrategy(t *testing.T, strategy string) {
 
 	clientContext, err := ziti.NewContext(clientConfig)
 	ctx.Req.NoError(err)
-	
+
 	ticker := time.NewTicker(time.Millisecond * 500)
 	defer ticker.Stop()
 
@@ -309,6 +315,7 @@ type serverFirstRotatingService struct {
 }
 
 func (service *serverFirstRotatingService) Handle(conn *testServerConn) error {
+	logtrace.LogWithFunctionName()
 	requests := atomic.AddUint32(&service.requests, 1)
 	doClose := requests >= service.maxRequests
 	logger := pfxlog.Logger()

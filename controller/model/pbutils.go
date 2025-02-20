@@ -17,13 +17,16 @@
 package model
 
 import (
+	"time"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"time"
 )
 
 func timePtrToPb(t *time.Time) *timestamppb.Timestamp {
+	logtrace.LogWithFunctionName()
 	if t == nil {
 		return nil
 	}
@@ -32,6 +35,7 @@ func timePtrToPb(t *time.Time) *timestamppb.Timestamp {
 }
 
 func pbTimeToTimePtr(pb *timestamppb.Timestamp) *time.Time {
+	logtrace.LogWithFunctionName()
 	if pb == nil {
 		return nil
 	}
@@ -40,6 +44,7 @@ func pbTimeToTimePtr(pb *timestamppb.Timestamp) *time.Time {
 }
 
 func ContextToProtobuf(context *change.Context) *edge_cmd_pb.ChangeContext {
+	logtrace.LogWithFunctionName()
 	if context == nil {
 		return nil
 	}
@@ -50,6 +55,7 @@ func ContextToProtobuf(context *change.Context) *edge_cmd_pb.ChangeContext {
 }
 
 func ProtobufToContext(context *edge_cmd_pb.ChangeContext) *change.Context {
+	logtrace.LogWithFunctionName()
 	if context == nil {
 		return nil
 	}

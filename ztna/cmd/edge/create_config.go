@@ -22,8 +22,10 @@ import (
 	"io"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/pkg/errors"
 
 	"github.com/Jeffail/gabs"
@@ -37,6 +39,7 @@ type createConfigOptions struct {
 
 // newCreateConfigCmd creates the 'edge controller create service-policy' command
 func newCreateConfigCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createConfigOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -65,6 +68,7 @@ func newCreateConfigCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateConfig create a new config on the Ziti Edge Controller
 func runCreateConfig(o *createConfigOptions) error {
+	logtrace.LogWithFunctionName()
 	var jsonBytes []byte
 
 	if len(o.Args) == 3 {

@@ -20,12 +20,15 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
-	"github.com/fullsailor/pkcs7"
 	"io"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/fullsailor/pkcs7"
 )
 
 // GetControllerWellKnownCas will attempt to connect to a controller and retrieve its PKCS11 well-known CA bundle.
 func GetControllerWellKnownCas(controllerAddr string) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	tlsConfig, err := NewTlsConfig()
 
 	if err != nil {

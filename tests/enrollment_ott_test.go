@@ -31,12 +31,14 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/identity/certtools"
 	"gopkg.in/resty.v1"
 )
 
 func Test_EnrollmentOtt(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

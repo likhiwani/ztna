@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	c "ztna-core/ztna/ztna/constants"
 
 	"github.com/blang/semver"
@@ -30,6 +31,7 @@ type GitHubReleasesData struct {
 }
 
 func (self *GitHubReleasesData) GetDownloadUrl(appName string, targetOS, targetArch string) (string, error) {
+	logtrace.LogWithFunctionName()
 	arches := []string{targetArch}
 	if strings.ToLower(targetArch) == "amd64" {
 		arches = append(arches, "x86_64")
@@ -57,6 +59,7 @@ func (self *GitHubReleasesData) GetDownloadUrl(appName string, targetOS, targetA
 }
 
 func NewClient() *resty.Client {
+	logtrace.LogWithFunctionName()
 	// Use a 2-second timeout with a retry count of 5
 	return resty.
 		New().
@@ -66,12 +69,14 @@ func NewClient() *resty.Client {
 }
 
 func getRequest(verbose bool) *resty.Request {
+	logtrace.LogWithFunctionName()
 	return NewClient().
 		SetDebug(verbose).
 		R()
 }
 
 func GetLatestGitHubReleaseVersion(org, zitiApp string, verbose bool) (semver.Version, error) {
+	logtrace.LogWithFunctionName()
 	var result semver.Version
 	release, err := GetHighestVersionGitHubReleaseInfo(org, zitiApp, verbose)
 	if release != nil {
@@ -81,6 +86,7 @@ func GetLatestGitHubReleaseVersion(org, zitiApp string, verbose bool) (semver.Ve
 }
 
 func GetHighestVersionGitHubReleaseInfo(org, appName string, verbose bool) (*GitHubReleasesData, error) {
+	logtrace.LogWithFunctionName()
 	resp, err := getRequest(verbose).
 		SetQueryParams(map[string]string{}).
 		SetHeader("Accept", "application/vnd.github.v3+json").
@@ -103,6 +109,7 @@ func GetHighestVersionGitHubReleaseInfo(org, appName string, verbose bool) (*Git
 }
 
 func GetHighestVersionRelease(appName string, releases []*GitHubReleasesData) (*GitHubReleasesData, error) {
+	logtrace.LogWithFunctionName()
 	for _, release := range releases {
 		v, err := semver.ParseTolerant(release.Version)
 		if err != nil {
@@ -120,6 +127,7 @@ func GetHighestVersionRelease(appName string, releases []*GitHubReleasesData) (*
 }
 
 func GetLatestGitHubReleaseAsset(org, appName string, appGitHub string, version string, verbose bool) (*GitHubReleasesData, error) {
+	logtrace.LogWithFunctionName()
 	if version != "latest" {
 		if appName == "ziti-prox-c" {
 			version = strings.TrimPrefix(version, "v")
@@ -163,6 +171,7 @@ func GetLatestGitHubReleaseAsset(org, appName string, appGitHub string, version 
 
 // DownloadGitHubReleaseAsset will download a file from the given GitHUb release area
 func DownloadGitHubReleaseAsset(fullUrl string, filepath string) (err error) {
+	logtrace.LogWithFunctionName()
 	resp, err := resty.
 		New().
 		SetTimeout(time.Minute).
@@ -184,6 +193,7 @@ func DownloadGitHubReleaseAsset(fullUrl string, filepath string) (err error) {
 }
 
 func FindVersionAndInstallGitHubRelease(org, app string, zitiAppGitHub string, targetOS, targetArch string, binDir string, version string, verbose bool) error {
+	logtrace.LogWithFunctionName()
 	releaseVersion := version
 	if version != "" && version != "latest" {
 		if _, err := semver.Make(strings.TrimPrefix(version, "v")); err != nil {
@@ -206,6 +216,7 @@ func FindVersionAndInstallGitHubRelease(org, app string, zitiAppGitHub string, t
 }
 
 func InstallGitHubRelease(zitiApp string, release *GitHubReleasesData, binDir string, targetOS, targetArch, version string) error {
+	logtrace.LogWithFunctionName()
 	releaseUrl, err := release.GetDownloadUrl(zitiApp, targetOS, targetArch)
 	if err != nil {
 		return err

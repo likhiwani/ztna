@@ -19,14 +19,17 @@
 package router
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 )
 
 type routerMonitor struct{}
 
 func newRouterMonitor(forwarder *forwarder.Forwarder, closeNotify <-chan struct{}) *routerMonitor {
+	logtrace.LogWithFunctionName()
 	return &routerMonitor{}
 }
 
 func (routerMonitor *routerMonitor) Monitor() {
+	logtrace.LogWithFunctionName()
 }

@@ -17,16 +17,19 @@
 package xgress_edge_transport
 
 import (
-	"ztna-core/ztna/common/ctrl_msg"
-	"github.com/pkg/errors"
 	"time"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
+
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress_common"
 
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/xgress_common"
-	"ztna-core/ztna/controller/xt"
-	"ztna-core/ztna/common/logcontext"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
 )
 
@@ -35,10 +38,12 @@ type dialer struct {
 }
 
 func (txd *dialer) IsTerminatorValid(string, string) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func newDialer(options *xgress.Options) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	txd := &dialer{
 		options: options,
 	}
@@ -46,6 +51,7 @@ func newDialer(options *xgress.Options) (xgress.Dialer, error) {
 }
 
 func (txd *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	destination := params.GetDestination()
 	circuitId := params.GetCircuitId()
 	log := pfxlog.ChannelLogger(logcontext.EstablishPath).Wire(params.GetLogContext()).

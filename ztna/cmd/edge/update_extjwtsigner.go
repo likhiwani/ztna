@@ -22,6 +22,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -41,6 +42,7 @@ type updateExtJwtOptions struct {
 
 // newUpdateExtJwtSignerCmd creates the 'edge controller update authenticator' command
 func newUpdateExtJwtSignerCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	jwksEndpoint := strfmt.URI("")
 
 	options := updateExtJwtOptions{
@@ -112,6 +114,7 @@ func newUpdateExtJwtSignerCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runUpdateExtJwtSigner(options updateExtJwtOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("external-jwt-signers", options.nameOrId, options.Options)
 
 	if err != nil {

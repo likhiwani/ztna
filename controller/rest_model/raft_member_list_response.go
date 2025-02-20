@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"strconv"
 
@@ -49,6 +50,7 @@ type RaftMemberListResponse struct {
 
 // Validate validates this raft member list response
 func (m *RaftMemberListResponse) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateData(formats); err != nil {
@@ -62,6 +64,7 @@ func (m *RaftMemberListResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListResponse) validateData(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Data) { // not required
 		return nil
 	}
@@ -89,6 +92,7 @@ func (m *RaftMemberListResponse) validateData(formats strfmt.Registry) error {
 
 // ContextValidate validate this raft member list response based on the context it is used
 func (m *RaftMemberListResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateData(ctx, formats); err != nil {
@@ -102,6 +106,7 @@ func (m *RaftMemberListResponse) ContextValidate(ctx context.Context, formats st
 }
 
 func (m *RaftMemberListResponse) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	for i := 0; i < len(m.Data); i++ {
 
@@ -123,6 +128,7 @@ func (m *RaftMemberListResponse) contextValidateData(ctx context.Context, format
 
 // MarshalBinary interface implementation
 func (m *RaftMemberListResponse) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -131,6 +137,7 @@ func (m *RaftMemberListResponse) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *RaftMemberListResponse) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res RaftMemberListResponse
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

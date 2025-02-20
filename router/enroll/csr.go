@@ -22,6 +22,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/internal/edgerouter"
 )
 
@@ -35,6 +36,7 @@ type Csr struct {
 }
 
 func CreateCsr(key crypto.PrivateKey, algo x509.SignatureAlgorithm, subj *pkix.Name, sans *edgerouter.Sans) (string, error) {
+	logtrace.LogWithFunctionName()
 	template := x509.CertificateRequest{
 		Subject:            *subj,
 		SignatureAlgorithm: algo,

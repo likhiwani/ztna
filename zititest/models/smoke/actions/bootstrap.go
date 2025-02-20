@@ -18,27 +18,32 @@ package actions
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
-	"ztna-core/ztna/zititest/zitilab"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+
+	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
+
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
 
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
 )
 
 type bootstrapAction struct{}
 
 func NewBootstrapAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := &bootstrapAction{}
 	return action.bind
 }
 
 func (a *bootstrapAction) bind(m *model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	workflow := actions.Workflow()
 
 	isHA := len(m.SelectComponents(".ctrl")) > 1

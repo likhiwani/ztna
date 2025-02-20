@@ -18,13 +18,16 @@ package zitilib_runlevel_5_operation
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/fablab/kernel/libssh"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
-	"strings"
 )
 
 func Loop3Dialer(host *model.Host, scenario, endpoint string, joiner chan struct{}, extraArgs ...string) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &loopDialer{
 		host:      host,
 		scenario:  scenario,
@@ -36,6 +39,7 @@ func Loop3Dialer(host *model.Host, scenario, endpoint string, joiner chan struct
 }
 
 func LoopDialer(host *model.Host, scenario, endpoint string, joiner chan struct{}, extraArgs ...string) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &loopDialer{
 		host:      host,
 		scenario:  scenario,
@@ -47,6 +51,7 @@ func LoopDialer(host *model.Host, scenario, endpoint string, joiner chan struct{
 }
 
 func (self *loopDialer) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ssh := self.host.NewSshConfigFactory()
 	if err := libssh.RemoteKill(ssh, fmt.Sprintf("ziti-fabric-test %v dialer", self.subcmd)); err != nil {
 		return fmt.Errorf("error killing %v listeners (%w)", self.subcmd, err)
@@ -57,6 +62,7 @@ func (self *loopDialer) Execute(run model.Run) error {
 }
 
 func (self *loopDialer) run(ctx model.Run) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		if self.joiner != nil {
 			close(self.joiner)

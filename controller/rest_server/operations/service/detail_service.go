@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DetailServiceHandlerFunc func(DetailServiceParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn DetailServiceHandlerFunc) Handle(params DetailServiceParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DetailServiceHandler interface {
 
 // NewDetailService creates a new http.Handler for the detail service operation
 func NewDetailService(ctx *middleware.Context, handler DetailServiceHandler) *DetailService {
+    logtrace.LogWithFunctionName()
 	return &DetailService{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DetailService struct {
 }
 
 func (o *DetailService) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

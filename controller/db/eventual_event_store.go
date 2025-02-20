@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
@@ -33,6 +35,7 @@ type EventualEvent struct {
 }
 
 func (entity *EventualEvent) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeEventualEvents
 }
 
@@ -43,6 +46,7 @@ type EventualEventStore interface {
 }
 
 func newEventualEventStore(stores *stores) *eventualEventStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &eventualEventStoreImpl{}
 	store.baseStore = newBaseStore[*EventualEvent](stores, store)
 	store.InitImpl(store)
@@ -54,23 +58,29 @@ type eventualEventStoreImpl struct {
 }
 
 func (store *eventualEventStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.AddSymbol(FieldEventualEventData, ast.NodeTypeOther)
 }
 
-func (store *eventualEventStoreImpl) initializeLinked() {}
+func (store *eventualEventStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (store *eventualEventStoreImpl) NewEntity() *EventualEvent {
+	logtrace.LogWithFunctionName()
 	return &EventualEvent{}
 }
 
 func (store *eventualEventStoreImpl) FillEntity(entity *EventualEvent, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Type = bucket.GetStringOrError(FieldEventualEventType)
 	entity.Data = bucket.Get([]byte(FieldEventualEventData))
 }
 
 func (store *eventualEventStoreImpl) PersistEntity(entity *EventualEvent, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldEventualEventType, entity.Type)
 	ctx.Bucket.SetError(ctx.Bucket.Put([]byte(FieldEventualEventData), entity.Data))

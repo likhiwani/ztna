@@ -18,19 +18,22 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewAuthPolicyManager(env Env) *AuthPolicyManager {
+	logtrace.LogWithFunctionName()
 	manager := &AuthPolicyManager{
 		baseEntityManager: newBaseEntityManager[*AuthPolicy, *db.AuthPolicy](env, env.GetStores().AuthPolicy),
 	}
@@ -46,10 +49,12 @@ type AuthPolicyManager struct {
 }
 
 func (self *AuthPolicyManager) Create(entity *AuthPolicy, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*AuthPolicy](self, entity, ctx)
 }
 
 func (self *AuthPolicyManager) ApplyCreate(cmd *command.CreateEntityCommand[*AuthPolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	entity := cmd.Entity
 	if entity.Secondary.RequiredExtJwtSigner != nil {
 		if err := self.verifyExtJwt(*entity.Secondary.RequiredExtJwtSigner, "secondary.requiredExtJwtSigner"); err != nil {
@@ -68,18 +73,22 @@ func (self *AuthPolicyManager) ApplyCreate(cmd *command.CreateEntityCommand[*Aut
 }
 
 func (self *AuthPolicyManager) Update(entity *AuthPolicy, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*AuthPolicy](self, entity, checker, ctx)
 }
 
 func (self *AuthPolicyManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*AuthPolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *AuthPolicyManager) newModelEntity() *AuthPolicy {
+	logtrace.LogWithFunctionName()
 	return &AuthPolicy{}
 }
 
 func (self *AuthPolicyManager) verifyExtJwt(id string, fieldName string) error {
+	logtrace.LogWithFunctionName()
 	extJwtSigner, err := self.env.GetManagers().ExternalJwtSigner.Read(id)
 
 	if err != nil && !boltz.IsErrNotFoundErr(err) {
@@ -97,6 +106,7 @@ func (self *AuthPolicyManager) verifyExtJwt(id string, fieldName string) error {
 }
 
 func (self *AuthPolicyManager) Read(id string) (*AuthPolicy, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &AuthPolicy{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -105,6 +115,7 @@ func (self *AuthPolicyManager) Read(id string) (*AuthPolicy, error) {
 }
 
 func (self *AuthPolicyManager) Marshall(entity *AuthPolicy) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -144,6 +155,7 @@ func (self *AuthPolicyManager) Marshall(entity *AuthPolicy) ([]byte, error) {
 }
 
 func (self *AuthPolicyManager) Unmarshall(bytes []byte) (*AuthPolicy, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.AuthPolicy{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

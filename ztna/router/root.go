@@ -19,15 +19,18 @@ package router
 import (
 	"fmt"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/constants"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 func NewRouterCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	var routerCmd = &cobra.Command{
 		Use:   "router",
 		Short: "Ziti Router",
@@ -77,6 +80,7 @@ var cliAgentAddr string
 var cliAgentAlias string
 
 func Execute() {
+	logtrace.LogWithFunctionName()
 	if err := NewRouterCmd().Execute(); err != nil {
 		fmt.Printf("error: %s\n", err)
 	}

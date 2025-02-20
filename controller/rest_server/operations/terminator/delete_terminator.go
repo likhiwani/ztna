@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DeleteTerminatorHandlerFunc func(DeleteTerminatorParams) middleware.Respond
 
 // Handle executing the request and returning a response
 func (fn DeleteTerminatorHandlerFunc) Handle(params DeleteTerminatorParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DeleteTerminatorHandler interface {
 
 // NewDeleteTerminator creates a new http.Handler for the delete terminator operation
 func NewDeleteTerminator(ctx *middleware.Context, handler DeleteTerminatorHandler) *DeleteTerminator {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminator{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DeleteTerminator struct {
 }
 
 func (o *DeleteTerminator) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

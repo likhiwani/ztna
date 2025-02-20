@@ -3,72 +3,88 @@ package xlink_transport
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
-	"github.com/stretchr/testify/assert"
 	"net"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
+	"github.com/stretchr/testify/assert"
 )
 
 type testUnderlay struct {
 }
 
 func (t testUnderlay) Rx() (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	time.Sleep(time.Hour)
 	return nil, nil
 }
 
 func (t testUnderlay) Tx(*channel.Message) error {
+	logtrace.LogWithFunctionName()
 	time.Sleep(10 * time.Microsecond)
 	return nil
 }
 
 func (t testUnderlay) Id() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (t testUnderlay) LogicalName() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (t testUnderlay) ConnectionId() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (t testUnderlay) Certificates() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testUnderlay) Label() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (t testUnderlay) Close() error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testUnderlay) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (t testUnderlay) Headers() map[int32][]byte {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testUnderlay) SetWriteTimeout(time.Duration) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testUnderlay) SetWriteDeadline(time.Time) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testUnderlay) GetLocalAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (t testUnderlay) GetRemoteAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
@@ -77,10 +93,12 @@ type testUnderlayFactory struct {
 }
 
 func (t testUnderlayFactory) Create(time.Duration) (channel.Underlay, error) {
+	logtrace.LogWithFunctionName()
 	return t.underlay, nil
 }
 
 func Test_Throughput(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.SkipNow()
 
 	underlayFactory := testUnderlayFactory{

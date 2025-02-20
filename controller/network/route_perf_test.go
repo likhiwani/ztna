@@ -18,15 +18,17 @@ package network
 
 import (
 	"fmt"
-	"ztna-core/ztna/controller/model"
 	"math/rand"
 	"testing"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 )
 
 func TestShortestPathAgainstEstablished(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	pfxlog.GlobalInit(logrus.WarnLevel, pfxlog.DefaultOptions())
 
 	ctx := model.NewTestContext(t)
@@ -150,6 +152,7 @@ func TestShortestPathAgainstEstablished(t *testing.T) {
 }
 
 func BenchmarkShortestPathPerfWithRouterChanges(b *testing.B) {
+	logtrace.LogWithFunctionName()
 	b.StopTimer()
 	pfxlog.GlobalInit(logrus.WarnLevel, pfxlog.DefaultOptions())
 
@@ -242,6 +245,7 @@ type expectedRoute struct {
 }
 
 func BenchmarkShortestPathPerf(b *testing.B) {
+	logtrace.LogWithFunctionName()
 	b.StopTimer()
 	pfxlog.GlobalInit(logrus.WarnLevel, pfxlog.DefaultOptions())
 
@@ -314,6 +318,7 @@ func BenchmarkShortestPathPerf(b *testing.B) {
 }
 
 func BenchmarkMoreRealisticShortestPathPerf(b *testing.B) {
+	logtrace.LogWithFunctionName()
 	//b.StopTimer()
 	pfxlog.GlobalInit(logrus.WarnLevel, pfxlog.DefaultOptions())
 

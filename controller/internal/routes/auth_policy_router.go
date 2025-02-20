@@ -23,11 +23,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewAuthPolicyRouter()
 	env.AddRouter(r)
 }
@@ -37,12 +39,14 @@ type AuthPolicyRouter struct {
 }
 
 func NewAuthPolicyRouter() *AuthPolicyRouter {
+	logtrace.LogWithFunctionName()
 	return &AuthPolicyRouter{
 		BasePath: "/" + EntityNameAuthPolicy,
 	}
 }
 
 func (r *AuthPolicyRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.AuthPolicyDeleteAuthPolicyHandler = auth_policy.DeleteAuthPolicyHandlerFunc(func(params auth_policy.DeleteAuthPolicyParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -69,30 +73,36 @@ func (r *AuthPolicyRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *AuthPolicyRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.AuthPolicy](ae, rc, ae.Managers.AuthPolicy, MapAuthPolicyToRestEntity)
 }
 
 func (r *AuthPolicyRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.AuthPolicy](ae, rc, ae.Managers.AuthPolicy, MapAuthPolicyToRestEntity)
 }
 
 func (r *AuthPolicyRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params auth_policy.CreateAuthPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, AuthPolicyLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.AuthPolicy.Create, MapCreateAuthPolicyToModel(params.AuthPolicy), rc)
 	})
 }
 
 func (r *AuthPolicyRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.AuthPolicy)
 }
 
 func (r *AuthPolicyRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params auth_policy.UpdateAuthPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.AuthPolicy.Update(MapUpdateAuthPolicyToModel(params.ID, params.AuthPolicy), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *AuthPolicyRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params auth_policy.PatchAuthPolicyParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.AuthPolicy.Update(MapPatchAuthPolicyToModel(params.ID, params.AuthPolicy), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})

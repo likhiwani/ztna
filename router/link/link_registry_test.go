@@ -18,20 +18,22 @@ package link
 
 import (
 	"errors"
+	"testing"
+	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/controller/idgen"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xlink"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 type testEnv struct {
@@ -41,32 +43,39 @@ type testEnv struct {
 }
 
 func (self *testEnv) GetRouterId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return &identity.TokenId{
 		Token: "test",
 	}
 }
 
 func (self *testEnv) GetNetworkControllers() env.NetworkControllers {
+	logtrace.LogWithFunctionName()
 	return self.ctrls
 }
 
 func (self *testEnv) GetXlinkDialers() []xlink.Dialer {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testEnv) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.closeNotify
 }
 
 func (self *testEnv) GetLinkDialerPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testEnv) GetRateLimiterPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testEnv) GetMetricsRegistry() metrics.UsageRegistry {
+	logtrace.LogWithFunctionName()
 	return self.metricsRegistry
 }
 
@@ -77,90 +86,112 @@ type testLink struct {
 }
 
 func (self *testLink) Id() string {
+	logtrace.LogWithFunctionName()
 	return self.id
 }
 
 func (self *testLink) SendPayload(payload *xgress.Payload, timeout time.Duration, payloadType xgress.PayloadType) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) SendAcknowledgement(acknowledgement *xgress.Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) SendControl(control *xgress.Control) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) InspectCircuit(circuitDetail *inspect.CircuitInspectDetail) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) Key() string {
+	logtrace.LogWithFunctionName()
 	return self.key
 }
 
 func (self *testLink) Init(metricsRegistry metrics.Registry) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) Close() error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) CloseNotified() error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) DestinationId() string {
+	logtrace.LogWithFunctionName()
 	return self.destId
 }
 
 func (self *testLink) DestVersion() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) LinkProtocol() string {
+	logtrace.LogWithFunctionName()
 	return "tls"
 }
 
 func (self *testLink) DialAddress() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) CloseOnce(f func()) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) InspectLink() *inspect.LinkInspectDetail {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) GetAddresses() []*ctrl_pb.LinkConn {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) IsDialed() bool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) Iteration() uint32 {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) AreFaultsSent() bool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testLink) DuplicatesRejected() uint32 {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func newTestLink(reg *linkRegistryImpl) *testLink {
+	logtrace.LogWithFunctionName()
 	linkId := idgen.NewUUIDString()
 	destId := idgen.NewUUIDString()
 	linkKey := reg.GetLinkKey("", "tls", destId, "")
@@ -172,6 +203,7 @@ func newTestLink(reg *linkRegistryImpl) *testLink {
 }
 
 func newTestEnv() *testEnv {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	metricsRegistry := metrics.NewUsageRegistry("test", nil, closeNotify)
 
@@ -187,6 +219,7 @@ func newTestEnv() *testEnv {
 }
 
 func Test_gcLinkMetrics(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerEnv := newTestEnv()
 	defer close(routerEnv.closeNotify)
 

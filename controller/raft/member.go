@@ -19,8 +19,10 @@ package raft
 import (
 	"time"
 
-	"github.com/openziti/channel/v3/protobufs"
 	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3/protobufs"
 
 	"github.com/hashicorp/raft"
 	"github.com/pkg/errors"
@@ -37,6 +39,7 @@ type Member struct {
 }
 
 func (self *Controller) ListMembers() ([]*Member, error) {
+	logtrace.LogWithFunctionName()
 	configFuture := self.GetRaft().GetConfiguration()
 	if err := configFuture.Error(); err != nil {
 		return nil, errors.Wrap(err, "failed to get raft configuration")
@@ -91,6 +94,7 @@ func (self *Controller) ListMembers() ([]*Member, error) {
 }
 
 func (self *Controller) HandleAddPeerAsLeader(req *cmd_pb.AddPeerRequest) error {
+	logtrace.LogWithFunctionName()
 	r := self.GetRaft()
 
 	configFuture := r.GetConfiguration()
@@ -134,6 +138,7 @@ func (self *Controller) HandleAddPeerAsLeader(req *cmd_pb.AddPeerRequest) error 
 }
 
 func (self *Controller) HandleRemovePeerAsLeader(req *cmd_pb.RemovePeerRequest) error {
+	logtrace.LogWithFunctionName()
 	r := self.GetRaft()
 
 	configFuture := r.GetConfiguration()
@@ -151,6 +156,7 @@ func (self *Controller) HandleRemovePeerAsLeader(req *cmd_pb.RemovePeerRequest) 
 }
 
 func (self *Controller) HandleTransferLeadershipAsLeader(req *cmd_pb.TransferLeadershipRequest) error {
+	logtrace.LogWithFunctionName()
 	r := self.GetRaft()
 
 	var future raft.Future
@@ -187,6 +193,7 @@ func (self *Controller) HandleTransferLeadershipAsLeader(req *cmd_pb.TransferLea
 }
 
 func (self *Controller) HandleAddPeer(req *cmd_pb.AddPeerRequest) error {
+	logtrace.LogWithFunctionName()
 	if self.IsLeader() {
 		return self.HandleAddPeerAsLeader(req)
 	}
@@ -194,6 +201,7 @@ func (self *Controller) HandleAddPeer(req *cmd_pb.AddPeerRequest) error {
 }
 
 func (self *Controller) HandleRemovePeer(req *cmd_pb.RemovePeerRequest) error {
+	logtrace.LogWithFunctionName()
 	if self.IsLeader() {
 		return self.HandleRemovePeerAsLeader(req)
 	}
@@ -201,6 +209,7 @@ func (self *Controller) HandleRemovePeer(req *cmd_pb.RemovePeerRequest) error {
 }
 
 func (self *Controller) HandleTransferLeadership(req *cmd_pb.TransferLeadershipRequest) error {
+	logtrace.LogWithFunctionName()
 	if self.IsLeader() {
 		return self.HandleTransferLeadershipAsLeader(req)
 	}
@@ -208,6 +217,7 @@ func (self *Controller) HandleTransferLeadership(req *cmd_pb.TransferLeadershipR
 }
 
 func (self *Controller) forwardToLeader(req protobufs.TypedMessage) error {
+	logtrace.LogWithFunctionName()
 	leader := self.GetLeaderAddr()
 	if leader == "" {
 		return errors.New("no leader, unable to forward request")
@@ -217,6 +227,7 @@ func (self *Controller) forwardToLeader(req protobufs.TypedMessage) error {
 }
 
 func (self *Controller) ForwardToAddr(addr string, req protobufs.TypedMessage) error {
+	logtrace.LogWithFunctionName()
 	peer, err := self.GetMesh().GetOrConnectPeer(addr, 5*time.Second)
 	if err != nil {
 		return err

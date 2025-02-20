@@ -29,6 +29,7 @@ import (
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/xweb/v2"
 	"github.com/pkg/errors"
@@ -44,6 +45,7 @@ type ClientApiFactory struct {
 }
 
 func (factory ClientApiFactory) Validate(config *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	clientApiFound := false
 	edgeConfig := factory.appEnv.GetConfig().Edge
 	for _, webListener := range config.ServerConfigs {
@@ -81,16 +83,19 @@ func (factory ClientApiFactory) Validate(config *xweb.InstanceConfig) error {
 }
 
 func NewClientApiFactory(appEnv *env.AppEnv) *ClientApiFactory {
+	logtrace.LogWithFunctionName()
 	return &ClientApiFactory{
 		appEnv: appEnv,
 	}
 }
 
 func (factory ClientApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ClientApiBinding
 }
 
 func (factory ClientApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	clientApi, err := NewClientApiHandler(factory.appEnv, options)
 
 	if err != nil {
@@ -113,30 +118,37 @@ type ClientApiHandler struct {
 }
 
 func (clientApi ClientApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ClientApiBinding
 }
 
 func (clientApi ClientApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return clientApi.options
 }
 
 func (clientApi ClientApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return rest_client_api_client.DefaultBasePath
 }
 
 func (clientApi ClientApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, clientApi.RootPath()) || r.URL.Path == WellKnownEstCaCerts || r.URL.Path == VersionPath || r.URL.Path == RootPath
 }
 
 func (clientApi ClientApiHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	clientApi.handler.ServeHTTP(writer, request)
 }
 
 func (clientApi ClientApiHandler) IsDefault() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func NewClientApiHandler(ae *env.AppEnv, options map[interface{}]interface{}) (*ClientApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	clientApi := &ClientApiHandler{
 		options: options,
 		appEnv:  ae,
@@ -148,6 +160,7 @@ func NewClientApiHandler(ae *env.AppEnv, options map[interface{}]interface{}) (*
 }
 
 func (clientApi ClientApiHandler) newHandler(ae *env.AppEnv) http.Handler {
+	logtrace.LogWithFunctionName()
 	innerClientHandler := ae.ClientApi.Serve(nil)
 
 	handler := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {

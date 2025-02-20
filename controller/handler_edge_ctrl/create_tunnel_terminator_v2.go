@@ -18,18 +18,20 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"math"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"math"
-	"time"
 )
 
 type createTunnelTerminatorV2Handler struct {
@@ -38,20 +40,24 @@ type createTunnelTerminatorV2Handler struct {
 }
 
 func NewCreateTunnelTerminatorV2Handler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createTunnelTerminatorV2Handler{
 		baseRequestHandler: baseRequestHandler{ch: ch, appEnv: appEnv},
 	}
 }
 
 func (self *createTunnelTerminatorV2Handler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateTunnelTerminatorRequestV2Type)
 }
 
 func (self *createTunnelTerminatorV2Handler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.create.terminator.v2"
 }
 
 func (self *createTunnelTerminatorV2Handler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	startTime := time.Now()
 	req := &edge_ctrl_pb.CreateTunnelTerminatorRequestV2{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
@@ -70,6 +76,7 @@ func (self *createTunnelTerminatorV2Handler) HandleReceive(msg *channel.Message,
 }
 
 func (self *createTunnelTerminatorV2Handler) CreateTerminator(ctx *createTunnelTerminatorV2RequestContext, startTime time.Time) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.
 		WithField("routerId", self.ch.Id()).
 		WithField("terminatorId", ctx.req.Address)
@@ -161,6 +168,7 @@ type createTunnelTerminatorV2RequestContext struct {
 }
 
 func (self *createTunnelTerminatorV2RequestContext) validateExistingTerminator(terminator *model.Terminator, log *logrus.Entry) controllerError {
+	logtrace.LogWithFunctionName()
 	if terminator.Binding != common.TunnelBinding {
 		log.WithField("binding", common.TunnelBinding).
 			WithField("conflictingBinding", terminator.Binding).

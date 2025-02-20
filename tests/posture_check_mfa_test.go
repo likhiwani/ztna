@@ -26,11 +26,13 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 )
 
 func Test_PostureChecks_MFA(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

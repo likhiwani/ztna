@@ -23,14 +23,16 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/router"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/mitchellh/mapstructure"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/router"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 )
@@ -82,12 +84,14 @@ type ApiProxy struct {
 }
 
 func NewConfig(routerConfig *router.Config) *Config {
+	logtrace.LogWithFunctionName()
 	return &Config{
 		RouterConfig: routerConfig,
 	}
 }
 
 func (config *Config) LoadConfigFromMap(configMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	config.Enabled = false
 
@@ -193,6 +197,7 @@ func (config *Config) LoadConfigFromMap(configMap map[interface{}]interface{}) e
 }
 
 func (config *Config) loadApiProxy(edgeConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	config.ApiProxy = ApiProxy{}
 
 	if value, found := edgeConfigMap["apiProxy"]; found {
@@ -232,6 +237,7 @@ func (config *Config) loadApiProxy(edgeConfigMap map[interface{}]interface{}) er
 }
 
 func (config *Config) loadListener(rootConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	subArray := rootConfigMap["listeners"]
 
 	listeners, ok := subArray.([]interface{})
@@ -284,6 +290,7 @@ func (config *Config) loadListener(rootConfigMap map[interface{}]interface{}) er
 }
 
 func parseEdgeListenerOptions(index int, address string, edgeListenerMap map[interface{}]interface{}) (*edge_ctrl_pb.Listener, error) {
+	logtrace.LogWithFunctionName()
 	/*
 	   address: ws:0.0.0.0:443
 	   options:
@@ -346,6 +353,7 @@ func parseEdgeListenerOptions(index int, address string, edgeListenerMap map[int
 
 // loadCsr search for a root `csr` path or an `edge.csr` path for a CSR definition. The root path is preferred.
 func (config *Config) loadCsr(rootConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	csrI, ok := rootConfigMap["csr"]
 	csrPath := "csr"
 
@@ -396,6 +404,7 @@ func (config *Config) loadCsr(rootConfigMap map[interface{}]interface{}) error {
 
 // parseCsr parses the given map as a CSR definition. Error messages are based on the path provided.
 func (config *Config) parseCsr(csrMap map[interface{}]interface{}, path string) (*Csr, error) {
+	logtrace.LogWithFunctionName()
 	targetCsr := &Csr{}
 
 	if csrMap == nil {
@@ -426,6 +435,7 @@ func (config *Config) parseCsr(csrMap map[interface{}]interface{}, path string) 
 }
 
 func (config *Config) ensureIdentity(rootConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if config.RouterConfig == nil {
 		config.RouterConfig = &router.Config{}
 	}
@@ -458,6 +468,7 @@ func (config *Config) ensureIdentity(rootConfigMap map[interface{}]interface{}) 
 }
 
 func (config *Config) loadTransportConfig(rootConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if val, ok := rootConfigMap["transport"]; ok && val != nil {
 		config.Tcfg = make(transport.Configuration)
 		if tcfg, ok := val.(map[interface{}]interface{}); ok {
@@ -475,6 +486,7 @@ func (config *Config) loadTransportConfig(rootConfigMap map[interface{}]interfac
 // LoadConfigFromMapForEnrollment loads a minimal subset of the router configuration to allow for enrollment.
 // This process should be used to load edge enabled routers as well as non-edge routers.
 func (config *Config) LoadConfigFromMapForEnrollment(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	config.EnrollmentIdentityConfig, err = router.LoadIdentityConfigFromMap(cfgmap)
 

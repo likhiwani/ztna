@@ -16,11 +16,14 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequireAll struct {
 	required []string
 }
 
 func NewRequireAll(perms ...string) *RequireAll {
+	logtrace.LogWithFunctionName()
 	ra := &RequireAll{
 		required: perms,
 	}
@@ -28,6 +31,7 @@ func NewRequireAll(perms ...string) *RequireAll {
 }
 
 func (ra *RequireAll) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	ps := map[string]bool{}
 
 	if len(identityPerms) < len(ra.required) {

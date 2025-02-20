@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/strfmt"
@@ -47,16 +48,19 @@ type DatabaseSnapshotCreate struct {
 
 // Validate validates this database snapshot create
 func (m *DatabaseSnapshotCreate) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // ContextValidate validates this database snapshot create based on context it is used
 func (m *DatabaseSnapshotCreate) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *DatabaseSnapshotCreate) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -65,6 +69,7 @@ func (m *DatabaseSnapshotCreate) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *DatabaseSnapshotCreate) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res DatabaseSnapshotCreate
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

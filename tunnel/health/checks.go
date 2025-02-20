@@ -3,16 +3,18 @@ package health
 import (
 	"bytes"
 	"fmt"
-	health "github.com/AppsFlyer/go-sundheit"
-	"github.com/AppsFlyer/go-sundheit/checks"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/pkg/errors"
 	"io"
 	"math"
 	"strconv"
 	"strings"
 	"time"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
+	health "github.com/AppsFlyer/go-sundheit"
+	"github.com/AppsFlyer/go-sundheit/checks"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/pkg/errors"
 )
 
 type CheckDefinition interface {
@@ -32,11 +34,13 @@ type ActionDefinition struct {
 }
 
 func (self *ActionDefinition) Description() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("action trigger=%v consectiveEvents=%v duration=%v action=%v",
 		self.Trigger, self.ConsecutiveEvents, self.Duration, self.Action)
 }
 
 func (self *ActionDefinition) CreateAction() (Action, error) {
+	logtrace.LogWithFunctionName()
 	result := &actionImpl{
 		ActionDefinition: *self,
 	}
@@ -109,6 +113,7 @@ type actionImpl struct {
 }
 
 func (self *actionImpl) Matches(result *health.Result) bool {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	logger.WithField("action", self.Description()).Debug("evaluating")
 
@@ -157,6 +162,7 @@ func (self *actionImpl) Matches(result *health.Result) bool {
 }
 
 func (self *actionImpl) Invoke(state *ServiceState) {
+	logtrace.LogWithFunctionName()
 	self.actionImpl(state)
 }
 
@@ -167,14 +173,17 @@ type BaseCheckDefinition struct {
 }
 
 func (self *BaseCheckDefinition) GetInterval() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.Interval
 }
 
 func (self *BaseCheckDefinition) GetTimeout() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.Timeout
 }
 
 func (self *BaseCheckDefinition) CreateActions() ([]Action, error) {
+	logtrace.LogWithFunctionName()
 	var result []Action
 	for _, actionDefinition := range self.Actions {
 		action, err := actionDefinition.CreateAction()
@@ -192,14 +201,17 @@ type PortCheckDefinition struct {
 }
 
 func (self *PortCheckDefinition) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("port-check address=%v, interval=%v, timeout=%v", self.Address, self.Interval, self.Timeout)
 }
 
 func (self *PortCheckDefinition) GetType() string {
+	logtrace.LogWithFunctionName()
 	return "port"
 }
 
 func (self *PortCheckDefinition) CreateCheck(name string) (Check, error) {
+	logtrace.LogWithFunctionName()
 	return checks.NewPingCheck(name, checks.NewDialPinger("tcp", self.Address))
 }
 
@@ -213,14 +225,17 @@ type HttpCheckDefinition struct {
 }
 
 func (self *HttpCheckDefinition) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("http-check url=%v, interval=%v, timeout=%v, method=%v, status=%v", self.Url, self.Interval, self.Timeout, self.Method, self.ExpectStatus)
 }
 
 func (self *HttpCheckDefinition) GetType() string {
+	logtrace.LogWithFunctionName()
 	return "http"
 }
 
 func (self *HttpCheckDefinition) CreateCheck(name string) (Check, error) {
+	logtrace.LogWithFunctionName()
 	if self.Method == "" {
 		self.Method = "GET"
 	}

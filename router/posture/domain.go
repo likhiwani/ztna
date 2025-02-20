@@ -2,6 +2,7 @@ package posture
 
 import (
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 )
 
 type DomainCheck struct {
@@ -10,6 +11,7 @@ type DomainCheck struct {
 }
 
 func (m *DomainCheck) Evaluate(state *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	if state == nil {
 		return &CheckError{
 			Id:    m.Id,

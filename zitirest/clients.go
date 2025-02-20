@@ -28,6 +28,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
 
 	"ztna-core/edge-api/rest_management_api_client"
 	"ztna-core/edge-api/rest_management_api_client/authentication"
@@ -57,6 +58,7 @@ type Clients struct {
 }
 
 func (self *Clients) NewTlsClientConfig() *tls.Config {
+	logtrace.LogWithFunctionName()
 	rootCaPool := x509.NewCertPool()
 	rootCaPool.AppendCertsFromPEM(self.wellKnownCerts)
 
@@ -66,6 +68,7 @@ func (self *Clients) NewTlsClientConfig() *tls.Config {
 }
 
 func (self *Clients) Authenticate(user, password string) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancelF()
 
@@ -91,6 +94,7 @@ func (self *Clients) Authenticate(user, password string) error {
 }
 
 func (self *Clients) SetSessionToken(token string) {
+	logtrace.LogWithFunctionName()
 	self.token = token
 	self.FabricRuntime.DefaultAuthentication = &util.EdgeManagementAuth{
 		Token: self.token,
@@ -103,6 +107,7 @@ func (self *Clients) SetSessionToken(token string) {
 }
 
 func (self *Clients) NewWsMgmtChannel(bindHandler channel.BindHandler) (channel.Channel, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	baseUrl := self.host + "/" + string(util.FabricAPI)
@@ -139,6 +144,7 @@ func (self *Clients) NewWsMgmtChannel(bindHandler channel.BindHandler) (channel.
 }
 
 func (self *Clients) LoadWellKnownCerts() error {
+	logtrace.LogWithFunctionName()
 	if !strings.HasPrefix(self.host, "http") {
 		self.host = "https://" + self.host
 	}
@@ -162,6 +168,7 @@ func (self *Clients) LoadWellKnownCerts() error {
 }
 
 func (self *Clients) newRestClientTransport() *http.Client {
+	logtrace.LogWithFunctionName()
 	httpClientTransport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
@@ -185,6 +192,7 @@ func (self *Clients) newRestClientTransport() *http.Client {
 }
 
 func NewManagementClients(host string) (*Clients, error) {
+	logtrace.LogWithFunctionName()
 	if !strings.HasPrefix(host, "http") {
 		host = "https://" + host
 	}

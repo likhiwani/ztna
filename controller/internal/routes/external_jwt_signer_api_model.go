@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/foundation/v2/stringz"
@@ -32,10 +33,12 @@ const EntityNameExternalJwtSigner = "external-jwt-signers"
 var ExternalJwtSignerLinkFactory = NewBasicLinkFactory(EntityNameExternalJwtSigner)
 
 func MapExternalJwtSignerToRestEntity(_ *env.AppEnv, _ *response.RequestContext, externalJwtSigner *model.ExternalJwtSigner) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapExternalJwtSignerToRestModel(externalJwtSigner), nil
 }
 
 func MapClientExtJwtSignersToRestEntity(_ *env.AppEnv, _ *response.RequestContext, signers []*model.ExternalJwtSigner) ([]*rest_model.ClientExternalJWTSignerDetail, error) {
+	logtrace.LogWithFunctionName()
 	var ret []*rest_model.ClientExternalJWTSignerDetail
 
 	for _, signer := range signers {
@@ -46,6 +49,7 @@ func MapClientExtJwtSignersToRestEntity(_ *env.AppEnv, _ *response.RequestContex
 }
 
 func MapClientExternalJwtSignerToRestModel(externalJwtSigner *model.ExternalJwtSigner) *rest_model.ClientExternalJWTSignerDetail {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.ClientExternalJWTSignerDetail{
 		BaseEntity:      BaseEntityToRestModel(externalJwtSigner, ExternalJwtSignerLinkFactory),
 		ExternalAuthURL: externalJwtSigner.ExternalAuthUrl,
@@ -58,6 +62,7 @@ func MapClientExternalJwtSignerToRestModel(externalJwtSigner *model.ExternalJwtS
 }
 
 func MapExternalJwtSignerToRestModel(externalJwtSigner *model.ExternalJwtSigner) *rest_model.ExternalJWTSignerDetail {
+	logtrace.LogWithFunctionName()
 	notAfter := strfmt.DateTime(externalJwtSigner.NotAfter)
 	notBefore := strfmt.DateTime(externalJwtSigner.NotBefore)
 
@@ -89,6 +94,7 @@ func MapExternalJwtSignerToRestModel(externalJwtSigner *model.ExternalJwtSigner)
 }
 
 func MapCreateExternalJwtSignerToModel(signer *rest_model.ExternalJWTSignerCreate) *model.ExternalJwtSigner {
+	logtrace.LogWithFunctionName()
 	ret := &model.ExternalJwtSigner{
 		BaseEntity:      models.BaseEntity{},
 		Name:            *signer.Name,
@@ -113,6 +119,7 @@ func MapCreateExternalJwtSignerToModel(signer *rest_model.ExternalJWTSignerCreat
 }
 
 func MapUpdateExternalJwtSignerToModel(id string, signer *rest_model.ExternalJWTSignerUpdate) *model.ExternalJwtSigner {
+	logtrace.LogWithFunctionName()
 	var tags map[string]interface{}
 	if signer.Tags != nil && signer.Tags.SubTags != nil {
 		tags = signer.Tags.SubTags
@@ -146,6 +153,7 @@ func MapUpdateExternalJwtSignerToModel(id string, signer *rest_model.ExternalJWT
 }
 
 func MapPatchExternalJwtSignerToModel(id string, signer *rest_model.ExternalJWTSignerPatch) *model.ExternalJwtSigner {
+	logtrace.LogWithFunctionName()
 	var tags map[string]interface{}
 	if signer.Tags != nil && signer.Tags.SubTags != nil {
 		tags = signer.Tags.SubTags

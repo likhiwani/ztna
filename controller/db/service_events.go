@@ -2,6 +2,8 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/cowslice"
 )
@@ -9,6 +11,7 @@ import (
 type ServiceEventType byte
 
 func (self ServiceEventType) String() string {
+	logtrace.LogWithFunctionName()
 	if self == ServiceDialAccessGained {
 		return "dial-gained"
 	}
@@ -41,6 +44,7 @@ var ServiceEvents = &ServiceEventsRegistry{
 }
 
 func init() {
+	logtrace.LogWithFunctionName()
 	ServiceEvents.AddServiceEventHandler(func(event *ServiceEvent) {
 		pfxlog.Logger().Tracef("identity %v -> service %v %v", event.IdentityId, event.ServiceId, event.Type.String())
 	})
@@ -53,6 +57,7 @@ type ServiceEvent struct {
 }
 
 func (self *ServiceEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("service event [identity %v -> service %v %v]", self.IdentityId, self.ServiceId, self.Type.String())
 }
 
@@ -63,24 +68,29 @@ type ServiceEventsRegistry struct {
 }
 
 func (self *ServiceEventsRegistry) AddServiceEventHandler(listener ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
 	cowslice.Append(self.handlers, listener)
 }
 
 func (self *ServiceEventsRegistry) RemoveServiceEventHandler(listener ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
 	cowslice.Delete(self.handlers, listener)
 }
 
 func (self *ServiceEventsRegistry) dispatchEventsAsync(events []*ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	go self.dispatchEvents(events)
 }
 
 func (self *ServiceEventsRegistry) dispatchEvents(events []*ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	for _, event := range events {
 		self.dispatchEvent(event)
 	}
 }
 
 func (self *ServiceEventsRegistry) dispatchEvent(event *ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	handlers := self.handlers.Value().([]ServiceEventHandler)
 	for _, handler := range handlers {
 		handler(event)

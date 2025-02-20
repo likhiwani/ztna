@@ -16,11 +16,14 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequireOne struct {
 	required map[string]bool
 }
 
 func NewRequireOne(perms ...string) *RequireOne {
+	logtrace.LogWithFunctionName()
 	ro := &RequireOne{}
 	ro.required = map[string]bool{}
 
@@ -32,6 +35,7 @@ func NewRequireOne(perms ...string) *RequireOne {
 }
 
 func (ro *RequireOne) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	for _, p := range identityPerms {
 
 		//short cut admins

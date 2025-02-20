@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type PatchServiceOK struct {
 
 // NewPatchServiceOK creates PatchServiceOK with default headers values
 func NewPatchServiceOK() *PatchServiceOK {
+    logtrace.LogWithFunctionName()
 
 	return &PatchServiceOK{}
 }
 
 // WithPayload adds the payload to the patch service o k response
 func (o *PatchServiceOK) WithPayload(payload *rest_model.Empty) *PatchServiceOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch service o k response
 func (o *PatchServiceOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchServiceOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type PatchServiceBadRequest struct {
 
 // NewPatchServiceBadRequest creates PatchServiceBadRequest with default headers values
 func NewPatchServiceBadRequest() *PatchServiceBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &PatchServiceBadRequest{}
 }
 
 // WithPayload adds the payload to the patch service bad request response
 func (o *PatchServiceBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchServiceBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch service bad request response
 func (o *PatchServiceBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchServiceBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type PatchServiceUnauthorized struct {
 
 // NewPatchServiceUnauthorized creates PatchServiceUnauthorized with default headers values
 func NewPatchServiceUnauthorized() *PatchServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &PatchServiceUnauthorized{}
 }
 
 // WithPayload adds the payload to the patch service unauthorized response
 func (o *PatchServiceUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch service unauthorized response
 func (o *PatchServiceUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchServiceUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type PatchServiceNotFound struct {
 
 // NewPatchServiceNotFound creates PatchServiceNotFound with default headers values
 func NewPatchServiceNotFound() *PatchServiceNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &PatchServiceNotFound{}
 }
 
 // WithPayload adds the payload to the patch service not found response
 func (o *PatchServiceNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchServiceNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch service not found response
 func (o *PatchServiceNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchServiceNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type PatchServiceTooManyRequests struct {
 
 // NewPatchServiceTooManyRequests creates PatchServiceTooManyRequests with default headers values
 func NewPatchServiceTooManyRequests() *PatchServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &PatchServiceTooManyRequests{}
 }
 
 // WithPayload adds the payload to the patch service too many requests response
 func (o *PatchServiceTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch service too many requests response
 func (o *PatchServiceTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchServiceTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

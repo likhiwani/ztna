@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/cli"
 	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"ztna-core/ztna/ztna/constants"
@@ -49,14 +50,17 @@ type ZrokFrontendType struct {
 }
 
 func (self *ZrokFrontendType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "zrok-frontend"
 }
 
 func (self *ZrokFrontendType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ZrokFrontendType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 	if self.ZrokCtrlSelector == "" {
 		self.ZrokCtrlSelector = "zrokCtrl"
@@ -64,6 +68,7 @@ func (self *ZrokFrontendType) InitType(*model.Component) {
 }
 
 func (self *ZrokFrontendType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":       "zrok-frontend",
 		"config_source": self.ConfigSource,
@@ -74,6 +79,7 @@ func (self *ZrokFrontendType) Dump() any {
 }
 
 func (self *ZrokFrontendType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	configSource := self.ConfigSource
 	if configSource == "" {
 		configSource = "zrok-frontend.yml.tmpl"
@@ -89,6 +95,7 @@ func (self *ZrokFrontendType) StageFiles(r model.Run, c *model.Component) error 
 }
 
 func (self *ZrokFrontendType) getConfigName(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	configName := self.ConfigName
 	if configName == "" {
 		configName = c.Id + ".yml"
@@ -97,6 +104,7 @@ func (self *ZrokFrontendType) getConfigName(c *model.Component) string {
 }
 
 func (self *ZrokFrontendType) getProcessFilter() func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, "zrok") &&
 			strings.Contains(s, " access public")
@@ -104,6 +112,7 @@ func (self *ZrokFrontendType) getProcessFilter() func(string) bool {
 }
 
 func (self *ZrokFrontendType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter())
 	if err != nil {
 		return false, err
@@ -112,6 +121,7 @@ func (self *ZrokFrontendType) IsRunning(_ model.Run, c *model.Component) (bool, 
 }
 
 func (self *ZrokFrontendType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := getBinaryPath(c, constants.ZROK, self.Version)
@@ -137,10 +147,12 @@ func (self *ZrokFrontendType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *ZrokFrontendType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter())
 }
 
 func (self *ZrokFrontendType) Init(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	id, err := cli.GetEntityId(run.GetModel(), "identities", "public")
 	if err != nil {
 		return err

@@ -26,12 +26,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/foundation/v2/stringz"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewCurrentIdentityRouter()
 	env.AddRouter(r)
 }
@@ -41,12 +43,14 @@ type CurrentIdentityRouter struct {
 }
 
 func NewCurrentIdentityRouter() *CurrentIdentityRouter {
+	logtrace.LogWithFunctionName()
 	return &CurrentIdentityRouter{
 		BasePath: "/" + EntityNameCurrentIdentity,
 	}
 }
 
 func (r *CurrentIdentityRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//Client
 	ae.ClientApi.CurrentIdentityGetCurrentIdentityHandler = clientCurrentIdentity.GetCurrentIdentityHandlerFunc(func(params clientCurrentIdentity.GetCurrentIdentityParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(detailCurrentUser, params.HTTPRequest, "", "", permissions.IsAuthenticated())
@@ -137,6 +141,7 @@ func (r *CurrentIdentityRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *CurrentIdentityRouter) verifyMfa(ae *env.AppEnv, rc *response.RequestContext, body *rest_model.MfaCode) {
+	logtrace.LogWithFunctionName()
 	changeCtx := rc.NewChangeContext()
 	err := ae.Managers.Mfa.CompleteTotpEnrollment(rc.Identity.Id, *body.Code, changeCtx)
 
@@ -159,6 +164,7 @@ func (r *CurrentIdentityRouter) verifyMfa(ae *env.AppEnv, rc *response.RequestCo
 }
 
 func (r *CurrentIdentityRouter) createMfa(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, err := ae.Managers.Mfa.CreateForIdentity(rc.Identity, rc.NewChangeContext())
 
 	if err != nil {
@@ -170,6 +176,7 @@ func (r *CurrentIdentityRouter) createMfa(ae *env.AppEnv, rc *response.RequestCo
 }
 
 func (r *CurrentIdentityRouter) detailMfa(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	mfa, err := ae.Managers.Mfa.ReadOneByIdentityId(rc.Identity.Id)
 
 	if err != nil {
@@ -189,6 +196,7 @@ func (r *CurrentIdentityRouter) detailMfa(ae *env.AppEnv, rc *response.RequestCo
 }
 
 func (r *CurrentIdentityRouter) removeMfa(ae *env.AppEnv, rc *response.RequestContext, requestCode *string) {
+	logtrace.LogWithFunctionName()
 	code := stringz.OrEmpty(requestCode)
 
 	err := ae.Managers.Mfa.DeleteForIdentity(rc.Identity, code, rc.NewChangeContext())
@@ -204,6 +212,7 @@ func (r *CurrentIdentityRouter) removeMfa(ae *env.AppEnv, rc *response.RequestCo
 }
 
 func (r *CurrentIdentityRouter) detailMfaQrCode(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	mfa, err := ae.Managers.Mfa.ReadOneByIdentityId(rc.Identity.Id)
 
 	if err != nil {
@@ -234,6 +243,7 @@ func (r *CurrentIdentityRouter) detailMfaQrCode(ae *env.AppEnv, rc *response.Req
 }
 
 func (r *CurrentIdentityRouter) createMfaRecoveryCodes(ae *env.AppEnv, rc *response.RequestContext, body *rest_model.MfaCode) {
+	logtrace.LogWithFunctionName()
 	mfa, err := ae.Managers.Mfa.ReadOneByIdentityId(rc.Identity.Id)
 
 	if err != nil {
@@ -268,6 +278,7 @@ func (r *CurrentIdentityRouter) createMfaRecoveryCodes(ae *env.AppEnv, rc *respo
 }
 
 func (r *CurrentIdentityRouter) detailMfaRecoveryCodes(ae *env.AppEnv, rc *response.RequestContext, mfaValidationBody *rest_model.MfaCode, mfaCodeHeader *string) {
+	logtrace.LogWithFunctionName()
 	mfa, err := ae.Managers.Mfa.ReadOneByIdentityId(rc.Identity.Id)
 
 	if err != nil {
@@ -314,6 +325,7 @@ func (r *CurrentIdentityRouter) detailMfaRecoveryCodes(ae *env.AppEnv, rc *respo
 }
 
 func (r *CurrentIdentityRouter) listEdgeRouters(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	if rc.Identity.IsAdmin {
 		filterTemplate := `isVerified = true`
 		rc.SetEntityId(rc.Identity.Id)
@@ -326,6 +338,7 @@ func (r *CurrentIdentityRouter) listEdgeRouters(ae *env.AppEnv, rc *response.Req
 }
 
 func detailCurrentUser(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	result, err := MapIdentityToRestModel(ae, rc.Identity)
 
 	if err != nil {

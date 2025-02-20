@@ -18,6 +18,8 @@ package routes
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
@@ -37,6 +39,7 @@ type PublicQueryOptions struct {
 }
 
 func (qo *PublicQueryOptions) String() string {
+	logtrace.LogWithFunctionName()
 	if qo == nil {
 		return "nil"
 	}
@@ -44,6 +47,7 @@ func (qo *PublicQueryOptions) String() string {
 }
 
 func (qo *PublicQueryOptions) getFullQuery(store boltz.Store) (ast.Query, error) {
+	logtrace.LogWithFunctionName()
 	if qo.Predicate == "" {
 		qo.Predicate = "true"
 	}
@@ -102,6 +106,7 @@ type Paging struct {
 }
 
 func (paging *Paging) String() string {
+	logtrace.LogWithFunctionName()
 	if paging == nil {
 		return "nil"
 	}

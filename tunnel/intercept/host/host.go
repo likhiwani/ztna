@@ -17,27 +17,33 @@
 package host
 
 import (
-	"github.com/michaelquigley/pfxlog"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"
 	"ztna-core/ztna/tunnel/intercept"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
 )
 
 type interceptor struct{}
 
 func New() intercept.Interceptor {
+	logtrace.LogWithFunctionName()
 	return &interceptor{}
 }
 
 func (p interceptor) Intercept(*entities.Service, dns.Resolver, intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("can not intercept services in host mode")
 }
 
 func (p interceptor) Stop() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("stopping host interceptor")
 }
 
 func (p interceptor) StopIntercepting(string, intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("StopIntercepting not implemented by host interceptor")
 }

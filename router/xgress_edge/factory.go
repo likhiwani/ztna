@@ -18,15 +18,12 @@ package xgress_edge
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/metrics"
+	"strings"
+	"time"
 	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/handler_edge_ctrl"
@@ -34,9 +31,14 @@ import (
 	"ztna-core/ztna/router/internal/edgerouter"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/metrics"
+	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
-	"strings"
-	"time"
 )
 
 type reconnectionHandler interface {
@@ -59,6 +61,7 @@ type Factory struct {
 }
 
 func (factory *Factory) Inspect(key string, timeout time.Duration) any {
+	logtrace.LogWithFunctionName()
 	if key == inspect.RouterIdentityConnectionStatusesKey {
 		return factory.connectionTracker.Inspect(key, timeout)
 	}
@@ -66,14 +69,17 @@ func (factory *Factory) Inspect(key string, timeout time.Duration) any {
 }
 
 func (factory *Factory) GetNetworkControllers() env.NetworkControllers {
+	logtrace.LogWithFunctionName()
 	return factory.ctrls
 }
 
 func (factory *Factory) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return factory.enabled
 }
 
 func (factory *Factory) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddTypedReceiveHandler(handler_edge_ctrl.NewHelloHandler(factory.stateManager, factory.edgeRouterConfig.EdgeListeners))
 
 	binding.AddTypedReceiveHandler(handler_edge_ctrl.NewExtendEnrollmentCertsHandler(factory.env.GetRouterId(), func() {
@@ -88,6 +94,7 @@ func (factory *Factory) BindChannel(binding channel.Binding) error {
 }
 
 func (factory *Factory) NotifyOfReconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("control channel reconnected, re-establishing hosted services")
 	factory.hostedServices.HandleReconnect()
 
@@ -99,10 +106,12 @@ func (factory *Factory) NotifyOfReconnect(ch channel.Channel) {
 }
 
 func (factory *Factory) addReconnectionHandler(h reconnectionHandler) {
+	logtrace.LogWithFunctionName()
 	factory.reconnectionHandlers.Append(h)
 }
 
 func (factory *Factory) Run(env env.RouterEnv) error {
+	logtrace.LogWithFunctionName()
 	factory.stateManager.StartHeartbeat(env, factory.edgeRouterConfig.HeartbeatIntervalSeconds, env.GetCloseNotify())
 
 	factory.stateManager.StartRouterModelSave(factory.edgeRouterConfig.Db, factory.edgeRouterConfig.DbSaveInterval)
@@ -119,6 +128,7 @@ func (factory *Factory) Run(env env.RouterEnv) error {
 }
 
 func (factory *Factory) LoadConfig(configMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	_, factory.enabled = configMap["edge"]
 
 	if !factory.enabled {
@@ -145,6 +155,7 @@ func (factory *Factory) LoadConfig(configMap map[interface{}]interface{}) error 
 
 // NewFactory constructs a new Edge Xgress Factory instance
 func NewFactory(routerConfig *router.Config, env env.RouterEnv, stateManager state.Manager) *Factory {
+	logtrace.LogWithFunctionName()
 	factory := &Factory{
 		ctrls:             env.GetNetworkControllers(),
 		hostedServices:    newHostedServicesRegistry(env, stateManager),
@@ -161,6 +172,7 @@ func NewFactory(routerConfig *router.Config, env env.RouterEnv, stateManager sta
 
 // CreateListener creates a new Edge Xgress listener
 func (factory *Factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	if !factory.enabled {
 		return nil, errors.New("edge listener enabled but required configuration section [edge] is missing")
 	}
@@ -189,6 +201,7 @@ func (factory *Factory) CreateListener(optionsData xgress.OptionsData) (xgress.L
 
 // CreateDialer creates a new Edge Xgress dialer
 func (factory *Factory) CreateDialer(optionsData xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	if !factory.enabled {
 		return nil, errors.New("edge listener enabled but required configuration section [edge] is missing")
 	}
@@ -213,6 +226,7 @@ type Options struct {
 }
 
 func (options *Options) ToLoggableString() string {
+	logtrace.LogWithFunctionName()
 	buf := strings.Builder{}
 	buf.WriteString(fmt.Sprintf("mtu=%v\n", options.Mtu))
 	buf.WriteString(fmt.Sprintf("randomDrops=%v\n", options.RandomDrops))
@@ -246,6 +260,7 @@ func (options *Options) ToLoggableString() string {
 }
 
 func (options *Options) load(data xgress.OptionsData) error {
+	logtrace.LogWithFunctionName()
 	o, err := xgress.LoadOptions(data)
 	if err != nil {
 		return errors.Wrap(err, "error loading options")

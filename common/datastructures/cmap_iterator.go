@@ -17,11 +17,14 @@
 package datastructures
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/objectz"
 	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 func IterateCMap[T any](m cmap.ConcurrentMap[string, T]) objectz.ObjectIterator[T] {
+	logtrace.LogWithFunctionName()
 	iterator := &tupleChannelIterator[T]{
 		c:     m.IterBuffered(),
 		valid: true,
@@ -37,10 +40,12 @@ type tupleChannelIterator[T any] struct {
 }
 
 func (self *tupleChannelIterator[T]) IsValid() bool {
+	logtrace.LogWithFunctionName()
 	return self.valid
 }
 
 func (self *tupleChannelIterator[T]) Next() {
+	logtrace.LogWithFunctionName()
 	next, ok := <-self.c
 	if !ok {
 		self.valid = false
@@ -50,5 +55,6 @@ func (self *tupleChannelIterator[T]) Next() {
 }
 
 func (self *tupleChannelIterator[T]) Current() T {
+	logtrace.LogWithFunctionName()
 	return self.current
 }

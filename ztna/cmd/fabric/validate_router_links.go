@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"time"
@@ -40,6 +41,7 @@ type validateRouterLinksAction struct {
 }
 
 func NewValidateRouterLinksCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateRouterLinksAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -61,6 +63,7 @@ func NewValidateRouterLinksCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *validateRouterLinksAction) validateRouterLinks(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	self.eventNotify = make(chan *mgmt_pb.RouterLinkDetails, 1)
 
@@ -149,6 +152,7 @@ func (self *validateRouterLinksAction) validateRouterLinks(_ *cobra.Command, arg
 }
 
 func (self *validateRouterLinksAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.RouterLinkDetails{}
 	if err := proto.Unmarshal(msg.Body, detail); err != nil {
 		pfxlog.Logger().WithError(err).Error("unable to unmarshal router link details")

@@ -17,9 +17,11 @@
 package db
 
 import (
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
 )
 
 const (
@@ -40,6 +42,7 @@ type Mfa struct {
 }
 
 func NewMfa(identityId string) *Mfa {
+	logtrace.LogWithFunctionName()
 	return &Mfa{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		IdentityId:    identityId,
@@ -49,6 +52,7 @@ func NewMfa(identityId string) *Mfa {
 }
 
 func (entity *Mfa) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeMfas
 }
 
@@ -59,6 +63,7 @@ type MfaStore interface {
 }
 
 func newMfaStore(stores *stores) *MfaStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &MfaStoreImpl{}
 	store.baseStore = newBaseStore[*Mfa](stores, store)
 	store.InitImpl(store)
@@ -75,19 +80,24 @@ type MfaStoreImpl struct {
 }
 
 func (store *MfaStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.symbolIdentity = store.AddFkSymbol(FieldMfaIdentity, store.stores.identity)
 
 	store.AddFkConstraint(store.symbolIdentity, false, boltz.CascadeDelete)
 }
 
-func (store *MfaStoreImpl) initializeLinked() {}
+func (store *MfaStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (store *MfaStoreImpl) NewEntity() *Mfa {
+	logtrace.LogWithFunctionName()
 	return &Mfa{}
 }
 
 func (store *MfaStoreImpl) FillEntity(entity *Mfa, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.IdentityId = bucket.GetStringOrError(FieldMfaIdentity)
 	entity.IsVerified = bucket.GetBoolWithDefault(FieldMfaIsVerified, false)
@@ -97,6 +107,7 @@ func (store *MfaStoreImpl) FillEntity(entity *Mfa, bucket *boltz.TypedBucket) {
 }
 
 func (store *MfaStoreImpl) PersistEntity(entity *Mfa, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldMfaIdentity, entity.IdentityId)
 	ctx.SetBool(FieldMfaIsVerified, entity.IsVerified)

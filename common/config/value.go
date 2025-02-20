@@ -17,8 +17,10 @@
 package config
 
 import (
-	"github.com/openziti/foundation/v2/concurrenz"
 	"sync"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/concurrenz"
 )
 
 type Listener[T any] interface {
@@ -28,10 +30,12 @@ type Listener[T any] interface {
 type ListenerFunc[T any] func(init bool, old T, new T)
 
 func (f ListenerFunc[T]) NotifyChanged(init bool, old T, new T) {
+	logtrace.LogWithFunctionName()
 	f(init, old, new)
 }
 
 func NewConfigValue[T comparable]() *Value[T] {
+	logtrace.LogWithFunctionName()
 	return &Value[T]{
 		notifyInitialized: make(chan struct{}),
 	}
@@ -46,6 +50,7 @@ type Value[T comparable] struct {
 }
 
 func (self *Value[T]) Store(value T) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -65,10 +70,12 @@ func (self *Value[T]) Store(value T) {
 }
 
 func (self *Value[T]) Load() T {
+	logtrace.LogWithFunctionName()
 	return self.value.Load()
 }
 
 func (self *Value[T]) AddListener(listener Listener[T]) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -80,6 +87,7 @@ func (self *Value[T]) AddListener(listener Listener[T]) {
 }
 
 func (self *Value[T]) RemoveListener(listener Listener[T]) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -87,5 +95,6 @@ func (self *Value[T]) RemoveListener(listener Listener[T]) {
 }
 
 func (self *Value[T]) GetInitNotifyChannel() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.notifyInitialized
 }

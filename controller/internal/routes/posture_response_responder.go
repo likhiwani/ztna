@@ -21,6 +21,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 )
 
 type PostureResponseResponder struct {
@@ -30,6 +31,7 @@ type PostureResponseResponder struct {
 }
 
 func (responder *PostureResponseResponder) RespondWithCreatedId(id string, _ rest_model.Link) {
+	logtrace.LogWithFunctionName()
 	data := &rest_model.PostureResponse{
 		Services: responder.services,
 	}

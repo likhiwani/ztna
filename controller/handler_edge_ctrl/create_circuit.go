@@ -18,13 +18,15 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -33,6 +35,7 @@ type createCircuitHandler struct {
 }
 
 func NewCreateCircuitHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	handler := &createCircuitHandler{
 		baseRequestHandler: baseRequestHandler{
 			ch:     ch,
@@ -46,6 +49,7 @@ func NewCreateCircuitHandler(appEnv *env.AppEnv, ch channel.Channel) channel.Typ
 }
 
 func NewCreateCircuitV2Handler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	handler := &createCircuitHandler{
 		baseRequestHandler: baseRequestHandler{
 			ch:     ch,
@@ -59,10 +63,12 @@ func NewCreateCircuitV2Handler(appEnv *env.AppEnv, ch channel.Channel) channel.T
 }
 
 func (self *createCircuitHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "create.circuit"
 }
 
 func (self *createCircuitHandler) HandleReceiveCreateCircuitV1(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.CreateCircuitRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal CreateCircuitRequest")
@@ -78,6 +84,7 @@ func (self *createCircuitHandler) HandleReceiveCreateCircuitV1(msg *channel.Mess
 }
 
 func (self *createCircuitHandler) CreateCircuitV1Response(circuitInfo *model.Circuit, peerData map[uint32][]byte) (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	response := &edge_ctrl_pb.CreateCircuitResponse{
 		CircuitId: circuitInfo.Id,
 		Address:   circuitInfo.Path.IngressId,
@@ -94,6 +101,7 @@ func (self *createCircuitHandler) CreateCircuitV1Response(circuitInfo *model.Cir
 }
 
 func (self *createCircuitHandler) HandleReceiveCreateCircuitV2(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req, err := ctrl_msg.DecodeCreateCircuitRequest(msg)
 	if err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not decode CreateCircuitRequest")
@@ -109,6 +117,7 @@ func (self *createCircuitHandler) HandleReceiveCreateCircuitV2(msg *channel.Mess
 }
 
 func (self *createCircuitHandler) CreateCircuitV2Response(circuitInfo *model.Circuit, peerData map[uint32][]byte) (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	response := &ctrl_msg.CreateCircuitResponse{
 		CircuitId: circuitInfo.Id,
 		Address:   circuitInfo.Path.IngressId,
@@ -120,6 +129,7 @@ func (self *createCircuitHandler) CreateCircuitV2Response(circuitInfo *model.Cir
 }
 
 func (self *createCircuitHandler) CreateCircuit(ctx *CreateCircuitRequestContext, f createCircuitResponseFactory) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}
@@ -166,5 +176,6 @@ type CreateCircuitRequestContext struct {
 }
 
 func (self *CreateCircuitRequestContext) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.req.GetSessionToken()
 }

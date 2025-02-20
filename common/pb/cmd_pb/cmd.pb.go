@@ -7,6 +7,7 @@
 package cmd_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -56,29 +57,35 @@ var (
 )
 
 func (x ContentType) Enum() *ContentType {
+    logtrace.LogWithFunctionName()
 	p := new(ContentType)
 	*p = x
 	return p
 }
 
 func (x ContentType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (ContentType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_enumTypes[0].Descriptor()
 }
 
 func (ContentType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_cmd_proto_enumTypes[0]
 }
 
 func (x ContentType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use ContentType.Descriptor instead.
 func (ContentType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{0}
 }
 
@@ -117,29 +124,35 @@ var (
 )
 
 func (x CommandType) Enum() *CommandType {
+    logtrace.LogWithFunctionName()
 	p := new(CommandType)
 	*p = x
 	return p
 }
 
 func (x CommandType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (CommandType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_enumTypes[1].Descriptor()
 }
 
 func (CommandType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_cmd_proto_enumTypes[1]
 }
 
 func (x CommandType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use CommandType.Descriptor instead.
 func (CommandType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{1}
 }
 
@@ -153,6 +166,7 @@ type ChangeContext struct {
 }
 
 func (x *ChangeContext) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ChangeContext{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[0]
@@ -162,12 +176,16 @@ func (x *ChangeContext) Reset() {
 }
 
 func (x *ChangeContext) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangeContext) ProtoMessage() {}
+func (*ChangeContext) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ChangeContext) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -181,10 +199,12 @@ func (x *ChangeContext) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeContext.ProtoReflect.Descriptor instead.
 func (*ChangeContext) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ChangeContext) GetAttributes() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Attributes
 	}
@@ -192,6 +212,7 @@ func (x *ChangeContext) GetAttributes() map[string]string {
 }
 
 func (x *ChangeContext) GetRaftIndex() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RaftIndex
 	}
@@ -210,6 +231,7 @@ type AddPeerRequest struct {
 }
 
 func (x *AddPeerRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AddPeerRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[1]
@@ -219,12 +241,16 @@ func (x *AddPeerRequest) Reset() {
 }
 
 func (x *AddPeerRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddPeerRequest) ProtoMessage() {}
+func (*AddPeerRequest) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *AddPeerRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -238,10 +264,12 @@ func (x *AddPeerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPeerRequest.ProtoReflect.Descriptor instead.
 func (*AddPeerRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AddPeerRequest) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -249,6 +277,7 @@ func (x *AddPeerRequest) GetId() string {
 }
 
 func (x *AddPeerRequest) GetAddr() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Addr
 	}
@@ -256,6 +285,7 @@ func (x *AddPeerRequest) GetAddr() string {
 }
 
 func (x *AddPeerRequest) GetIsVoter() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVoter
 	}
@@ -263,6 +293,7 @@ func (x *AddPeerRequest) GetIsVoter() bool {
 }
 
 func (x *AddPeerRequest) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -279,6 +310,7 @@ type RemovePeerRequest struct {
 }
 
 func (x *RemovePeerRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RemovePeerRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[2]
@@ -288,12 +320,16 @@ func (x *RemovePeerRequest) Reset() {
 }
 
 func (x *RemovePeerRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RemovePeerRequest) ProtoMessage() {}
+func (*RemovePeerRequest) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *RemovePeerRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -307,10 +343,12 @@ func (x *RemovePeerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemovePeerRequest.ProtoReflect.Descriptor instead.
 func (*RemovePeerRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *RemovePeerRequest) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -318,6 +356,7 @@ func (x *RemovePeerRequest) GetId() string {
 }
 
 func (x *RemovePeerRequest) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -334,6 +373,7 @@ type TransferLeadershipRequest struct {
 }
 
 func (x *TransferLeadershipRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = TransferLeadershipRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[3]
@@ -343,12 +383,16 @@ func (x *TransferLeadershipRequest) Reset() {
 }
 
 func (x *TransferLeadershipRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TransferLeadershipRequest) ProtoMessage() {}
+func (*TransferLeadershipRequest) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *TransferLeadershipRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -362,10 +406,12 @@ func (x *TransferLeadershipRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferLeadershipRequest.ProtoReflect.Descriptor instead.
 func (*TransferLeadershipRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TransferLeadershipRequest) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -373,6 +419,7 @@ func (x *TransferLeadershipRequest) GetId() string {
 }
 
 func (x *TransferLeadershipRequest) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -391,6 +438,7 @@ type CreateEntityCommand struct {
 }
 
 func (x *CreateEntityCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateEntityCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[4]
@@ -400,12 +448,16 @@ func (x *CreateEntityCommand) Reset() {
 }
 
 func (x *CreateEntityCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateEntityCommand) ProtoMessage() {}
+func (*CreateEntityCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *CreateEntityCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -419,10 +471,12 @@ func (x *CreateEntityCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEntityCommand.ProtoReflect.Descriptor instead.
 func (*CreateEntityCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateEntityCommand) GetEntityType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityType
 	}
@@ -430,6 +484,7 @@ func (x *CreateEntityCommand) GetEntityType() string {
 }
 
 func (x *CreateEntityCommand) GetEntityData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityData
 	}
@@ -437,6 +492,7 @@ func (x *CreateEntityCommand) GetEntityData() []byte {
 }
 
 func (x *CreateEntityCommand) GetFlags() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Flags
 	}
@@ -444,6 +500,7 @@ func (x *CreateEntityCommand) GetFlags() uint32 {
 }
 
 func (x *CreateEntityCommand) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -463,6 +520,7 @@ type UpdateEntityCommand struct {
 }
 
 func (x *UpdateEntityCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateEntityCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[5]
@@ -472,12 +530,16 @@ func (x *UpdateEntityCommand) Reset() {
 }
 
 func (x *UpdateEntityCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateEntityCommand) ProtoMessage() {}
+func (*UpdateEntityCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateEntityCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -491,10 +553,12 @@ func (x *UpdateEntityCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateEntityCommand.ProtoReflect.Descriptor instead.
 func (*UpdateEntityCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateEntityCommand) GetEntityType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityType
 	}
@@ -502,6 +566,7 @@ func (x *UpdateEntityCommand) GetEntityType() string {
 }
 
 func (x *UpdateEntityCommand) GetEntityData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityData
 	}
@@ -509,6 +574,7 @@ func (x *UpdateEntityCommand) GetEntityData() []byte {
 }
 
 func (x *UpdateEntityCommand) GetUpdatedFields() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UpdatedFields
 	}
@@ -516,6 +582,7 @@ func (x *UpdateEntityCommand) GetUpdatedFields() []string {
 }
 
 func (x *UpdateEntityCommand) GetFlags() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Flags
 	}
@@ -523,6 +590,7 @@ func (x *UpdateEntityCommand) GetFlags() uint32 {
 }
 
 func (x *UpdateEntityCommand) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -540,6 +608,7 @@ type DeleteEntityCommand struct {
 }
 
 func (x *DeleteEntityCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = DeleteEntityCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[6]
@@ -549,12 +618,16 @@ func (x *DeleteEntityCommand) Reset() {
 }
 
 func (x *DeleteEntityCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteEntityCommand) ProtoMessage() {}
+func (*DeleteEntityCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *DeleteEntityCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -568,10 +641,12 @@ func (x *DeleteEntityCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEntityCommand.ProtoReflect.Descriptor instead.
 func (*DeleteEntityCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteEntityCommand) GetEntityId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityId
 	}
@@ -579,6 +654,7 @@ func (x *DeleteEntityCommand) GetEntityId() string {
 }
 
 func (x *DeleteEntityCommand) GetEntityType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityType
 	}
@@ -586,6 +662,7 @@ func (x *DeleteEntityCommand) GetEntityType() string {
 }
 
 func (x *DeleteEntityCommand) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -602,6 +679,7 @@ type SyncSnapshotCommand struct {
 }
 
 func (x *SyncSnapshotCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = SyncSnapshotCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[7]
@@ -611,12 +689,16 @@ func (x *SyncSnapshotCommand) Reset() {
 }
 
 func (x *SyncSnapshotCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SyncSnapshotCommand) ProtoMessage() {}
+func (*SyncSnapshotCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *SyncSnapshotCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -630,10 +712,12 @@ func (x *SyncSnapshotCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncSnapshotCommand.ProtoReflect.Descriptor instead.
 func (*SyncSnapshotCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *SyncSnapshotCommand) GetSnapshotId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SnapshotId
 	}
@@ -641,6 +725,7 @@ func (x *SyncSnapshotCommand) GetSnapshotId() string {
 }
 
 func (x *SyncSnapshotCommand) GetSnapshot() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Snapshot
 	}
@@ -656,6 +741,7 @@ type InitClusterIdCommand struct {
 }
 
 func (x *InitClusterIdCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InitClusterIdCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[8]
@@ -665,12 +751,16 @@ func (x *InitClusterIdCommand) Reset() {
 }
 
 func (x *InitClusterIdCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InitClusterIdCommand) ProtoMessage() {}
+func (*InitClusterIdCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *InitClusterIdCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -684,10 +774,12 @@ func (x *InitClusterIdCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitClusterIdCommand.ProtoReflect.Descriptor instead.
 func (*InitClusterIdCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *InitClusterIdCommand) GetClusterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ClusterId
 	}
@@ -704,6 +796,7 @@ type DeleteTerminatorsBatchCommand struct {
 }
 
 func (x *DeleteTerminatorsBatchCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = DeleteTerminatorsBatchCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[9]
@@ -713,12 +806,16 @@ func (x *DeleteTerminatorsBatchCommand) Reset() {
 }
 
 func (x *DeleteTerminatorsBatchCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteTerminatorsBatchCommand) ProtoMessage() {}
+func (*DeleteTerminatorsBatchCommand) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *DeleteTerminatorsBatchCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -732,10 +829,12 @@ func (x *DeleteTerminatorsBatchCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteTerminatorsBatchCommand.ProtoReflect.Descriptor instead.
 func (*DeleteTerminatorsBatchCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteTerminatorsBatchCommand) GetEntityIds() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EntityIds
 	}
@@ -743,6 +842,7 @@ func (x *DeleteTerminatorsBatchCommand) GetEntityIds() []string {
 }
 
 func (x *DeleteTerminatorsBatchCommand) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -764,6 +864,7 @@ type TagValue struct {
 }
 
 func (x *TagValue) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = TagValue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[10]
@@ -773,12 +874,16 @@ func (x *TagValue) Reset() {
 }
 
 func (x *TagValue) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TagValue) ProtoMessage() {}
+func (*TagValue) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *TagValue) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -792,10 +897,12 @@ func (x *TagValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagValue.ProtoReflect.Descriptor instead.
 func (*TagValue) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{10}
 }
 
 func (m *TagValue) GetValue() isTagValue_Value {
+    logtrace.LogWithFunctionName()
 	if m != nil {
 		return m.Value
 	}
@@ -803,6 +910,7 @@ func (m *TagValue) GetValue() isTagValue_Value {
 }
 
 func (x *TagValue) GetBoolValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_BoolValue); ok {
 		return x.BoolValue
 	}
@@ -810,6 +918,7 @@ func (x *TagValue) GetBoolValue() bool {
 }
 
 func (x *TagValue) GetStringValue() string {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_StringValue); ok {
 		return x.StringValue
 	}
@@ -817,6 +926,7 @@ func (x *TagValue) GetStringValue() string {
 }
 
 func (x *TagValue) GetFpValue() float64 {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_FpValue); ok {
 		return x.FpValue
 	}
@@ -824,6 +934,7 @@ func (x *TagValue) GetFpValue() float64 {
 }
 
 func (x *TagValue) GetNilValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_NilValue); ok {
 		return x.NilValue
 	}
@@ -850,13 +961,21 @@ type TagValue_NilValue struct {
 	NilValue bool `protobuf:"varint,4,opt,name=nilValue,proto3,oneof"`
 }
 
-func (*TagValue_BoolValue) isTagValue_Value() {}
+func (*TagValue_BoolValue) isTagValue_Value() {
+	logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_StringValue) isTagValue_Value() {}
+func (*TagValue_StringValue) isTagValue_Value() {
+	logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_FpValue) isTagValue_Value() {}
+func (*TagValue_FpValue) isTagValue_Value() {
+	logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_NilValue) isTagValue_Value() {}
+func (*TagValue_NilValue) isTagValue_Value() {
+	logtrace.LogWithFunctionName()
+}
 
 type Service struct {
 	state         protoimpl.MessageState
@@ -871,6 +990,7 @@ type Service struct {
 }
 
 func (x *Service) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Service{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[11]
@@ -880,12 +1000,16 @@ func (x *Service) Reset() {
 }
 
 func (x *Service) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Service) ProtoMessage() {}
+func (*Service) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *Service) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -899,10 +1023,12 @@ func (x *Service) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Service.ProtoReflect.Descriptor instead.
 func (*Service) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Service) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -910,6 +1036,7 @@ func (x *Service) GetId() string {
 }
 
 func (x *Service) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -917,6 +1044,7 @@ func (x *Service) GetName() string {
 }
 
 func (x *Service) GetTerminatorStrategy() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorStrategy
 	}
@@ -924,6 +1052,7 @@ func (x *Service) GetTerminatorStrategy() string {
 }
 
 func (x *Service) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -931,6 +1060,7 @@ func (x *Service) GetTags() map[string]*TagValue {
 }
 
 func (x *Service) GetMaxIdleTime() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MaxIdleTime
 	}
@@ -952,6 +1082,7 @@ type Router struct {
 }
 
 func (x *Router) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Router{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[12]
@@ -961,12 +1092,16 @@ func (x *Router) Reset() {
 }
 
 func (x *Router) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Router) ProtoMessage() {}
+func (*Router) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *Router) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -980,10 +1115,12 @@ func (x *Router) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Router.ProtoReflect.Descriptor instead.
 func (*Router) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Router) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -991,6 +1128,7 @@ func (x *Router) GetId() string {
 }
 
 func (x *Router) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -998,6 +1136,7 @@ func (x *Router) GetName() string {
 }
 
 func (x *Router) GetFingerprint() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprint
 	}
@@ -1005,6 +1144,7 @@ func (x *Router) GetFingerprint() []byte {
 }
 
 func (x *Router) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -1012,6 +1152,7 @@ func (x *Router) GetCost() uint32 {
 }
 
 func (x *Router) GetNoTraversal() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NoTraversal
 	}
@@ -1019,6 +1160,7 @@ func (x *Router) GetNoTraversal() bool {
 }
 
 func (x *Router) GetDisabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Disabled
 	}
@@ -1026,6 +1168,7 @@ func (x *Router) GetDisabled() bool {
 }
 
 func (x *Router) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1055,6 +1198,7 @@ type Terminator struct {
 }
 
 func (x *Terminator) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Terminator{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cmd_proto_msgTypes[13]
@@ -1064,12 +1208,16 @@ func (x *Terminator) Reset() {
 }
 
 func (x *Terminator) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Terminator) ProtoMessage() {}
+func (*Terminator) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *Terminator) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_cmd_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1083,10 +1231,12 @@ func (x *Terminator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Terminator.ProtoReflect.Descriptor instead.
 func (*Terminator) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_cmd_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Terminator) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1094,6 +1244,7 @@ func (x *Terminator) GetId() string {
 }
 
 func (x *Terminator) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -1101,6 +1252,7 @@ func (x *Terminator) GetServiceId() string {
 }
 
 func (x *Terminator) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1108,6 +1260,7 @@ func (x *Terminator) GetRouterId() string {
 }
 
 func (x *Terminator) GetBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Binding
 	}
@@ -1115,6 +1268,7 @@ func (x *Terminator) GetBinding() string {
 }
 
 func (x *Terminator) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -1122,6 +1276,7 @@ func (x *Terminator) GetAddress() string {
 }
 
 func (x *Terminator) GetInstanceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.InstanceId
 	}
@@ -1129,6 +1284,7 @@ func (x *Terminator) GetInstanceId() string {
 }
 
 func (x *Terminator) GetInstanceSecret() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.InstanceSecret
 	}
@@ -1136,6 +1292,7 @@ func (x *Terminator) GetInstanceSecret() []byte {
 }
 
 func (x *Terminator) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -1143,6 +1300,7 @@ func (x *Terminator) GetCost() uint32 {
 }
 
 func (x *Terminator) GetPrecedence() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Precedence
 	}
@@ -1150,6 +1308,7 @@ func (x *Terminator) GetPrecedence() uint32 {
 }
 
 func (x *Terminator) GetPeerData() map[uint32][]byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PeerData
 	}
@@ -1157,6 +1316,7 @@ func (x *Terminator) GetPeerData() map[uint32][]byte {
 }
 
 func (x *Terminator) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1164,6 +1324,7 @@ func (x *Terminator) GetTags() map[string]*TagValue {
 }
 
 func (x *Terminator) GetHostId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.HostId
 	}
@@ -1171,6 +1332,7 @@ func (x *Terminator) GetHostId() string {
 }
 
 func (x *Terminator) GetIsSystem() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsSystem
 	}
@@ -1178,6 +1340,7 @@ func (x *Terminator) GetIsSystem() bool {
 }
 
 func (x *Terminator) GetSavedPrecedence() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SavedPrecedence
 	}
@@ -1185,6 +1348,7 @@ func (x *Terminator) GetSavedPrecedence() uint32 {
 }
 
 func (x *Terminator) GetSourceCtrl() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SourceCtrl
 	}
@@ -1390,6 +1554,7 @@ var (
 )
 
 func file_cmd_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_cmd_proto_rawDescOnce.Do(func() {
 		file_cmd_proto_rawDescData = protoimpl.X.CompressGZIP(file_cmd_proto_rawDescData)
 	})
@@ -1444,8 +1609,12 @@ var file_cmd_proto_depIdxs = []int32{
 	0,  // [0:15] is the sub-list for field type_name
 }
 
-func init() { file_cmd_proto_init() }
+func init() { 
+	file_cmd_proto_init() 
+    logtrace.LogWithFunctionName()
+}
 func file_cmd_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_cmd_proto != nil {
 		return
 	}

@@ -25,6 +25,7 @@ import (
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
@@ -33,6 +34,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewCurrentIdentityAuthenticatorRouter()
 	env.AddRouter(r)
 }
@@ -42,12 +44,14 @@ type CurrentIdentityAuthenticatorRouter struct {
 }
 
 func NewCurrentIdentityAuthenticatorRouter() *CurrentIdentityAuthenticatorRouter {
+	logtrace.LogWithFunctionName()
 	return &CurrentIdentityAuthenticatorRouter{
 		BasePath: "/" + EntityNameAuthenticator,
 	}
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//Client
 
 	ae.ClientApi.CurrentAPISessionDetailCurrentIdentityAuthenticatorHandler = clientCurrentApiSession.DetailCurrentIdentityAuthenticatorHandlerFunc(func(params clientCurrentApiSession.DetailCurrentIdentityAuthenticatorParams, _ interface{}) middleware.Responder {
@@ -102,6 +106,7 @@ func (r *CurrentIdentityAuthenticatorRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	List(rc, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(ae.Managers.Authenticator.GetStore())
 		if err != nil {
@@ -127,6 +132,7 @@ func (r *CurrentIdentityAuthenticatorRouter) List(ae *env.AppEnv, rc *response.R
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	Detail(rc, func(rc *response.RequestContext, id string) (entity interface{}, err error) {
 		authenticator, err := ae.GetManagers().Authenticator.ReadForIdentity(rc.Identity.Id, id)
 		if err != nil {
@@ -150,18 +156,21 @@ func (r *CurrentIdentityAuthenticatorRouter) Detail(ae *env.AppEnv, rc *response
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) Update(ae *env.AppEnv, rc *response.RequestContext, authenticator *rest_model.AuthenticatorUpdateWithCurrent) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.Authenticator.UpdateSelf(MapUpdateAuthenticatorWithCurrentToModel(id, rc.Identity.Id, authenticator), rc.NewChangeContext())
 	})
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, authenticator *rest_model.AuthenticatorPatchWithCurrent) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.Authenticator.PatchSelf(MapPatchAuthenticatorWithCurrentToModel(id, rc.Identity.Id, authenticator), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) Extend(ae *env.AppEnv, rc *response.RequestContext, extend *rest_model.IdentityExtendEnrollmentRequest) {
+	logtrace.LogWithFunctionName()
 	peerCerts := rc.Request.TLS.PeerCertificates
 
 	if len(peerCerts) == 0 {
@@ -221,6 +230,7 @@ func (r *CurrentIdentityAuthenticatorRouter) Extend(ae *env.AppEnv, rc *response
 }
 
 func (r *CurrentIdentityAuthenticatorRouter) ExtendVerify(ae *env.AppEnv, rc *response.RequestContext, extend *rest_model.IdentityExtendValidateEnrollmentRequest) {
+	logtrace.LogWithFunctionName()
 	authId, err := rc.GetEntityId()
 	if err != nil {
 		rc.RespondWithError(err)

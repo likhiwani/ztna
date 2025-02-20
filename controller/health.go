@@ -2,17 +2,20 @@ package controller
 
 import (
 	"context"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	gosundheit "github.com/AppsFlyer/go-sundheit"
 	"github.com/AppsFlyer/go-sundheit/checks"
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"sync/atomic"
-	"time"
 )
 
 func (c *Controller) initializeHealthChecks() (gosundheit.Health, error) {
+	logtrace.LogWithFunctionName()
 	healthChecker := gosundheit.New()
 	check, err := checks.NewPingCheck("bolt.read", &boltPinger{
 		dbProvider:  c.network.GetDb,
@@ -43,6 +46,7 @@ type boltPinger struct {
 }
 
 func (self *boltPinger) PingContext(ctx context.Context) error {
+	logtrace.LogWithFunctionName()
 	if !self.running.CompareAndSwap(false, true) {
 		return errors.Errorf("previous bolt ping is still running")
 	}

@@ -18,9 +18,10 @@ package common
 
 import (
 	"fmt"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"sync"
 	"sync/atomic"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 )
 
 type OnStoreSuccess func(index uint64, event *edge_ctrl_pb.DataState_ChangeSet)
@@ -56,14 +57,17 @@ type ForgetfulEventCache struct {
 }
 
 func NewForgetfulEventCache() *ForgetfulEventCache {
+	logtrace.LogWithFunctionName()
 	return &ForgetfulEventCache{}
 }
 
 func (cache *ForgetfulEventCache) SetCurrentIndex(index uint64) {
+	logtrace.LogWithFunctionName()
 	cache.index = index
 }
 
 func (cache *ForgetfulEventCache) WhileLocked(callback func(uint64, bool)) {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -71,6 +75,7 @@ func (cache *ForgetfulEventCache) WhileLocked(callback func(uint64, bool)) {
 }
 
 func (cache *ForgetfulEventCache) Store(event *edge_ctrl_pb.DataState_ChangeSet, onSuccess OnStoreSuccess) error {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -95,14 +100,17 @@ func (cache *ForgetfulEventCache) Store(event *edge_ctrl_pb.DataState_ChangeSet,
 }
 
 func (cache *ForgetfulEventCache) ReplayFrom(_ uint64) ([]*edge_ctrl_pb.DataState_ChangeSet, bool) {
+	logtrace.LogWithFunctionName()
 	return nil, false
 }
 
 func (cache *ForgetfulEventCache) CurrentIndex() (uint64, bool) {
+	logtrace.LogWithFunctionName()
 	return cache.currentIndex()
 }
 
 func (cache *ForgetfulEventCache) currentIndex() (uint64, bool) {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadUint64(&cache.index), true
 }
 
@@ -116,6 +124,7 @@ type LoggingEventCache struct {
 }
 
 func NewLoggingEventCache(logSize uint64) *LoggingEventCache {
+	logtrace.LogWithFunctionName()
 	return &LoggingEventCache{
 		HeadLogIndex: 0,
 		LogSize:      logSize,
@@ -125,6 +134,7 @@ func NewLoggingEventCache(logSize uint64) *LoggingEventCache {
 }
 
 func (cache *LoggingEventCache) SetCurrentIndex(index uint64) {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -135,6 +145,7 @@ func (cache *LoggingEventCache) SetCurrentIndex(index uint64) {
 }
 
 func (cache *LoggingEventCache) WhileLocked(callback func(uint64, bool)) {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -142,6 +153,7 @@ func (cache *LoggingEventCache) WhileLocked(callback func(uint64, bool)) {
 }
 
 func (cache *LoggingEventCache) Store(event *edge_ctrl_pb.DataState_ChangeSet, onSuccess OnStoreSuccess) error {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -180,6 +192,7 @@ func (cache *LoggingEventCache) Store(event *edge_ctrl_pb.DataState_ChangeSet, o
 }
 
 func (cache *LoggingEventCache) CurrentIndex() (uint64, bool) {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 
@@ -187,6 +200,7 @@ func (cache *LoggingEventCache) CurrentIndex() (uint64, bool) {
 }
 
 func (cache *LoggingEventCache) currentIndex() (uint64, bool) {
+	logtrace.LogWithFunctionName()
 	if len(cache.Log) == 0 {
 		return 0, false
 	}
@@ -195,6 +209,7 @@ func (cache *LoggingEventCache) currentIndex() (uint64, bool) {
 }
 
 func (cache *LoggingEventCache) ReplayFrom(startIndex uint64) ([]*edge_ctrl_pb.DataState_ChangeSet, bool) {
+	logtrace.LogWithFunctionName()
 	cache.lock.Lock()
 	defer cache.lock.Unlock()
 

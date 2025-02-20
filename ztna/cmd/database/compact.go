@@ -17,9 +17,11 @@
 package database
 
 import (
+	"math"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/spf13/cobra"
 	"go.etcd.io/bbolt"
-	"math"
 )
 
 type CompactAction struct {
@@ -27,6 +29,7 @@ type CompactAction struct {
 }
 
 func NewCompactAction() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &CompactAction{}
 
 	cmd := &cobra.Command{
@@ -42,6 +45,7 @@ func NewCompactAction() *cobra.Command {
 
 // Run implements this command
 func (o *CompactAction) Run(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	srcOptions := *bbolt.DefaultOptions
 	srcOptions.ReadOnly = true
 

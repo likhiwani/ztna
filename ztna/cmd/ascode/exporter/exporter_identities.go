@@ -17,6 +17,7 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/auth_policy"
@@ -26,11 +27,13 @@ import (
 )
 
 func (exporter Exporter) IsIdentityExportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "identity")
 }
 
 func (exporter Exporter) GetIdentities() ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	return exporter.getEntities(
 		"Identities",

@@ -19,27 +19,31 @@ package xgress_edge
 import (
 	"encoding/binary"
 	"fmt"
+	"time"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/sirupsen/logrus"
-	"time"
 
 	"ztna-core/ztna/common/capabilities"
 	"ztna-core/ztna/common/cert"
 	fabricMetrics "ztna-core/ztna/common/metrics"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
+
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/router/state"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress_common"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/identity"
-	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/router/state"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xgress_common"
 )
 
 var peerHeaderRequestMappings = map[uint32]uint32{
@@ -65,6 +69,7 @@ type listener struct {
 
 // newListener creates a new xgress edge listener
 func newListener(id *identity.TokenId, factory *Factory, options *Options, headers map[int32][]byte) xgress.Listener {
+	logtrace.LogWithFunctionName()
 	return &listener{
 		id:      id,
 		factory: factory,
@@ -74,6 +79,7 @@ func newListener(id *identity.TokenId, factory *Factory, options *Options, heade
 }
 
 func (listener *listener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	if address == "" {
 		return errors.New("address must be specified for edge listeners")
 	}
@@ -105,6 +111,7 @@ func (listener *listener) Listen(address string, bindHandler xgress.BindHandler)
 }
 
 func (listener *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	return listener.underlayListener.Close()
 }
 
@@ -118,6 +125,7 @@ type edgeClientConn struct {
 }
 
 func (self *edgeClientConn) HandleClose(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.ch.Label())
 	log.Debugf("closing")
 	self.listener.factory.hostedServices.cleanupServices(ch)
@@ -125,10 +133,12 @@ func (self *edgeClientConn) HandleClose(ch channel.Channel) {
 }
 
 func (self *edgeClientConn) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return edge.ContentTypeData
 }
 
 func (self *edgeClientConn) processConnect(manager state.Manager, req *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sessionToken := string(req.Body)
 	log := pfxlog.ContextLogger(ch.Label()).WithField("token", sessionToken).WithFields(edge.GetLoggerFields(req))
 	connId, found := req.GetUint32Header(edge.ConnIdHeader)
@@ -213,6 +223,7 @@ func (self *edgeClientConn) processConnect(manager state.Manager, req *channel.M
 }
 
 func (self *edgeClientConn) mapResponsePeerData(m map[uint32][]byte) {
+	logtrace.LogWithFunctionName()
 	for k, v := range peerHeaderRespMappings {
 		if val, ok := m[k]; ok {
 			delete(m, k)
@@ -222,6 +233,7 @@ func (self *edgeClientConn) mapResponsePeerData(m map[uint32][]byte) {
 }
 
 func (self *edgeClientConn) sendCreateCircuitRequest(req *ctrl_msg.CreateCircuitRequest, ctrlCh channel.Channel) (*ctrl_msg.CreateCircuitResponse, error) {
+	logtrace.LogWithFunctionName()
 	if capabilities.IsCapable(ctrlCh, capabilities.ControllerCreateCircuitV2) {
 		return self.sendCreateCircuitRequestV2(req, ctrlCh)
 	}
@@ -229,6 +241,7 @@ func (self *edgeClientConn) sendCreateCircuitRequest(req *ctrl_msg.CreateCircuit
 }
 
 func (self *edgeClientConn) sendCreateCircuitRequestV1(req *ctrl_msg.CreateCircuitRequest, ctrlCh channel.Channel) (*ctrl_msg.CreateCircuitResponse, error) {
+	logtrace.LogWithFunctionName()
 	request := &edge_ctrl_pb.CreateCircuitRequest{
 		SessionToken:         req.SessionToken,
 		ApiSessionToken:      req.ApiSessionToken,
@@ -253,6 +266,7 @@ func (self *edgeClientConn) sendCreateCircuitRequestV1(req *ctrl_msg.CreateCircu
 }
 
 func (self *edgeClientConn) sendCreateCircuitRequestV2(req *ctrl_msg.CreateCircuitRequest, ctrlCh channel.Channel) (*ctrl_msg.CreateCircuitResponse, error) {
+	logtrace.LogWithFunctionName()
 	timeout := self.listener.options.Options.GetCircuitTimeout
 	msg, err := req.ToMessage().WithTimeout(timeout).SendForReply(ctrlCh)
 	if err != nil {
@@ -275,6 +289,7 @@ func (self *edgeClientConn) sendCreateCircuitRequestV2(req *ctrl_msg.CreateCircu
 }
 
 func (self *edgeClientConn) processBind(manager state.Manager, req *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.apiSession.SelectCtrlCh(self.listener.factory.ctrls)
 
 	if ctrlCh == nil {
@@ -297,6 +312,7 @@ func (self *edgeClientConn) processBind(manager state.Manager, req *channel.Mess
 }
 
 func (self *edgeClientConn) processBindV1(manager state.Manager, req *channel.Message, ch channel.Channel, ctrlCh channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sessionToken := string(req.Body)
 
 	log := pfxlog.ContextLogger(ch.Label()).
@@ -410,6 +426,7 @@ func (self *edgeClientConn) processBindV1(manager state.Manager, req *channel.Me
 }
 
 func (self *edgeClientConn) processBindV2(manager state.Manager, req *channel.Message, ch channel.Channel, ctrlCh channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sessionToken := string(req.Body)
 
 	log := pfxlog.ContextLogger(ch.Label()).
@@ -547,6 +564,7 @@ func (self *edgeClientConn) processBindV2(manager state.Manager, req *channel.Me
 }
 
 func (self *edgeClientConn) processUnbind(manager state.Manager, req *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	connId, _ := req.GetUint32Header(edge.ConnIdHeader)
 	token := string(req.Body)
 	atLeastOneTerminatorRemoved := self.listener.factory.hostedServices.unbindSession(connId, token, self)
@@ -560,6 +578,7 @@ func (self *edgeClientConn) processUnbind(manager state.Manager, req *channel.Me
 }
 
 func (self *edgeClientConn) removeTerminator(ctrlCh channel.Channel, token, terminatorId string) error {
+	logtrace.LogWithFunctionName()
 	request := &edge_ctrl_pb.RemoveTerminatorRequest{
 		SessionToken: token,
 		Fingerprints: self.fingerprints.Prints(),
@@ -572,6 +591,7 @@ func (self *edgeClientConn) removeTerminator(ctrlCh channel.Channel, token, term
 }
 
 func (self *edgeClientConn) processUpdateBind(manager state.Manager, req *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sessionToken := string(req.Body)
 
 	connId, _ := req.GetUint32Header(edge.ConnIdHeader)
@@ -636,6 +656,7 @@ func (self *edgeClientConn) processUpdateBind(manager state.Manager, req *channe
 }
 
 func (self *edgeClientConn) processHealthEvent(manager state.Manager, req *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sessionToken := string(req.Body)
 	log := pfxlog.ContextLogger(ch.Label()).WithField("sessionId", sessionToken).WithFields(edge.GetLoggerFields(req))
 
@@ -677,6 +698,7 @@ func (self *edgeClientConn) processHealthEvent(manager state.Manager, req *chann
 }
 
 func (self *edgeClientConn) processTraceRoute(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).WithFields(edge.GetLoggerFields(msg))
 
 	hops, _ := msg.GetUint32Header(edge.TraceHopCountHeader)
@@ -704,6 +726,7 @@ func (self *edgeClientConn) processTraceRoute(msg *channel.Message, ch channel.C
 }
 
 func (self *edgeClientConn) sendStateConnectedReply(req *channel.Message, hostData map[uint32][]byte, circuitId string) {
+	logtrace.LogWithFunctionName()
 	connId, _ := req.GetUint32Header(edge.ConnIdHeader)
 	msg := edge.NewStateConnectedMsg(connId)
 
@@ -728,6 +751,7 @@ func (self *edgeClientConn) sendStateConnectedReply(req *channel.Message, hostDa
 }
 
 func (self *edgeClientConn) sendStateClosedReply(message string, req *channel.Message) {
+	logtrace.LogWithFunctionName()
 	connId, _ := req.GetUint32Header(edge.ConnIdHeader)
 	msg := edge.NewStateClosedMsg(connId, message)
 	msg.ReplyTo(req)
@@ -743,6 +767,7 @@ func (self *edgeClientConn) sendStateClosedReply(message string, req *channel.Me
 }
 
 func (self *edgeClientConn) processTokenUpdate(manager state.Manager, req *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	currentApiSession := self.listener.factory.stateManager.GetApiSessionFromCh(ch)
 
 	if currentApiSession == nil || currentApiSession.JwtToken == nil {
@@ -800,6 +825,7 @@ func (self *edgeClientConn) processTokenUpdate(manager state.Manager, req *chann
 }
 
 func getResultOrFailure(msg *channel.Message, err error, result protobufs.TypedMessage) error {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		return err
 	}

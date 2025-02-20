@@ -2,11 +2,13 @@ package xgress_edge
 
 import (
 	"context"
+	"sync/atomic"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/sequencer"
-	"ztna-core/sdk-golang/ziti/edge"
 	"golang.org/x/sync/semaphore"
-	"sync/atomic"
 )
 
 type MsgQueue interface {
@@ -21,6 +23,7 @@ type BoundedMsgQueue interface {
 }
 
 func NewMsgQueue(queueDepth int) *baseMsgQ {
+	logtrace.LogWithFunctionName()
 	return &baseMsgQ{
 		ch:          make(chan *channel.Message, queueDepth),
 		closeNotify: make(chan struct{}),
@@ -34,6 +37,7 @@ type baseMsgQ struct {
 }
 
 func (mq *baseMsgQ) Push(msg *channel.Message) error {
+	logtrace.LogWithFunctionName()
 	select {
 	case mq.ch <- msg:
 		return nil
@@ -43,6 +47,7 @@ func (mq *baseMsgQ) Push(msg *channel.Message) error {
 }
 
 func (mq *baseMsgQ) Pop() *channel.Message {
+	logtrace.LogWithFunctionName()
 	select {
 	case msg := <-mq.ch:
 		return msg
@@ -58,12 +63,14 @@ func (mq *baseMsgQ) Pop() *channel.Message {
 }
 
 func (mq *baseMsgQ) Close() {
+	logtrace.LogWithFunctionName()
 	if mq.closed.CompareAndSwap(false, true) {
 		close(mq.closeNotify)
 	}
 }
 
 func NewSizeLimitedMsgQueue(size int32) *sizeLimitedMsgQ {
+	logtrace.LogWithFunctionName()
 	return &sizeLimitedMsgQ{
 		ch:          make(chan *channel.Message, 16),
 		closeNotify: make(chan struct{}),
@@ -80,6 +87,7 @@ type sizeLimitedMsgQ struct {
 }
 
 func (mq *sizeLimitedMsgQ) Push(msg *channel.Message) error {
+	logtrace.LogWithFunctionName()
 	if size := len(msg.Body); size > 0 {
 		// TODO: Handle if size > mtu
 		if err := mq.sizeSem.Acquire(context.Background(), int64(size)); err != nil {
@@ -95,6 +103,7 @@ func (mq *sizeLimitedMsgQ) Push(msg *channel.Message) error {
 }
 
 func (mq *sizeLimitedMsgQ) Pop() *channel.Message {
+	logtrace.LogWithFunctionName()
 	var msg *channel.Message
 
 	if mq.next != nil {
@@ -123,6 +132,7 @@ func (mq *sizeLimitedMsgQ) Pop() *channel.Message {
 }
 
 func (mq *sizeLimitedMsgQ) TryPopMax(size int) *channel.Message {
+	logtrace.LogWithFunctionName()
 	var msg *channel.Message
 
 	if mq.next == nil {
@@ -152,6 +162,7 @@ func (mq *sizeLimitedMsgQ) TryPopMax(size int) *channel.Message {
 }
 
 func (mq *sizeLimitedMsgQ) Close() {
+	logtrace.LogWithFunctionName()
 	if mq.closed.CompareAndSwap(false, true) {
 		close(mq.closeNotify)
 	}

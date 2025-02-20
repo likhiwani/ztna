@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -30,6 +31,7 @@ import (
 
 // newPolicyAdvisor creates a command object for the "controller policy-advisor" command
 func newPolicyAdivsorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "policy-advisor",
 		Short: "runs sanity checks on various policy related entities managed by the Ziti Edge Controller",
@@ -52,6 +54,7 @@ type policyAdvisorOptions struct {
 
 // newPolicyAdvisorIdentitiesCmd creates the 'edge controller policy-advisor identities' command
 func newPolicyAdvisorIdentitiesCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &policyAdvisorOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -81,6 +84,7 @@ func newPolicyAdvisorIdentitiesCmd(out io.Writer, errOut io.Writer) *cobra.Comma
 
 // newPolicyAdvisorServicesCmd creates the 'edge controller policy-advisor services' command
 func newPolicyAdvisorServicesCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &policyAdvisorOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -110,6 +114,7 @@ func newPolicyAdvisorServicesCmd(out io.Writer, errOut io.Writer) *cobra.Command
 
 // runIdentitiesPolicyAdvisor create a new policyAdvisor on the Ziti Edge Controller
 func runIdentitiesPolicyAdvisor(o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	if len(o.Args) > 0 {
 		identityId, err := mapNameToID("identities", o.Args[0], o.Options)
 		if err != nil {
@@ -140,6 +145,7 @@ func runIdentitiesPolicyAdvisor(o *policyAdvisorOptions) error {
 
 // runServicesPolicyAdvisor create a new policyAdvisor on the Ziti Edge Controller
 func runServicesPolicyAdvisor(o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	if len(o.Args) > 0 {
 		serviceId, err := mapNameToID("services", o.Args[0], o.Options)
 		if err != nil {
@@ -170,6 +176,7 @@ func runServicesPolicyAdvisor(o *policyAdvisorOptions) error {
 }
 
 func outputHeader(o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	if o.quiet {
 		return nil
 	}
@@ -203,6 +210,7 @@ func outputHeader(o *policyAdvisorOptions) error {
 }
 
 func runPolicyAdvisorForIdentities(o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	skip := 0
 	done := false
 	for !done {
@@ -233,6 +241,7 @@ func runPolicyAdvisorForIdentities(o *policyAdvisorOptions) error {
 }
 
 func runPolicyAdvisorForServices(o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	skip := 0
 	done := false
 	for !done {
@@ -263,6 +272,7 @@ func runPolicyAdvisorForServices(o *policyAdvisorOptions) error {
 }
 
 func runPolicyAdvisorForIdentity(identityId string, o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	skip := 0
 	done := false
 	for !done {
@@ -297,6 +307,7 @@ func runPolicyAdvisorForIdentity(identityId string, o *policyAdvisorOptions) err
 }
 
 func runPolicyAdvisorForService(serviceId string, o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	skip := 0
 	done := false
 	for !done {
@@ -331,6 +342,7 @@ func runPolicyAdvisorForService(serviceId string, o *policyAdvisorOptions) error
 }
 
 func runPolicyAdvisorForIdentityAndService(identityId, serviceId string, o *policyAdvisorOptions) error {
+	logtrace.LogWithFunctionName()
 	result, err := util.EdgeControllerList("identities/"+identityId+"/policy-advice/"+serviceId, nil, o.OutputJSONResponse, o.Out, o.Options.Timeout, o.Options.Verbose)
 	if err != nil || o.OutputJSONResponse {
 		return err

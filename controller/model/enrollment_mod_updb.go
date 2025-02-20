@@ -19,14 +19,16 @@ package model
 import (
 	"encoding/base64"
 	"errors"
-	"github.com/openziti/foundation/v2/errorz"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 type EnrollModuleUpdb struct {
@@ -36,6 +38,7 @@ type EnrollModuleUpdb struct {
 }
 
 func NewEnrollModuleUpdb(env Env) *EnrollModuleUpdb {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleUpdb{
 		env:                  env,
 		method:               db.MethodEnrollUpdb,
@@ -44,10 +47,12 @@ func NewEnrollModuleUpdb(env Env) *EnrollModuleUpdb {
 }
 
 func (module *EnrollModuleUpdb) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *EnrollModuleUpdb) Process(ctx EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	enrollment, err := module.env.GetManagers().Enrollment.ReadByToken(ctx.GetToken())
 	if err != nil {
 		return nil, err

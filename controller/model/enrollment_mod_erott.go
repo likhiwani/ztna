@@ -23,6 +23,7 @@ import (
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/pkg/errors"
@@ -41,6 +42,7 @@ type EnrollModuleEr struct {
 }
 
 func NewEnrollModuleEdgeRouterOtt(env Env) *EnrollModuleEr {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleEr{
 		env:                  env,
 		method:               MethodEnrollEdgeRouterOtt,
@@ -49,10 +51,12 @@ func NewEnrollModuleEdgeRouterOtt(env Env) *EnrollModuleEr {
 }
 
 func (module *EnrollModuleEr) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *EnrollModuleEr) Process(context EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	enrollment, err := module.env.GetManagers().Enrollment.ReadByToken(context.GetToken())
 
 	if err != nil {
@@ -155,6 +159,7 @@ func (module *EnrollModuleEr) Process(context EnrollmentContext) (*EnrollmentRes
 }
 
 func (module *EnrollModuleEr) ProcessServerCsrPem(serverCertCsrPem []byte) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if len(serverCertCsrPem) == 0 {
 		return nil, errors.New("empty server cert csr")
 	}
@@ -185,6 +190,7 @@ func (module *EnrollModuleEr) ProcessServerCsrPem(serverCertCsrPem []byte) ([]by
 }
 
 func (module *EnrollModuleEr) ProcessClientCsrPem(clientCertCsrPem []byte, edgeRouterId string) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if len(clientCertCsrPem) == 0 {
 		return nil, errors.New("empty client cert csr")
 	}

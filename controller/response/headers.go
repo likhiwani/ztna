@@ -17,8 +17,9 @@
 package response
 
 import (
-	"ztna-core/ztna/common/build"
 	"strconv"
+	"ztna-core/ztna/common/build"
+	"ztna-core/ztna/logtrace"
 )
 
 const (
@@ -28,6 +29,7 @@ const (
 )
 
 func AddHeaders(rc *RequestContext) {
+	logtrace.LogWithFunctionName()
 	buildInfo := build.GetBuildInfo()
 	if buildInfo != nil {
 		rc.ResponseWriter.Header().Set(ServerHeader, "ziti-controller/"+buildInfo.Version())
@@ -37,6 +39,7 @@ func AddHeaders(rc *RequestContext) {
 }
 
 func AddSessionHeaders(rc *RequestContext) {
+	logtrace.LogWithFunctionName()
 	if rc.ApiSession != nil {
 		rc.ResponseWriter.Header().Set(ApiSessionExpirationSecondsHeader, strconv.FormatInt(int64(rc.ApiSession.ExpirationDuration.Seconds()), 10))
 		rc.ResponseWriter.Header().Set(ApiSessionExpiresAtHeader, rc.ApiSession.ExpiresAt.String())

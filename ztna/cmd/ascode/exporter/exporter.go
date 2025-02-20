@@ -17,6 +17,7 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"errors"
 	"io"
@@ -54,6 +55,7 @@ type Exporter struct {
 var output Output
 
 func NewExportCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 
 	exporter := &Exporter{}
 	exporter.loginOpts = edge.LoginOptions{}
@@ -109,6 +111,7 @@ func NewExportCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (exporter *Exporter) Init(out io.Writer) error {
+	logtrace.LogWithFunctionName()
 
 	logLvl := logrus.InfoLevel
 	if exporter.loginOpts.Verbose {
@@ -142,6 +145,7 @@ func (exporter *Exporter) Init(out io.Writer) error {
 }
 
 func (exporter *Exporter) Execute(input []string) error {
+	logtrace.LogWithFunctionName()
 
 	args := arrayutils.Map(input, strings.ToLower)
 
@@ -271,6 +275,7 @@ type ClientList func(offset *int64, limit *int64) ([]interface{}, error)
 type EntityProcessor func(item interface{}) (map[string]interface{}, error)
 
 func (exporter *Exporter) getEntities(entityName string, count ClientCount, list ClientList, processor EntityProcessor) ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	totalCount, countErr := count()
 	if countErr != nil {
@@ -310,6 +315,7 @@ func (exporter *Exporter) getEntities(entityName string, count ClientCount, list
 }
 
 func (exporter *Exporter) ToMap(input interface{}) (map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	jsonData, _ := json.MarshalIndent(input, "", "")
 	m := map[string]interface{}{}
 	err := json.Unmarshal(jsonData, &m)
@@ -320,12 +326,14 @@ func (exporter *Exporter) ToMap(input interface{}) (map[string]interface{}, erro
 }
 
 func (exporter *Exporter) defaultRoleAttributes(m map[string]interface{}) {
+	logtrace.LogWithFunctionName()
 	if m["roleAttributes"] == nil {
 		m["roleAttributes"] = []string{}
 	}
 }
 
 func (exporter *Exporter) Filter(m map[string]interface{}, properties []string) {
+	logtrace.LogWithFunctionName()
 
 	// remove any properties that are not requested
 	for k := range m {

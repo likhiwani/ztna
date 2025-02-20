@@ -2,19 +2,22 @@ package db
 
 import (
 	"fmt"
+	"sort"
+	"strings"
+	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
-	"sort"
-	"strings"
-	"testing"
 )
 
 func Test_EdgeRouterPolicyStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -27,6 +30,7 @@ func Test_EdgeRouterPolicyStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateEdgeRouterPolicy(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.CleanupAll()
 
@@ -49,6 +53,7 @@ func (ctx *TestContext) testCreateEdgeRouterPolicy(t *testing.T) {
 }
 
 func (ctx *TestContext) testEdgeRouterPolicyInvalidValues(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.CleanupAll()
 
@@ -108,6 +113,7 @@ func (ctx *TestContext) testEdgeRouterPolicyInvalidValues(t *testing.T) {
 }
 
 func (ctx *TestContext) testEdgeRouterPolicyUpdateDeleteRefs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.CleanupAll()
 
@@ -171,6 +177,7 @@ func (ctx *TestContext) testEdgeRouterPolicyUpdateDeleteRefs(t *testing.T) {
 }
 
 func (ctx *TestContext) testRouterIdentityDeleteTest(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.CleanupAll()
 
@@ -253,6 +260,7 @@ func (ctx *TestContext) testRouterIdentityDeleteTest(t *testing.T) {
 }
 
 func (ctx *TestContext) testEdgeRouterPolicyRoleEvaluation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.CleanupAll()
 
@@ -418,6 +426,7 @@ func (ctx *TestContext) testEdgeRouterPolicyRoleEvaluation(t *testing.T) {
 }
 
 func (ctx *TestContext) createEdgeRouterPolicies(identityRoles, edgeRouterRoles []string, identities []*Identity, edgeRouters []*EdgeRouter, oncreate bool) []*EdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	var policies []*EdgeRouterPolicy
 	for i := 0; i < 9; i++ {
 		policy := newEdgeRouterPolicy(eid.New())
@@ -472,12 +481,14 @@ func (ctx *TestContext) createEdgeRouterPolicies(identityRoles, edgeRouterRoles 
 }
 
 func (ctx *TestContext) validateEdgeRouterPolicies(identities []*Identity, edgeRouters []*EdgeRouter, policies []*EdgeRouterPolicy) {
+	logtrace.LogWithFunctionName()
 	ctx.validateEdgeRouterPolicyIdentities(identities, policies)
 	ctx.validateEdgeRouterPolicyEdgeRouters(edgeRouters, policies)
 	ctx.validateEdgeRouterPolicyDenormalization()
 }
 
 func (ctx *TestContext) validateEdgeRouterPolicyIdentities(identities []*Identity, policies []*EdgeRouterPolicy) {
+	logtrace.LogWithFunctionName()
 	for _, policy := range policies {
 		count := 0
 		relatedIdentities := ctx.getRelatedIds(policy, EntityTypeIdentities)
@@ -500,6 +511,7 @@ func (ctx *TestContext) validateEdgeRouterPolicyIdentities(identities []*Identit
 }
 
 func (ctx *TestContext) validateEdgeRouterPolicyDenormalization() {
+	logtrace.LogWithFunctionName()
 	errorHolder := &errorz.ErrorHolderImpl{}
 	errorHolder.SetError(ctx.GetDb().View(func(tx *bbolt.Tx) error {
 		return ctx.stores.EdgeRouterPolicy.CheckIntegrity(ctx.newViewTestCtx(tx), false, func(err error, _ bool) {
@@ -510,6 +522,7 @@ func (ctx *TestContext) validateEdgeRouterPolicyDenormalization() {
 }
 
 func (ctx *TestContext) validateEdgeRouterPolicyEdgeRouters(edgeRouters []*EdgeRouter, policies []*EdgeRouterPolicy) {
+	logtrace.LogWithFunctionName()
 	for _, policy := range policies {
 		count := 0
 		relatedEdgeRouters := ctx.getRelatedIds(policy, EntityTypeRouters)
@@ -531,6 +544,7 @@ func (ctx *TestContext) validateEdgeRouterPolicyEdgeRouters(edgeRouters []*EdgeR
 }
 
 func (ctx *TestContext) policyShouldMatch(semantic string, roleSet []string, entity boltz.ExtEntity, roleAttribute []string) bool {
+	logtrace.LogWithFunctionName()
 	roles, ids, err := splitRolesAndIds(roleSet)
 	ctx.NoError(err)
 	isIdMatch := stringz.Contains(ids, entity.GetId())

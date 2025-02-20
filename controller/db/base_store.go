@@ -17,11 +17,13 @@
 package db
 
 import (
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"strings"
 )
 
 type initializableStore interface {
@@ -42,15 +44,18 @@ type baseStore[E boltz.ExtEntity] struct {
 }
 
 func (store *baseStore[E]) addUniqueNameField() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	symbolName := store.AddSymbol(FieldName, ast.NodeTypeString)
 	return store.AddUniqueIndex(symbolName)
 }
 
 func (store *baseStore[E]) initializeIndexes(tx *bbolt.Tx, errorHolder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	store.InitializeIndexes(tx, errorHolder)
 }
 
 func (store *baseStore[E]) deleteEntityReferences(tx *bbolt.Tx, entity boltz.NamedExtEntity, rolesSymbol boltz.EntitySetSymbol) error {
+	logtrace.LogWithFunctionName()
 	idRef := entityRef(entity.GetId())
 
 	for _, policyHolderId := range store.GetRelatedEntitiesIdList(tx, entity.GetId(), rolesSymbol.GetStore().GetEntityType()) {
@@ -67,6 +72,7 @@ func (store *baseStore[E]) deleteEntityReferences(tx *bbolt.Tx, entity boltz.Nam
 }
 
 func (store *baseStore[E]) getParentBucket(entity boltz.Entity, childBucket *boltz.TypedBucket) *boltz.TypedBucket {
+	logtrace.LogWithFunctionName()
 	parentBucket := store.GetParentStore().GetEntityBucket(childBucket.Tx(), []byte(entity.GetId()))
 	parentBucket.ErrorHolderImpl = childBucket.ErrorHolderImpl
 	return parentBucket
@@ -77,6 +83,7 @@ type NameIndexed interface {
 }
 
 func (store *baseStore[E]) GetName(tx *bbolt.Tx, id string) *string {
+	logtrace.LogWithFunctionName()
 	symbol := store.GetSymbol(FieldName)
 	if symbol == nil {
 		return nil
@@ -90,6 +97,7 @@ func (store *baseStore[E]) GetName(tx *bbolt.Tx, id string) *string {
 }
 
 func (store *baseStore[E]) getRoleAttributesCursorProvider(index boltz.SetReadIndex, values []string, semantic string) (ast.SetCursorProvider, error) {
+	logtrace.LogWithFunctionName()
 	if semantic == "" {
 		semantic = SemanticAllOf
 	}

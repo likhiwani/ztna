@@ -17,11 +17,13 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type Revocation struct {
@@ -30,10 +32,12 @@ type Revocation struct {
 }
 
 func (entity *Revocation) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Revocation, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }
 
 func (entity *Revocation) fillFrom(_ Env, _ *bbolt.Tx, boltRevocation *db.Revocation) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltRevocation)
 	entity.ExpiresAt = boltRevocation.ExpiresAt
 
@@ -41,6 +45,7 @@ func (entity *Revocation) fillFrom(_ Env, _ *bbolt.Tx, boltRevocation *db.Revoca
 }
 
 func (entity *Revocation) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Revocation, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.Revocation{
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
 		ExpiresAt:     entity.ExpiresAt,

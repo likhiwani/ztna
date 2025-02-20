@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -28,6 +30,7 @@ const (
 )
 
 func TestPostureCheckModelMfa(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("evaluateAt", func(t *testing.T) {
 		mfaCheck, postureData := newMfaCheckAndPostureData()
 
@@ -650,8 +653,7 @@ func TestPostureCheckModelMfa(t *testing.T) {
 			req.Equal(int64(0), result)
 		})
 	})
-	
-	
+
 	t.Run("getTimeoutRemainingAtSeconds", func(t *testing.T) {
 		t.Run("with a timeout of 600s, passedAt 0s ago, wake = NIL, unlock = NIL will result in 600s timeout", func(t *testing.T) {
 			req := require.New(t)
@@ -750,7 +752,6 @@ func TestPostureCheckModelMfa(t *testing.T) {
 
 			req.Equal(int64(600), timeoutRemaining)
 		})
-
 
 		t.Run("with a timeout of 600s, passedAt 0s ago, wake 10s ago, unlock 10s ago will result in 600s timeout", func(t *testing.T) {
 			req := require.New(t)
@@ -953,6 +954,7 @@ func TestPostureCheckModelMfa(t *testing.T) {
 // pass evaluation. The posture check will evaluate promptOnWake and promptOnUnlock
 // with events occurring 10 seconds in the past.
 func newMfaCheckAndPostureData() (*PostureCheckMfa, *PostureData) {
+	logtrace.LogWithFunctionName()
 	passedMfaAt := time.Now().UTC()
 
 	wokenAt := passedMfaAt.Add(-10 * time.Second)

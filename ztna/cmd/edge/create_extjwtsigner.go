@@ -24,6 +24,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -42,6 +43,7 @@ type createExtJwtSignerOptions struct {
 
 // newCreateExtJwtSignerCmd creates the 'edge controller create ca local' command for the given entity type
 func newCreateExtJwtSignerCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	jwksEndpoint := strfmt.URI("")
 	options := &createExtJwtSignerOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
@@ -107,6 +109,7 @@ func newCreateExtJwtSignerCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreateExtJwtSigner(options *createExtJwtSignerOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {

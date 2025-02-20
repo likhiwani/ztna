@@ -18,6 +18,8 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
@@ -63,6 +65,7 @@ type AuthenticatorCert struct {
 }
 
 func (entity *AuthenticatorCert) Fingerprints() []string {
+	logtrace.LogWithFunctionName()
 	return []string{entity.Fingerprint}
 }
 
@@ -74,6 +77,7 @@ type AuthenticatorUpdb struct {
 }
 
 func (entity *AuthenticatorUpdb) Fingerprints() []string {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
@@ -85,6 +89,7 @@ type Authenticator struct {
 }
 
 func (entity *Authenticator) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeAuthenticators
 }
 
@@ -96,6 +101,7 @@ var authenticatorFieldMappings = map[string]string{
 	FieldAuthenticatorCertFingerprint: "fingerprint"}
 
 func (entity *Authenticator) ToUpdb() *AuthenticatorUpdb {
+	logtrace.LogWithFunctionName()
 	if updb, ok := entity.SubType.(*AuthenticatorUpdb); ok {
 		updb.Authenticator = *entity
 		return updb
@@ -104,6 +110,7 @@ func (entity *Authenticator) ToUpdb() *AuthenticatorUpdb {
 }
 
 func (entity *Authenticator) ToCert() *AuthenticatorCert {
+	logtrace.LogWithFunctionName()
 	if cert, ok := entity.SubType.(*AuthenticatorCert); ok {
 		cert.Authenticator = *entity
 		return cert
@@ -112,6 +119,7 @@ func (entity *Authenticator) ToCert() *AuthenticatorCert {
 }
 
 func (entity *Authenticator) ToSubType() AuthenticatorSubType {
+	logtrace.LogWithFunctionName()
 	if entity.Type == MethodAuthenticatorCert {
 		return entity.ToCert()
 	}
@@ -130,6 +138,7 @@ type AuthenticatorStore interface {
 }
 
 func newAuthenticatorStore(stores *stores) *authenticatorStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &authenticatorStoreImpl{}
 	store.baseStore = newBaseStore[*Authenticator](stores, store)
 	store.InitImpl(store)
@@ -142,6 +151,7 @@ type authenticatorStoreImpl struct {
 }
 
 func (store *authenticatorStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	store.AddSymbol(FieldAuthenticatorMethod, ast.NodeTypeString)
@@ -156,14 +166,17 @@ func (store *authenticatorStoreImpl) initializeLocal() {
 }
 
 func (store *authenticatorStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddFkIndex(store.symbolIdentityId, store.stores.identity.symbolAuthenticators)
 }
 
 func (store *authenticatorStoreImpl) NewEntity() *Authenticator {
+	logtrace.LogWithFunctionName()
 	return &Authenticator{}
 }
 
 func (store *authenticatorStoreImpl) FillEntity(entity *Authenticator, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.Type = bucket.GetStringOrError(FieldAuthenticatorMethod)
 	entity.IdentityId = bucket.GetStringOrError(FieldAuthenticatorIdentity)
 
@@ -186,6 +199,7 @@ func (store *authenticatorStoreImpl) FillEntity(entity *Authenticator, bucket *b
 }
 
 func (store *authenticatorStoreImpl) PersistEntity(entity *Authenticator, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	ctx.WithFieldOverrides(authenticatorFieldMappings)
 
 	entity.SetBaseValues(ctx)
@@ -224,6 +238,7 @@ func (store *authenticatorStoreImpl) PersistEntity(entity *Authenticator, ctx *b
 }
 
 func (store *authenticatorStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	err := store.baseStore.DeleteById(ctx, id)
 
 	if err == nil {

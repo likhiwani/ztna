@@ -19,12 +19,14 @@ package health
 import (
 	"encoding/json"
 	"fmt"
-	gosundheit "github.com/AppsFlyer/go-sundheit"
-	"github.com/openziti/xweb/v2"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
+
+	gosundheit "github.com/AppsFlyer/go-sundheit"
+	"github.com/openziti/xweb/v2"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -34,6 +36,7 @@ const (
 var _ xweb.ApiHandlerFactory = &HealthCheckApiFactory{}
 
 func NewHealthCheckApiFactory(healthChecker gosundheit.Health) *HealthCheckApiFactory {
+	logtrace.LogWithFunctionName()
 	return &HealthCheckApiFactory{
 		healthChecker: healthChecker,
 	}
@@ -44,14 +47,17 @@ type HealthCheckApiFactory struct {
 }
 
 func (factory HealthCheckApiFactory) Validate(*xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (factory HealthCheckApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return Binding
 }
 
 func (factory HealthCheckApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	return &HealthCheckApiHandler{
 		healthChecker: factory.healthChecker,
 		options:       options,
@@ -64,22 +70,27 @@ type HealthCheckApiHandler struct {
 }
 
 func (self *HealthCheckApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return Binding
 }
 
 func (self *HealthCheckApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return self.options
 }
 
 func (self *HealthCheckApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return "/health-checks"
 }
 
 func (self *HealthCheckApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, self.RootPath())
 }
 
 func (self *HealthCheckApiHandler) ServeHTTP(w http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	output := map[string]interface{}{}
 	output["meta"] = map[string]interface{}{}
 

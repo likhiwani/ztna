@@ -23,8 +23,10 @@ import (
 	"os"
 	"testing"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -38,12 +40,14 @@ var intCaNameWithSpiffeIdName = "intermediate-ca-with-spiffe-id"
 var intCaNameWithoutSpiffeIdName = "intermediate-ca-without-spiffe-id"
 
 func streams() (*bytes.Buffer, *bytes.Buffer) {
+	logtrace.LogWithFunctionName()
 	return new(bytes.Buffer), new(bytes.Buffer)
 }
 
 type URLSlice []*url.URL
 
 func (u URLSlice) Paths() []string {
+	logtrace.LogWithFunctionName()
 	paths := make([]string, len(u))
 	for i, uri := range u {
 		paths[i] = uri.Path
@@ -51,6 +55,7 @@ func (u URLSlice) Paths() []string {
 	return paths
 }
 func (u URLSlice) Hosts() []string {
+	logtrace.LogWithFunctionName()
 	hosts := make([]string, len(u))
 	for i, uri := range u {
 		hosts[i] = uri.Host
@@ -59,6 +64,7 @@ func (u URLSlice) Hosts() []string {
 }
 
 func urisAsStrings(uris []*url.URL) []string {
+	logtrace.LogWithFunctionName()
 	urisAsStrings := make([]string, len(uris))
 	for i, uri := range uris {
 		urisAsStrings[i] = uri.String()
@@ -67,6 +73,7 @@ func urisAsStrings(uris []*url.URL) []string {
 }
 
 func ipsAsStrings(ips []net.IP) []string {
+	logtrace.LogWithFunctionName()
 	ipsAsStrings := make([]string, len(ips))
 	for i, ip := range ips {
 		ipsAsStrings[i] = ip.String()
@@ -75,6 +82,7 @@ func ipsAsStrings(ips []net.IP) []string {
 }
 
 func TestMain(m *testing.M) {
+	logtrace.LogWithFunctionName()
 	var code int
 	if setup() {
 		// Run tests
@@ -87,6 +95,7 @@ func TestMain(m *testing.M) {
 }
 
 func setup() bool {
+	logtrace.LogWithFunctionName()
 	where, _ = os.MkdirTemp("", "pki-test")
 	testPki = &pki.ZitiPKI{Store: &store.Local{}}
 	local := testPki.Store.(*store.Local)
@@ -108,6 +117,7 @@ func setup() bool {
 }
 
 func createTestCaWithSpiffeId() bool {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 
@@ -127,6 +137,7 @@ func createTestCaWithSpiffeId() bool {
 	return true
 }
 func createTestCaWithoutSpiffeId() bool {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	ca := NewCmdPKICreateCA(out, errOut)
 
@@ -145,6 +156,7 @@ func createTestCaWithoutSpiffeId() bool {
 	return true
 }
 func createTestIntermediateWithSpiffeId() bool {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	intermediateCmd := NewCmdPKICreateIntermediate(out, errOut)
 	intermediateArgs := []string{
@@ -164,6 +176,7 @@ func createTestIntermediateWithSpiffeId() bool {
 	return true
 }
 func createTestIntermediateWithoutSpiffeId() bool {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	intermediateCmd := NewCmdPKICreateIntermediate(out, errOut)
 	intermediateArgs := []string{
@@ -184,11 +197,13 @@ func createTestIntermediateWithoutSpiffeId() bool {
 }
 
 func teardown() {
+	logtrace.LogWithFunctionName()
 	fmt.Printf("removing temp directory: %s\n", where)
 	_ = os.RemoveAll(where)
 }
 
 func addSpiffeArg(id string, args []string) []string {
+	logtrace.LogWithFunctionName()
 	args = append(args, "--spiffe-id="+id)
 	return args
 }

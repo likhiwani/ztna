@@ -19,6 +19,17 @@ package link
 import (
 	"container/heap"
 	"fmt"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common/capabilities"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
@@ -26,16 +37,7 @@ import (
 	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
-	"ztna-core/ztna/common/capabilities"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/xlink"
 	"github.com/sirupsen/logrus"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 type Env interface {
@@ -49,6 +51,7 @@ type Env interface {
 }
 
 func NewLinkRegistry(routerEnv Env) xlink.Registry {
+	logtrace.LogWithFunctionName()
 	result := &linkRegistryImpl{
 		linkMap:        map[string]xlink.Xlink{},
 		linkByIdMap:    map[string]xlink.Xlink{},
@@ -82,6 +85,7 @@ type linkRegistryImpl struct {
 }
 
 func (self *linkRegistryImpl) runGcLinkMetricsLoop() {
+	logtrace.LogWithFunctionName()
 	var lastRunResults map[string]metrics.Metric
 
 	ticker := time.NewTicker(time.Minute)
@@ -98,6 +102,7 @@ func (self *linkRegistryImpl) runGcLinkMetricsLoop() {
 }
 
 func (self *linkRegistryImpl) gcLinkMetrics(lastRunResults map[string]metrics.Metric) map[string]metrics.Metric {
+	logtrace.LogWithFunctionName()
 	for linkId, metric := range lastRunResults {
 		// If the metrics we found last time are still tied to a non-existent link, dispose of them
 		if !self.IsKnownLinkId(linkId) {
@@ -108,6 +113,7 @@ func (self *linkRegistryImpl) gcLinkMetrics(lastRunResults map[string]metrics.Me
 }
 
 func (self *linkRegistryImpl) getOrphanedLinkMetrics() map[string]metrics.Metric {
+	logtrace.LogWithFunctionName()
 	result := map[string]metrics.Metric{}
 	self.env.GetMetricsRegistry().EachMetric(func(name string, metric metrics.Metric) {
 		if strings.HasPrefix(name, "link.") {
@@ -133,6 +139,7 @@ func (self *linkRegistryImpl) getOrphanedLinkMetrics() map[string]metrics.Metric
 }
 
 func (self *linkRegistryImpl) IsKnownLinkId(linkId string) bool {
+	logtrace.LogWithFunctionName()
 	if _, found := self.GetLinkById(linkId); found {
 		return true
 	}
@@ -158,6 +165,7 @@ func (self *linkRegistryImpl) IsKnownLinkId(linkId string) bool {
 }
 
 func (self *linkRegistryImpl) GetLink(linkKey string) (xlink.Xlink, bool) {
+	logtrace.LogWithFunctionName()
 	self.linkMapLocks.RLock()
 	defer self.linkMapLocks.RUnlock()
 
@@ -166,6 +174,7 @@ func (self *linkRegistryImpl) GetLink(linkKey string) (xlink.Xlink, bool) {
 }
 
 func (self *linkRegistryImpl) GetLinkById(linkId string) (xlink.Xlink, bool) {
+	logtrace.LogWithFunctionName()
 	self.linkMapLocks.RLock()
 	defer self.linkMapLocks.RUnlock()
 
@@ -174,6 +183,7 @@ func (self *linkRegistryImpl) GetLinkById(linkId string) (xlink.Xlink, bool) {
 }
 
 func (self *linkRegistryImpl) DebugForgetLink(linkId string) bool {
+	logtrace.LogWithFunctionName()
 	self.linkMapLocks.Lock()
 	defer self.linkMapLocks.Unlock()
 	if link := self.linkByIdMap[linkId]; link != nil {
@@ -185,18 +195,21 @@ func (self *linkRegistryImpl) DebugForgetLink(linkId string) bool {
 }
 
 func (self *linkRegistryImpl) LinkAccepted(link xlink.Xlink) (xlink.Xlink, bool) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	return self.applyLink(link)
 }
 
 func (self *linkRegistryImpl) DialSucceeded(link xlink.Xlink) (xlink.Xlink, bool) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	return self.applyLink(link)
 }
 
 func (self *linkRegistryImpl) applyLink(link xlink.Xlink) (xlink.Xlink, bool) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("dest", link.DestinationId()).
 		WithField("linkProtocol", link.LinkProtocol()).
 		WithField("newLinkId", link.Id()).
@@ -277,6 +290,7 @@ func (self *linkRegistryImpl) applyLink(link xlink.Xlink) (xlink.Xlink, bool) {
 }
 
 func (self *linkRegistryImpl) LinkClosed(link xlink.Xlink) {
+	logtrace.LogWithFunctionName()
 	markLinkStateClosed := false
 	self.linkMapLocks.Lock()
 	if val := self.linkMap[link.Key()]; val == link {
@@ -297,6 +311,7 @@ func (self *linkRegistryImpl) LinkClosed(link xlink.Xlink) {
 }
 
 func (self *linkRegistryImpl) Shutdown() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	linkCount := 0
 	for link := range self.Iter() {
@@ -308,6 +323,7 @@ func (self *linkRegistryImpl) Shutdown() {
 }
 
 func (self *linkRegistryImpl) SendRouterLinkMessage(link xlink.Xlink, channels ...channel.Channel) {
+	logtrace.LogWithFunctionName()
 	linkMsg := &ctrl_pb.RouterLinks{
 		Links: []*ctrl_pb.RouterLinks_RouterLink{
 			{
@@ -343,22 +359,27 @@ func (self *linkRegistryImpl) SendRouterLinkMessage(link xlink.Xlink, channels .
 /* XCtrl implementation so we get reconnect notifications */
 
 func (self *linkRegistryImpl) LoadConfig(map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *linkRegistryImpl) BindChannel(channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *linkRegistryImpl) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *linkRegistryImpl) Run(env.RouterEnv) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *linkRegistryImpl) Iter() <-chan xlink.Xlink {
+	logtrace.LogWithFunctionName()
 	self.linkMapLocks.RLock()
 	result := make(chan xlink.Xlink, len(self.linkMap))
 	self.linkMapLocks.RUnlock()
@@ -380,6 +401,7 @@ func (self *linkRegistryImpl) Iter() <-chan xlink.Xlink {
 }
 
 func (self *linkRegistryImpl) NotifyOfReconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -405,10 +427,12 @@ func (self *linkRegistryImpl) NotifyOfReconnect(ch channel.Channel) {
 }
 
 func (self *linkRegistryImpl) GetTraceDecoders() []channel.TraceMessageDecoder {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *linkRegistryImpl) UpdateLinkDest(id string, version string, healthy bool, listeners []*ctrl_pb.Listener) {
+	logtrace.LogWithFunctionName()
 	updateEvent := &linkDestUpdate{
 		id:        id,
 		version:   version,
@@ -420,12 +444,14 @@ func (self *linkRegistryImpl) UpdateLinkDest(id string, version string, healthy 
 }
 
 func (self *linkRegistryImpl) RemoveLinkDest(id string) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&removeLinkDest{
 		id: id,
 	})
 }
 
 func (self *linkRegistryImpl) DialRequested(ctrlCh channel.Channel, dial *ctrl_pb.Dial) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&dialRequest{
 		ctrlCh: ctrlCh,
 		dial:   dial,
@@ -433,24 +459,28 @@ func (self *linkRegistryImpl) DialRequested(ctrlCh channel.Channel, dial *ctrl_p
 }
 
 func (self *linkRegistryImpl) markNewLinksNotified(links []stateAndLink) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&markNewLinksNotified{
 		links: links,
 	})
 }
 
 func (self *linkRegistryImpl) markFaultedLinksNotified(successfullySent []stateAndFaults) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&markFaultedLinksNotified{
 		successfullySent: successfullySent,
 	})
 }
 
 func (self *linkRegistryImpl) dialFailed(state *linkState) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&updateLinkStatusToDialFailed{
 		linkState: state,
 	})
 }
 
 func (self *linkRegistryImpl) queueEvent(evt event) {
+	logtrace.LogWithFunctionName()
 	select {
 	case <-self.env.GetCloseNotify():
 	case self.events <- evt:
@@ -458,6 +488,7 @@ func (self *linkRegistryImpl) queueEvent(evt event) {
 }
 
 func (self *linkRegistryImpl) run() {
+	logtrace.LogWithFunctionName()
 	fullScanTicker := time.NewTicker(time.Minute)
 	defer fullScanTicker.Stop()
 
@@ -482,6 +513,7 @@ func (self *linkRegistryImpl) run() {
 }
 
 func (self *linkRegistryImpl) triggerNotify() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.triggerNotifyC <- struct{}{}:
 	default:
@@ -489,6 +521,7 @@ func (self *linkRegistryImpl) triggerNotify() {
 }
 
 func (self *linkRegistryImpl) evaluateLinkStateQueue() {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	for len(*self.linkStateQueue) > 0 {
 		next := (*self.linkStateQueue)[0]
@@ -501,6 +534,7 @@ func (self *linkRegistryImpl) evaluateLinkStateQueue() {
 }
 
 func (self *linkRegistryImpl) evaluateDestinations() {
+	logtrace.LogWithFunctionName()
 	for destId, dest := range self.destinations {
 		hasEstablishedLinks := false
 		for _, state := range dest.linkMap {
@@ -532,6 +566,7 @@ func (self *linkRegistryImpl) evaluateDestinations() {
 }
 
 func (self *linkRegistryImpl) evaluateLinkState(state *linkState) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("key", state.linkKey)
 
 	couldDial := state.status != StatusEstablished && state.status != StatusDialing && state.nextDial.Before(time.Now())
@@ -575,6 +610,7 @@ func (self *linkRegistryImpl) evaluateLinkState(state *linkState) {
 }
 
 func (self *linkRegistryImpl) updateLinkStateEstablished(link xlink.Xlink) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&updateLinkStatusForLink{
 		link:   link,
 		status: StatusEstablished,
@@ -582,6 +618,7 @@ func (self *linkRegistryImpl) updateLinkStateEstablished(link xlink.Xlink) {
 }
 
 func (self *linkRegistryImpl) updateLinkStateClosed(link xlink.Xlink) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&updateLinkStatusForLink{
 		link:   link,
 		status: StatusLinkFailed,
@@ -589,12 +626,14 @@ func (self *linkRegistryImpl) updateLinkStateClosed(link xlink.Xlink) {
 }
 
 func (self *linkRegistryImpl) addLinkFaultForReplacedLink(link xlink.Xlink) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&addLinkFaultForReplacedLink{
 		link: link,
 	})
 }
 
 func (self *linkRegistryImpl) Inspect(timeout time.Duration) *inspect.LinksInspectResult {
+	logtrace.LogWithFunctionName()
 	evt := &inspectLinkStatesEvent{
 		result: atomic.Pointer[[]*inspect.LinkDest]{},
 		done:   make(chan struct{}),
@@ -615,6 +654,7 @@ func (self *linkRegistryImpl) Inspect(timeout time.Duration) *inspect.LinksInspe
 }
 
 func (self *linkRegistryImpl) useLegacyLinkMgmtForOldCtrl() bool {
+	logtrace.LogWithFunctionName()
 	legacyCtrl := false
 
 	for _, ctrl := range self.ctrls.GetAll() {
@@ -626,6 +666,7 @@ func (self *linkRegistryImpl) useLegacyLinkMgmtForOldCtrl() bool {
 }
 
 func (self *linkRegistryImpl) GetLinkKey(dialerBinding, protocol, dest, listenerBinding string) string {
+	logtrace.LogWithFunctionName()
 	legacyCtrl := self.useLegacyLinkMgmtForOldCtrl()
 	if dialerBinding == "" || legacyCtrl {
 		dialerBinding = "default"
@@ -639,6 +680,7 @@ func (self *linkRegistryImpl) GetLinkKey(dialerBinding, protocol, dest, listener
 }
 
 func (self *linkRegistryImpl) notifyControllersOfLinks() {
+	logtrace.LogWithFunctionName()
 	if self.notifyInProgress.Load() {
 		pfxlog.Logger().WithField("op", "link-notify").Info("new link notification already in progress, exiting")
 		return
@@ -714,6 +756,7 @@ func (self *linkRegistryImpl) notifyControllersOfLinks() {
 }
 
 func (self *linkRegistryImpl) sendNewLinks(links []stateAndLink) {
+	logtrace.LogWithFunctionName()
 	routerLinks := &ctrl_pb.RouterLinks{}
 	for _, pair := range links {
 		link := pair.link
@@ -758,6 +801,7 @@ func (self *linkRegistryImpl) sendNewLinks(links []stateAndLink) {
 }
 
 func (self *linkRegistryImpl) sendLinkFaults(list []stateAndFaults) {
+	logtrace.LogWithFunctionName()
 	var successfullySent []stateAndFaults
 	for _, item := range list {
 		var sent []linkFault

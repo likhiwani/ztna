@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type CreateTerminatorReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *CreateTerminatorReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 201:
 		result := NewCreateTerminatorCreated()
@@ -78,6 +80,7 @@ func (o *CreateTerminatorReader) ReadResponse(response runtime.ClientResponse, c
 
 // NewCreateTerminatorCreated creates a CreateTerminatorCreated with default headers values
 func NewCreateTerminatorCreated() *CreateTerminatorCreated {
+    logtrace.LogWithFunctionName()
 	return &CreateTerminatorCreated{}
 }
 
@@ -90,13 +93,16 @@ type CreateTerminatorCreated struct {
 }
 
 func (o *CreateTerminatorCreated) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /terminators][%d] createTerminatorCreated  %+v", 201, o.Payload)
 }
 func (o *CreateTerminatorCreated) GetPayload() *rest_model.CreateEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateTerminatorCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.CreateEnvelope)
 
@@ -110,6 +116,7 @@ func (o *CreateTerminatorCreated) readResponse(response runtime.ClientResponse, 
 
 // NewCreateTerminatorBadRequest creates a CreateTerminatorBadRequest with default headers values
 func NewCreateTerminatorBadRequest() *CreateTerminatorBadRequest {
+    logtrace.LogWithFunctionName()
 	return &CreateTerminatorBadRequest{}
 }
 
@@ -122,13 +129,16 @@ type CreateTerminatorBadRequest struct {
 }
 
 func (o *CreateTerminatorBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /terminators][%d] createTerminatorBadRequest  %+v", 400, o.Payload)
 }
 func (o *CreateTerminatorBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateTerminatorBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *CreateTerminatorBadRequest) readResponse(response runtime.ClientRespons
 
 // NewCreateTerminatorUnauthorized creates a CreateTerminatorUnauthorized with default headers values
 func NewCreateTerminatorUnauthorized() *CreateTerminatorUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &CreateTerminatorUnauthorized{}
 }
 
@@ -154,13 +165,16 @@ type CreateTerminatorUnauthorized struct {
 }
 
 func (o *CreateTerminatorUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /terminators][%d] createTerminatorUnauthorized  %+v", 401, o.Payload)
 }
 func (o *CreateTerminatorUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateTerminatorUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *CreateTerminatorUnauthorized) readResponse(response runtime.ClientRespo
 
 // NewCreateTerminatorTooManyRequests creates a CreateTerminatorTooManyRequests with default headers values
 func NewCreateTerminatorTooManyRequests() *CreateTerminatorTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &CreateTerminatorTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type CreateTerminatorTooManyRequests struct {
 }
 
 func (o *CreateTerminatorTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /terminators][%d] createTerminatorTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *CreateTerminatorTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateTerminatorTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

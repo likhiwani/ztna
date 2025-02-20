@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
@@ -52,6 +53,7 @@ type ListServicesURL struct {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *ListServicesURL) WithBasePath(bp string) *ListServicesURL {
+    logtrace.LogWithFunctionName()
 	o.SetBasePath(bp)
 	return o
 }
@@ -60,11 +62,13 @@ func (o *ListServicesURL) WithBasePath(bp string) *ListServicesURL {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *ListServicesURL) SetBasePath(bp string) {
+    logtrace.LogWithFunctionName()
 	o._basePath = bp
 }
 
 // Build a url path and query string
 func (o *ListServicesURL) Build() (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	var _result url.URL
 
 	var _path = "/services"
@@ -108,6 +112,7 @@ func (o *ListServicesURL) Build() (*url.URL, error) {
 
 // Must is a helper function to panic when the url builder returns an error
 func (o *ListServicesURL) Must(u *url.URL, err error) *url.URL {
+    logtrace.LogWithFunctionName()
 	if err != nil {
 		panic(err)
 	}
@@ -119,11 +124,13 @@ func (o *ListServicesURL) Must(u *url.URL, err error) *url.URL {
 
 // String returns the string representation of the path with query string
 func (o *ListServicesURL) String() string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
 func (o *ListServicesURL) BuildFull(scheme, host string) (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	if scheme == "" {
 		return nil, errors.New("scheme is required for a full url on ListServicesURL")
 	}
@@ -143,5 +150,6 @@ func (o *ListServicesURL) BuildFull(scheme, host string) (*url.URL, error) {
 
 // StringFull returns the string representation of a complete url
 func (o *ListServicesURL) StringFull(scheme, host string) string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

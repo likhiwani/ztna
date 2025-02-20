@@ -17,17 +17,21 @@
 package zitilib_actions
 
 import (
-	"github.com/openziti/fablab/kernel/model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/cli"
+
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func Fabric(args ...string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &fabric{
 		args: args,
 	}
 }
 
 func (a *fabric) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	_, err := cli.Exec(run.GetModel(), append([]string{"fabric", "-i", model.ActiveInstanceId()}, a.args...)...)
 	return err
 }

@@ -10,6 +10,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
@@ -18,6 +19,7 @@ import (
 )
 
 func NewFabricApiWrapper(ae *env.AppEnv) api_impl.RequestWrapper {
+	logtrace.LogWithFunctionName()
 	return &fabricWrapper{ae: ae}
 }
 
@@ -26,6 +28,7 @@ type fabricWrapper struct {
 }
 
 func (self *fabricWrapper) WrapRequest(handler api_impl.RequestHandler, request *http.Request, entityId, entitySubId string) middleware.Responder {
+	logtrace.LogWithFunctionName()
 	return middleware.ResponderFunc(func(writer http.ResponseWriter, producer runtime.Producer) {
 		rc, err := env.GetRequestContextFromHttpContext(request)
 
@@ -53,6 +56,7 @@ func (self *fabricWrapper) WrapRequest(handler api_impl.RequestHandler, request 
 }
 
 func (self *fabricWrapper) WrapHttpHandler(handler http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	wrapped := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Set(ZitiInstanceId, self.ae.InstanceId)
 
@@ -83,6 +87,7 @@ func (self *fabricWrapper) WrapHttpHandler(handler http.Handler) http.Handler {
 }
 
 func (self *fabricWrapper) WrapWsHandler(handler http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	wrapped := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rc := self.ae.CreateRequestContext(rw, r)
 

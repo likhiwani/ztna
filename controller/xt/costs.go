@@ -17,8 +17,9 @@
 package xt
 
 import (
-	"ztna-core/ztna/common/inspect"
 	"math"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/logtrace"
 
 	cmap "github.com/orcaman/concurrent-map/v2"
 )
@@ -40,6 +41,7 @@ type Cost interface {
 }
 
 func GlobalCosts() Costs {
+	logtrace.LogWithFunctionName()
 	return globalCosts
 }
 
@@ -50,30 +52,37 @@ type precedence struct {
 }
 
 func (p *precedence) String() string {
+	logtrace.LogWithFunctionName()
 	return p.name
 }
 
 func (p *precedence) Unbias(cost uint32) uint32 {
+	logtrace.LogWithFunctionName()
 	return cost - p.minCost
 }
 
 func (p *precedence) IsFailed() bool {
+	logtrace.LogWithFunctionName()
 	return p.minCost == failedMinCost
 }
 
 func (p *precedence) IsDefault() bool {
+	logtrace.LogWithFunctionName()
 	return p.minCost == defaultMinCost
 }
 
 func (p *precedence) IsRequired() bool {
+	logtrace.LogWithFunctionName()
 	return p.minCost == requireMinCost
 }
 
 func (p *precedence) GetBaseCost() uint32 {
+	logtrace.LogWithFunctionName()
 	return p.minCost
 }
 
 func (p *precedence) GetBiasedCost(cost uint32) uint32 {
+	logtrace.LogWithFunctionName()
 	result := p.minCost + cost
 	if result > p.maxCost {
 		return p.maxCost
@@ -122,6 +131,7 @@ var Precedences = struct {
 }
 
 func GetPrecedenceForName(name string) Precedence {
+	logtrace.LogWithFunctionName()
 	if Precedences.Required.String() == name {
 		return Precedences.Required
 	}
@@ -136,14 +146,17 @@ type costs struct {
 }
 
 func (self *costs) ClearCost(terminatorId string) {
+	logtrace.LogWithFunctionName()
 	self.costMap.Remove(terminatorId)
 }
 
 func (self *costs) SetDynamicCost(terminatorId string, c Cost) {
+	logtrace.LogWithFunctionName()
 	self.costMap.Set(terminatorId, c)
 }
 
 func (self *costs) GetDynamicCost(terminatorId string) uint16 {
+	logtrace.LogWithFunctionName()
 	if cost, found := self.costMap.Get(terminatorId); found {
 		return cost.Get()
 	}
@@ -151,6 +164,7 @@ func (self *costs) GetDynamicCost(terminatorId string) uint16 {
 }
 
 func (self *costs) GetCost(terminatorId string) Cost {
+	logtrace.LogWithFunctionName()
 	if cost, found := self.costMap.Get(terminatorId); found {
 		return cost
 	}
@@ -158,12 +172,14 @@ func (self *costs) GetCost(terminatorId string) Cost {
 }
 
 func (self *costs) IterCosts(f func(string, Cost)) {
+	logtrace.LogWithFunctionName()
 	self.costMap.IterCb(f)
 }
 
 // In a list which is sorted by precedence, returns the terminators which have the
 // same precedence as that of the first entry in the list
 func GetRelatedTerminators(list []CostedTerminator) []CostedTerminator {
+	logtrace.LogWithFunctionName()
 	first := list[0]
 	var result = []CostedTerminator{first}
 	for _, t := range list[1:] {

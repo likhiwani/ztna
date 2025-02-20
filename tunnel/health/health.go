@@ -8,10 +8,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	health "github.com/AppsFlyer/go-sundheit"
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/sdk-golang/ziti"
 	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
+	health "github.com/AppsFlyer/go-sundheit"
+	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 )
 
@@ -36,10 +38,12 @@ type Action interface {
 }
 
 func NewServiceState(service string, precedence ziti.Precedence, cost uint16, updater ServiceUpdater) *ServiceState {
+	logtrace.LogWithFunctionName()
 	return NewServiceStateWithContext("0", service, precedence, cost, updater)
 }
 
 func NewServiceStateWithContext(service, hostContext string, precedence ziti.Precedence, cost uint16, updater ServiceUpdater) *ServiceState {
+	logtrace.LogWithFunctionName()
 	return &ServiceState{
 		Service:            service,
 		HostContext:        hostContext,
@@ -69,10 +73,12 @@ type ServiceState struct {
 }
 
 func (self *ServiceState) IsChanged() bool {
+	logtrace.LogWithFunctionName()
 	return self.nextPrecedence != self.currentPrecedence || self.nextCost != self.currentCost
 }
 
 func (self *ServiceState) HandleActionResults(healthy bool) {
+	logtrace.LogWithFunctionName()
 	if self.sendEvent {
 		if err := self.Updater.SendHealthEvent(healthy); err != nil {
 			logrus.WithError(err).
@@ -109,6 +115,7 @@ type checkContext struct {
 }
 
 func NewManager() Manager {
+	logtrace.LogWithFunctionName()
 	result := &manager{
 		results: make(chan *result, 16),
 	}
@@ -134,6 +141,7 @@ type manager struct {
 }
 
 func (self *manager) Shutdown() {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		self.health.DeregisterAll()
 		close(self.results)
@@ -141,12 +149,14 @@ func (self *manager) Shutdown() {
 }
 
 func (self *manager) handleResults() {
+	logtrace.LogWithFunctionName()
 	for result := range self.results {
 		self.handleResult(result)
 	}
 }
 
 func (self *manager) handleResult(result *result) {
+	logtrace.LogWithFunctionName()
 	if result.TimeOfFirstFailure != nil {
 		rounded := roundToClosest(*result.TimeOfFirstFailure, timeClamp)
 		result.TimeOfFirstFailure = &rounded
@@ -168,6 +178,7 @@ func (self *manager) handleResult(result *result) {
 }
 
 func (self *manager) UnregisterServiceChecks(service string) {
+	logtrace.LogWithFunctionName()
 	self.checks.Range(func(key, val interface{}) bool {
 		check := val.(*checkContext)
 		if check.serviceState.Service == service {
@@ -179,6 +190,7 @@ func (self *manager) UnregisterServiceChecks(service string) {
 }
 
 func (self *manager) UnregisterServiceContextChecks(service, hostContext string) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("service", service).WithField("hostContext", hostContext)
 	log.Debug("removing health checks")
 
@@ -194,6 +206,7 @@ func (self *manager) UnregisterServiceContextChecks(service, hostContext string)
 }
 
 func (self *manager) RegisterServiceChecks(service *ServiceState, checkDefinitions []CheckDefinition) error {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	for idx, checkDefinition := range checkDefinitions {
 		id := fmt.Sprintf("%v_%v_%v", service.Service, service.HostContext, idx)
@@ -244,14 +257,17 @@ func (self *manager) RegisterServiceChecks(service *ServiceState, checkDefinitio
 }
 
 func (self *manager) OnCheckStarted(string) {
+	logtrace.LogWithFunctionName()
 	// does nothing
 }
 
 func (self *manager) OnCheckRegistered(string, health.Result) {
+	logtrace.LogWithFunctionName()
 	// does nothing
 }
 
 func (self *manager) OnCheckCompleted(name string, r health.Result) {
+	logtrace.LogWithFunctionName()
 	if self.closed.Load() {
 		return
 	}
@@ -283,6 +299,7 @@ type result struct {
 }
 
 func roundToClosest(t time.Time, interval time.Duration) time.Time {
+	logtrace.LogWithFunctionName()
 	roundDown := t.Truncate(interval)
 	if t.Sub(roundDown) >= interval/2 {
 		return roundDown.Add(interval)

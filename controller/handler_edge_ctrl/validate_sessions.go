@@ -17,10 +17,12 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
@@ -30,6 +32,7 @@ type validateSessionsHandler struct {
 }
 
 func NewValidateSessionsHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &validateSessionsHandler{
 		baseRequestHandler{
 			ch:     ch,
@@ -39,14 +42,17 @@ func NewValidateSessionsHandler(appEnv *env.AppEnv, ch channel.Channel) channel.
 }
 
 func (self *validateSessionsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_ValidateSessionsRequestType)
 }
 
 func (self *validateSessionsHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "validate.sessions"
 }
 
 func (self *validateSessionsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.ValidateSessionsRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal ValidateSessionsRequest")
@@ -57,6 +63,7 @@ func (self *validateSessionsHandler) HandleReceive(msg *channel.Message, ch chan
 }
 
 func (self *validateSessionsHandler) validateSessions(req *edge_ctrl_pb.ValidateSessionsRequest) {
+	logtrace.LogWithFunctionName()
 	sessionStore := self.getAppEnv().GetStores().Session
 	tokenIndex := sessionStore.GetTokenIndex()
 

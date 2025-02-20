@@ -17,6 +17,8 @@
 package handler_mgmt
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 )
@@ -26,10 +28,12 @@ type xmgmtCloseHandler struct {
 }
 
 func newXmgmtCloseHandler(done chan struct{}) channel.CloseHandler {
+	logtrace.LogWithFunctionName()
 	return &xmgmtCloseHandler{done: done}
 }
 
 func (h *xmgmtCloseHandler) HandleClose(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.ContextLogger(ch.Label()).Debug("closing Xmgmt instances")
 	close(h.done)
 }

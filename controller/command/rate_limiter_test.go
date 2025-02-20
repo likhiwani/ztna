@@ -21,19 +21,22 @@ package command
 import (
 	"errors"
 	"fmt"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/metrics"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/ztna/controller/apierror"
-	"github.com/stretchr/testify/assert"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/metrics"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_AdaptiveRateLimiter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	cfg := AdaptiveRateLimiterConfig{
 		Enabled:          true,
 		MaxSize:          250,
@@ -113,6 +116,7 @@ func Test_AdaptiveRateLimiter(t *testing.T) {
 }
 
 func Test_AdaptiveRateLimiterTracker(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	cfg := AdaptiveRateLimiterConfig{
 		Enabled:          true,
 		MaxSize:          250,
@@ -197,6 +201,7 @@ func Test_AdaptiveRateLimiterTracker(t *testing.T) {
 }
 
 func Test_AuthFlood(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	countdown := &sync.WaitGroup{}
 
 	var complete atomic.Int32
@@ -234,6 +239,7 @@ func Test_AuthFlood(t *testing.T) {
 }
 
 func Test_WasApiRateLimited(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	err := errors.New("hello")
 	assert.False(t, WasRateLimited(err))
 

@@ -17,10 +17,12 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,6 +32,7 @@ type subscribeToDataModelHandler struct {
 }
 
 func NewSubscribeToDataModelHandler(appEnv *env.AppEnv, callback func(routerId string, respHello *edge_ctrl_pb.SubscribeToDataModelRequest)) *subscribeToDataModelHandler {
+	logtrace.LogWithFunctionName()
 	return &subscribeToDataModelHandler{
 		appEnv:   appEnv,
 		callback: callback,
@@ -37,10 +40,12 @@ func NewSubscribeToDataModelHandler(appEnv *env.AppEnv, callback func(routerId s
 }
 
 func (self *subscribeToDataModelHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_SubscribeToDataModelRequestType)
 }
 
 func (h *subscribeToDataModelHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("routerId", ch.Id())
 	logger.Info("data model subscription request received")
 

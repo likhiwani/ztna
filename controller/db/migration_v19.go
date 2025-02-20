@@ -1,11 +1,13 @@
 package db
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 var identityTypesMap = map[string]string{
@@ -16,6 +18,7 @@ var identityTypesMap = map[string]string{
 
 // Update identity types
 func (m *Migrations) updateIdentityTypes(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	for id := range identityTypesMap {
 		m.migrateIdentityType(step, id)
 	}
@@ -64,6 +67,7 @@ func (m *Migrations) updateIdentityTypes(step *boltz.MigrationStep) {
 }
 
 func (m *Migrations) migrateIdentityType(step *boltz.MigrationStep, id string) {
+	logtrace.LogWithFunctionName()
 	idType, err := m.stores.IdentityType.LoadById(step.Ctx.Tx(), id)
 	if step.SetError(err) {
 		return

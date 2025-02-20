@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/openziti/ziti-db-explorer/cmd/ziti-db-explorer/zdecli"
 	"github.com/spf13/cobra"
 )
 
 func NewCmdDb(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := util.NewEmptyParentCmd("db", "Interact with Ziti database files")
 
 	exploreCmd := &cobra.Command{

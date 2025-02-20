@@ -17,6 +17,7 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"bufio"
 	"encoding/json"
 	"ztna-core/ztna/internal"
@@ -36,6 +37,7 @@ type Output struct {
 }
 
 func NewOutputToFile(verbose bool, outputJson bool, outputYaml bool, filename string, errWriter io.Writer) (*Output, error) {
+	logtrace.LogWithFunctionName()
 	file, err := os.Create(filename)
 	if err != nil {
 		log.WithError(err).Error("Error creating file for writing")
@@ -48,6 +50,7 @@ func NewOutputToFile(verbose bool, outputJson bool, outputYaml bool, filename st
 }
 
 func NewOutputToWriter(verbose bool, outputJson bool, outputYaml bool, writer io.Writer, errWriter io.Writer) (*Output, error) {
+	logtrace.LogWithFunctionName()
 	output := Output{}
 	output.verbose = verbose
 	output.outputJson = outputJson
@@ -58,6 +61,7 @@ func NewOutputToWriter(verbose bool, outputJson bool, outputYaml bool, writer io
 }
 
 func (output Output) Write(data any) error {
+	logtrace.LogWithFunctionName()
 	var formatted []byte
 	var err error
 	if output.outputYaml {
@@ -116,6 +120,7 @@ func (output Output) Write(data any) error {
 }
 
 func (output Output) ToJson(data any) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 
 	jsonData, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
@@ -129,6 +134,7 @@ func (output Output) ToJson(data any) ([]byte, error) {
 }
 
 func (output Output) ToYaml(data any) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 
 	yamlData, err := yaml.Marshal(data)
 	if err != nil {

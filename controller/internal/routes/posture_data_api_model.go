@@ -22,12 +22,14 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
 )
 
 func MapPostureDataToRestModel(_ *env.AppEnv, postureData *model.PostureData) *rest_model.PostureData {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureData{
 		Domain:                MapPostureDataDomainToRestModel(&postureData.Domain),
 		Mac:                   MapPostureDataMacToRestModel(&postureData.Mac),
@@ -40,6 +42,7 @@ func MapPostureDataToRestModel(_ *env.AppEnv, postureData *model.PostureData) *r
 }
 
 func MapPostureDataProcessesToRestModel(postureData *model.PostureData) []*rest_model.PostureDataProcess {
+	logtrace.LogWithFunctionName()
 	processes := []*rest_model.PostureDataProcess{}
 
 	for _, genericProcess := range postureData.Processes {
@@ -66,6 +69,7 @@ func MapPostureDataProcessesToRestModel(postureData *model.PostureData) []*rest_
 }
 
 func MapPostureDataDomainToRestModel(domain *model.PostureResponseDomain) *rest_model.PostureDataDomain {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureDataDomain{
 		PostureDataBase: rest_model.PostureDataBase{
 			LastUpdatedAt:  toStrFmtDateTimeP(domain.LastUpdatedAt),
@@ -84,6 +88,7 @@ func MapPostureDataDomainToRestModel(domain *model.PostureResponseDomain) *rest_
 }
 
 func MapPostureDataMacToRestModel(mac *model.PostureResponseMac) *rest_model.PostureDataMac {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureDataMac{
 		PostureDataBase: rest_model.PostureDataBase{
 			LastUpdatedAt:  toStrFmtDateTimeP(mac.LastUpdatedAt),
@@ -102,6 +107,7 @@ func MapPostureDataMacToRestModel(mac *model.PostureResponseMac) *rest_model.Pos
 }
 
 func MapPostureDataOsToRestModel(os *model.PostureResponseOs) *rest_model.PostureDataOs {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureDataOs{
 		PostureDataBase: rest_model.PostureDataBase{
 			LastUpdatedAt:  toStrFmtDateTimeP(os.LastUpdatedAt),
@@ -121,6 +127,7 @@ func MapPostureDataOsToRestModel(os *model.PostureResponseOs) *rest_model.Postur
 }
 
 func MapPostureDataApiSessionDataToRestModel(apiSessionData map[string]*model.ApiSessionPostureData) map[string]rest_model.APISessionPostureData {
+	logtrace.LogWithFunctionName()
 	ret := map[string]rest_model.APISessionPostureData{}
 
 	for apiSessionId, apiSessionData := range apiSessionData {
@@ -167,6 +174,7 @@ func MapPostureDataApiSessionDataToRestModel(apiSessionData map[string]*model.Ap
 }
 
 func MapPostureCheckFailureProcessToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureProcess {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureCheckFailureProcess{
 		ActualValue:   &rest_model.PostureCheckFailureProcessActual{},
 		ExpectedValue: &rest_model.Process{},
@@ -193,6 +201,7 @@ func MapPostureCheckFailureProcessToRestModel(failure *model.PostureCheckFailure
 }
 
 func MapPostureCheckFailureProcessMultiToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureProcessMulti {
+	logtrace.LogWithFunctionName()
 	restResult := &rest_model.PostureCheckFailureProcessMulti{
 		ActualValue:   []*rest_model.PostureCheckFailureProcessActual{},
 		ExpectedValue: []*rest_model.ProcessMulti{},
@@ -236,6 +245,7 @@ func MapPostureCheckFailureProcessMultiToRestModel(failure *model.PostureCheckFa
 }
 
 func MapPostureCheckFailureDomainToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureDomain {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureCheckFailureDomain{
 		ActualValue:   nil,
 		ExpectedValue: []string{},
@@ -255,6 +265,7 @@ func MapPostureCheckFailureDomainToRestModel(failure *model.PostureCheckFailure)
 }
 
 func MapPostureCheckFailureMacToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureMacAddress {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureCheckFailureMacAddress{
 		ActualValue:   nil,
 		ExpectedValue: []string{},
@@ -274,6 +285,7 @@ func MapPostureCheckFailureMacToRestModel(failure *model.PostureCheckFailure) *r
 }
 
 func MapPostureCheckFailureOsToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureOperatingSystem {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureCheckFailureOperatingSystem{
 		ActualValue:   &rest_model.PostureCheckFailureOperatingSystemActual{},
 		ExpectedValue: nil,
@@ -305,6 +317,7 @@ func MapPostureCheckFailureOsToRestModel(failure *model.PostureCheckFailure) *re
 }
 
 func MapPostureCheckFailureMfaToRestModel(failure *model.PostureCheckFailure) *rest_model.PostureCheckFailureMfa {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.PostureCheckFailureMfa{
 		ActualValue:   nil,
 		ExpectedValue: nil,
@@ -341,6 +354,7 @@ func MapPostureCheckFailureMfaToRestModel(failure *model.PostureCheckFailure) *r
 }
 
 func MapPostureDataFailedSessionRequestToRestModel(modelFailedSessionRequests []*model.PostureSessionRequestFailure) []*rest_model.FailedServiceRequest {
+	logtrace.LogWithFunctionName()
 	ret := []*rest_model.FailedServiceRequest{}
 
 	for _, modelFailedSessionRequest := range modelFailedSessionRequests {
@@ -389,10 +403,12 @@ func MapPostureDataFailedSessionRequestToRestModel(modelFailedSessionRequests []
 }
 
 func toStrFmtDateTime(time time.Time) strfmt.DateTime {
+	logtrace.LogWithFunctionName()
 	return strfmt.DateTime(time)
 }
 
 func toStrFmtDateTimeP(time time.Time) *strfmt.DateTime {
+	logtrace.LogWithFunctionName()
 	if time.IsZero() {
 		return nil
 	}

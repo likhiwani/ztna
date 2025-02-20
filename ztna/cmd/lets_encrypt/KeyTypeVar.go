@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"github.com/go-acme/lego/v4/certcrypto"
 )
@@ -24,6 +25,7 @@ import (
 type KeyTypeVar string
 
 func (f *KeyTypeVar) String() string {
+	logtrace.LogWithFunctionName()
 	switch f.Get() {
 	case certcrypto.EC256:
 		return "EC256"
@@ -41,6 +43,7 @@ func (f *KeyTypeVar) String() string {
 }
 
 func (f *KeyTypeVar) Set(value string) error {
+	logtrace.LogWithFunctionName()
 	switch value {
 	case "EC256":
 		*f = KeyTypeVar(certcrypto.EC256)
@@ -60,29 +63,36 @@ func (f *KeyTypeVar) Set(value string) error {
 }
 
 func (f *KeyTypeVar) EC256() bool {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f) == certcrypto.EC256
 }
 
 func (f *KeyTypeVar) EC384() bool {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f) == certcrypto.EC384
 }
 
 func (f *KeyTypeVar) RSA2048() bool {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f) == certcrypto.RSA2048
 }
 
 func (f *KeyTypeVar) RSA4096() bool {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f) == certcrypto.RSA4096
 }
 
 func (f *KeyTypeVar) RSA8192() bool {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f) == certcrypto.RSA8192
 }
 
 func (f *KeyTypeVar) Get() certcrypto.KeyType {
+	logtrace.LogWithFunctionName()
 	return certcrypto.KeyType(*f)
 }
 
 func (f *KeyTypeVar) Type() string {
+	logtrace.LogWithFunctionName()
 	return "EC256|EC384|RSA2048|RSA4096|RSA8192"
 }

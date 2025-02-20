@@ -17,8 +17,10 @@
 package api
 
 import (
-	"github.com/gorilla/handlers"
 	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/gorilla/handlers"
 )
 
 const (
@@ -27,6 +29,7 @@ const (
 )
 
 func WrapCorsHandler(innerHandler http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	corsOpts := []handlers.CORSOption{
 		handlers.AllowedOrigins([]string{"*"}),
 		handlers.OptionStatusCode(200),

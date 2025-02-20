@@ -26,6 +26,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/stringz"
@@ -40,12 +41,14 @@ type ServiceLinkFactoryIml struct {
 }
 
 func NewServiceLinkFactory() *ServiceLinkFactoryIml {
+	logtrace.LogWithFunctionName()
 	return &ServiceLinkFactoryIml{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameService),
 	}
 }
 
 func (factory *ServiceLinkFactoryIml) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameServiceEdgeRouterPolicy] = factory.NewNestedLink(entity, EntityNameServiceEdgeRouterPolicy)
 	links[EntityNameServicePolicy] = factory.NewNestedLink(entity, EntityNameServicePolicy)
@@ -56,6 +59,7 @@ func (factory *ServiceLinkFactoryIml) Links(entity models.Entity) rest_model.Lin
 }
 
 func MapCreateServiceToModel(service *rest_model.ServiceCreate) *model.EdgeService {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeService{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -72,6 +76,7 @@ func MapCreateServiceToModel(service *rest_model.ServiceCreate) *model.EdgeServi
 }
 
 func MapUpdateServiceToModel(id string, service *rest_model.ServiceUpdate) *model.EdgeService {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeService{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -89,6 +94,7 @@ func MapUpdateServiceToModel(id string, service *rest_model.ServiceUpdate) *mode
 }
 
 func MapPatchServiceToModel(id string, service *rest_model.ServicePatch) *model.EdgeService {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeService{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -106,10 +112,12 @@ func MapPatchServiceToModel(id string, service *rest_model.ServicePatch) *model.
 }
 
 func MapServiceToRestEntity(ae *env.AppEnv, rc *response.RequestContext, service *model.ServiceDetail) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapServiceToRestModel(ae, rc, service)
 }
 
 func MapServicesToRestEntity(ae *env.AppEnv, rc *response.RequestContext, es []*model.ServiceDetail) ([]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	// can't use modelToApi b/c it require list of network.Entity
 	restModel := make([]interface{}, 0)
 
@@ -127,6 +135,7 @@ func MapServicesToRestEntity(ae *env.AppEnv, rc *response.RequestContext, es []*
 }
 
 func MapServiceToRestModel(ae *env.AppEnv, rc *response.RequestContext, service *model.ServiceDetail) (*rest_model.ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	roleAttributes := rest_model.Attributes(service.RoleAttributes)
 
 	maxIdleTime := service.MaxIdleTime.Milliseconds()
@@ -220,6 +229,7 @@ func MapServiceToRestModel(ae *env.AppEnv, rc *response.RequestContext, service 
 }
 
 func PostureCheckToQueries(check *model.PostureCheck) *rest_model.PostureQuery {
+	logtrace.LogWithFunctionName()
 	isPassing := false
 	queryType := rest_model.PostureCheckType(check.TypeId)
 	ret := &rest_model.PostureQuery{
@@ -249,6 +259,7 @@ func PostureCheckToQueries(check *model.PostureCheck) *rest_model.PostureQuery {
 }
 
 func GetNamedServiceRoles(serviceHandler *model.EdgeServiceManager, roles []string) rest_model.NamedRoles {
+	logtrace.LogWithFunctionName()
 	result := rest_model.NamedRoles{}
 	for _, role := range roles {
 		if strings.HasPrefix(role, "@") {

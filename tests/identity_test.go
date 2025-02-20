@@ -28,6 +28,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	"github.com/golang-jwt/jwt/v5"
@@ -37,6 +38,7 @@ import (
 )
 
 func Test_Identity(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

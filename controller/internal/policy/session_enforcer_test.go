@@ -17,18 +17,21 @@
 package policy
 
 import (
-	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/openziti/storage/boltz"
-	"github.com/openziti/storage/boltztest"
+	"testing"
+	"time"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/openziti/storage/boltz"
+	"github.com/openziti/storage/boltztest"
 	"github.com/sirupsen/logrus"
-	"testing"
-	"time"
 )
 
 func Test_SessionEnforcer(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := &enforcerTestContext{
 		TestContext: model.NewTestContext(t),
 	}
@@ -43,6 +46,7 @@ type enforcerTestContext struct {
 }
 
 func (ctx *enforcerTestContext) testSessionsCleanup() {
+	logtrace.LogWithFunctionName()
 	logrus.SetLevel(logrus.DebugLevel)
 	ctx.CleanupAll()
 
@@ -93,6 +97,7 @@ func (ctx *enforcerTestContext) testSessionsCleanup() {
 }
 
 func NewSession(apiSessionId, serviceId string) *db.Session {
+	logtrace.LogWithFunctionName()
 	return &db.Session{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Token:         eid.New(),

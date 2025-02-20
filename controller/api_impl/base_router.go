@@ -18,7 +18,8 @@ package api_impl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"net/http"
+	"reflect"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
@@ -26,11 +27,12 @@ import (
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"net/http"
-	"reflect"
 )
 
 const (
@@ -42,6 +44,7 @@ type ModelToApiMapper[T models.Entity] interface {
 }
 
 func modelToApi[T models.Entity](network *network.Network, rc api.RequestContext, mapper ModelToApiMapper[T], es []T) ([]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	apiEntities := make([]interface{}, 0)
 
 	for _, e := range es {
@@ -58,14 +61,17 @@ func modelToApi[T models.Entity](network *network.Network, rc api.RequestContext
 }
 
 func ListWithHandler[T models.Entity](n *network.Network, rc api.RequestContext, lister models.EntityRetriever[T], mapper ModelToApiMapper[T]) {
+	logtrace.LogWithFunctionName()
 	ListWithQueryF(n, rc, lister, mapper, lister.BasePreparedList)
 }
 
 func ListWithQueryF[T models.Entity](n *network.Network, rc api.RequestContext, lister models.EntityRetriever[T], mapper ModelToApiMapper[T], qf func(query ast.Query) (*models.EntityListResult[T], error)) {
+	logtrace.LogWithFunctionName()
 	ListWithQueryFAndCollector(n, rc, lister, mapper, defaultToListEnvelope, qf)
 }
 
 func defaultToListEnvelope(data []interface{}, meta *rest_model.Meta) interface{} {
+	logtrace.LogWithFunctionName()
 	return rest_model.Empty{
 		Data: data,
 		Meta: meta,
@@ -76,6 +82,7 @@ type ApiListEnvelopeFactory func(data []interface{}, meta *rest_model.Meta) inte
 type ApiEntityEnvelopeFactory func(data interface{}, meta *rest_model.Meta) interface{}
 
 func ListWithQueryFAndCollector[T models.Entity](n *network.Network, rc api.RequestContext, lister models.EntityRetriever[T], mapper ModelToApiMapper[T], toEnvelope ApiListEnvelopeFactory, qf func(query ast.Query) (*models.EntityListResult[T], error)) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, toEnvelope, func(rc api.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		// validate that the submitted query is only using public symbols. The query options may contain an final
 		// query which has been modified with additional filters
@@ -101,6 +108,7 @@ func ListWithQueryFAndCollector[T models.Entity](n *network.Network, rc api.Requ
 type modelListF func(rc api.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error)
 
 func ListWithEnvelopeFactory(rc api.RequestContext, toEnvelope ApiListEnvelopeFactory, f modelListF) {
+	logtrace.LogWithFunctionName()
 	qo, err := GetModelQueryOptionsFromRequest(rc.GetRequest())
 
 	if err != nil {
@@ -154,10 +162,12 @@ func ListWithEnvelopeFactory(rc api.RequestContext, toEnvelope ApiListEnvelopeFa
 type ModelCreateF func() (string, error)
 
 func Create(rc api.RequestContext, linkFactory CreateLinkFactory, creator ModelCreateF) {
+	logtrace.LogWithFunctionName()
 	CreateWithResponder(rc, linkFactory, creator)
 }
 
 func CreateWithResponder(rsp api.Responder, linkFactory CreateLinkFactory, creator ModelCreateF) {
+	logtrace.LogWithFunctionName()
 	id, err := creator()
 	if err != nil {
 		if boltz.IsErrNotFoundErr(err) {
@@ -183,6 +193,7 @@ func CreateWithResponder(rsp api.Responder, linkFactory CreateLinkFactory, creat
 }
 
 func DetailWithHandler[T models.Entity](network *network.Network, rc api.RequestContext, loader models.EntityRetriever[T], mapper ModelToApiMapper[T]) {
+	logtrace.LogWithFunctionName()
 	Detail(rc, func(rc api.RequestContext, id string) (interface{}, error) {
 		entity, err := loader.BaseLoad(id)
 		if err != nil {
@@ -195,6 +206,7 @@ func DetailWithHandler[T models.Entity](network *network.Network, rc api.Request
 type ModelDetailF func(rc api.RequestContext, id string) (interface{}, error)
 
 func Detail(rc api.RequestContext, f ModelDetailF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -228,16 +240,19 @@ type DeleteHandler interface {
 type DeleteHandlerF func(id string, ctx *change.Context) error
 
 func (self DeleteHandlerF) Delete(id string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self(id, ctx)
 }
 
 func DeleteWithHandler(rc api.RequestContext, deleteHandler DeleteHandler) {
+	logtrace.LogWithFunctionName()
 	Delete(rc, func(rc api.RequestContext, id string) error {
 		return deleteHandler.Delete(id, rc.NewChangeContext())
 	})
 }
 
 func Delete(rc api.RequestContext, deleteF ModelDeleteF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -264,10 +279,12 @@ func Delete(rc api.RequestContext, deleteF ModelDeleteF) {
 type ModelUpdateF func(id string) error
 
 func Update(rc api.RequestContext, updateF ModelUpdateF) {
+	logtrace.LogWithFunctionName()
 	UpdateAllowEmptyBody(rc, updateF)
 }
 
 func UpdateAllowEmptyBody(rc api.RequestContext, updateF ModelUpdateF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -303,6 +320,7 @@ func UpdateAllowEmptyBody(rc api.RequestContext, updateF ModelUpdateF) {
 type ModelPatchF func(id string, fields fields.UpdatedFields) error
 
 func Patch(rc api.RequestContext, patchF ModelPatchF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -345,6 +363,7 @@ func Patch(rc api.RequestContext, patchF ModelPatchF) {
 type listAssocF func(rc api.RequestContext, id string, queryOptions *PublicQueryOptions) (*QueryResult, error)
 
 func ListAssociationWithHandler[T models.Entity, A models.Entity](n *network.Network, rc api.RequestContext, sourceR models.EntityRetriever[T], associatedR models.EntityRetriever[A], mapper ModelToApiMapper[A]) {
+	logtrace.LogWithFunctionName()
 	ListAssociations(rc, func(rc api.RequestContext, id string, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		// validate that the submitted query is only using public symbols. The query options may contain a final
 		// query which has been modified with additional filters
@@ -371,6 +390,7 @@ func ListAssociationWithHandler[T models.Entity, A models.Entity](n *network.Net
 }
 
 func ListAssociations(rc api.RequestContext, listF listAssocF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {

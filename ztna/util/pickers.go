@@ -17,10 +17,13 @@
 package util
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"gopkg.in/AlecAivazis/survey.v1"
 )
 
 func PickValue(message string, defaultValue string, required bool) (string, error) {
+	logtrace.LogWithFunctionName()
 	answer := ""
 	prompt := &survey.Input{
 		Message: message,
@@ -38,6 +41,7 @@ func PickValue(message string, defaultValue string, required bool) (string, erro
 }
 
 func PickNameWithDefault(names []string, message string, defaultValue string) (string, error) {
+	logtrace.LogWithFunctionName()
 	name := ""
 	if len(names) == 0 {
 		return "", nil
@@ -58,5 +62,6 @@ func PickNameWithDefault(names []string, message string, defaultValue string) (s
 }
 
 func PickName(names []string, message string) (string, error) {
+	logtrace.LogWithFunctionName()
 	return PickNameWithDefault(names, message, "")
 }

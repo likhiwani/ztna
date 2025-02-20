@@ -23,11 +23,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewControllerRouter()
 	env.AddRouter(r)
 }
@@ -37,12 +39,14 @@ type ControllerRouter struct {
 }
 
 func NewControllerRouter() *ControllerRouter {
+	logtrace.LogWithFunctionName()
 	return &ControllerRouter{
 		BasePath: "/" + EntityNameController,
 	}
 }
 
 func (r *ControllerRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.ControllersListControllersHandler = controllersMan.ListControllersHandlerFunc(func(params controllersMan.ListControllersParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.ListManagement, params.HTTPRequest, "", "", permissions.IsAuthenticated())
 	})
@@ -53,9 +57,11 @@ func (r *ControllerRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ControllerRouter) ListManagement(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Controller](ae, rc, ae.Managers.Controller, MapControllerToManagementRestEntity)
 }
 
 func (r *ControllerRouter) ListClient(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Controller](ae, rc, ae.Managers.Controller, MapControllerToClientRestEntity)
 }

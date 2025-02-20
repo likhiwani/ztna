@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type CreateDatabaseSnapshotReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *CreateDatabaseSnapshotReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewCreateDatabaseSnapshotOK()
@@ -72,6 +74,7 @@ func (o *CreateDatabaseSnapshotReader) ReadResponse(response runtime.ClientRespo
 
 // NewCreateDatabaseSnapshotOK creates a CreateDatabaseSnapshotOK with default headers values
 func NewCreateDatabaseSnapshotOK() *CreateDatabaseSnapshotOK {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotOK{}
 }
 
@@ -84,13 +87,16 @@ type CreateDatabaseSnapshotOK struct {
 }
 
 func (o *CreateDatabaseSnapshotOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database][%d] createDatabaseSnapshotOK  %+v", 200, o.Payload)
 }
 func (o *CreateDatabaseSnapshotOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -104,6 +110,7 @@ func (o *CreateDatabaseSnapshotOK) readResponse(response runtime.ClientResponse,
 
 // NewCreateDatabaseSnapshotUnauthorized creates a CreateDatabaseSnapshotUnauthorized with default headers values
 func NewCreateDatabaseSnapshotUnauthorized() *CreateDatabaseSnapshotUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type CreateDatabaseSnapshotUnauthorized struct {
 }
 
 func (o *CreateDatabaseSnapshotUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database][%d] createDatabaseSnapshotUnauthorized  %+v", 401, o.Payload)
 }
 func (o *CreateDatabaseSnapshotUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *CreateDatabaseSnapshotUnauthorized) readResponse(response runtime.Clien
 
 // NewCreateDatabaseSnapshotTooManyRequests creates a CreateDatabaseSnapshotTooManyRequests with default headers values
 func NewCreateDatabaseSnapshotTooManyRequests() *CreateDatabaseSnapshotTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type CreateDatabaseSnapshotTooManyRequests struct {
 }
 
 func (o *CreateDatabaseSnapshotTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database][%d] createDatabaseSnapshotTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *CreateDatabaseSnapshotTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

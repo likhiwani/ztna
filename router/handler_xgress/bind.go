@@ -17,6 +17,7 @@
 package handler_xgress
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/metrics"
 	"ztna-core/ztna/router/xgress"
@@ -30,6 +31,7 @@ type bindHandler struct {
 }
 
 func NewBindHandler(receiveHandler xgress.ReceiveHandler, closeHandler xgress.CloseHandler, forwarder *forwarder.Forwarder) *bindHandler {
+	logtrace.LogWithFunctionName()
 	return &bindHandler{
 		receiveHandler:     receiveHandler,
 		closeHandler:       closeHandler,
@@ -39,6 +41,7 @@ func NewBindHandler(receiveHandler xgress.ReceiveHandler, closeHandler xgress.Cl
 }
 
 func (bindHandler *bindHandler) HandleXgressBind(x *xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 	x.SetReceiveHandler(bindHandler.receiveHandler)
 	x.AddPeekHandler(bindHandler.metricsPeekHandler)
 

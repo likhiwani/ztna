@@ -18,27 +18,30 @@ package xgress_edge
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/logtrace"
 	routerEnv "ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress_common"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"sync/atomic"
-	"time"
 )
 
 func newHostedServicesRegistry(env routerEnv.RouterEnv, stateManager state.Manager) *hostedServiceRegistry {
+	logtrace.LogWithFunctionName()
 	result := &hostedServiceRegistry{
 		terminators:  cmap.New[*edgeTerminator](),
 		events:       make(chan terminatorEvent),
@@ -67,6 +70,7 @@ type terminatorEvent interface {
 }
 
 func (self *hostedServiceRegistry) run() {
+	logtrace.LogWithFunctionName()
 	longQueueCheckTicker := time.NewTicker(time.Minute)
 	defer longQueueCheckTicker.Stop()
 
@@ -112,6 +116,7 @@ func (self *hostedServiceRegistry) run() {
 }
 
 func (self *hostedServiceRegistry) triggerEvaluates() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.triggerEvalC <- struct{}{}:
 	default:
@@ -119,6 +124,7 @@ func (self *hostedServiceRegistry) triggerEvaluates() {
 }
 
 func (self *hostedServiceRegistry) evaluateEstablishQueue() {
+	logtrace.LogWithFunctionName()
 	for id, terminator := range self.establishSet {
 		dequeue := func() {
 			delete(self.establishSet, id)
@@ -175,6 +181,7 @@ func (self *hostedServiceRegistry) evaluateEstablishQueue() {
 }
 
 func (self *hostedServiceRegistry) evaluateDeleteQueue() {
+	logtrace.LogWithFunctionName()
 	var deleteList []*edgeTerminator
 
 	for terminatorId, terminator := range self.deleteSet {
@@ -217,6 +224,7 @@ func (self *hostedServiceRegistry) evaluateDeleteQueue() {
 }
 
 func (self *hostedServiceRegistry) RemoveTerminatorsRateLimited(terminators []*edgeTerminator) bool {
+	logtrace.LogWithFunctionName()
 	if self.env.GetCtrlRateLimiter().IsRateLimited() {
 		self.requeueForDeleteSync(terminators)
 		return false
@@ -280,6 +288,7 @@ func (self *hostedServiceRegistry) RemoveTerminatorsRateLimited(terminators []*e
 }
 
 func (self *hostedServiceRegistry) requeueForDeleteSync(terminators []*edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	for _, terminator := range terminators {
 		existing, _ := self.terminators.Get(terminator.terminatorId)
 		if existing == nil || existing == terminator { // make sure we're still the current terminator
@@ -291,6 +300,7 @@ func (self *hostedServiceRegistry) requeueForDeleteSync(terminators []*edgeTermi
 }
 
 func (self *hostedServiceRegistry) RemoveTerminators(terminatorIds []string) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	request := &ctrl_pb.RemoveTerminatorsRequest{
 		TerminatorIds: terminatorIds,
@@ -329,6 +339,7 @@ type queueEstablishTerminator struct {
 }
 
 func (self *queueEstablishTerminator) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	registry.queueEstablishTerminatorSync(self.terminator)
 }
 
@@ -337,6 +348,7 @@ type requeueRemoveTerminator struct {
 }
 
 func (self *requeueRemoveTerminator) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	registry.requeueRemoveTerminatorSync(self.terminator)
 }
 
@@ -346,14 +358,17 @@ type queueRemoveTerminator struct {
 }
 
 func (self *queueRemoveTerminator) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	registry.queueRemoveTerminatorSync(self.terminator, self.reason)
 }
 
 func (self *hostedServiceRegistry) EstablishTerminator(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	self.queueEstablishTerminatorAsync(terminator)
 }
 
 func (self *hostedServiceRegistry) queue(event terminatorEvent) {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.events <- event:
 	case <-self.env.GetCloseNotify():
@@ -362,6 +377,7 @@ func (self *hostedServiceRegistry) queue(event terminatorEvent) {
 }
 
 func (self *hostedServiceRegistry) queueWithTimeout(event terminatorEvent, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.events <- event:
 		return nil
@@ -373,6 +389,7 @@ func (self *hostedServiceRegistry) queueWithTimeout(event terminatorEvent, timeo
 }
 
 func (self *hostedServiceRegistry) queueEstablishTerminatorSync(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	if terminator.IsEstablishing() {
 		terminator.operationActive.Store(false)
 		self.establishSet[terminator.terminatorId] = terminator
@@ -380,12 +397,14 @@ func (self *hostedServiceRegistry) queueEstablishTerminatorSync(terminator *edge
 }
 
 func (self *hostedServiceRegistry) queueEstablishTerminatorAsync(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	self.queue(&queueEstablishTerminator{
 		terminator: terminator,
 	})
 }
 
 func (self *hostedServiceRegistry) queueRemoveTerminatorAsync(terminator *edgeTerminator, reason string) {
+	logtrace.LogWithFunctionName()
 	self.queue(&queueRemoveTerminator{
 		terminator: terminator,
 		reason:     reason,
@@ -393,12 +412,14 @@ func (self *hostedServiceRegistry) queueRemoveTerminatorAsync(terminator *edgeTe
 }
 
 func (self *hostedServiceRegistry) requeueRemoveTerminatorAsync(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	self.queue(&requeueRemoveTerminator{
 		terminator: terminator,
 	})
 }
 
 func (self *hostedServiceRegistry) requeueRemoveTerminatorSync(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	existing, _ := self.terminators.Get(terminator.terminatorId)
 	if existing == nil || existing == terminator && terminator.state.Load() == TerminatorStateDeleting { // make sure we're still the current terminator
 		terminator.operationActive.Store(false)
@@ -407,6 +428,7 @@ func (self *hostedServiceRegistry) requeueRemoveTerminatorSync(terminator *edgeT
 }
 
 func (self *hostedServiceRegistry) queueRemoveTerminatorSync(terminator *edgeTerminator, reason string) {
+	logtrace.LogWithFunctionName()
 	existing, _ := self.terminators.Get(terminator.terminatorId)
 	if existing == nil || existing == terminator { // make sure we're still the current terminator
 		self.queueRemoveTerminatorUnchecked(terminator, reason)
@@ -414,12 +436,14 @@ func (self *hostedServiceRegistry) queueRemoveTerminatorSync(terminator *edgeTer
 }
 
 func (self *hostedServiceRegistry) queueRemoveTerminatorUnchecked(terminator *edgeTerminator, reason string) {
+	logtrace.LogWithFunctionName()
 	terminator.setState(TerminatorStateDeleting, reason)
 	terminator.operationActive.Store(false)
 	self.deleteSet[terminator.terminatorId] = terminator
 }
 
 func (self *hostedServiceRegistry) markEstablished(terminator *edgeTerminator, reason string) {
+	logtrace.LogWithFunctionName()
 	self.queue(&markEstablishedEvent{
 		terminator: terminator,
 		reason:     reason,
@@ -427,6 +451,7 @@ func (self *hostedServiceRegistry) markEstablished(terminator *edgeTerminator, r
 }
 
 func (self *hostedServiceRegistry) scanForRetries() {
+	logtrace.LogWithFunctionName()
 	var retryList []*edgeTerminator
 
 	self.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
@@ -447,22 +472,27 @@ func (self *hostedServiceRegistry) scanForRetries() {
 }
 
 func (self *hostedServiceRegistry) PutV1(token string, terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	self.terminators.Set(token, terminator)
 }
 
 func (self *hostedServiceRegistry) Put(terminator *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	self.terminators.Set(terminator.terminatorId, terminator)
 }
 
 func (self *hostedServiceRegistry) Get(terminatorId string) (*edgeTerminator, bool) {
+	logtrace.LogWithFunctionName()
 	return self.terminators.Get(terminatorId)
 }
 
 func (self *hostedServiceRegistry) Delete(terminatorId string) {
+	logtrace.LogWithFunctionName()
 	self.terminators.Remove(terminatorId)
 }
 
 func (self *hostedServiceRegistry) Remove(terminator *edgeTerminator, reason string) bool {
+	logtrace.LogWithFunctionName()
 	removed := self.terminators.RemoveCb(terminator.terminatorId, func(key string, v *edgeTerminator, exists bool) bool {
 		return v == terminator
 	})
@@ -475,12 +505,14 @@ func (self *hostedServiceRegistry) Remove(terminator *edgeTerminator, reason str
 }
 
 func (self *hostedServiceRegistry) cleanupServices(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.queue(&channelClosedEvent{
 		ch: ch,
 	})
 }
 
 func (self *hostedServiceRegistry) cleanupDuplicates(newest *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	var toClose []*edgeTerminator
 	self.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
 		if terminator != newest && newest.token == terminator.token && newest.instance == terminator.instance {
@@ -500,6 +532,7 @@ func (self *hostedServiceRegistry) cleanupDuplicates(newest *edgeTerminator) {
 }
 
 func (self *hostedServiceRegistry) unbindSession(connId uint32, sessionToken string, proxy *edgeClientConn) bool {
+	logtrace.LogWithFunctionName()
 	var toClose []*edgeTerminator
 	self.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
 		if terminator.MsgChannel.Id() == connId && terminator.token == sessionToken && terminator.edgeClientConn == proxy {
@@ -521,6 +554,7 @@ func (self *hostedServiceRegistry) unbindSession(connId uint32, sessionToken str
 }
 
 func (self *hostedServiceRegistry) getRelatedTerminators(connId uint32, sessionToken string, proxy *edgeClientConn) []*edgeTerminator {
+	logtrace.LogWithFunctionName()
 	var related []*edgeTerminator
 	self.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
 		if terminator.MsgChannel.Id() == connId && terminator.token == sessionToken && terminator.edgeClientConn == proxy {
@@ -532,6 +566,7 @@ func (self *hostedServiceRegistry) getRelatedTerminators(connId uint32, sessionT
 }
 
 func (self *hostedServiceRegistry) establishTerminator(terminator *edgeTerminator) error {
+	logtrace.LogWithFunctionName()
 	factory := terminator.edgeClientConn.listener.factory
 
 	log := pfxlog.Logger().
@@ -581,6 +616,7 @@ func (self *hostedServiceRegistry) establishTerminator(terminator *edgeTerminato
 }
 
 func (self *hostedServiceRegistry) HandleCreateTerminatorResponse(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	defer self.triggerEvaluates()
 
 	log := pfxlog.Logger().WithField("routerId", self.env.GetRouterId().Token)
@@ -635,6 +671,7 @@ func (self *hostedServiceRegistry) HandleCreateTerminatorResponse(msg *channel.M
 }
 
 func (self *hostedServiceRegistry) HandleReconnect() {
+	logtrace.LogWithFunctionName()
 	var restablishList []*edgeTerminator
 	self.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
 		if terminator.updateState(TerminatorStateEstablished, TerminatorStateEstablishing, "reconnecting") {
@@ -653,6 +690,7 @@ func (self *hostedServiceRegistry) HandleReconnect() {
 }
 
 func (self *hostedServiceRegistry) Inspect(timeout time.Duration) *inspect.SdkTerminatorInspectResult {
+	logtrace.LogWithFunctionName()
 	evt := &inspectTerminatorsEvent{
 		result: atomic.Pointer[[]*inspect.SdkTerminatorInspectDetail]{},
 		done:   make(chan struct{}),
@@ -674,6 +712,7 @@ func (self *hostedServiceRegistry) Inspect(timeout time.Duration) *inspect.SdkTe
 }
 
 func (self *hostedServiceRegistry) checkForExistingListenerId(terminator *edgeTerminator) (listenerIdCheckResult, error) {
+	logtrace.LogWithFunctionName()
 	defaultResult := listenerIdCheckResult{
 		replaceExisting: false,
 		terminator:      terminator,
@@ -718,6 +757,7 @@ func (self *hostedServiceRegistry) checkForExistingListenerId(terminator *edgeTe
 }
 
 func (self *hostedServiceRegistry) handleSdkReturnedInvalid(terminator *edgeTerminator, notifyCtrl bool) invalidTerminatorRemoveResult {
+	logtrace.LogWithFunctionName()
 	event := &sdkTerminatorInvalidEvent{
 		terminator: terminator,
 		resultC:    make(chan invalidTerminatorRemoveResult, 1),
@@ -748,6 +788,7 @@ type inspectTerminatorsEvent struct {
 }
 
 func (self *inspectTerminatorsEvent) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	var result []*inspect.SdkTerminatorInspectDetail
 	registry.terminators.IterCb(func(key string, terminator *edgeTerminator) {
 		detail := &inspect.SdkTerminatorInspectDetail{
@@ -774,6 +815,7 @@ func (self *inspectTerminatorsEvent) handle(registry *hostedServiceRegistry) {
 }
 
 func (self *inspectTerminatorsEvent) GetResults(timeout time.Duration) ([]*inspect.SdkTerminatorInspectDetail, error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case <-self.done:
 		return *self.result.Load(), nil
@@ -787,6 +829,7 @@ type channelClosedEvent struct {
 }
 
 func (self *channelClosedEvent) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	registry.terminators.IterCb(func(_ string, terminator *edgeTerminator) {
 		if terminator.MsgChannel.Channel == self.ch {
 			if terminator.v2 {
@@ -813,6 +856,7 @@ type findMatchingEvent struct {
 }
 
 func (self *findMatchingEvent) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	if !self.cancelGate.CompareAndSwap(false, true) {
 		return
 	}
@@ -907,10 +951,12 @@ type sdkTerminatorInvalidEvent struct {
 }
 
 func (self *sdkTerminatorInvalidEvent) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	self.resultC <- self.removeTerminator(registry)
 }
 
 func (self *sdkTerminatorInvalidEvent) removeTerminator(registry *hostedServiceRegistry) invalidTerminatorRemoveResult {
+	logtrace.LogWithFunctionName()
 	existing, _ := registry.terminators.Get(self.terminator.terminatorId)
 
 	if existing == nil {
@@ -959,6 +1005,7 @@ type markEstablishedEvent struct {
 }
 
 func (self *markEstablishedEvent) handle(registry *hostedServiceRegistry) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("routerId", registry.env.GetRouterId().Token).
 		WithField("terminatorId", self.terminator.terminatorId).

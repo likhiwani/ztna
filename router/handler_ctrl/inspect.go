@@ -19,18 +19,20 @@ package handler_ctrl
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/debugz"
+	"strings"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/debugz"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
-	"strings"
-	"time"
 )
 
 type inspectHandler struct {
@@ -39,6 +41,7 @@ type inspectHandler struct {
 }
 
 func newInspectHandler(env env.RouterEnv, fwd *forwarder.Forwarder) *inspectHandler {
+	logtrace.LogWithFunctionName()
 	return &inspectHandler{
 		env: env,
 		fwd: fwd,
@@ -46,10 +49,12 @@ func newInspectHandler(env env.RouterEnv, fwd *forwarder.Forwarder) *inspectHand
 }
 
 func (*inspectHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_InspectRequestType)
 }
 
 func (handler *inspectHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	context := &inspectRequestContext{
 		handler:  handler,
 		msg:      msg,
@@ -81,6 +86,7 @@ type inspectRequestContext struct {
 }
 
 func (context *inspectRequestContext) processLocal() {
+	logtrace.LogWithFunctionName()
 	for _, requested := range context.request.RequestedValues {
 		lc := strings.ToLower(requested)
 		if lc == "stackdump" {
@@ -158,6 +164,7 @@ func (context *inspectRequestContext) processLocal() {
 }
 
 func (context *inspectRequestContext) handleJsonResponse(key string, val interface{}) {
+	logtrace.LogWithFunctionName()
 	js, err := json.Marshal(val)
 	if err != nil {
 		context.appendError(errors.Wrapf(err, "failed to marshall %s to json", key).Error())
@@ -167,6 +174,7 @@ func (context *inspectRequestContext) handleJsonResponse(key string, val interfa
 }
 
 func (context *inspectRequestContext) sendResponse() {
+	logtrace.LogWithFunctionName()
 	body, err := proto.Marshal(context.response)
 	if err != nil {
 		pfxlog.Logger().WithError(err).Error("unexpected error serializing InspectResponse")
@@ -181,6 +189,7 @@ func (context *inspectRequestContext) sendResponse() {
 }
 
 func (context *inspectRequestContext) appendValue(name string, value string) {
+	logtrace.LogWithFunctionName()
 	context.response.Values = append(context.response.Values, &ctrl_pb.InspectResponse_InspectValue{
 		Name:  name,
 		Value: value,
@@ -188,6 +197,7 @@ func (context *inspectRequestContext) appendValue(name string, value string) {
 }
 
 func (context *inspectRequestContext) appendError(err string) {
+	logtrace.LogWithFunctionName()
 	context.response.Success = false
 	context.response.Errors = append(context.response.Errors, err)
 }

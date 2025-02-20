@@ -18,14 +18,17 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"github.com/sirupsen/logrus"
 	"path/filepath"
 	"strings"
+	"ztna-core/ztna/logtrace"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 func getZitiProcessFilter(c *model.Component, zitiType string) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		matches := strings.Contains(s, "ziti") &&
 			strings.Contains(s, zitiType) &&
@@ -36,6 +39,7 @@ func getZitiProcessFilter(c *model.Component, zitiType string) func(string) bool
 }
 
 func startZitiComponent(c *model.Component, zitiType string, version string, configName string, extraArgs string) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := GetZitiBinaryPath(c, version)
@@ -67,6 +71,7 @@ func startZitiComponent(c *model.Component, zitiType string, version string, con
 }
 
 func canonicalizeGoAppVersion(version *string) {
+	logtrace.LogWithFunctionName()
 	if version != nil {
 		if *version != "" && *version != "latest" && !strings.HasPrefix(*version, "v") {
 			*version = "v" + *version
@@ -75,10 +80,12 @@ func canonicalizeGoAppVersion(version *string) {
 }
 
 func GetZitiBinaryPath(c *model.Component, version string) string {
+	logtrace.LogWithFunctionName()
 	return getBinaryPath(c, "ziti", version)
 }
 
 func getBinaryPath(c *model.Component, binaryName string, version string) string {
+	logtrace.LogWithFunctionName()
 	if version != "" {
 		binaryName += "-" + version
 	}
@@ -87,6 +94,7 @@ func getBinaryPath(c *model.Component, binaryName string, version string) string
 }
 
 func reEnrollIdentity(run model.Run, c *model.Component, zitiBinaryPath string, configPath string) error {
+	logtrace.LogWithFunctionName()
 	if err := zitilib_actions.EdgeExec(run.GetModel(), "delete", "authenticator", "where", fmt.Sprintf("identity=\"%v\"", c.Id)); err != nil {
 		return err
 	}
@@ -116,6 +124,7 @@ func reEnrollIdentity(run model.Run, c *model.Component, zitiBinaryPath string, 
 }
 
 func setupDnsForTunneler(c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	key := "ziti_tunnel.resolve_setup_done"
 	if _, found := c.Host.Data[key]; !found {
 		cmds := []string{

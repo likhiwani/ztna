@@ -16,27 +16,34 @@
 
 package link
 
+import "ztna-core/ztna/logtrace"
+
 type linkStateHeap []*linkState
 
 func (self linkStateHeap) Len() int {
+	logtrace.LogWithFunctionName()
 	return len(self)
 }
 
 func (self linkStateHeap) Less(i, j int) bool {
+	logtrace.LogWithFunctionName()
 	return self[i].nextDial.Before(self[j].nextDial)
 }
 
 func (self linkStateHeap) Swap(i, j int) {
+	logtrace.LogWithFunctionName()
 	tmp := self[i]
 	self[i] = self[j]
 	self[j] = tmp
 }
 
 func (self *linkStateHeap) Push(x any) {
+	logtrace.LogWithFunctionName()
 	*self = append(*self, x.(*linkState))
 }
 
 func (self *linkStateHeap) Pop() any {
+	logtrace.LogWithFunctionName()
 	old := *self
 	n := len(old)
 	pm := old[n-1]

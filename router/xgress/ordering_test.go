@@ -2,13 +2,15 @@ package xgress
 
 import (
 	"encoding/binary"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
-	"github.com/stretchr/testify/require"
 	"io"
 	"sync/atomic"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
+	"github.com/stretchr/testify/require"
 )
 
 type testConn struct {
@@ -18,6 +20,7 @@ type testConn struct {
 }
 
 func (conn *testConn) Close() error {
+	logtrace.LogWithFunctionName()
 	if conn.closed.CompareAndSwap(false, true) {
 		close(conn.closeNotify)
 	}
@@ -25,45 +28,57 @@ func (conn *testConn) Close() error {
 }
 
 func (conn *testConn) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (conn *testConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	<-conn.closeNotify
 	return nil, nil, io.EOF
 }
 
 func (conn *testConn) WritePayload(bytes []byte, _ map[uint8][]byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	val := binary.LittleEndian.Uint64(bytes)
 	conn.ch <- val
 	return len(bytes), nil
 }
 
 func (conn *testConn) HandleControlMsg(ControlType, channel.Headers, ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 type noopForwarder struct{}
 
 func (n noopForwarder) ForwardPayload(Address, *Payload) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (n noopForwarder) ForwardAcknowledgement(Address, *Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (n noopForwarder) RetransmitPayload(Address, *Payload) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 type noopReceiveHandler struct{}
 
-func (n noopReceiveHandler) HandleXgressReceive(*Payload, *Xgress) {}
+func (n noopReceiveHandler) HandleXgressReceive(*Payload, *Xgress) {
+	logtrace.LogWithFunctionName()
+}
 
-func (n noopReceiveHandler) HandleControlReceive(*Control, *Xgress) {}
+func (n noopReceiveHandler) HandleControlReceive(*Control, *Xgress) {
+	logtrace.LogWithFunctionName()
+}
 
 func Test_Ordering(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	metricsRegistry := metrics.NewUsageRegistry("test", map[string]string{}, closeNotify)
 	InitPayloadIngester(closeNotify)

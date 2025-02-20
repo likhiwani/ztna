@@ -20,6 +20,7 @@ import (
 	"crypto"
 	"crypto/x509"
 	"fmt"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 // Bundle represents a pair of private key and certificate.
@@ -31,6 +32,7 @@ type Bundle struct {
 
 // Raw returns the raw bytes for the private key and certificate.
 func (b *Bundle) Raw() ([]byte, []byte) {
+	logtrace.LogWithFunctionName()
 	keyBytes, _ := x509.MarshalPKCS8PrivateKey(b.Key)
 	return keyBytes, b.Cert.Raw
 }
@@ -38,6 +40,7 @@ func (b *Bundle) Raw() ([]byte, []byte) {
 // RawToBundle creates a bundle from the name and bytes given for a private key
 // and a certificate.
 func RawToBundle(name string, key []byte, cert []byte) (*Bundle, error) {
+	logtrace.LogWithFunctionName()
 	k, err := x509.ParsePKCS8PrivateKey(key)
 	if err != nil {
 		//previous versions may have stored private keys as PKCS1 (aka RSA only) try as a secondary action

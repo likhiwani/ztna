@@ -21,6 +21,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityNameIdentityType = "identity-types"
@@ -28,10 +29,12 @@ const EntityNameIdentityType = "identity-types"
 var IdentityTypeLinkFactory = NewBasicLinkFactory(EntityNameIdentityType)
 
 func MapIdentityTypeToRestEntity(_ *env.AppEnv, _ *response.RequestContext, identityType *model.IdentityType) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapIdentityTypeToRestModel(identityType), nil
 }
 
 func MapIdentityTypeToRestModel(identityType *model.IdentityType) *rest_model.IdentityTypeDetail {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.IdentityTypeDetail{
 		BaseEntity: BaseEntityToRestModel(identityType, IdentityTypeLinkFactory),
 		Name:       identityType.Name,

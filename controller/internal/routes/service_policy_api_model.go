@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/stringz"
 )
@@ -35,12 +36,14 @@ type ServicePolicyLinkFactoryImpl struct {
 }
 
 func NewServicePolicyLinkFactory() *ServicePolicyLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &ServicePolicyLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameServicePolicy),
 	}
 }
 
 func (factory *ServicePolicyLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameService] = factory.NewNestedLink(entity, EntityNameService)
 	links[EntityNameIdentity] = factory.NewNestedLink(entity, EntityNameIdentity)
@@ -50,6 +53,7 @@ func (factory *ServicePolicyLinkFactoryImpl) Links(entity models.Entity) rest_mo
 }
 
 func MapCreateServicePolicyToModel(policy *rest_model.ServicePolicyCreate) *model.ServicePolicy {
+	logtrace.LogWithFunctionName()
 	semantic := ""
 	if policy.Semantic != nil {
 		semantic = string(*policy.Semantic)
@@ -71,6 +75,7 @@ func MapCreateServicePolicyToModel(policy *rest_model.ServicePolicyCreate) *mode
 }
 
 func MapUpdateServicePolicyToModel(id string, policy *rest_model.ServicePolicyUpdate) *model.ServicePolicy {
+	logtrace.LogWithFunctionName()
 	semantic := ""
 	if policy.Semantic != nil {
 		semantic = string(*policy.Semantic)
@@ -93,6 +98,7 @@ func MapUpdateServicePolicyToModel(id string, policy *rest_model.ServicePolicyUp
 }
 
 func MapPatchServicePolicyToModel(id string, policy *rest_model.ServicePolicyPatch) *model.ServicePolicy {
+	logtrace.LogWithFunctionName()
 	ret := &model.ServicePolicy{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(policy.Tags),
@@ -110,10 +116,12 @@ func MapPatchServicePolicyToModel(id string, policy *rest_model.ServicePolicyPat
 }
 
 func MapServicePolicyToRestEntity(ae *env.AppEnv, _ *response.RequestContext, policy *model.ServicePolicy) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapServicePolicyToRestModel(ae, policy), nil
 }
 
 func MapServicePolicyToRestModel(ae *env.AppEnv, policy *model.ServicePolicy) *rest_model.ServicePolicyDetail {
+	logtrace.LogWithFunctionName()
 	semantic := rest_model.Semantic(policy.Semantic)
 	dialBindType := rest_model.DialBind(policy.PolicyType)
 

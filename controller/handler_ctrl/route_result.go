@@ -19,12 +19,14 @@ package handler_ctrl
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -35,6 +37,7 @@ type routeResultHandler struct {
 }
 
 func newRouteResultHandler(network *network.Network, r *model.Router) *routeResultHandler {
+	logtrace.LogWithFunctionName()
 	return &routeResultHandler{
 		network: network,
 		r:       r,
@@ -42,14 +45,17 @@ func newRouteResultHandler(network *network.Network, r *model.Router) *routeResu
 }
 
 func (self *routeResultHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return ctrl_msg.RouteResultType
 }
 
 func (self *routeResultHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go self.handleRouteResult(msg)
 }
 
 func (self *routeResultHandler) handleRouteResult(msg *channel.Message) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("routerId", self.r.Id)
 	if v, found := msg.Headers[ctrl_msg.RouteResultAttemptHeader]; found {
 		_, success := msg.Headers[ctrl_msg.RouteResultSuccessHeader]
@@ -93,6 +99,7 @@ func (self *routeResultHandler) handleRouteResult(msg *channel.Message) {
 }
 
 func (self *routeResultHandler) notRoutingCircuit(circuitId string) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("circuitId", circuitId).
 		WithField("routerId", self.r.Id)
 	log.Warn("not routing circuit (and not smart re-route), sending unroute")

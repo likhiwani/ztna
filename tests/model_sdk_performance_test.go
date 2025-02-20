@@ -17,13 +17,15 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	idloader "github.com/openziti/identity"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/rcrowley/go-metrics"
 )
 
@@ -32,6 +34,7 @@ type modelPerf struct {
 }
 
 func Test_SpecManyService(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "many-services",
 		serviceCount:                 10_000,
@@ -47,6 +50,7 @@ func Test_SpecManyService(t *testing.T) {
 }
 
 func Test_SpecLarge(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "large",
 		serviceCount:                 2000,
@@ -62,6 +66,7 @@ func Test_SpecLarge(t *testing.T) {
 }
 
 func Test_SpecMedium(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "medium",
 		serviceCount:                 100,
@@ -77,6 +82,7 @@ func Test_SpecMedium(t *testing.T) {
 }
 
 func Test_SpecCurrent(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "medium",
 		serviceCount:                 2,
@@ -92,6 +98,7 @@ func Test_SpecCurrent(t *testing.T) {
 }
 
 func Test_SpecSmall(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "small",
 		serviceCount:                 20,
@@ -107,6 +114,7 @@ func Test_SpecSmall(t *testing.T) {
 }
 
 func Test_SpecBaseline(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	spec := &perfScenarioSpec{
 		name:                         "baseline",
 		serviceCount:                 1,
@@ -147,12 +155,14 @@ type perfScenarioSpec struct {
 }
 
 func (spec *perfScenarioSpec) generateAllRoleAttributes() {
+	logtrace.LogWithFunctionName()
 	spec.serviceAttrs, spec.serviceAttrSet = spec.generateRoleAttributes(spec.serviceCount)
 	spec.identityAttrs, spec.identityAttrSet = spec.generateRoleAttributes(spec.identityCount)
 	spec.edgeRouterAttrs, spec.edgeRouterAttrSet = spec.generateRoleAttributes(spec.edgeRouterCount)
 }
 
 func (spec *perfScenarioSpec) generateRoleAttributes(count int) ([][]string, []string) {
+	logtrace.LogWithFunctionName()
 	result := make([][]string, count)
 	if count < 2 {
 		return result, nil
@@ -188,6 +198,7 @@ func (spec *perfScenarioSpec) generateRoleAttributes(count int) ([][]string, []s
 }
 
 func (ctx *modelPerf) runScenario(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	shutdown := false
 	defer func() {
 		if !shutdown {
@@ -224,6 +235,7 @@ func (ctx *modelPerf) runScenario(spec *perfScenarioSpec) {
 // randomly assign role attributes  to 1/2, 1/4, 1/8, then do permutations of those with both anyof and allof
 // When more groups are needed, create more sets of 1/2, 1/4, 1/8 and 1/16
 func (ctx *modelPerf) createScenario(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	spec.generateAllRoleAttributes()
 	ctx.createServices(spec)
 	ctx.createIdentities(spec)
@@ -232,6 +244,7 @@ func (ctx *modelPerf) createScenario(spec *perfScenarioSpec) {
 }
 
 func (ctx *modelPerf) createServices(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	serviceHandler := ctx.EdgeController.AppEnv.Managers.EdgeService
 	for i := 0; i < spec.serviceCount; i++ {
 		id := eid.New()
@@ -255,6 +268,7 @@ func (ctx *modelPerf) createServices(spec *perfScenarioSpec) {
 }
 
 func (ctx *modelPerf) createIdentities(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	identityHandler := ctx.EdgeController.AppEnv.Managers.Identity
 	for i := 0; i < spec.identityCount; i++ {
 		id := eid.New()
@@ -294,6 +308,7 @@ func (ctx *modelPerf) createIdentities(spec *perfScenarioSpec) {
 }
 
 func (ctx *modelPerf) createEdgeRouters(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	edgeRouterHandler := ctx.EdgeController.AppEnv.Managers.EdgeRouter
 	for i := 0; i < spec.edgeRouterCount; i++ {
 		id := eid.New()
@@ -316,6 +331,7 @@ func (ctx *modelPerf) createEdgeRouters(spec *perfScenarioSpec) {
 }
 
 func (ctx *modelPerf) createPolicies(spec *perfScenarioSpec) {
+	logtrace.LogWithFunctionName()
 	ctx.createServicePolicy("Dial", s("@"+spec.services[0].Id), s("#all"))
 	ctx.createServicePolicy("Dial", s("#all"), s("@"+spec.identities[0].Id))
 
@@ -351,6 +367,7 @@ func (ctx *modelPerf) createPolicies(spec *perfScenarioSpec) {
 }
 
 func (ctx *modelPerf) createServicePolicy(policyType string, identityRoles, serviceRoles []string) {
+	logtrace.LogWithFunctionName()
 	policyHandler := ctx.EdgeController.AppEnv.Managers.ServicePolicy
 	id := eid.New()
 	policy := &model.ServicePolicy{
@@ -365,6 +382,7 @@ func (ctx *modelPerf) createServicePolicy(policyType string, identityRoles, serv
 }
 
 func (ctx *modelPerf) createEdgeRouterPolicy(identityRoles, edgeRouterRoles []string) {
+	logtrace.LogWithFunctionName()
 	policyHandler := ctx.EdgeController.AppEnv.Managers.EdgeRouterPolicy
 	id := eid.New()
 	policy := &model.EdgeRouterPolicy{
@@ -378,6 +396,7 @@ func (ctx *modelPerf) createEdgeRouterPolicy(identityRoles, edgeRouterRoles []st
 }
 
 func (ctx *modelPerf) createServiceEdgeRouterPolicy(edgeRouterRoles, serviceRoles []string) {
+	logtrace.LogWithFunctionName()
 	policyHandler := ctx.EdgeController.AppEnv.Managers.ServiceEdgeRouterPolicy
 	id := eid.New()
 	policy := &model.ServiceEdgeRouterPolicy{
@@ -391,6 +410,7 @@ func (ctx *modelPerf) createServiceEdgeRouterPolicy(edgeRouterRoles, serviceRole
 }
 
 func (ctx *modelPerf) firstNPermuations(n int, v []string) [][]string {
+	logtrace.LogWithFunctionName()
 	var result [][]string
 	ctx.permutations(v, func(strings []string) bool {
 		result = append(result, strings)
@@ -406,10 +426,12 @@ func (ctx *modelPerf) firstNPermuations(n int, v []string) [][]string {
 }
 
 func (ctx *modelPerf) permutations(v []string, f func([]string) bool) {
+	logtrace.LogWithFunctionName()
 	ctx.permutationWith([]string{}, v, f)
 }
 
 func (ctx *modelPerf) permutationWith(base, v []string, f func([]string) bool) bool {
+	logtrace.LogWithFunctionName()
 	for i := 0; i < len(v); i++ {
 		var result []string
 		if len(base) > 0 {
@@ -427,10 +449,12 @@ func (ctx *modelPerf) permutationWith(base, v []string, f func([]string) bool) b
 }
 
 func newHistogram() metrics.Histogram {
+	logtrace.LogWithFunctionName()
 	return metrics.NewHistogram(metrics.NewExpDecaySample(128, 0.015))
 }
 
 func newPerfStats(ctx *TestContext, config *ziti.Config, description string, serviceId string, sessionType rest_model.DialBind) *perfStats {
+	logtrace.LogWithFunctionName()
 	zitiUrl, err := url.Parse(config.ZtAPI)
 	ctx.Req.NoError(err)
 
@@ -477,6 +501,7 @@ type perfStats struct {
 }
 
 func (s *perfStats) dumpStatsToStdOut() {
+	logtrace.LogWithFunctionName()
 	errWriter := &WriterWrapper{
 		Writer: os.Stdout,
 	}
@@ -485,6 +510,7 @@ func (s *perfStats) dumpStatsToStdOut() {
 }
 
 func (s *perfStats) dumpStats(w ErrorWriter) {
+	logtrace.LogWithFunctionName()
 	w.Println(s.description)
 	w.Println("=======================================")
 	s.logHistogram(w, "Create API Session", s.createApiSession)
@@ -495,6 +521,7 @@ func (s *perfStats) dumpStats(w ErrorWriter) {
 }
 
 func (s *perfStats) logHistogram(w ErrorWriter, name string, h metrics.Histogram) {
+	logtrace.LogWithFunctionName()
 	w.Printf("%v:\n", name)
 	w.Printf("\tMin  : %vms\n", h.Min())
 	w.Printf("\tMax  : %vms\n", h.Max())
@@ -503,6 +530,7 @@ func (s *perfStats) logHistogram(w ErrorWriter, name string, h metrics.Histogram
 }
 
 func (s *perfStats) collectStats(iterations int) {
+	logtrace.LogWithFunctionName()
 	s.repeat(iterations, s.timeCreateApiSession)
 	s.repeat(iterations, s.timeRefreshApiSession)
 	s.repeat(iterations, s.timeGetServices)
@@ -510,18 +538,21 @@ func (s *perfStats) collectStats(iterations int) {
 }
 
 func (s *perfStats) repeat(n int, f func()) {
+	logtrace.LogWithFunctionName()
 	for i := 0; i < n; i++ {
 		f()
 	}
 }
 
 func (s *perfStats) time(h metrics.Histogram, f func()) {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	f()
 	h.Update(time.Now().Sub(start).Milliseconds())
 }
 
 func (s *perfStats) timeCreateApiSession() {
+	logtrace.LogWithFunctionName()
 	s.time(s.createApiSession, func() {
 		_, err := s.client.Authenticate(s.credentials)
 		s.Req.NoError(err)
@@ -529,6 +560,7 @@ func (s *perfStats) timeCreateApiSession() {
 }
 
 func (s *perfStats) timeRefreshApiSession() {
+	logtrace.LogWithFunctionName()
 	s.time(s.createApiSession, func() {
 		params := current_api_session.NewGetCurrentAPISessionParams()
 		_, err := s.client.API.CurrentAPISession.GetCurrentAPISession(params, nil)
@@ -537,6 +569,7 @@ func (s *perfStats) timeRefreshApiSession() {
 }
 
 func (s *perfStats) timeGetServices() {
+	logtrace.LogWithFunctionName()
 	s.time(s.getServices, func() {
 		params := service2.NewListServicesParams()
 		params.Limit = I(500)
@@ -546,6 +579,7 @@ func (s *perfStats) timeGetServices() {
 }
 
 func (s *perfStats) timeCreateSession() {
+	logtrace.LogWithFunctionName()
 	s.time(s.createSession, func() {
 		//session, err := s.client.CreateSession(s.serviceId, s.sessionType)
 
@@ -578,19 +612,23 @@ type WriterWrapper struct {
 }
 
 func (w *WriterWrapper) Print(s string) {
+	logtrace.LogWithFunctionName()
 	w.Write([]byte(s))
 }
 
 func (w *WriterWrapper) Println(s string) {
+	logtrace.LogWithFunctionName()
 	w.Write([]byte(s))
 	w.Write([]byte("\n"))
 }
 
 func (w *WriterWrapper) Printf(s string, args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	w.Write([]byte(fmt.Sprintf(s, args...)))
 }
 
 func (w *WriterWrapper) Write(b []byte) int {
+	logtrace.LogWithFunctionName()
 	if !w.HasError() {
 		n, err := w.Writer.Write(b)
 		w.SetError(err)

@@ -18,14 +18,16 @@ package api_impl
 
 import (
 	"encoding/json"
+	"strings"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_model"
-	"strings"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityNameInspect = "inspections"
 
 func MapInspectResultToRestModel(n *network.Network, inspectResult *network.InspectResult) *rest_model.InspectResponse {
+	logtrace.LogWithFunctionName()
 	resp := &rest_model.InspectResponse{
 		Errors:  inspectResult.Errors,
 		Success: &inspectResult.Success,

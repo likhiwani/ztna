@@ -6,15 +6,18 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/common/getziti"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
 func StageZitiOnce(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	op := "install.ziti-"
 	if version == "" {
 		op += "local"
@@ -28,6 +31,7 @@ func StageZitiOnce(run model.Run, component *model.Component, version string, so
 }
 
 func StageZrokOnce(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	op := "install.zrok-"
 	if version == "" {
 		op += "local"
@@ -41,6 +45,7 @@ func StageZrokOnce(run model.Run, component *model.Component, version string, so
 }
 
 func StageCaddyOnce(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	op := "install.caddy-"
 	if version == "" {
 		op += "local"
@@ -54,6 +59,7 @@ func StageCaddyOnce(run model.Run, component *model.Component, version string, s
 }
 
 func StageZitiEdgeTunnelOnce(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	op := "install.ziti-edge-tunnel-"
 	if version == "" {
 		op += "local"
@@ -67,24 +73,28 @@ func StageZitiEdgeTunnelOnce(run model.Run, component *model.Component, version 
 }
 
 func StageZiti(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	return StageExecutable(run, "ziti", component, version, source, func() error {
 		return getziti.InstallZiti(version, "linux", "amd64", run.GetBinDir(), false)
 	})
 }
 
 func StageZrok(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	return StageExecutable(run, "zrok", component, version, source, func() error {
 		return getziti.InstallZrok(version, "linux", "amd64", run.GetBinDir(), false)
 	})
 }
 
 func StageCaddy(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	return StageExecutable(run, "caddy", component, version, source, func() error {
 		return getziti.InstallCaddy(version, "linux", "amd64", run.GetBinDir(), false)
 	})
 }
 
 func StageLocalOnce(run model.Run, executable string, component *model.Component, source string) error {
+	logtrace.LogWithFunctionName()
 	op := fmt.Sprintf("install.%s-local", executable)
 	return run.DoOnce(op, func() error {
 		return StageExecutable(run, executable, component, "", source, func() error {
@@ -94,6 +104,7 @@ func StageLocalOnce(run model.Run, executable string, component *model.Component
 }
 
 func StageExecutable(run model.Run, executable string, component *model.Component, version string, source string, fallbackF func() error) error {
+	logtrace.LogWithFunctionName()
 	fileName := executable
 	if version != "" {
 		fileName += "-" + version
@@ -138,6 +149,7 @@ func StageExecutable(run model.Run, executable string, component *model.Componen
 }
 
 func StageZitiEdgeTunnel(run model.Run, component *model.Component, version string, source string) error {
+	logtrace.LogWithFunctionName()
 	fileName := "ziti-edge-tunnel"
 	if version != "" {
 		fileName += "-" + version

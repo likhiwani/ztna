@@ -18,12 +18,15 @@ package tests
 
 import (
 	"fmt"
-	"ztna-core/ztna/zititest/models/smoke"
-	"github.com/stretchr/testify/require"
 	"testing"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/smoke"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestIPerf(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("iperf-tests", func(t *testing.T) {
 		t.Run("ert-hosted", func(t *testing.T) {
 			t.Parallel()
@@ -64,6 +67,7 @@ func TestIPerf(t *testing.T) {
 }
 
 func testIPerf(t *testing.T, hostSelector string, hostType string, encrypted bool, reversed bool) bool {
+	logtrace.LogWithFunctionName()
 	encDesk := "encrypted"
 	if !encrypted {
 		encDesk = "unencrypted"

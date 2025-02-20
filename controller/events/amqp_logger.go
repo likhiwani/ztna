@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/pkg/errors"
@@ -30,6 +31,7 @@ import (
 type AMQPEventLoggerFactory struct{}
 
 func (AMQPEventLoggerFactory) NewEventHandler(config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return NewAMQPEventLogger(fabricFormatterFactory{}, config)
 }
 
@@ -44,6 +46,7 @@ type amqpWriteCloser struct {
 }
 
 func newAMQPWriteCloser(config *amqpConfig) amqpWriteCloser {
+	logtrace.LogWithFunctionName()
 	ctx, cancel := context.WithCancel(context.Background())
 	ret := amqpWriteCloser{
 		config:   config,
@@ -91,6 +94,7 @@ func newAMQPWriteCloser(config *amqpConfig) amqpWriteCloser {
 }
 
 func (wc *amqpWriteCloser) sendMessage(message []byte) {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-wc.ctx.Done():
@@ -114,6 +118,7 @@ func (wc *amqpWriteCloser) sendMessage(message []byte) {
 }
 
 func (wc *amqpWriteCloser) connect() {
+	logtrace.LogWithFunctionName()
 	expBackoff := backoff.NewExponentialBackOff()
 	expBackoff.InitialInterval = 1 * time.Second
 	expBackoff.MaxInterval = 5 * time.Minute
@@ -153,6 +158,7 @@ func (wc *amqpWriteCloser) connect() {
 }
 
 func (wc amqpWriteCloser) Write(data []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case wc.messages <- data:
 		return len(data), nil
@@ -162,6 +168,7 @@ func (wc amqpWriteCloser) Write(data []byte) (int, error) {
 }
 
 func (wc amqpWriteCloser) Close() error {
+	logtrace.LogWithFunctionName()
 	wc.cancel()
 	return nil
 }
@@ -177,6 +184,7 @@ type amqpConfig struct {
 }
 
 func parseAMQPConfig(config map[interface{}]interface{}) (*amqpConfig, error) {
+	logtrace.LogWithFunctionName()
 	ret := &amqpConfig{
 		durable:    true,
 		bufferSize: 50,
@@ -231,6 +239,7 @@ func parseAMQPConfig(config map[interface{}]interface{}) (*amqpConfig, error) {
 }
 
 func NewAMQPEventLogger(formatterFactory LoggingHandlerFactory, config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	bufferSize := 10
 	if value, found := config["bufferSize"]; found {
 		if size, ok := value.(int); ok {

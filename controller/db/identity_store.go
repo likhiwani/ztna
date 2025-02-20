@@ -17,16 +17,18 @@
 package db
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/sdk-golang/ziti"
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
-	"github.com/pkg/errors"
-	"go.etcd.io/bbolt"
 	"strings"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
+	"github.com/pkg/errors"
+	"go.etcd.io/bbolt"
 )
 
 const (
@@ -64,6 +66,7 @@ const (
 )
 
 func newIdentity(name string, identityTypeId string, roleAttributes ...string) *Identity {
+	logtrace.LogWithFunctionName()
 	return &Identity{
 		BaseExtEntity:  boltz.BaseExtEntity{Id: eid.New()},
 		Name:           name,
@@ -115,10 +118,12 @@ type Identity struct {
 }
 
 func (entity *Identity) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeIdentities
 }
 
 func (entity *Identity) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
@@ -138,6 +143,7 @@ type IdentityStore interface {
 }
 
 func newIdentityStore(stores *stores) *identityStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &identityStoreImpl{}
 	store.baseStore = newBaseStore[*Identity](stores, store)
 	store.InitImpl(store)
@@ -170,10 +176,12 @@ type identityStoreImpl struct {
 }
 
 func (store *identityStoreImpl) GetRoleAttributesIndex() boltz.SetReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexRoleAttributes
 }
 
 func (store *identityStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	store.symbolRoleAttributes = store.AddPublicSetSymbol(FieldRoleAttributes, ast.NodeTypeString)
@@ -202,6 +210,7 @@ func (store *identityStoreImpl) initializeLocal() {
 }
 
 func (store *identityStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddLinkCollection(store.symbolEdgeRouterPolicies, store.stores.edgeRouterPolicy.symbolIdentities)
 	store.AddLinkCollection(store.symbolServicePolicies, store.stores.servicePolicy.symbolIdentities)
 
@@ -211,10 +220,12 @@ func (store *identityStoreImpl) initializeLinked() {
 }
 
 func (store *identityStoreImpl) NewEntity() *Identity {
+	logtrace.LogWithFunctionName()
 	return &Identity{}
 }
 
 func (store *identityStoreImpl) FillEntity(entity *Identity, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.IdentityTypeId = bucket.GetStringWithDefault(FieldIdentityType, "")
@@ -271,6 +282,7 @@ func (store *identityStoreImpl) FillEntity(entity *Identity, bucket *boltz.Typed
 }
 
 func (store *identityStoreImpl) fillServiceConfig(entity *Identity, entityBucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	configsBucket := entityBucket.GetBucket(FieldIdentityServiceConfigs)
 	if configsBucket != nil {
 		servicesCursor := configsBucket.Cursor()
@@ -297,6 +309,7 @@ func (store *identityStoreImpl) fillServiceConfig(entity *Identity, entityBucket
 }
 
 func (store *identityStoreImpl) PersistEntity(entity *Identity, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	ctx.WithFieldOverrides(identityFieldMappings)
 
 	entity.SetBaseValues(ctx)
@@ -386,6 +399,7 @@ func (store *identityStoreImpl) PersistEntity(entity *Identity, ctx *boltz.Persi
 }
 
 func (store *identityStoreImpl) persistServiceConfigs(entity *Identity, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.ProceedWithSet(FieldIdentityServiceConfigs) {
 		return
 	}
@@ -503,6 +517,7 @@ func (store *identityStoreImpl) persistServiceConfigs(entity *Identity, ctx *bol
 }
 
 func (store *identityStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, rowId []byte, _ []boltz.FieldTypeAndValue, new []boltz.FieldTypeAndValue, holder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             mutateCtx,
 		rolesSymbol:           store.stores.edgeRouterPolicy.symbolIdentityRoles,
@@ -524,10 +539,12 @@ func (store *identityStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, rowI
 }
 
 func (store *identityStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *identityStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	for _, enrollmentId := range store.GetRelatedEntitiesIdList(ctx.Tx(), id, FieldIdentityEnrollments) {
 		if err := store.stores.enrollment.DeleteById(ctx, enrollmentId); err != nil {
 			return err
@@ -574,6 +591,7 @@ func (store *identityStoreImpl) DeleteById(ctx boltz.MutateContext, id string) e
 }
 
 func (store *identityStoreImpl) removeServiceConfigs(tx *bbolt.Tx, identityId string, removeServiceRefs bool, removeFilter func(serviceId, configTypeId, configId string) bool) error {
+	logtrace.LogWithFunctionName()
 	entityBucket := store.GetEntityBucket(tx, []byte(identityId))
 	if entityBucket == nil {
 		return boltz.NewNotFoundError(store.GetSingularEntityType(), "id", identityId)
@@ -630,6 +648,7 @@ func (store *identityStoreImpl) removeServiceConfigs(tx *bbolt.Tx, identityId st
 }
 
 func (store *identityStoreImpl) LoadServiceConfigsByServiceAndType(tx *bbolt.Tx, identityId string, configTypes map[string]struct{}) map[string]map[string]map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if len(configTypes) == 0 {
 		return nil
 	}
@@ -683,10 +702,12 @@ func (store *identityStoreImpl) LoadServiceConfigsByServiceAndType(tx *bbolt.Tx,
 }
 
 func (store *identityStoreImpl) GetRoleAttributesCursorProvider(values []string, semantic string) (ast.SetCursorProvider, error) {
+	logtrace.LogWithFunctionName()
 	return store.getRoleAttributesCursorProvider(store.indexRoleAttributes, values, semantic)
 }
 
 func (store *identityStoreImpl) GetIdentityServicesCursorProvider(identityId string) ast.SetCursorProvider {
+	logtrace.LogWithFunctionName()
 	provider := &IdentityServicesCursorProvider{
 		store:      store,
 		identityId: identityId,
@@ -700,6 +721,7 @@ type IdentityServicesCursorProvider struct {
 }
 
 func (self *IdentityServicesCursorProvider) Cursor(tx *bbolt.Tx, forward bool) ast.SetCursor {
+	logtrace.LogWithFunctionName()
 	fst := self.store.dialServicesCollection.IterateLinks(tx, []byte(self.identityId), forward)
 	snd := self.store.bindServicesCollection.IterateLinks(tx, []byte(self.identityId), forward)
 	if !fst.IsValid() {

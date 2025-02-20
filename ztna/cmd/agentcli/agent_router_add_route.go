@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/ctrl_pb"
@@ -33,6 +34,7 @@ type AgentRouteAction struct {
 }
 
 func NewRouteCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentRouteAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -55,6 +57,7 @@ func NewRouteCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentRouteAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	route := &ctrl_pb.Route{
 		CircuitId: self.Args[1],
 		Forwards: []*ctrl_pb.Route_Forward{

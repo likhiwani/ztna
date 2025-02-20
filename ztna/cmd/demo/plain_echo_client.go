@@ -18,11 +18,13 @@ package demo
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/fatih/color"
 )
 
 type plainEchoClient struct {
@@ -31,6 +33,7 @@ type plainEchoClient struct {
 }
 
 func (self *plainEchoClient) echo(input string) error {
+	logtrace.LogWithFunctionName()
 	input = url.QueryEscape(input)
 	u := fmt.Sprintf("http://%v:%v?input=%v", self.host, self.port, input)
 	resp, err := (&http.Client{}).Get(u)

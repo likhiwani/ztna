@@ -3,12 +3,15 @@
 package tests
 
 import (
-	idlib "github.com/openziti/identity"
 	"net/http"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	idlib "github.com/openziti/identity"
 )
 
 func Test_TestAuthWithCertFromDifferentChain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -26,6 +29,7 @@ func Test_TestAuthWithCertFromDifferentChain(t *testing.T) {
 }
 
 func Test_ListServicesWithValidCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -43,6 +47,7 @@ func Test_ListServicesWithValidCert(t *testing.T) {
 }
 
 func Test_ListServicesWithEdgeAuth(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

@@ -3,10 +3,12 @@ package idgen
 import (
 	"crypto/rand"
 	"encoding/binary"
+	"math/big"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/dineshappavoo/basex"
 	"github.com/google/uuid"
 	"github.com/teris-io/shortid"
-	"math/big"
 )
 
 const Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-"
@@ -14,6 +16,7 @@ const Alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
 var idGenerator Generator
 
 func NewGenerator() Generator {
+	logtrace.LogWithFunctionName()
 	buf := make([]byte, 8)
 	_, _ = rand.Read(buf)
 	seed := binary.LittleEndian.Uint64(buf)
@@ -23,10 +26,12 @@ func NewGenerator() Generator {
 }
 
 func init() {
+	logtrace.LogWithFunctionName()
 	idGenerator = NewGenerator()
 }
 
 func New() string {
+	logtrace.LogWithFunctionName()
 	id, _ := idGenerator.NextId()
 	return id
 }
@@ -40,6 +45,7 @@ type shortIdGenerator struct {
 }
 
 func (self *shortIdGenerator) NextId() (string, error) {
+	logtrace.LogWithFunctionName()
 	for {
 		id, err := self.Generate()
 		if err != nil {
@@ -52,6 +58,7 @@ func (self *shortIdGenerator) NextId() (string, error) {
 }
 
 func NewUUIDString() string {
+	logtrace.LogWithFunctionName()
 	id := uuid.New()
 	v := &big.Int{}
 	v.SetBytes(id[:])

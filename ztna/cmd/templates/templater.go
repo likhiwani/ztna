@@ -23,6 +23,7 @@ import (
 	"strings"
 	"text/template"
 	"unicode"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
@@ -33,6 +34,7 @@ type FlagExposer interface {
 }
 
 func ActsAsRootCommand(cmd *cobra.Command, filters []string, groups ...CommandGroup) FlagExposer {
+	logtrace.LogWithFunctionName()
 	if cmd == nil {
 		panic("nil root command")
 	}
@@ -57,11 +59,13 @@ type templater struct {
 }
 
 func (templater *templater) ExposeFlags(cmd *cobra.Command, flags ...string) FlagExposer {
+	logtrace.LogWithFunctionName()
 	cmd.SetUsageFunc(templater.UsageFunc(flags...))
 	return templater
 }
 
 func (templater *templater) HelpFunc() func(*cobra.Command, []string) {
+	logtrace.LogWithFunctionName()
 	return func(c *cobra.Command, s []string) {
 		t := template.New("help")
 		t.Funcs(templater.templateFuncs())
@@ -75,6 +79,7 @@ func (templater *templater) HelpFunc() func(*cobra.Command, []string) {
 }
 
 func (templater *templater) UsageFunc(exposedFlags ...string) func(*cobra.Command) error {
+	logtrace.LogWithFunctionName()
 	return func(c *cobra.Command) error {
 		t := template.New("usage")
 		t.Funcs(templater.templateFuncs(exposedFlags...))
@@ -85,6 +90,7 @@ func (templater *templater) UsageFunc(exposedFlags ...string) func(*cobra.Comman
 }
 
 func (templater *templater) templateFuncs(exposedFlags ...string) template.FuncMap {
+	logtrace.LogWithFunctionName()
 	return template.FuncMap{
 		"trim":                strings.TrimSpace,
 		"trimRight":           func(s string) string { return strings.TrimRightFunc(s, unicode.IsSpace) },
@@ -117,11 +123,13 @@ func (templater *templater) templateFuncs(exposedFlags ...string) template.FuncM
 }
 
 func newResponsiveWriter(out io.Writer) io.Writer {
+	logtrace.LogWithFunctionName()
 	// TODO term.NewResponsiveWriter(out)
 	return out
 }
 
 func (templater *templater) cmdGroups(c *cobra.Command, all []*cobra.Command) []CommandGroup {
+	logtrace.LogWithFunctionName()
 	if len(templater.CommandGroups) > 0 && c == templater.RootCmd {
 		all = filter(all, templater.Filtered...)
 		return AddAdditionalCommands(templater.CommandGroups, "Other Commands:", all)
@@ -136,6 +144,7 @@ func (templater *templater) cmdGroups(c *cobra.Command, all []*cobra.Command) []
 }
 
 func (t *templater) groupPath(c *cobra.Command) string {
+	logtrace.LogWithFunctionName()
 	parentText := ""
 	parent := c.Parent()
 	if parent != nil {
@@ -148,6 +157,7 @@ func (t *templater) groupPath(c *cobra.Command) string {
 }
 
 func (t *templater) cmdGroupsString(c *cobra.Command) string {
+	logtrace.LogWithFunctionName()
 	groups := []string{}
 	maxLen := 1
 	for _, cmdGroup := range t.cmdGroups(c, c.Commands()) {
@@ -176,6 +186,7 @@ func (t *templater) cmdGroupsString(c *cobra.Command) string {
 }
 
 func padRight(s, pad string, width int) string {
+	logtrace.LogWithFunctionName()
 	gap := width - len(s)
 	if gap > 0 {
 		return s + strings.Repeat(pad, gap)
@@ -184,14 +195,17 @@ func padRight(s, pad string, width int) string {
 }
 
 func (t *templater) rootCmdName(c *cobra.Command) string {
+	logtrace.LogWithFunctionName()
 	return t.rootCmd(c).CommandPath()
 }
 
 func (t *templater) isRootCmd(c *cobra.Command) bool {
+	logtrace.LogWithFunctionName()
 	return t.rootCmd(c) == c
 }
 
 func (t *templater) parents(c *cobra.Command) []*cobra.Command {
+	logtrace.LogWithFunctionName()
 	parents := []*cobra.Command{c}
 	for current := c; !t.isRootCmd(current) && current.HasParent(); {
 		current = current.Parent()
@@ -201,6 +215,7 @@ func (t *templater) parents(c *cobra.Command) []*cobra.Command {
 }
 
 func (t *templater) rootCmd(c *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	if c != nil && !c.HasParent() {
 		return c
 	}
@@ -211,6 +226,7 @@ func (t *templater) rootCmd(c *cobra.Command) *cobra.Command {
 }
 
 func (t *templater) optionsCmdFor(c *cobra.Command) string {
+	logtrace.LogWithFunctionName()
 	if !c.Runnable() {
 		return ""
 	}
@@ -225,6 +241,7 @@ func (t *templater) optionsCmdFor(c *cobra.Command) string {
 }
 
 func (t *templater) usageLine(c *cobra.Command) string {
+	logtrace.LogWithFunctionName()
 	usage := c.UseLine()
 	suffix := "[options]"
 	if c.HasFlags() && !strings.Contains(usage, suffix) {
@@ -234,6 +251,7 @@ func (t *templater) usageLine(c *cobra.Command) string {
 }
 
 func flagsUsages(f *flag.FlagSet) string {
+	logtrace.LogWithFunctionName()
 	x := new(bytes.Buffer)
 
 	f.VisitAll(func(flag *flag.Flag) {
@@ -259,11 +277,13 @@ func flagsUsages(f *flag.FlagSet) string {
 }
 
 func rpad(s string, padding int) string {
+	logtrace.LogWithFunctionName()
 	template := fmt.Sprintf("%%-%ds", padding)
 	return fmt.Sprintf(template, s)
 }
 
 func appendIfNotPresent(s, stringToAppend string) string {
+	logtrace.LogWithFunctionName()
 	if strings.Contains(s, stringToAppend) {
 		return s
 	}
@@ -271,6 +291,7 @@ func appendIfNotPresent(s, stringToAppend string) string {
 }
 
 func flagsNotIntersected(l *flag.FlagSet, r *flag.FlagSet) *flag.FlagSet {
+	logtrace.LogWithFunctionName()
 	f := flag.NewFlagSet("notIntersected", flag.ContinueOnError)
 	l.VisitAll(func(flag *flag.Flag) {
 		if r.Lookup(flag.Name) == nil {
@@ -281,6 +302,7 @@ func flagsNotIntersected(l *flag.FlagSet, r *flag.FlagSet) *flag.FlagSet {
 }
 
 func visibleFlags(l *flag.FlagSet) *flag.FlagSet {
+	logtrace.LogWithFunctionName()
 	hidden := "help"
 	f := flag.NewFlagSet("visible", flag.ContinueOnError)
 	l.VisitAll(func(flag *flag.Flag) {
@@ -292,6 +314,7 @@ func visibleFlags(l *flag.FlagSet) *flag.FlagSet {
 }
 
 func filter(cmds []*cobra.Command, names ...string) []*cobra.Command {
+	logtrace.LogWithFunctionName()
 	out := []*cobra.Command{}
 	for _, c := range cmds {
 		if c.Hidden {

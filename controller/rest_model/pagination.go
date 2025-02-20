@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -58,6 +59,7 @@ type Pagination struct {
 
 // Validate validates this pagination
 func (m *Pagination) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateLimit(formats); err != nil {
@@ -79,6 +81,7 @@ func (m *Pagination) Validate(formats strfmt.Registry) error {
 }
 
 func (m *Pagination) validateLimit(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("limit", "body", m.Limit); err != nil {
 		return err
@@ -88,6 +91,7 @@ func (m *Pagination) validateLimit(formats strfmt.Registry) error {
 }
 
 func (m *Pagination) validateOffset(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("offset", "body", m.Offset); err != nil {
 		return err
@@ -97,6 +101,7 @@ func (m *Pagination) validateOffset(formats strfmt.Registry) error {
 }
 
 func (m *Pagination) validateTotalCount(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("totalCount", "body", m.TotalCount); err != nil {
 		return err
@@ -107,11 +112,13 @@ func (m *Pagination) validateTotalCount(formats strfmt.Registry) error {
 
 // ContextValidate validates this pagination based on context it is used
 func (m *Pagination) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *Pagination) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -120,6 +127,7 @@ func (m *Pagination) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *Pagination) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res Pagination
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

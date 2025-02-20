@@ -26,6 +26,7 @@ import (
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
 )
 
 type EnrollModuleOtt struct {
@@ -35,6 +36,7 @@ type EnrollModuleOtt struct {
 }
 
 func NewEnrollModuleOtt(env Env) *EnrollModuleOtt {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleOtt{
 		env:                  env,
 		method:               db.MethodEnrollOtt,
@@ -43,10 +45,12 @@ func NewEnrollModuleOtt(env Env) *EnrollModuleOtt {
 }
 
 func (module *EnrollModuleOtt) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *EnrollModuleOtt) Process(ctx EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	enrollment, err := module.env.GetManagers().Enrollment.ReadByToken(ctx.GetToken())
 	if err != nil {
 		return nil, err

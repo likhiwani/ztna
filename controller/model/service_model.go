@@ -17,11 +17,13 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type Service struct {
@@ -33,14 +35,17 @@ type Service struct {
 }
 
 func (entity *Service) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *Service) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Service, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }
 
 func (entity *Service) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Service, error) {
+	logtrace.LogWithFunctionName()
 	return &db.Service{
 		BaseExtEntity:      *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:               entity.Name,
@@ -50,6 +55,7 @@ func (entity *Service) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Service, error
 }
 
 func (entity *Service) fillFrom(env Env, tx *bbolt.Tx, boltService *db.Service) error {
+	logtrace.LogWithFunctionName()
 	entity.Name = boltService.Name
 	entity.MaxIdleTime = boltService.MaxIdleTime
 	entity.TerminatorStrategy = boltService.TerminatorStrategy

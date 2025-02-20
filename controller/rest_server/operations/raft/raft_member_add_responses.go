@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type RaftMemberAddOK struct {
 
 // NewRaftMemberAddOK creates RaftMemberAddOK with default headers values
 func NewRaftMemberAddOK() *RaftMemberAddOK {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberAddOK{}
 }
 
 // WithPayload adds the payload to the raft member add o k response
 func (o *RaftMemberAddOK) WithPayload(payload *rest_model.Empty) *RaftMemberAddOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member add o k response
 func (o *RaftMemberAddOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberAddOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type RaftMemberAddBadRequest struct {
 
 // NewRaftMemberAddBadRequest creates RaftMemberAddBadRequest with default headers values
 func NewRaftMemberAddBadRequest() *RaftMemberAddBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberAddBadRequest{}
 }
 
 // WithPayload adds the payload to the raft member add bad request response
 func (o *RaftMemberAddBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberAddBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member add bad request response
 func (o *RaftMemberAddBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberAddBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type RaftMemberAddUnauthorized struct {
 
 // NewRaftMemberAddUnauthorized creates RaftMemberAddUnauthorized with default headers values
 func NewRaftMemberAddUnauthorized() *RaftMemberAddUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberAddUnauthorized{}
 }
 
 // WithPayload adds the payload to the raft member add unauthorized response
 func (o *RaftMemberAddUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberAddUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member add unauthorized response
 func (o *RaftMemberAddUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberAddUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type RaftMemberAddTooManyRequests struct {
 
 // NewRaftMemberAddTooManyRequests creates RaftMemberAddTooManyRequests with default headers values
 func NewRaftMemberAddTooManyRequests() *RaftMemberAddTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberAddTooManyRequests{}
 }
 
 // WithPayload adds the payload to the raft member add too many requests response
 func (o *RaftMemberAddTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberAddTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member add too many requests response
 func (o *RaftMemberAddTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberAddTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

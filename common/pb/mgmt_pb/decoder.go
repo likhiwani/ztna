@@ -18,6 +18,7 @@ package mgmt_pb
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
@@ -28,6 +29,7 @@ type Decoder struct{}
 const DECODER = "mgmt"
 
 func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
+	logtrace.LogWithFunctionName()
 	switch msg.ContentType {
 	case int32(ContentType_StreamEventsRequestType):
 		meta := channel.NewTraceMessageDecode(DECODER, "Stream Events Request")
@@ -60,6 +62,7 @@ func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
 }
 
 func (self *Path) CalculateDisplayPath() string {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return ""
 	}

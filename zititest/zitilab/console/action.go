@@ -18,19 +18,23 @@ package console
 
 import (
 	"embed"
-	"github.com/openziti/fablab/kernel/model"
 	"io/fs"
 	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/fablab/kernel/model"
 )
 
 //go:embed webroot
 var webroot embed.FS
 
 func Console() model.Action {
+	logtrace.LogWithFunctionName()
 	return &console{}
 }
 
 func (consoleAction *console) Execute(model.Run) error {
+	logtrace.LogWithFunctionName()
 	server := NewServer()
 	go server.Listen()
 

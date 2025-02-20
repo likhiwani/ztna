@@ -17,19 +17,22 @@
 package handler_peer_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/goroutines"
+	"time"
 	"ztna-core/ztna/common/metrics"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/raft"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 func newCommandHandler(controller *raft.Controller) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	poolConfig := goroutines.PoolConfig{
 		QueueSize:   uint32(controller.Config.CommandHandlerOptions.MaxQueueSize),
 		MinWorkers:  0,
@@ -57,10 +60,12 @@ type commandHandler struct {
 }
 
 func (self *commandHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(cmd_pb.ContentType_NewLogEntryType)
 }
 
 func (self *commandHandler) HandleReceive(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	err := self.pool.QueueOrError(func() {

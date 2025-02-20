@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 	"fmt"
 
@@ -34,6 +35,7 @@ type dbSnapshotOptions struct {
 }
 
 func newDbSnapshotCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbSnapshotOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -60,6 +62,7 @@ func newDbSnapshotCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func runSnapshotDb(o *dbSnapshotOptions) error {
+	logtrace.LogWithFunctionName()
 	client, err := util.NewFabricManagementClient(o)
 	if err != nil {
 		return err

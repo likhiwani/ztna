@@ -21,14 +21,17 @@ package tests
 
 import (
 	"fmt"
-	"github.com/Jeffail/gabs"
-	"ztna-core/ztna/controller/env"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/Jeffail/gabs"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Authenticate_Updb(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	testContext := NewTestContext(t)
 	defer testContext.Teardown()
 	testContext.StartServer()
@@ -49,6 +52,7 @@ type authUpdbTests struct {
 }
 
 func (tests *authUpdbTests) testAuthenticateUpdbInvalidPassword(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	body := gabs.New()
 	_, _ = body.SetP(tests.ctx.AdminAuthenticator.Username, "username")
 	_, _ = body.SetP("invalid_password", "password")
@@ -70,6 +74,7 @@ func (tests *authUpdbTests) testAuthenticateUpdbInvalidPassword(t *testing.T) {
 }
 
 func (tests *authUpdbTests) testAuthenticateUpdbInvalidUsername(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	body := gabs.New()
 	_, _ = body.SetP("weeewoooweeewooo123", "username")
 	_, _ = body.SetP("admin", "password")
@@ -91,6 +96,7 @@ func (tests *authUpdbTests) testAuthenticateUpdbInvalidUsername(t *testing.T) {
 }
 
 func (tests *authUpdbTests) testAuthenticateUPDBMissingPassword(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	body := gabs.New()
 	_, _ = body.SetP(tests.ctx.AdminAuthenticator.Username, "username")
 
@@ -111,6 +117,7 @@ func (tests *authUpdbTests) testAuthenticateUPDBMissingPassword(t *testing.T) {
 }
 
 func (tests *authUpdbTests) testAuthenticateUPDBMissingUsername(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	body := gabs.New()
 	_, _ = body.SetP(tests.ctx.AdminAuthenticator.Password, "password")
 
@@ -135,6 +142,7 @@ func (tests *authUpdbTests) testAuthenticateUPDBMissingUsername(t *testing.T) {
 }
 
 func (tests *authUpdbTests) testAuthenticateUPDBDefaultAdminSuccess(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	body := gabs.New()
 	_, _ = body.SetP(tests.ctx.AdminAuthenticator.Username, "username")
 	_, _ = body.SetP(tests.ctx.AdminAuthenticator.Password, "password")

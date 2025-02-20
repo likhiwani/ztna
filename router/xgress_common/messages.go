@@ -1,9 +1,11 @@
 package xgress_common
 
 import (
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 )
@@ -13,6 +15,7 @@ const (
 )
 
 func GetResultOrFailure(msg *channel.Message, err error, result protobufs.TypedMessage) error {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		return err
 	}
@@ -33,6 +36,7 @@ func GetResultOrFailure(msg *channel.Message, err error, result protobufs.TypedM
 }
 
 func CheckForFailureResult(msg *channel.Message, err error, successType edge_ctrl_pb.ContentType) error {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		return err
 	}
@@ -53,6 +57,7 @@ func CheckForFailureResult(msg *channel.Message, err error, successType edge_ctr
 }
 
 func GetFinHeaders() map[uint8][]byte {
+	logtrace.LogWithFunctionName()
 	return map[uint8][]byte{
 		PayloadFlagsHeader: {0x1, 0, 0, 0},
 	}

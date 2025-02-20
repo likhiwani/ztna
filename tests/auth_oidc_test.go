@@ -20,12 +20,14 @@ import (
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/oidc_auth"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
 	"github.com/zitadel/oidc/v2/pkg/client/rp"
 	httphelper "github.com/zitadel/oidc/v2/pkg/http"
 	"github.com/zitadel/oidc/v2/pkg/oidc"
@@ -42,10 +44,12 @@ type testRpServer struct {
 }
 
 func (t *testRpServer) Stop() {
+	logtrace.LogWithFunctionName()
 	_ = t.Server.Shutdown(context.Background())
 }
 
 func (t *testRpServer) Start() {
+	logtrace.LogWithFunctionName()
 	go func() {
 		_ = t.Server.Serve(t.Listener)
 	}()
@@ -55,6 +59,7 @@ func (t *testRpServer) Start() {
 }
 
 func newOidcTestRp(apiHost string) (*testRpServer, error) {
+	logtrace.LogWithFunctionName()
 	tokenOutChan := make(chan *oidc.Tokens[*oidc.IDTokenClaims], 1)
 	result := &testRpServer{
 		CallbackPath: "/auth/callback",
@@ -137,6 +142,7 @@ func newOidcTestRp(apiHost string) (*testRpServer, error) {
 }
 
 func Test_Authenticate_OIDC_Auth(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

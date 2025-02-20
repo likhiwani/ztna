@@ -18,6 +18,8 @@ package command
 
 import (
 	"encoding/binary"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/pkg/errors"
 )
@@ -25,6 +27,7 @@ import (
 var defaultDecoders = NewDecoders()
 
 func GetDefaultDecoders() Decoders {
+	logtrace.LogWithFunctionName()
 	return defaultDecoders
 }
 
@@ -37,6 +40,7 @@ type Decoders interface {
 }
 
 func NewDecoders() Decoders {
+	logtrace.LogWithFunctionName()
 	result := &decodersImpl{}
 	return result
 }
@@ -46,6 +50,7 @@ type decodersImpl struct {
 }
 
 func (self *decodersImpl) Decode(data []byte) (Command, error) {
+	logtrace.LogWithFunctionName()
 	if len(data) < 4 {
 		return nil, errors.New("invalid command, has length less than 4")
 	}
@@ -58,6 +63,7 @@ func (self *decodersImpl) Decode(data []byte) (Command, error) {
 }
 
 func (self *decodersImpl) Register(key int32, value Decoder) {
+	logtrace.LogWithFunctionName()
 	if self.Get(key) != nil {
 		panic(errors.Errorf("duplicate decoder registration for key [%v]", key))
 	}
@@ -66,9 +72,11 @@ func (self *decodersImpl) Register(key int32, value Decoder) {
 }
 
 func (self *decodersImpl) RegisterF(key int32, value DecoderF) {
+	logtrace.LogWithFunctionName()
 	self.Register(key, value)
 }
 
 func (self *decodersImpl) GetDecoder(key int32) Decoder {
+	logtrace.LogWithFunctionName()
 	return self.Get(key)
 }

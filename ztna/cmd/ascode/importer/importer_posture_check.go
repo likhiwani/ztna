@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"slices"
 	"strings"
@@ -30,11 +31,13 @@ import (
 )
 
 func (importer *Importer) IsPostureCheckImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "posture-check")
 }
 
 func (importer *Importer) ProcessPostureChecks(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["postureChecks"] {

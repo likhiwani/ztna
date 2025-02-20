@@ -18,12 +18,15 @@ package link
 
 import (
 	"container/heap"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestLinkStateHeap(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	h := &linkStateHeap{}
 
 	start := time.Now()

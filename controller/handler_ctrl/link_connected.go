@@ -17,11 +17,13 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -31,14 +33,17 @@ type linkConnectedHandler struct {
 }
 
 func newLinkConnectedHandler(r *model.Router, network *network.Network) *linkConnectedHandler {
+	logtrace.LogWithFunctionName()
 	return &linkConnectedHandler{r: r, network: network}
 }
 
 func (h *linkConnectedHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_LinkConnectedType)
 }
 
 func (h *linkConnectedHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	link := &ctrl_pb.LinkConnected{}
@@ -51,6 +56,7 @@ func (h *linkConnectedHandler) HandleReceive(msg *channel.Message, ch channel.Ch
 }
 
 func (h *linkConnectedHandler) HandleLink(ch channel.Channel, link *ctrl_pb.LinkConnected) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).WithField("linkId", link.Id)
 
 	if err := h.network.LinkConnected(link); err == nil {

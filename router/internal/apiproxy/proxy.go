@@ -19,12 +19,14 @@ package apiproxy
 import (
 	"crypto/tls"
 	"encoding/base64"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/internal/edgerouter"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/internal/edgerouter"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 const (
@@ -40,6 +42,7 @@ type Config struct {
 }
 
 func Start(config *edgerouter.Config) {
+	logtrace.LogWithFunctionName()
 
 	if !config.ApiProxy.Enabled {
 		pfxlog.Logger().Debug("API Proxy disabled")
@@ -79,6 +82,7 @@ func Start(config *edgerouter.Config) {
 }
 
 func Listen(c Config, cc chan interface{}) {
+	logtrace.LogWithFunctionName()
 	defer close(cc)
 	log := pfxlog.Logger()
 	proxy := httputil.NewSingleHostReverseProxy(c.UpstreamUrl)

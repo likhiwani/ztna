@@ -17,12 +17,14 @@
 package handler_mgmt
 
 import (
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/concurrenz"
 	"ztna-core/ztna/common/trace"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/xmgmt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/concurrenz"
 )
 
 type BindHandler struct {
@@ -32,6 +34,7 @@ type BindHandler struct {
 }
 
 func NewBindHandler(env *env.AppEnv, network *network.Network, xmgmts *concurrenz.CopyOnWriteSlice[xmgmt.Xmgmt]) channel.BindHandler {
+	logtrace.LogWithFunctionName()
 	return &BindHandler{
 		env:     env,
 		network: network,
@@ -40,6 +43,7 @@ func NewBindHandler(env *env.AppEnv, network *network.Network, xmgmts *concurren
 }
 
 func (bindHandler *BindHandler) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	inspectRequestHandler := newInspectHandler(bindHandler.network)
 	binding.AddTypedReceiveHandler(&channel.AsyncFunctionReceiveAdapter{
 		Type:    inspectRequestHandler.ContentType(),

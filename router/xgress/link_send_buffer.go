@@ -17,15 +17,17 @@
 package xgress
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"ztna-core/ztna/common/inspect"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"math"
 	"slices"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 type PayloadBufferForwarder interface {
@@ -70,35 +72,43 @@ type txPayload struct {
 }
 
 func (self *txPayload) markSent() {
+	logtrace.LogWithFunctionName()
 	atomic.StoreInt64(&self.age, info.NowInMilliseconds())
 }
 
 func (self *txPayload) getAge() int64 {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadInt64(&self.age)
 }
 
 func (self *txPayload) markQueued() {
+	logtrace.LogWithFunctionName()
 	atomic.AddInt32(&self.retxQueued, 1)
 }
 
 // markAcked marks the payload and acked and returns true if the payload is queued for retransmission
 func (self *txPayload) markAcked() bool {
+	logtrace.LogWithFunctionName()
 	return atomic.AddInt32(&self.retxQueued, 2) > 2
 }
 
 func (self *txPayload) dequeued() {
+	logtrace.LogWithFunctionName()
 	atomic.AddInt32(&self.retxQueued, -1)
 }
 
 func (self *txPayload) isAcked() bool {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadInt32(&self.retxQueued) > 1
 }
 
 func (self *txPayload) isRetransmittable() bool {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadInt32(&self.retxQueued) == 0
 }
 
 func NewLinkSendBuffer(x *Xgress) *LinkSendBuffer {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("txPortalStartSize = %d, txPortalMinSize = %d",
 		x.Options.TxPortalStartSize,
 		x.Options.TxPortalMinSize)
@@ -122,10 +132,12 @@ func NewLinkSendBuffer(x *Xgress) *LinkSendBuffer {
 }
 
 func (buffer *LinkSendBuffer) CloseWhenEmpty() bool {
+	logtrace.LogWithFunctionName()
 	return buffer.closeWhenEmpty.CompareAndSwap(false, true)
 }
 
 func (buffer *LinkSendBuffer) BufferPayload(payload *Payload) (func(), error) {
+	logtrace.LogWithFunctionName()
 	txPayload := &txPayload{payload: payload, age: math.MaxInt64, x: buffer.x}
 	select {
 	case buffer.newlyBuffered <- txPayload:
@@ -137,6 +149,7 @@ func (buffer *LinkSendBuffer) BufferPayload(payload *Payload) (func(), error) {
 }
 
 func (buffer *LinkSendBuffer) ReceiveAcknowledgement(ack *Acknowledgement) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(buffer.x.Label()).WithFields(ack.GetLoggerFields())
 	log.Debug("ack received")
 	select {
@@ -153,6 +166,7 @@ func (buffer *LinkSendBuffer) ReceiveAcknowledgement(ack *Acknowledgement) {
 }
 
 func (buffer *LinkSendBuffer) Close() {
+	logtrace.LogWithFunctionName()
 	pfxlog.ContextLogger(buffer.x.Label()).Debugf("[%p] closing", buffer)
 	if buffer.closed.CompareAndSwap(false, true) {
 		close(buffer.closeNotify)
@@ -160,6 +174,7 @@ func (buffer *LinkSendBuffer) Close() {
 }
 
 func (buffer *LinkSendBuffer) isBlocked() bool {
+	logtrace.LogWithFunctionName()
 	blocked := false
 
 	if buffer.x.Options.TxPortalMaxSize < buffer.linkRecvBufferSize {
@@ -192,6 +207,7 @@ func (buffer *LinkSendBuffer) isBlocked() bool {
 }
 
 func (buffer *LinkSendBuffer) run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(buffer.x.Label())
 	defer log.Debugf("[%p] exited", buffer)
 	log.Debugf("[%p] started", buffer)
@@ -266,6 +282,7 @@ func (buffer *LinkSendBuffer) run() {
 }
 
 func (buffer *LinkSendBuffer) close() {
+	logtrace.LogWithFunctionName()
 	if buffer.blockedByLocalWindow {
 		atomic.AddInt64(&buffersBlockedByLocalWindow, -1)
 	}
@@ -275,6 +292,7 @@ func (buffer *LinkSendBuffer) close() {
 }
 
 func (buffer *LinkSendBuffer) receiveAcknowledgement(ack *Acknowledgement) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(buffer.x.Label()).WithFields(ack.GetLoggerFields())
 
 	for _, sequence := range ack.Sequence {
@@ -327,6 +345,7 @@ func (buffer *LinkSendBuffer) receiveAcknowledgement(ack *Acknowledgement) {
 }
 
 func (buffer *LinkSendBuffer) retransmit() {
+	logtrace.LogWithFunctionName()
 	now := info.NowInMilliseconds()
 	if len(buffer.buffer) > 0 && (now-buffer.lastRetransmitTime) > 64 {
 		log := pfxlog.ContextLogger(buffer.x.Label())
@@ -364,6 +383,7 @@ func (buffer *LinkSendBuffer) retransmit() {
 }
 
 func (buffer *LinkSendBuffer) scale(factor float64) {
+	logtrace.LogWithFunctionName()
 	buffer.windowsSize = uint32(float64(buffer.windowsSize) * factor)
 	if factor > 1 {
 		if buffer.windowsSize > buffer.x.Options.TxPortalMaxSize {
@@ -375,6 +395,7 @@ func (buffer *LinkSendBuffer) scale(factor float64) {
 }
 
 func (buffer *LinkSendBuffer) inspect() *inspect.XgressSendBufferDetail {
+	logtrace.LogWithFunctionName()
 	timeSinceLastRetransmit := time.Duration(info.NowInMilliseconds()-buffer.lastRetransmitTime) * time.Millisecond
 	result := &inspect.XgressSendBufferDetail{
 		WindowSize:            buffer.windowsSize,
@@ -396,6 +417,7 @@ func (buffer *LinkSendBuffer) inspect() *inspect.XgressSendBufferDetail {
 }
 
 func (buffer *LinkSendBuffer) Inspect() *inspect.XgressSendBufferDetail {
+	logtrace.LogWithFunctionName()
 	timeout := time.After(100 * time.Millisecond)
 	inspectEvent := &sendBufferInspectEvent{
 		notifyComplete: make(chan *inspect.XgressSendBufferDetail, 1),
@@ -422,6 +444,7 @@ type sendBufferInspectEvent struct {
 }
 
 func (self *sendBufferInspectEvent) handle(buffer *LinkSendBuffer) {
+	logtrace.LogWithFunctionName()
 	result := buffer.inspect()
 	self.notifyComplete <- result
 }

@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type RouterEventType string
@@ -40,6 +41,7 @@ type RouterEvent struct {
 }
 
 func (event *RouterEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v time=%v routerId=%v routerOnline=%v",
 		event.Namespace, event.EventType, event.Timestamp, event.RouterId, event.RouterOnline)
 }

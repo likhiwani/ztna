@@ -17,6 +17,7 @@
 package common
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 	"fmt"
 	"github.com/spf13/cobra"
@@ -32,6 +33,7 @@ type Printer interface {
 type OptionsProvider func() CommonOptions
 
 func NewOptionsProvider(out, err io.Writer) OptionsProvider {
+	logtrace.LogWithFunctionName()
 	return func() CommonOptions {
 		return CommonOptions{
 			Out: out,
@@ -55,6 +57,7 @@ type CommonOptions struct {
 }
 
 func (options *CommonOptions) AddCommonFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().BoolVarP(&options.BatchMode, "batch-mode", "b", false, "In batch mode the command never prompts for user input")
 	cmd.Flags().BoolVarP(&options.Verbose, "verbose", "", false, "Enable verbose logging")
 	cmd.Flags().BoolVarP(&options.Staging, "staging", "", false, "Install/Upgrade components from the ziti-staging repo")
@@ -64,12 +67,14 @@ func (options *CommonOptions) AddCommonFlags(cmd *cobra.Command) {
 }
 
 func (options *CommonOptions) TimeoutContext() (context.Context, context.CancelFunc) {
+	logtrace.LogWithFunctionName()
 	timeout := time.Duration(options.Timeout) * time.Second
 
 	return context.WithTimeout(context.Background(), timeout)
 }
 
 func (options *CommonOptions) GetFilter() *string {
+	logtrace.LogWithFunctionName()
 	if len(options.Args) > 0 {
 		return &options.Args[0]
 	}
@@ -77,16 +82,19 @@ func (options *CommonOptions) GetFilter() *string {
 }
 
 func (options *CommonOptions) GetContext() (context.Context, func()) {
+	logtrace.LogWithFunctionName()
 	return context.WithTimeout(context.Background(), time.Second*time.Duration(options.Timeout))
 }
 
 func (options *CommonOptions) Printf(format string, args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	if _, err := fmt.Fprintf(options.Out, format, args...); err != nil {
 		panic(err)
 	}
 }
 
 func (options *CommonOptions) Println(s interface{}) {
+	logtrace.LogWithFunctionName()
 	if _, err := fmt.Fprintln(options.Out, s); err != nil {
 		panic(err)
 	}

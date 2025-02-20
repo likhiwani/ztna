@@ -21,6 +21,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityNamePostureCheckType = "posture-check-types"
@@ -28,10 +29,12 @@ const EntityNamePostureCheckType = "posture-check-types"
 var PostureCheckTypeLinkFactory = NewBasicLinkFactory(EntityNamePostureCheckType)
 
 func MapPostureCheckTypeToRestEntity(_ *env.AppEnv, _ *response.RequestContext, postureCheckType *model.PostureCheckType) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapPostureCheckTypeToRestModel(postureCheckType), nil
 }
 
 func MapPostureCheckTypeToRestModel(postureCheckType *model.PostureCheckType) *rest_model.PostureCheckTypeDetail {
+	logtrace.LogWithFunctionName()
 	operatingSystems := []*rest_model.OperatingSystem{}
 
 	for _, os := range postureCheckType.OperatingSystems {

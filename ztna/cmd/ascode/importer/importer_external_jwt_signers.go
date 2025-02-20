@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/external_jwt_signer"
 	"ztna-core/edge-api/rest_model"
@@ -26,6 +27,7 @@ import (
 )
 
 func (importer *Importer) IsExtJwtSignerImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "ext-jwt-signer") ||
 		slices.Contains(args, "external-jwt-signer") ||
@@ -34,6 +36,7 @@ func (importer *Importer) IsExtJwtSignerImportRequired(args []string) bool {
 }
 
 func (importer *Importer) ProcessExternalJwtSigners(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["externalJwtSigners"] {

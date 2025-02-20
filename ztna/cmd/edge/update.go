@@ -19,16 +19,19 @@ package edge
 import (
 	"io"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
+	"github.com/Jeffail/gabs"
 	"github.com/spf13/cobra"
 	"gopkg.in/resty.v1"
 )
 
 // newUpdateCmd creates a command object for the "controller update" command
 func newUpdateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "update",
 		Short: "updates various entities managed by the Ziti Edge Controller",
@@ -59,26 +62,32 @@ func newUpdateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func putEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return updateEntityOfType(entityType, body, options, resty.MethodPut)
 }
 
 func patchEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return updateEntityOfType(entityType, body, options, resty.MethodPatch)
 }
 
 func postEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return updateEntityOfType(entityType, body, options, resty.MethodPost)
 }
 
 func deleteEntityOfTypeWithBody(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return updateEntityOfType(entityType, body, options, resty.MethodDelete)
 }
 
 // updateEntityOfType updates an entity of the given type on the Ziti Edge Controller
 func updateEntityOfType(entityType string, body string, options *api.Options, method string) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return util.ControllerUpdate(util.EdgeAPI, entityType, body, options.Out, method, options.OutputJSONRequest, options.OutputJSONResponse, options.Timeout, options.Verbose)
 }
 
 func doRequest(entityType string, options *api.Options, doRequest func(request *resty.Request, url string) (*resty.Response, error)) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return util.EdgeControllerRequest(entityType, options.Out, options.OutputJSONResponse, options.Timeout, options.Verbose, doRequest)
 }

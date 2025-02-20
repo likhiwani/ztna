@@ -8,20 +8,23 @@ import (
 	"crypto/x509/pkix"
 	"encoding/json"
 	"fmt"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/openziti/jwks"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/db"
-	"github.com/stretchr/testify/require"
 	"math/big"
 	"net"
 	"strconv"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/openziti/jwks"
+	"github.com/openziti/storage/boltz"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_signerRecord_Resolve(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("can resolve and parse a valid JWKS response", func(t *testing.T) {
 		req := require.New(t)
 
@@ -33,7 +36,7 @@ func Test_signerRecord_Resolve(t *testing.T) {
 
 		jwksResolver, err := newTestJwksResolver()
 		req.NoError(err)
-		
+
 		leaf1Key, err := newKey(leaf1KeyPair.cert, []*x509.Certificate{leaf1KeyPair.cert, testRootCa.cert})
 		req.NoError(err)
 
@@ -121,6 +124,7 @@ type testCa struct {
 }
 
 func newRootCa() *testCa {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	rootKey, err := rsa.GenerateKey(rand.Reader, 4096)
@@ -169,6 +173,7 @@ func newRootCa() *testCa {
 }
 
 func (ca *testCa) NewIntermediateWithAKID() *testCa {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	intermediate := &x509.Certificate{
@@ -218,6 +223,7 @@ func (ca *testCa) NewIntermediateWithAKID() *testCa {
 }
 
 func (ca *testCa) NewIntermediateWithoutAKID() *testCa {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	intermediate := &x509.Certificate{
@@ -266,6 +272,7 @@ func (ca *testCa) NewIntermediateWithoutAKID() *testCa {
 }
 
 func (ca *testCa) NewLeafWithAKID() *certPair {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	leaf := &x509.Certificate{
@@ -311,6 +318,7 @@ func (ca *testCa) NewLeafWithAKID() *certPair {
 }
 
 func (ca *testCa) NewLeaf(leafKey *rsa.PrivateKey, alterCertFuncs ...func(certificate *x509.Certificate)) *certPair {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	leaf := &x509.Certificate{
@@ -353,6 +361,7 @@ func (ca *testCa) NewLeaf(leafKey *rsa.PrivateKey, alterCertFuncs ...func(certif
 	}
 }
 func (ca *testCa) NewLeafWithoutAKID() *certPair {
+	logtrace.LogWithFunctionName()
 	currentSerial++
 
 	leaf := &x509.Certificate{
@@ -397,6 +406,7 @@ func (ca *testCa) NewLeafWithoutAKID() *certPair {
 }
 
 func newKey(cert *x509.Certificate, certChain []*x509.Certificate) (*jwks.Key, error) {
+	logtrace.LogWithFunctionName()
 	kid := eid.New()
 	key, err := jwks.NewKey(kid, cert, certChain)
 
@@ -416,6 +426,7 @@ type testJwksProvider struct {
 }
 
 func newTestJwksResolver() (*testJwksProvider, error) {
+	logtrace.LogWithFunctionName()
 	result := &testJwksProvider{
 		callUrls:    make([]string, 0),
 		privateKeys: make(map[string]any),
@@ -428,6 +439,7 @@ func newTestJwksResolver() (*testJwksProvider, error) {
 }
 
 func (s *testJwksProvider) Get(url string) (*jwks.Response, []byte, error) {
+	logtrace.LogWithFunctionName()
 	s.callCount = s.callCount + 1
 	s.callUrls = append(s.callUrls, url)
 
@@ -441,11 +453,13 @@ func (s *testJwksProvider) Get(url string) (*jwks.Response, []byte, error) {
 }
 
 func (s *testJwksProvider) AddKey(key *jwks.Key, privateKey crypto.PrivateKey) {
+	logtrace.LogWithFunctionName()
 	s.response.Keys = append(s.response.Keys, *key)
 	s.privateKeys[key.KeyId] = privateKey
 }
 
 func (s *testJwksProvider) SignJwt(kid string, claims jwt.Claims) (string, *jwt.Token, error) {
+	logtrace.LogWithFunctionName()
 	privateKey, ok := s.privateKeys[kid]
 
 	if !ok {

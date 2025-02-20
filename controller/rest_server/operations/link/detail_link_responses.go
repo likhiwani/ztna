@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DetailLinkOK struct {
 
 // NewDetailLinkOK creates DetailLinkOK with default headers values
 func NewDetailLinkOK() *DetailLinkOK {
+    logtrace.LogWithFunctionName()
 
 	return &DetailLinkOK{}
 }
 
 // WithPayload adds the payload to the detail link o k response
 func (o *DetailLinkOK) WithPayload(payload *rest_model.DetailLinkEnvelope) *DetailLinkOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail link o k response
 func (o *DetailLinkOK) SetPayload(payload *rest_model.DetailLinkEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailLinkOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DetailLinkUnauthorized struct {
 
 // NewDetailLinkUnauthorized creates DetailLinkUnauthorized with default headers values
 func NewDetailLinkUnauthorized() *DetailLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DetailLinkUnauthorized{}
 }
 
 // WithPayload adds the payload to the detail link unauthorized response
 func (o *DetailLinkUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail link unauthorized response
 func (o *DetailLinkUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailLinkUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DetailLinkNotFound struct {
 
 // NewDetailLinkNotFound creates DetailLinkNotFound with default headers values
 func NewDetailLinkNotFound() *DetailLinkNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &DetailLinkNotFound{}
 }
 
 // WithPayload adds the payload to the detail link not found response
 func (o *DetailLinkNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailLinkNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail link not found response
 func (o *DetailLinkNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailLinkNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type DetailLinkTooManyRequests struct {
 
 // NewDetailLinkTooManyRequests creates DetailLinkTooManyRequests with default headers values
 func NewDetailLinkTooManyRequests() *DetailLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DetailLinkTooManyRequests{}
 }
 
 // WithPayload adds the payload to the detail link too many requests response
 func (o *DetailLinkTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail link too many requests response
 func (o *DetailLinkTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailLinkTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

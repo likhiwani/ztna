@@ -17,17 +17,20 @@
 package exporter
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/service_policy"
 	"ztna-core/edge-api/rest_model"
 )
 
 func (exporter Exporter) IsServicePolicyExportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "service-policy")
 }
 
 func (exporter Exporter) GetServicePolicies() ([]map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 
 	return exporter.getEntities(
 		"ServicePolicies",

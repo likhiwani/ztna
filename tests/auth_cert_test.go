@@ -37,6 +37,7 @@ import (
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	nfPem "github.com/openziti/foundation/v2/pem"
@@ -44,6 +45,7 @@ import (
 )
 
 func Test_Authenticate_Cert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -72,6 +74,7 @@ type authCertTests struct {
 }
 
 func (test *authCertTests) testAuthenticateCertStoresAndFillsFullCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("newly created cert authenticators have full cert stored as PEM", func(t *testing.T) {
 		r := require.New(t)
@@ -134,6 +137,7 @@ func (test *authCertTests) testAuthenticateCertStoresAndFillsFullCert(t *testing
 }
 
 func (test *authCertTests) testAuthenticateValidCertEmptyBody(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	testClient, _, transport := test.ctx.NewClientComponents(EdgeClientApiPath)
 
 	transport.TLSClientConfig.Certificates = test.certAuthenticator.TLSCertificates()
@@ -194,6 +198,7 @@ func (test *authCertTests) testAuthenticateValidCertEmptyBody(t *testing.T) {
 }
 
 func (test *authCertTests) testAuthenticateValidCertValidClientInfoBody(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	testClient, _, transport := test.ctx.NewClientComponents(EdgeClientApiPath)
 
 	transport.TLSClientConfig.Certificates = test.certAuthenticator.TLSCertificates()
@@ -334,6 +339,7 @@ func (test *authCertTests) testAuthenticateValidCertValidClientInfoBody(t *testi
 }
 
 func (test *authCertTests) testAuthenticateValidCertInvalidJson(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	testClient, _, transport := test.ctx.NewClientComponents(EdgeClientApiPath)
 
 	transport.TLSClientConfig.Certificates = test.certAuthenticator.TLSCertificates()
@@ -356,6 +362,7 @@ func (test *authCertTests) testAuthenticateValidCertInvalidJson(t *testing.T) {
 }
 
 func (test *authCertTests) testAuthenticateValidCertValidClientInfoWithExtraProperties(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	testClient, _, transport := test.ctx.NewClientComponents(EdgeClientApiPath)
 
 	transport.TLSClientConfig.Certificates = test.certAuthenticator.TLSCertificates()
@@ -376,6 +383,7 @@ func (test *authCertTests) testAuthenticateValidCertValidClientInfoWithExtraProp
 }
 
 func (test *authCertTests) testAuthenticateInvalidCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	r := require.New(t)
 
 	testClient, _, transport := test.ctx.NewClientComponents(EdgeClientApiPath)
@@ -439,6 +447,7 @@ rv1CXRECfHglY+vO0CFumQOV5bec2R8=
 }
 
 func (test *authCertTests) testAuthenticateValidCertExpired(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	test.ctx.testContextChanged(t)
 
 	name := eid.New()

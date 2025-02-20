@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -48,6 +49,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListServiceTerminatorsParams() *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListServiceTerminatorsParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -56,6 +58,7 @@ func NewListServiceTerminatorsParams() *ListServiceTerminatorsParams {
 // NewListServiceTerminatorsParamsWithTimeout creates a new ListServiceTerminatorsParams object
 // with the ability to set a timeout on a request.
 func NewListServiceTerminatorsParamsWithTimeout(timeout time.Duration) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListServiceTerminatorsParams{
 		timeout: timeout,
 	}
@@ -64,6 +67,7 @@ func NewListServiceTerminatorsParamsWithTimeout(timeout time.Duration) *ListServ
 // NewListServiceTerminatorsParamsWithContext creates a new ListServiceTerminatorsParams object
 // with the ability to set a context for a request.
 func NewListServiceTerminatorsParamsWithContext(ctx context.Context) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListServiceTerminatorsParams{
 		Context: ctx,
 	}
@@ -72,6 +76,7 @@ func NewListServiceTerminatorsParamsWithContext(ctx context.Context) *ListServic
 // NewListServiceTerminatorsParamsWithHTTPClient creates a new ListServiceTerminatorsParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewListServiceTerminatorsParamsWithHTTPClient(client *http.Client) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListServiceTerminatorsParams{
 		HTTPClient: client,
 	}
@@ -108,6 +113,7 @@ type ListServiceTerminatorsParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *ListServiceTerminatorsParams) WithDefaults() *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -116,88 +122,104 @@ func (o *ListServiceTerminatorsParams) WithDefaults() *ListServiceTerminatorsPar
 //
 // All values with no default are reset to their zero value.
 func (o *ListServiceTerminatorsParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithTimeout(timeout time.Duration) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithContext(ctx context.Context) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithHTTPClient(client *http.Client) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithFilter adds the filter to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithFilter(filter *string) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetFilter(filter)
 	return o
 }
 
 // SetFilter adds the filter to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetFilter(filter *string) {
+    logtrace.LogWithFunctionName()
 	o.Filter = filter
 }
 
 // WithID adds the id to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithID(id string) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithLimit adds the limit to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithLimit(limit *int64) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetLimit(limit *int64) {
+    logtrace.LogWithFunctionName()
 	o.Limit = limit
 }
 
 // WithOffset adds the offset to the list service terminators params
 func (o *ListServiceTerminatorsParams) WithOffset(offset *int64) *ListServiceTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetOffset(offset)
 	return o
 }
 
 // SetOffset adds the offset to the list service terminators params
 func (o *ListServiceTerminatorsParams) SetOffset(offset *int64) {
+    logtrace.LogWithFunctionName()
 	o.Offset = offset
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *ListServiceTerminatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

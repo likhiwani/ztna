@@ -23,12 +23,14 @@ import (
 	"strings"
 
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
 	"ztna-core/ztna/ztna/pki/certificate"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -40,6 +42,7 @@ type PKICreateCAOptions struct {
 
 // NewCmdPKICreateCA creates a command object for the "create" command
 func NewCmdPKICreateCA(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateCAOptions{
 		PKICreateOptions: PKICreateOptions{
 			PKIOptions: PKIOptions{
@@ -69,6 +72,7 @@ func NewCmdPKICreateCA(out io.Writer, errOut io.Writer) *cobra.Command {
 const FlagCaName = "ca-name"
 
 func (o *PKICreateCAOptions) addPKICreateCAFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&o.Flags.PKIRoot, "pki-root", "", "", "Directory in which PKI resides")
 	cmd.Flags().StringVarP(&o.Flags.CAFile, "ca-file", "", "", "Dir/File name (within PKI_ROOT) in which to store new CA")
 	cmd.Flags().StringVarP(&o.Flags.CAName, FlagCaName, "", "NetFoundry Inc. Certificate Authority", "Name of CA")
@@ -81,6 +85,7 @@ func (o *PKICreateCAOptions) addPKICreateCAFlags(cmd *cobra.Command) {
 
 // Run implements this command
 func (o *PKICreateCAOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	pkiRoot, err := o.ObtainPKIRoot()
 	if err != nil {
 		return err

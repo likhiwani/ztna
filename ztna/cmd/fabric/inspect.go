@@ -1,6 +1,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -24,6 +25,7 @@ import (
 
 // newListCmd creates a command object for the "controller list" command
 func newInspectCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := newInspectAction(p)
 	cmd := action.newCobraCmd()
 	cmd.AddCommand(action.newInspectSubCmd(p, "stackdump", "gets stackdumps from the requested nodes"))
@@ -49,6 +51,7 @@ func newInspectCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func newInspectAction(p common.OptionsProvider) *InspectAction {
+	logtrace.LogWithFunctionName()
 	return &InspectAction{Options: api.Options{CommonOptions: p()}}
 }
 
@@ -59,6 +62,7 @@ type InspectAction struct {
 }
 
 func (self *InspectAction) addFlags(cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	self.AddCommonFlags(cmd)
 	cmd.Flags().BoolVarP(&self.toFiles, "file", "f", false, "Output results to a file per result, with the format <instanceId>.<ValueName>")
 	cmd.Flags().StringVar(&self.format, "format", "yaml", "Output format. One of yaml|json")
@@ -66,6 +70,7 @@ func (self *InspectAction) addFlags(cmd *cobra.Command) *cobra.Command {
 }
 
 func (self *InspectAction) newCobraCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "inspect",
 		Short: "Inspect runtime <application> <values>",
@@ -76,6 +81,7 @@ func (self *InspectAction) newCobraCmd() *cobra.Command {
 }
 
 func (self *InspectAction) newInspectSubCmd(p common.OptionsProvider, value string, desc string) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	inspectAction := newInspectAction(p)
 
 	cmd := &cobra.Command{
@@ -94,10 +100,12 @@ func (self *InspectAction) newInspectSubCmd(p common.OptionsProvider, value stri
 }
 
 func (self *InspectAction) run(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	return self.inspect(args[0], args[1:]...)
 }
 
 func (self *InspectAction) inspect(appRegex string, requestValues ...string) error {
+	logtrace.LogWithFunctionName()
 	client, err := util.NewFabricManagementClient(self)
 	if err != nil {
 		return err
@@ -164,6 +172,7 @@ func (self *InspectAction) inspect(appRegex string, requestValues ...string) err
 }
 
 func (self *InspectAction) prettyPrint(o io.Writer, val interface{}, indent uint) error {
+	logtrace.LogWithFunctionName()
 	if strVal, ok := val.(string); ok {
 		if strings.IndexByte(strVal, '\n') > 0 {
 			lines := strings.Split(strVal, "\n")

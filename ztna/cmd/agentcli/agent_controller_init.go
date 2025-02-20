@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -31,6 +32,7 @@ type AgentCtrlInitOptions struct {
 }
 
 func NewAgentCtrlInit(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentCtrlInitOptions{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -55,6 +57,7 @@ func NewAgentCtrlInit(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentCtrlInitOptions) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	initEdgeRequest := &mgmt_pb.InitRequest{
 		Username: self.Args[0],
 		Password: self.Args[1],

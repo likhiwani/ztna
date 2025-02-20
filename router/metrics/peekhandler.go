@@ -17,16 +17,19 @@
 package metrics
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"time"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics"
-	"time"
 )
 
 // NewChannelPeekHandler creates a channel PeekHandler which tracks latency, message rate and message size distribution
 func NewChannelPeekHandler(linkId string, registry metrics.UsageRegistry) channel.PeekHandler {
+	logtrace.LogWithFunctionName()
 	appTxBytesMeter := registry.Meter("fabric.tx.bytesrate")
 	appTxMsgMeter := registry.Meter("fabric.tx.msgrate")
 	appTxMsgSizeHistogram := registry.Histogram("fabric.tx.msgsize")
@@ -81,9 +84,11 @@ type channelPeekHandler struct {
 }
 
 func (h *channelPeekHandler) Connect(channel.Channel, string) {
+	logtrace.LogWithFunctionName()
 }
 
 func (h *channelPeekHandler) Rx(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	msgSize := int64(len(msg.Body))
 	h.linkRxBytesMeter.Mark(msgSize)
 	h.linkRxMsgMeter.Mark(1)
@@ -102,6 +107,7 @@ func (h *channelPeekHandler) Rx(msg *channel.Message, _ channel.Channel) {
 }
 
 func (h *channelPeekHandler) Tx(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	msgSize := int64(len(msg.Body))
 	h.linkTxBytesMeter.Mark(msgSize)
 	h.linkTxMsgMeter.Mark(1)
@@ -120,6 +126,7 @@ func (h *channelPeekHandler) Tx(msg *channel.Message, _ channel.Channel) {
 }
 
 func (h *channelPeekHandler) Close(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	// app level metrics and usageCounter are shared across all links, so we don't dispose of them
 	h.linkTxBytesMeter.Dispose()
 	h.linkTxMsgMeter.Dispose()
@@ -131,6 +138,7 @@ func (h *channelPeekHandler) Close(channel.Channel) {
 
 // NewXgressPeekHandler creates an xgress PeekHandler which tracks message rates and histograms as well as usage
 func NewXgressPeekHandler(registry metrics.UsageRegistry) xgress.PeekHandler {
+	logtrace.LogWithFunctionName()
 	ingressTxBytesMeter := registry.Meter("ingress.tx.bytesrate")
 	ingressTxMsgMeter := registry.Meter("ingress.tx.msgrate")
 	ingressRxBytesMeter := registry.Meter("ingress.rx.bytesrate")
@@ -167,10 +175,12 @@ func NewXgressPeekHandler(registry metrics.UsageRegistry) xgress.PeekHandler {
 type circuitUsageSource string
 
 func (c circuitUsageSource) GetIntervalId() string {
+	logtrace.LogWithFunctionName()
 	return string(c)
 }
 
 func (c circuitUsageSource) GetTags() map[string]string {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
@@ -193,6 +203,7 @@ type xgressPeekHandler struct {
 }
 
 func (handler *xgressPeekHandler) Rx(x *xgress.Xgress, payload *xgress.Payload) {
+	logtrace.LogWithFunctionName()
 	msgSize := int64(len(payload.Data))
 	if x.Originator() == xgress.Initiator {
 		handler.usageCounter.Update(x, "ingress.rx", time.Now(), uint64(msgSize))
@@ -208,6 +219,7 @@ func (handler *xgressPeekHandler) Rx(x *xgress.Xgress, payload *xgress.Payload) 
 }
 
 func (handler *xgressPeekHandler) Tx(x *xgress.Xgress, payload *xgress.Payload) {
+	logtrace.LogWithFunctionName()
 	msgSize := int64(len(payload.Data))
 	if x.Originator() == xgress.Initiator {
 		handler.usageCounter.Update(x, "ingress.tx", time.Now(), uint64(msgSize))
@@ -224,4 +236,5 @@ func (handler *xgressPeekHandler) Tx(x *xgress.Xgress, payload *xgress.Payload) 
 }
 
 func (handler *xgressPeekHandler) Close(*xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 }

@@ -5,10 +5,12 @@ import (
 	"io"
 	"net"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/health"
 
 	"ztna-core/sdk-golang/ziti"
 	"ztna-core/sdk-golang/ziti/edge"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -40,6 +42,7 @@ type FabricProvider interface {
 }
 
 func AppDataToMap(appData []byte) (map[string]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	result := map[string]interface{}{}
 	if len(appData) != 0 {
 		if err := json.Unmarshal(appData, &result); err != nil {
@@ -50,6 +53,7 @@ func AppDataToMap(appData []byte) (map[string]interface{}, error) {
 }
 
 func NewContextProvider(context ziti.Context) FabricProvider {
+	logtrace.LogWithFunctionName()
 	return &contextProvider{
 		Context: context,
 	}
@@ -62,16 +66,19 @@ type contextProvider struct {
 // GetCurrentIdentity implements FabricProvider.
 // Subtle: this method shadows the method (Context).GetCurrentIdentity of contextProvider.Context.
 func (cp *contextProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	panic("unimplemented")
 }
 
 // GetCurrentIdentityWithBackoff implements FabricProvider.
 // Subtle: this method shadows the method (Context).GetCurrentIdentityWithBackoff of contextProvider.Context.
 func (cp *contextProvider) GetCurrentIdentityWithBackoff() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	panic("unimplemented")
 }
 
 func (cp *contextProvider) PrepForUse(serviceId string) {
+	logtrace.LogWithFunctionName()
 	if _, err := cp.Context.GetSession(serviceId); err != nil {
 		logrus.WithError(err).Error("failed to acquire network session")
 	} else {
@@ -80,6 +87,7 @@ func (cp *contextProvider) PrepForUse(serviceId string) {
 }
 
 func (cp *contextProvider) TunnelService(service Service, identity string, conn net.Conn, halfClose bool, appData []byte) error {
+	logtrace.LogWithFunctionName()
 	options := &ziti.DialOptions{
 		ConnectTimeout: service.GetDialTimeout(),
 		AppData:        appData,
@@ -96,6 +104,7 @@ func (cp *contextProvider) TunnelService(service Service, identity string, conn 
 }
 
 func (cp *contextProvider) HostService(hostCtx HostingContext) (HostControl, error) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.WithField("service", hostCtx.ServiceName())
 	listener, err := cp.Context.ListenWithOptions(hostCtx.ServiceName(), hostCtx.ListenOptions())
 	if err != nil {
@@ -109,6 +118,7 @@ func (cp *contextProvider) HostService(hostCtx HostingContext) (HostControl, err
 }
 
 func (cp *contextProvider) accept(listener edge.Listener, hostCtx HostingContext) {
+	logtrace.LogWithFunctionName()
 	defer hostCtx.OnClose()
 
 	logger := logrus.WithField("service", hostCtx.ServiceName())

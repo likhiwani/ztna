@@ -17,10 +17,12 @@
 package xctrl
 
 import (
+	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"time"
 )
 
 type Capabilities struct {
@@ -28,6 +30,7 @@ type Capabilities struct {
 }
 
 func (capabilities *Capabilities) Get(timeout time.Duration) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	request := &ctrl_pb.InspectRequest{RequestedValues: []string{"capability"}}
 	response := &ctrl_pb.InspectResponse{}
 	respMsg, err := protobufs.MarshalTyped(request).WithTimeout(timeout).SendForReply(capabilities.Channel)
@@ -44,6 +47,7 @@ func (capabilities *Capabilities) Get(timeout time.Duration) ([]string, error) {
 }
 
 func (capabilities *Capabilities) Has(capability string, timeout time.Duration) (bool, error) {
+	logtrace.LogWithFunctionName()
 	capabilityList, err := capabilities.Get(timeout)
 	if err != nil {
 		return false, err
@@ -57,5 +61,6 @@ func (capabilities *Capabilities) Has(capability string, timeout time.Duration) 
 }
 
 func (capabilities *Capabilities) IsEdgeCapable(timeout time.Duration) (bool, error) {
+	logtrace.LogWithFunctionName()
 	return capabilities.Has("ziti.edge", timeout)
 }

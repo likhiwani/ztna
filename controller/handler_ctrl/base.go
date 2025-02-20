@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 )
 
 type baseHandler struct {
@@ -29,5 +31,6 @@ type baseHandler struct {
 }
 
 func (self *baseHandler) newChangeContext(ch channel.Channel, method string) *change.Context {
+	logtrace.LogWithFunctionName()
 	return change.NewControlChannelChange(self.router.Id, self.router.Name, method, ch)
 }

@@ -17,10 +17,12 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -35,6 +37,7 @@ type Session struct {
 }
 
 func (entity *Session) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Session, error) {
+	logtrace.LogWithFunctionName()
 	apiSession, err := env.GetStores().ApiSession.LoadById(tx, entity.ApiSessionId)
 	if err != nil {
 		return nil, err
@@ -58,6 +61,7 @@ func (entity *Session) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Session
 }
 
 func (entity *Session) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.Session, error) {
+	logtrace.LogWithFunctionName()
 	return &db.Session{
 		BaseExtEntity:   *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Token:           entity.Token,
@@ -70,6 +74,7 @@ func (entity *Session) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker)
 }
 
 func (entity *Session) fillFrom(_ Env, _ *bbolt.Tx, boltSession *db.Session) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltSession)
 	entity.Token = boltSession.Token
 	entity.ApiSessionId = boltSession.ApiSessionId

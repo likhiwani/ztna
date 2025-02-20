@@ -20,9 +20,11 @@ import (
 	_ "embed"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/openziti/runzmd"
 	"github.com/openziti/runzmd/actionz"
 	"github.com/sirupsen/logrus"
@@ -50,6 +52,7 @@ type firstServiceTutorialOptions struct {
 }
 
 func newFirstServiceTutorialCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &firstServiceTutorialOptions{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -82,6 +85,7 @@ func newFirstServiceTutorialCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *firstServiceTutorialOptions) run() error {
+	logtrace.LogWithFunctionName()
 	t := runzmd.NewRunner()
 	t.NewLinePause = self.NewlinePause
 	t.AssumeDefault = self.AssumeDefault
@@ -116,6 +120,7 @@ type PlainEchoServerActions struct {
 }
 
 func (self *PlainEchoServerActions) Start(ctx *runzmd.ActionContext) error {
+	logtrace.LogWithFunctionName()
 	if !ctx.Runner.AssumeDefault {
 		start, err := runzmd.AskYesNoWithDefault("Start plain-echo-server? [Y/N] (default Y): ", true)
 		if err != nil {
@@ -134,6 +139,7 @@ func (self *PlainEchoServerActions) Start(ctx *runzmd.ActionContext) error {
 }
 
 func (self *PlainEchoServerActions) Stop(ctx *runzmd.ActionContext) error {
+	logtrace.LogWithFunctionName()
 	if !ctx.Runner.AssumeDefault {
 		start, err := runzmd.AskYesNoWithDefault("Stop plain-echo-server? [Y/N] (default Y): ", true)
 		if err != nil {
@@ -155,6 +161,7 @@ type ZitiEchoServerActions struct {
 }
 
 func (self *ZitiEchoServerActions) Start(ctx *runzmd.ActionContext) error {
+	logtrace.LogWithFunctionName()
 	logrus.SetLevel(logrus.WarnLevel)
 
 	self.server.identityJson = "echo-server.json"
@@ -175,6 +182,7 @@ func (self *ZitiEchoServerActions) Start(ctx *runzmd.ActionContext) error {
 }
 
 func (self *ZitiEchoServerActions) Stop(*runzmd.ActionContext) error {
+	logtrace.LogWithFunctionName()
 	if self.server.listener != nil {
 		return self.server.stop()
 	}

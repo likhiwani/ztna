@@ -20,11 +20,13 @@ import (
 	_ "embed"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/constants"
 )
 
 func SetZitiRouterIdentity(r *RouterTemplateValues, routerName string) {
+	logtrace.LogWithFunctionName()
 	SetZitiRouterIdentityCert(r, routerName)
 	SetZitiRouterIdentityServerCert(r, routerName)
 	SetZitiRouterIdentityKey(r, routerName)
@@ -55,6 +57,7 @@ func SetZitiRouterIdentity(r *RouterTemplateValues, routerName string) {
 	}
 }
 func SetZitiRouterIdentityCert(r *RouterTemplateValues, routerName string) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.ZitiRouterIdentityCertVarName)
 	if val == "" {
 		val = cmdhelper.GetZitiHome() + "/" + routerName + ".cert" // default
@@ -62,6 +65,7 @@ func SetZitiRouterIdentityCert(r *RouterTemplateValues, routerName string) {
 	r.IdentityCert = cmdhelper.NormalizePath(val)
 }
 func SetZitiRouterIdentityServerCert(r *RouterTemplateValues, routerName string) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.ZitiRouterIdentityServerCertVarName)
 	if val == "" {
 		val = cmdhelper.GetZitiHome() + "/" + routerName + ".server.chain.cert" // default
@@ -69,6 +73,7 @@ func SetZitiRouterIdentityServerCert(r *RouterTemplateValues, routerName string)
 	r.IdentityServerCert = cmdhelper.NormalizePath(val)
 }
 func SetZitiRouterIdentityKey(r *RouterTemplateValues, routerName string) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.ZitiRouterIdentityKeyVarName)
 	if val == "" {
 		val = cmdhelper.GetZitiHome() + "/" + routerName + ".key" // default
@@ -76,6 +81,7 @@ func SetZitiRouterIdentityKey(r *RouterTemplateValues, routerName string) {
 	r.IdentityKey = cmdhelper.NormalizePath(val)
 }
 func SetZitiRouterIdentityCA(r *RouterTemplateValues, routerName string) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.ZitiRouterIdentityCAVarName)
 	if val == "" {
 		val = cmdhelper.GetZitiHome() + "/" + routerName + ".cas" // default
@@ -84,6 +90,7 @@ func SetZitiRouterIdentityCA(r *RouterTemplateValues, routerName string) {
 }
 
 func validateRouterName(name string) string {
+	logtrace.LogWithFunctionName()
 	// Currently, only worry about router name if it's blank
 	if name == "" {
 		hostname, _ := os.Hostname()
@@ -93,6 +100,7 @@ func validateRouterName(name string) string {
 }
 
 func SetRouterAltServerCerts(c *RouterTemplateValues) {
+	logtrace.LogWithFunctionName()
 	c.AltCertsEnabled = false
 	altServerCert := os.Getenv(constants.PkiAltServerCertVarName)
 	if altServerCert == "" {

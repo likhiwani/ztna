@@ -18,13 +18,15 @@ package model
 
 import (
 	"crypto/x509"
+	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type ApiSessionCertificate struct {
@@ -39,6 +41,7 @@ type ApiSessionCertificate struct {
 }
 
 func NewApiSessionCertificate(cert *x509.Certificate) *ApiSessionCertificate {
+	logtrace.LogWithFunctionName()
 	ret := &ApiSessionCertificate{
 		Subject:     cert.Subject.String(),
 		ValidAfter:  &cert.NotBefore,
@@ -52,6 +55,7 @@ func NewApiSessionCertificate(cert *x509.Certificate) *ApiSessionCertificate {
 }
 
 func (entity *ApiSessionCertificate) toBoltEntity(tx *bbolt.Tx, env Env) (*db.ApiSessionCertificate, error) {
+	logtrace.LogWithFunctionName()
 	if !env.GetStores().ApiSession.IsEntityPresent(tx, entity.ApiSessionId) {
 		return nil, errorz.NewFieldError("api session not found", "ApiSessionId", entity.ApiSessionId)
 	}
@@ -70,14 +74,17 @@ func (entity *ApiSessionCertificate) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Ap
 }
 
 func (entity *ApiSessionCertificate) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.ApiSessionCertificate, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *ApiSessionCertificate) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.ApiSessionCertificate, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *ApiSessionCertificate) fillFrom(env Env, tx *bbolt.Tx, boltApiSessionCertificate *db.ApiSessionCertificate) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltApiSessionCertificate)
 	entity.Subject = boltApiSessionCertificate.Subject
 	entity.Fingerprint = boltApiSessionCertificate.Fingerprint

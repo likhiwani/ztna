@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"time"
@@ -33,6 +34,7 @@ type AgentStackAction struct {
 }
 
 func NewStackCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentStackAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -59,6 +61,7 @@ func NewStackCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements the command
 func (o *AgentStackAction) Run() error {
+	logtrace.LogWithFunctionName()
 	time.AfterFunc(o.StackTimeout, func() {
 		fmt.Println("operation timed out")
 		os.Exit(-1)

@@ -25,11 +25,13 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewPostureCheckRouter()
 	env.AddRouter(r)
 }
@@ -39,12 +41,14 @@ type PostureCheckRouter struct {
 }
 
 func NewPostureCheckRouter() *PostureCheckRouter {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckRouter{
 		BasePath: "/" + EntityNamePostureCheck,
 	}
 }
 
 func (r *PostureCheckRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.PostureChecksDeletePostureCheckHandler = posture_checks.DeletePostureCheckHandlerFunc(func(params posture_checks.DeletePostureCheckParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -71,6 +75,7 @@ func (r *PostureCheckRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *PostureCheckRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	List(rc, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(ae.Managers.PostureCheck.GetStore())
 		if err != nil {
@@ -115,26 +120,31 @@ func (r *PostureCheckRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *PostureCheckRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.PostureCheck](ae, rc, ae.Managers.PostureCheck, MapPostureCheckToRestEntity)
 }
 
 func (r *PostureCheckRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params posture_checks.CreatePostureCheckParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, PostureCheckLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.PostureCheck.Create, MapCreatePostureCheckToModel(params.PostureCheck), rc)
 	})
 }
 
 func (r *PostureCheckRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.PostureCheck)
 }
 
 func (r *PostureCheckRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params posture_checks.UpdatePostureCheckParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.PostureCheck.Update(MapUpdatePostureCheckToModel(params.ID, params.PostureCheck), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *PostureCheckRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params posture_checks.PatchPostureCheckParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		check := MapPatchPostureCheckToModel(params.ID, params.PostureCheck)
 

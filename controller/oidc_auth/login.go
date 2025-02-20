@@ -13,6 +13,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/swag"
 	"github.com/openziti/foundation/v2/errorz"
@@ -58,6 +59,7 @@ var (
 
 // init loads page templates and makes them ready for use
 func init() {
+	logtrace.LogWithFunctionName()
 	var err error
 	t1, err := loadTemplate(pageLogin)
 	loginTemplate = t1
@@ -76,6 +78,7 @@ func init() {
 
 // loadTemplate will load embedded resource files by name
 func loadTemplate(name string) (*template.Template, error) {
+	logtrace.LogWithFunctionName()
 	pageBytes, err := resources.ReadFile(pages[name])
 
 	if err != nil {
@@ -100,6 +103,7 @@ type login struct {
 
 // newLogin create a login
 func newLogin(store Storage, callback func(context.Context, string) string, issuerInterceptor *op.IssuerInterceptor) *login {
+	logtrace.LogWithFunctionName()
 	l := &login{
 		store:    store,
 		callback: callback,
@@ -109,6 +113,7 @@ func newLogin(store Storage, callback func(context.Context, string) string, issu
 }
 
 func (l *login) createRouter(issuerInterceptor *op.IssuerInterceptor) {
+	logtrace.LogWithFunctionName()
 	l.router = mux.NewRouter()
 	l.router.Path("/auth-queries").Methods("GET").HandlerFunc(l.listAuthQueries)
 	l.router.Path("/password").Methods("GET").HandlerFunc(l.loginHandler)
@@ -129,6 +134,7 @@ func (l *login) createRouter(issuerInterceptor *op.IssuerInterceptor) {
 }
 
 func (l *login) genericHandler(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("cannot parse form:%s", err), http.StatusInternalServerError)
@@ -141,6 +147,7 @@ func (l *login) genericHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *login) loginHandler(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, fmt.Sprintf("cannot parse form:%s", err), http.StatusInternalServerError)
@@ -153,14 +160,17 @@ func (l *login) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderLogin(w http.ResponseWriter, id string, err error) {
+	logtrace.LogWithFunctionName()
 	renderPage(w, loginTemplate, id, err, nil)
 }
 
 func renderTotp(w http.ResponseWriter, id string, err error, additionalData any) {
+	logtrace.LogWithFunctionName()
 	renderPage(w, totpTemplate, id, err, additionalData)
 }
 
 func renderPage(w http.ResponseWriter, pageTemplate *template.Template, id string, err error, additionalData any) {
+	logtrace.LogWithFunctionName()
 	w.Header().Set("content-type", "text/html; charset=utf-8")
 	var errMsg string
 	errDisplay := "none"
@@ -187,6 +197,7 @@ func renderPage(w http.ResponseWriter, pageTemplate *template.Template, id strin
 }
 
 func (l *login) checkTotp(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	responseType, err := negotiateResponseContentType(r)
 
 	if err != nil {
@@ -260,6 +271,7 @@ func (l *login) checkTotp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *login) authenticate(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	responseType, err := negotiateResponseContentType(r)
 
 	if err != nil {
@@ -337,6 +349,7 @@ func (l *login) authenticate(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *login) listAuthQueries(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	authRequestId := r.URL.Query().Get("id")
 
 	authRequest, err := l.store.GetAuthRequest(authRequestId)
@@ -366,6 +379,7 @@ func (l *login) listAuthQueries(w http.ResponseWriter, r *http.Request) {
 type JsonMap map[string]any
 
 func (m *JsonMap) MarshalBinary() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -373,6 +387,7 @@ func (m *JsonMap) MarshalBinary() ([]byte, error) {
 }
 
 func (l *login) startEnrollTotp(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	changeCtx := NewHttpChangeCtx(r)
 
 	_, err := negotiateResponseContentType(r)
@@ -400,6 +415,7 @@ func (l *login) startEnrollTotp(w http.ResponseWriter, r *http.Request) {
 }
 
 func (l *login) completeTotpEnrollment(w http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	changeCtx := NewHttpChangeCtx(r)
 
 	_, err := negotiateResponseContentType(r)

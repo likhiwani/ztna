@@ -1,13 +1,15 @@
 package router
 
 import (
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/router/env"
-	"github.com/stretchr/testify/require"
 	"os"
 	"path"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/transport/v2"
@@ -17,6 +19,7 @@ import (
 )
 
 func Test_initializeCtrlEndpoints_ErrorsWithoutDataDir(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	tmpDir, err := os.MkdirTemp("", "")
 	assert.NoError(t, err)
 
@@ -31,6 +34,7 @@ func Test_initializeCtrlEndpoints_ErrorsWithoutDataDir(t *testing.T) {
 }
 
 func Test_initializeCtrlEndpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	tmpDir, err := os.MkdirTemp("", "")
 	assert.NoError(t, err)
 
@@ -66,6 +70,7 @@ func Test_initializeCtrlEndpoints(t *testing.T) {
 }
 
 func Test_updateCtrlEndpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 	tmpDir, err := os.MkdirTemp("", "")
 	req.NoError(err)

@@ -17,13 +17,16 @@
 package model
 
 import (
-	"ztna-core/ztna/controller/db"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func mustParseDuration(s string) time.Duration {
+	logtrace.LogWithFunctionName()
 	result, err := time.ParseDuration(s)
 
 	if err != nil {
@@ -34,6 +37,7 @@ func mustParseDuration(s string) time.Duration {
 }
 
 func TestPostureCheckResponseManager_shouldPostureCheckTimeoutBeAltered(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("returns false if the check is null", func(t *testing.T) {
 		result := shouldPostureCheckTimeoutBeAltered(nil, mustParseDuration("10m"), mustParseDuration("5m"), true, true)

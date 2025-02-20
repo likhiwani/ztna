@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type RaftListMembersOK struct {
 
 // NewRaftListMembersOK creates RaftListMembersOK with default headers values
 func NewRaftListMembersOK() *RaftListMembersOK {
+    logtrace.LogWithFunctionName()
 
 	return &RaftListMembersOK{}
 }
 
 // WithPayload adds the payload to the raft list members o k response
 func (o *RaftListMembersOK) WithPayload(payload *rest_model.RaftMemberListResponse) *RaftListMembersOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft list members o k response
 func (o *RaftListMembersOK) SetPayload(payload *rest_model.RaftMemberListResponse) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftListMembersOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type RaftListMembersBadRequest struct {
 
 // NewRaftListMembersBadRequest creates RaftListMembersBadRequest with default headers values
 func NewRaftListMembersBadRequest() *RaftListMembersBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &RaftListMembersBadRequest{}
 }
 
 // WithPayload adds the payload to the raft list members bad request response
 func (o *RaftListMembersBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftListMembersBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft list members bad request response
 func (o *RaftListMembersBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftListMembersBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type RaftListMembersUnauthorized struct {
 
 // NewRaftListMembersUnauthorized creates RaftListMembersUnauthorized with default headers values
 func NewRaftListMembersUnauthorized() *RaftListMembersUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &RaftListMembersUnauthorized{}
 }
 
 // WithPayload adds the payload to the raft list members unauthorized response
 func (o *RaftListMembersUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftListMembersUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft list members unauthorized response
 func (o *RaftListMembersUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftListMembersUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type RaftListMembersTooManyRequests struct {
 
 // NewRaftListMembersTooManyRequests creates RaftListMembersTooManyRequests with default headers values
 func NewRaftListMembersTooManyRequests() *RaftListMembersTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &RaftListMembersTooManyRequests{}
 }
 
 // WithPayload adds the payload to the raft list members too many requests response
 func (o *RaftListMembersTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftListMembersTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft list members too many requests response
 func (o *RaftListMembersTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftListMembersTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

@@ -23,12 +23,14 @@ import (
 	"strings"
 
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
 	"ztna-core/ztna/ztna/pki/certificate"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -40,6 +42,7 @@ type PKICreateServerOptions struct {
 
 // NewCmdPKICreateServer creates a command object for the "create" command
 func NewCmdPKICreateServer(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateServerOptions{
 		PKICreateOptions: PKICreateOptions{
 			PKIOptions: PKIOptions{
@@ -70,6 +73,7 @@ func NewCmdPKICreateServer(out io.Writer, errOut io.Writer) *cobra.Command {
 const FlagCaServerName = "server-name"
 
 func (o *PKICreateServerOptions) addPKICreateServerFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&o.Flags.PKIRoot, "pki-root", "", "", "Directory in which PKI resides")
 	cmd.Flags().StringVarP(&o.Flags.CAName, "ca-name", "", "intermediate", "Name of Intermediate CA (within PKI_ROOT) to use to sign the new Server certificate")
 	cmd.Flags().StringVarP(&o.Flags.ServerFile, "server-file", "", "server", "Name of file (under chosen CA) in which to store new Server certificate and private key")
@@ -87,6 +91,7 @@ func (o *PKICreateServerOptions) addPKICreateServerFlags(cmd *cobra.Command) {
 
 // Run implements this command
 func (o *PKICreateServerOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	IPs, DNSNames, err := o.ObtainIPsAndDNSNames()
 	if err != nil {
 		return err

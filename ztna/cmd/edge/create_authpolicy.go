@@ -22,6 +22,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/auth_policy"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -35,6 +36,7 @@ type createAuthPolicyOptions struct {
 }
 
 func newCreateAuthPolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createAuthPolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 		AuthPolicy: rest_model.AuthPolicyCreate{
@@ -112,6 +114,7 @@ func newCreateAuthPolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreateAuthPolicy(options *createAuthPolicyOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {

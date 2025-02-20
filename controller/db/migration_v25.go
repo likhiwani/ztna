@@ -17,11 +17,14 @@
 package db
 
 import (
-	"github.com/openziti/storage/boltz"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) addSystemAuthPolicies(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	defaultPolicy := &AuthPolicy{
 		BaseExtEntity: boltz.BaseExtEntity{
 			Id:        DefaultAuthPolicyId,

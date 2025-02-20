@@ -19,9 +19,11 @@ package api
 import (
 	"context"
 	"fmt"
-	"ztna-core/ztna/controller/change"
-	"github.com/pkg/errors"
 	"net/http"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 type RequestContextImpl struct {
@@ -40,30 +42,37 @@ const (
 )
 
 func (rc *RequestContextImpl) GetId() string {
+	logtrace.LogWithFunctionName()
 	return rc.Id
 }
 
 func (rc *RequestContextImpl) GetBody() []byte {
+	logtrace.LogWithFunctionName()
 	return rc.Body
 }
 
 func (rc *RequestContextImpl) GetRequest() *http.Request {
+	logtrace.LogWithFunctionName()
 	return rc.Request
 }
 
 func (rc *RequestContextImpl) GetResponseWriter() http.ResponseWriter {
+	logtrace.LogWithFunctionName()
 	return rc.ResponseWriter
 }
 
 func (rc *RequestContextImpl) SetEntityId(id string) {
+	logtrace.LogWithFunctionName()
 	rc.entityId = id
 }
 
 func (rc *RequestContextImpl) SetEntitySubId(id string) {
+	logtrace.LogWithFunctionName()
 	rc.entitySubId = id
 }
 
 func (rc *RequestContextImpl) GetEntityId() (string, error) {
+	logtrace.LogWithFunctionName()
 	if rc.entityId == "" {
 		return "", errors.New("id not found")
 	}
@@ -71,6 +80,7 @@ func (rc *RequestContextImpl) GetEntityId() (string, error) {
 }
 
 func (rc *RequestContextImpl) GetEntitySubId() (string, error) {
+	logtrace.LogWithFunctionName()
 	if rc.entitySubId == "" {
 		return "", errors.New("subId not found")
 	}
@@ -79,6 +89,7 @@ func (rc *RequestContextImpl) GetEntitySubId() (string, error) {
 }
 
 func (rc *RequestContextImpl) NewChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	changeCtx := change.New().SetSourceType(change.SourceTypeRest).
 		SetSourceAuth("fabric").
 		SetSourceMethod(rc.GetRequest().Method).
@@ -104,11 +115,13 @@ type ContextKey string
 const ZitiContextKey = ContextKey("context")
 
 func AddRequestContextToHttpContext(r *http.Request, rc RequestContext) {
+	logtrace.LogWithFunctionName()
 	ctx := context.WithValue(r.Context(), ZitiContextKey, rc)
 	*r = *r.WithContext(ctx)
 }
 
 func GetRequestContextFromHttpContext(r *http.Request) (RequestContext, error) {
+	logtrace.LogWithFunctionName()
 	val := r.Context().Value(ZitiContextKey)
 	if val == nil {
 		return nil, fmt.Errorf("value for key %s no found in context", ZitiContextKey)

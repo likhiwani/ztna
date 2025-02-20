@@ -2,11 +2,14 @@ package model
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_IdentityNameFormatter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	const (
 		valueCaName       = "myCaIsCool"
 		valueCaId         = "1234567890"

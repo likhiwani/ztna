@@ -23,8 +23,10 @@ import (
 	"strings"
 	"text/template"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/templates"
+
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -46,6 +48,7 @@ var routerConfigFabricTemplate string
 
 // NewCmdCreateConfigRouterFabric creates a command object for the "fabric" command
 func NewCmdCreateConfigRouterFabric(routerOptions *CreateConfigRouterOptions, data *ConfigTemplateValues) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     "fabric",
 		Short:   "Create a fabric router config",
@@ -70,6 +73,7 @@ func NewCmdCreateConfigRouterFabric(routerOptions *CreateConfigRouterOptions, da
 }
 
 func (options *CreateConfigRouterOptions) addFabricFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.PersistentFlags().StringVarP(&options.RouterName, optionRouterName, "n", "", "name of the router")
 	err := cmd.MarkPersistentFlagRequired(optionRouterName)
 	if err != nil {
@@ -79,6 +83,7 @@ func (options *CreateConfigRouterOptions) addFabricFlags(cmd *cobra.Command) {
 
 // run implements the command
 func (options *CreateConfigRouterOptions) runFabricRouter(data *ConfigTemplateValues) error {
+	logtrace.LogWithFunctionName()
 
 	tmpl, err := template.New("fabric-router-config").Parse(routerConfigFabricTemplate)
 	if err != nil {

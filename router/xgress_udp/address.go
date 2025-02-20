@@ -19,6 +19,7 @@ package xgress_udp
 import (
 	"fmt"
 	"strings"
+	"ztna-core/ztna/logtrace"
 )
 
 var supportedNetworks = map[string]string{
@@ -29,6 +30,7 @@ var supportedNetworks = map[string]string{
 }
 
 func Parse(s string) (*PacketAddress, error) {
+	logtrace.LogWithFunctionName()
 	tokens := strings.Split(s, ":")
 	if len(tokens) < 2 {
 		return nil, fmt.Errorf("invalid format")
@@ -46,14 +48,17 @@ func Parse(s string) (*PacketAddress, error) {
 }
 
 func (pa *PacketAddress) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("PacketAddress{network=[%v], addr=[%v]}", pa.network, pa.address)
 }
 
 func (pa *PacketAddress) Network() string {
+	logtrace.LogWithFunctionName()
 	return pa.network
 }
 
 func (pa *PacketAddress) Address() string {
+	logtrace.LogWithFunctionName()
 	return pa.address
 }
 

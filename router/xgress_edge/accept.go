@@ -18,14 +18,16 @@ package xgress_edge
 
 import (
 	"errors"
+	"math"
+	"sync/atomic"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/latency"
 	"github.com/openziti/metrics"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/common/cert"
-	"math"
-	"sync/atomic"
 )
 
 type Acceptor struct {
@@ -41,6 +43,7 @@ type Acceptor struct {
 }
 
 func (self *Acceptor) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.WithField("token", binding.GetChannel().Id()).Debug("accepting edge connection")
 
@@ -134,9 +137,11 @@ func (self *Acceptor) BindChannel(binding channel.Binding) error {
 type debugPeekHandler struct{}
 
 func (d debugPeekHandler) Connect(ch channel.Channel, remoteAddress string) {
+	logtrace.LogWithFunctionName()
 }
 
 func (d debugPeekHandler) Rx(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if m.ContentType == edge.ContentTypeDialSuccess || m.ContentType == edge.ContentTypeDialFailed {
 		connId, _ := m.GetUint32Header(edge.ConnIdHeader)
 		result, err := edge.UnmarshalDialResult(m)
@@ -151,6 +156,7 @@ func (d debugPeekHandler) Rx(m *channel.Message, ch channel.Channel) {
 }
 
 func (d debugPeekHandler) Tx(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if m.ContentType == edge.ContentTypeDial {
 		connId, _ := m.GetUint32Header(edge.ConnIdHeader)
 		newConnId, _ := m.GetUint32Header(edge.RouterProvidedConnId)
@@ -162,9 +168,11 @@ func (d debugPeekHandler) Tx(m *channel.Message, ch channel.Channel) {
 }
 
 func (d debugPeekHandler) Close(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 }
 
 func NewAcceptor(listener *listener, uListener channel.UnderlayListener, options *channel.Options) *Acceptor {
+	logtrace.LogWithFunctionName()
 	sessionHandler := newSessionConnectHandler(listener.factory.stateManager, listener.options, listener.factory.metricsRegistry)
 
 	optionsWithBind := options
@@ -191,6 +199,7 @@ func NewAcceptor(listener *listener, uListener channel.UnderlayListener, options
 }
 
 func (self *Acceptor) Run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Info("starting")
 	defer log.Warn("exiting")

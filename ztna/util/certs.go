@@ -16,6 +16,7 @@ import (
 	"sort"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 
 	"github.com/fullsailor/pkcs7"
@@ -23,6 +24,7 @@ import (
 )
 
 func WriteCert(p common.Printer, id string, cert []byte) (string, error) {
+	logtrace.LogWithFunctionName()
 	cfgDir, err := ConfigDir()
 	if err != nil {
 		return "", err
@@ -40,6 +42,7 @@ func WriteCert(p common.Printer, id string, cert []byte) (string, error) {
 }
 
 func ReadCert(id string) ([]byte, string, error) {
+	logtrace.LogWithFunctionName()
 	cfgDir, err := ConfigDir()
 	if err != nil {
 		return nil, "", errors.Wrapf(err, "couldn't get config dir while reading cert for %v", id)
@@ -60,6 +63,7 @@ func ReadCert(id string) ([]byte, string, error) {
 }
 
 func IsServerTrusted(host string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	resp, err := http.DefaultClient.Get(fmt.Sprintf("%v/.well-known/est/cacerts", host))
 	if err != nil {
 		if ue, ok := err.(*url.Error); ok && (errors.As(ue.Err, &x509.UnknownAuthorityError{}) || strings.Contains(err.Error(), "x509")) {
@@ -72,6 +76,7 @@ func IsServerTrusted(host string) (bool, error) {
 }
 
 func AreCertsTrusted(host string, certs []byte) (bool, error) {
+	logtrace.LogWithFunctionName()
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
 	}
@@ -101,6 +106,7 @@ func AreCertsTrusted(host string, certs []byte) (bool, error) {
 }
 
 func GetWellKnownCerts(host string) ([]byte, []*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	transport := http.DefaultTransport.(*http.Transport).Clone()
 	transport.TLSClientConfig = &tls.Config{
 		InsecureSkipVerify: true,
@@ -147,6 +153,7 @@ func GetWellKnownCerts(host string) ([]byte, []*x509.Certificate, error) {
 }
 
 func AreCertsSame(p common.Printer, server, local []byte) bool {
+	logtrace.LogWithFunctionName()
 	serverCerts := decodeCerts(server)
 	localCerts := decodeCerts(local)
 
@@ -168,6 +175,7 @@ func AreCertsSame(p common.Printer, server, local []byte) bool {
 }
 
 func decodeCerts(certs []byte) []*pem.Block {
+	logtrace.LogWithFunctionName()
 	var result []*pem.Block
 	for len(certs) > 0 {
 		var block *pem.Block
@@ -187,14 +195,17 @@ func decodeCerts(certs []byte) []*pem.Block {
 type blockSort []*pem.Block
 
 func (self blockSort) Len() int {
+	logtrace.LogWithFunctionName()
 	return len(self)
 }
 
 func (self blockSort) Less(i, j int) bool {
+	logtrace.LogWithFunctionName()
 	return bytes.Compare(self[i].Bytes, self[j].Bytes) < 0
 }
 
 func (self blockSort) Swap(i, j int) {
+	logtrace.LogWithFunctionName()
 	tmp := self[i]
 	self[i] = self[j]
 	self[j] = tmp

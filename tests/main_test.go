@@ -1,3 +1,4 @@
+//go:build apitests
 // +build apitests
 
 /*
@@ -19,13 +20,16 @@
 package tests
 
 import (
-	"github.com/spf13/cobra"
 	"os"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/spf13/cobra"
 )
 
-//for usages with main
+// for usages with main
 func TestMain(m *testing.M) {
+	logtrace.LogWithFunctionName()
 
 	root := &cobra.Command{
 		Use:   "go test",

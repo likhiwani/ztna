@@ -29,6 +29,7 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
@@ -36,6 +37,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewDatabaseRouter()
 	env.AddRouter(r)
 }
@@ -56,10 +58,12 @@ type DatabaseRouter struct {
 }
 
 func NewDatabaseRouter() *DatabaseRouter {
+	logtrace.LogWithFunctionName()
 	return &DatabaseRouter{}
 }
 
 func (r *DatabaseRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.DatabaseCreateDatabaseSnapshotHandler = database.CreateDatabaseSnapshotHandlerFunc(func(params database.CreateDatabaseSnapshotParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(func(ae *env.AppEnv, rc *response.RequestContext) { r.CreateSnapshot(ae, rc) }, params.HTTPRequest, "", "", permissions.IsAdmin())
 	})
@@ -78,6 +82,7 @@ func (r *DatabaseRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *DatabaseRouter) CreateSnapshot(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	if err := ae.HostController.GetNetwork().SnapshotDatabase(); err != nil {
 		if errors.Is(err, network.DbSnapshotTooFrequentError) {
 			rc.RespondWithApiError(apierror.NewRateLimited())
@@ -90,6 +95,7 @@ func (r *DatabaseRouter) CreateSnapshot(ae *env.AppEnv, rc *response.RequestCont
 }
 
 func (r *DatabaseRouter) CheckDatastoreIntegrity(ae *env.AppEnv, rc *response.RequestContext, fixErrors bool) {
+	logtrace.LogWithFunctionName()
 	if r.integrityCheck.running.CompareAndSwap(false, true) {
 		r.integrityCheck.fixingErrors = fixErrors
 		go r.runDataIntegrityCheck(ae, rc, fixErrors)
@@ -100,6 +106,7 @@ func (r *DatabaseRouter) CheckDatastoreIntegrity(ae *env.AppEnv, rc *response.Re
 }
 
 func (r *DatabaseRouter) GetCheckProgress(rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	integrityCheck := &r.integrityCheck
 
 	integrityCheck.lock.Lock()
@@ -141,6 +148,7 @@ func (r *DatabaseRouter) GetCheckProgress(rc *response.RequestContext) {
 }
 
 func (r *DatabaseRouter) runDataIntegrityCheck(ae *env.AppEnv, rc *response.RequestContext, fixErrors bool) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		r.integrityCheck.lock.Lock()
 		now := time.Now()

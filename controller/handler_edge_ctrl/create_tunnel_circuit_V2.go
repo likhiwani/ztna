@@ -17,10 +17,12 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,20 +31,24 @@ type createTunnelCircuitV2Handler struct {
 }
 
 func NewCreateTunnelCircuitV2Handler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createTunnelCircuitV2Handler{
 		baseRequestHandler: baseRequestHandler{ch: ch, appEnv: appEnv},
 	}
 }
 
 func (self *createTunnelCircuitV2Handler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateTunnelCircuitV2RequestType)
 }
 
 func (self *createTunnelCircuitV2Handler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.create.circuit.v2"
 }
 
 func (self *createTunnelCircuitV2Handler) sendResponse(ctx *CreateTunnelCircuitV2RequestContext, response *edge_ctrl_pb.CreateTunnelCircuitV2Response) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.ch.Label())
 
 	body, err := proto.Marshal(response)
@@ -59,6 +65,7 @@ func (self *createTunnelCircuitV2Handler) sendResponse(ctx *CreateTunnelCircuitV
 }
 
 func (self *createTunnelCircuitV2Handler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.CreateTunnelCircuitV2Request{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal CreateTunnelCircuitV2Request")
@@ -76,6 +83,7 @@ func (self *createTunnelCircuitV2Handler) HandleReceive(msg *channel.Message, ch
 }
 
 func (self *createTunnelCircuitV2Handler) CreateCircuit(ctx *CreateTunnelCircuitV2RequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}

@@ -19,11 +19,14 @@ package edge
 import (
 	"io"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/util"
+
+	"github.com/Jeffail/gabs"
 )
 
 func DetailEntityOfType(entityType, entityId string, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	jsonParsed, err := util.ControllerDetailEntity("edge", entityType, entityId, logJSON, out, timeout, verbose)
 
 	if err != nil {

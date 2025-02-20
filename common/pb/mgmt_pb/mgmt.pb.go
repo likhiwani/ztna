@@ -7,6 +7,7 @@
 package mgmt_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -165,29 +166,35 @@ var (
 )
 
 func (x ContentType) Enum() *ContentType {
+    logtrace.LogWithFunctionName()
 	p := new(ContentType)
 	*p = x
 	return p
 }
 
 func (x ContentType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (ContentType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[0].Descriptor()
 }
 
 func (ContentType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[0]
 }
 
 func (x ContentType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use ContentType.Descriptor instead.
 func (ContentType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{0}
 }
 
@@ -217,29 +224,35 @@ var (
 )
 
 func (x Header) Enum() *Header {
+    logtrace.LogWithFunctionName()
 	p := new(Header)
 	*p = x
 	return p
 }
 
 func (x Header) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (Header) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[1].Descriptor()
 }
 
 func (Header) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[1]
 }
 
 func (x Header) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use Header.Descriptor instead.
 func (Header) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{1}
 }
 
@@ -272,29 +285,35 @@ var (
 )
 
 func (x StreamCircuitEventType) Enum() *StreamCircuitEventType {
+    logtrace.LogWithFunctionName()
 	p := new(StreamCircuitEventType)
 	*p = x
 	return p
 }
 
 func (x StreamCircuitEventType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (StreamCircuitEventType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[2].Descriptor()
 }
 
 func (StreamCircuitEventType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[2]
 }
 
 func (x StreamCircuitEventType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use StreamCircuitEventType.Descriptor instead.
 func (StreamCircuitEventType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{2}
 }
 
@@ -318,29 +337,35 @@ var (
 )
 
 func (x TraceFilterType) Enum() *TraceFilterType {
+    logtrace.LogWithFunctionName()
 	p := new(TraceFilterType)
 	*p = x
 	return p
 }
 
 func (x TraceFilterType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (TraceFilterType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[3].Descriptor()
 }
 
 func (TraceFilterType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[3]
 }
 
 func (x TraceFilterType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use TraceFilterType.Descriptor instead.
 func (TraceFilterType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{3}
 }
 
@@ -373,29 +398,35 @@ var (
 )
 
 func (x TerminatorState) Enum() *TerminatorState {
+    logtrace.LogWithFunctionName()
 	p := new(TerminatorState)
 	*p = x
 	return p
 }
 
 func (x TerminatorState) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (TerminatorState) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[4].Descriptor()
 }
 
 func (TerminatorState) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[4]
 }
 
 func (x TerminatorState) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use TerminatorState.Descriptor instead.
 func (TerminatorState) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{4}
 }
 
@@ -425,29 +456,35 @@ var (
 )
 
 func (x LinkState) Enum() *LinkState {
+    logtrace.LogWithFunctionName()
 	p := new(LinkState)
 	*p = x
 	return p
 }
 
 func (x LinkState) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (LinkState) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_enumTypes[5].Descriptor()
 }
 
 func (LinkState) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_mgmt_proto_enumTypes[5]
 }
 
 func (x LinkState) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use LinkState.Descriptor instead.
 func (LinkState) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{5}
 }
 
@@ -460,6 +497,7 @@ type StreamMetricsRequest struct {
 }
 
 func (x *StreamMetricsRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamMetricsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[0]
@@ -469,12 +507,16 @@ func (x *StreamMetricsRequest) Reset() {
 }
 
 func (x *StreamMetricsRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamMetricsRequest) ProtoMessage() {}
+func (*StreamMetricsRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamMetricsRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -488,10 +530,12 @@ func (x *StreamMetricsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamMetricsRequest.ProtoReflect.Descriptor instead.
 func (*StreamMetricsRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *StreamMetricsRequest) GetMatchers() []*StreamMetricsRequest_MetricMatcher {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Matchers
 	}
@@ -513,6 +557,7 @@ type StreamMetricsEvent struct {
 }
 
 func (x *StreamMetricsEvent) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamMetricsEvent{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[1]
@@ -522,12 +567,16 @@ func (x *StreamMetricsEvent) Reset() {
 }
 
 func (x *StreamMetricsEvent) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamMetricsEvent) ProtoMessage() {}
+func (*StreamMetricsEvent) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamMetricsEvent) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -541,10 +590,12 @@ func (x *StreamMetricsEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamMetricsEvent.ProtoReflect.Descriptor instead.
 func (*StreamMetricsEvent) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *StreamMetricsEvent) GetSourceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SourceId
 	}
@@ -552,6 +603,7 @@ func (x *StreamMetricsEvent) GetSourceId() string {
 }
 
 func (x *StreamMetricsEvent) GetTimestamp() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Timestamp
 	}
@@ -559,6 +611,7 @@ func (x *StreamMetricsEvent) GetTimestamp() *timestamppb.Timestamp {
 }
 
 func (x *StreamMetricsEvent) GetTags() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -566,6 +619,7 @@ func (x *StreamMetricsEvent) GetTags() map[string]string {
 }
 
 func (x *StreamMetricsEvent) GetIntMetrics() map[string]int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IntMetrics
 	}
@@ -573,6 +627,7 @@ func (x *StreamMetricsEvent) GetIntMetrics() map[string]int64 {
 }
 
 func (x *StreamMetricsEvent) GetFloatMetrics() map[string]float64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.FloatMetrics
 	}
@@ -580,6 +635,7 @@ func (x *StreamMetricsEvent) GetFloatMetrics() map[string]float64 {
 }
 
 func (x *StreamMetricsEvent) GetIntervalMetrics() []*StreamMetricsEvent_IntervalMetric {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IntervalMetrics
 	}
@@ -587,6 +643,7 @@ func (x *StreamMetricsEvent) GetIntervalMetrics() []*StreamMetricsEvent_Interval
 }
 
 func (x *StreamMetricsEvent) GetMetricGroup() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MetricGroup
 	}
@@ -604,6 +661,7 @@ type Path struct {
 }
 
 func (x *Path) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Path{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[2]
@@ -613,12 +671,16 @@ func (x *Path) Reset() {
 }
 
 func (x *Path) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Path) ProtoMessage() {}
+func (*Path) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Path) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -632,10 +694,12 @@ func (x *Path) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Path.ProtoReflect.Descriptor instead.
 func (*Path) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Path) GetNodes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Nodes
 	}
@@ -643,6 +707,7 @@ func (x *Path) GetNodes() []string {
 }
 
 func (x *Path) GetLinks() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Links
 	}
@@ -650,6 +715,7 @@ func (x *Path) GetLinks() []string {
 }
 
 func (x *Path) GetTerminatorLocalAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorLocalAddress
 	}
@@ -671,6 +737,7 @@ type StreamCircuitsEvent struct {
 }
 
 func (x *StreamCircuitsEvent) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamCircuitsEvent{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[3]
@@ -680,12 +747,16 @@ func (x *StreamCircuitsEvent) Reset() {
 }
 
 func (x *StreamCircuitsEvent) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamCircuitsEvent) ProtoMessage() {}
+func (*StreamCircuitsEvent) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamCircuitsEvent) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -699,10 +770,12 @@ func (x *StreamCircuitsEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamCircuitsEvent.ProtoReflect.Descriptor instead.
 func (*StreamCircuitsEvent) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *StreamCircuitsEvent) GetEventType() StreamCircuitEventType {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EventType
 	}
@@ -710,6 +783,7 @@ func (x *StreamCircuitsEvent) GetEventType() StreamCircuitEventType {
 }
 
 func (x *StreamCircuitsEvent) GetCircuitId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CircuitId
 	}
@@ -717,6 +791,7 @@ func (x *StreamCircuitsEvent) GetCircuitId() string {
 }
 
 func (x *StreamCircuitsEvent) GetClientId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ClientId
 	}
@@ -724,6 +799,7 @@ func (x *StreamCircuitsEvent) GetClientId() string {
 }
 
 func (x *StreamCircuitsEvent) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -731,6 +807,7 @@ func (x *StreamCircuitsEvent) GetServiceId() string {
 }
 
 func (x *StreamCircuitsEvent) GetPath() *Path {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Path
 	}
@@ -738,6 +815,7 @@ func (x *StreamCircuitsEvent) GetPath() *Path {
 }
 
 func (x *StreamCircuitsEvent) GetCreationTimespan() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.CreationTimespan != nil {
 		return *x.CreationTimespan
 	}
@@ -745,6 +823,7 @@ func (x *StreamCircuitsEvent) GetCreationTimespan() int64 {
 }
 
 func (x *StreamCircuitsEvent) GetTerminatorId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorId
 	}
@@ -762,6 +841,7 @@ type ToggleCircuitTracesRequest struct {
 }
 
 func (x *ToggleCircuitTracesRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ToggleCircuitTracesRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[4]
@@ -771,12 +851,16 @@ func (x *ToggleCircuitTracesRequest) Reset() {
 }
 
 func (x *ToggleCircuitTracesRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ToggleCircuitTracesRequest) ProtoMessage() {}
+func (*ToggleCircuitTracesRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ToggleCircuitTracesRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -790,10 +874,12 @@ func (x *ToggleCircuitTracesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleCircuitTracesRequest.ProtoReflect.Descriptor instead.
 func (*ToggleCircuitTracesRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ToggleCircuitTracesRequest) GetEnable() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Enable
 	}
@@ -801,6 +887,7 @@ func (x *ToggleCircuitTracesRequest) GetEnable() bool {
 }
 
 func (x *ToggleCircuitTracesRequest) GetServiceRegex() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceRegex
 	}
@@ -808,6 +895,7 @@ func (x *ToggleCircuitTracesRequest) GetServiceRegex() string {
 }
 
 func (x *ToggleCircuitTracesRequest) GetClientRegex() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ClientRegex
 	}
@@ -825,6 +913,7 @@ type StreamTracesRequest struct {
 }
 
 func (x *StreamTracesRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamTracesRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[5]
@@ -834,12 +923,16 @@ func (x *StreamTracesRequest) Reset() {
 }
 
 func (x *StreamTracesRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamTracesRequest) ProtoMessage() {}
+func (*StreamTracesRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamTracesRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -853,10 +946,12 @@ func (x *StreamTracesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamTracesRequest.ProtoReflect.Descriptor instead.
 func (*StreamTracesRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StreamTracesRequest) GetEnabledFilter() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EnabledFilter
 	}
@@ -864,6 +959,7 @@ func (x *StreamTracesRequest) GetEnabledFilter() bool {
 }
 
 func (x *StreamTracesRequest) GetFilterType() TraceFilterType {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.FilterType
 	}
@@ -871,6 +967,7 @@ func (x *StreamTracesRequest) GetFilterType() TraceFilterType {
 }
 
 func (x *StreamTracesRequest) GetContentTypes() []int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ContentTypes
 	}
@@ -887,6 +984,7 @@ type InspectRequest struct {
 }
 
 func (x *InspectRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[6]
@@ -896,12 +994,16 @@ func (x *InspectRequest) Reset() {
 }
 
 func (x *InspectRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectRequest) ProtoMessage() {}
+func (*InspectRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -915,10 +1017,12 @@ func (x *InspectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectRequest.ProtoReflect.Descriptor instead.
 func (*InspectRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *InspectRequest) GetAppRegex() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppRegex
 	}
@@ -926,6 +1030,7 @@ func (x *InspectRequest) GetAppRegex() string {
 }
 
 func (x *InspectRequest) GetRequestedValues() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequestedValues
 	}
@@ -943,6 +1048,7 @@ type InspectResponse struct {
 }
 
 func (x *InspectResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[7]
@@ -952,12 +1058,16 @@ func (x *InspectResponse) Reset() {
 }
 
 func (x *InspectResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectResponse) ProtoMessage() {}
+func (*InspectResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -971,10 +1081,12 @@ func (x *InspectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectResponse.ProtoReflect.Descriptor instead.
 func (*InspectResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *InspectResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -982,6 +1094,7 @@ func (x *InspectResponse) GetSuccess() bool {
 }
 
 func (x *InspectResponse) GetErrors() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Errors
 	}
@@ -989,6 +1102,7 @@ func (x *InspectResponse) GetErrors() []string {
 }
 
 func (x *InspectResponse) GetValues() []*InspectResponse_InspectValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Values
 	}
@@ -1010,6 +1124,7 @@ type RaftMember struct {
 }
 
 func (x *RaftMember) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RaftMember{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[8]
@@ -1019,12 +1134,16 @@ func (x *RaftMember) Reset() {
 }
 
 func (x *RaftMember) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RaftMember) ProtoMessage() {}
+func (*RaftMember) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RaftMember) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1038,10 +1157,12 @@ func (x *RaftMember) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaftMember.ProtoReflect.Descriptor instead.
 func (*RaftMember) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *RaftMember) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1049,6 +1170,7 @@ func (x *RaftMember) GetId() string {
 }
 
 func (x *RaftMember) GetAddr() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Addr
 	}
@@ -1056,6 +1178,7 @@ func (x *RaftMember) GetAddr() string {
 }
 
 func (x *RaftMember) GetIsVoter() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVoter
 	}
@@ -1063,6 +1186,7 @@ func (x *RaftMember) GetIsVoter() bool {
 }
 
 func (x *RaftMember) GetIsLeader() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsLeader
 	}
@@ -1070,6 +1194,7 @@ func (x *RaftMember) GetIsLeader() bool {
 }
 
 func (x *RaftMember) GetVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Version
 	}
@@ -1077,6 +1202,7 @@ func (x *RaftMember) GetVersion() string {
 }
 
 func (x *RaftMember) GetIsConnected() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsConnected
 	}
@@ -1092,6 +1218,7 @@ type RaftMemberListResponse struct {
 }
 
 func (x *RaftMemberListResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RaftMemberListResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[9]
@@ -1101,12 +1228,16 @@ func (x *RaftMemberListResponse) Reset() {
 }
 
 func (x *RaftMemberListResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RaftMemberListResponse) ProtoMessage() {}
+func (*RaftMemberListResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RaftMemberListResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1120,10 +1251,12 @@ func (x *RaftMemberListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RaftMemberListResponse.ProtoReflect.Descriptor instead.
 func (*RaftMemberListResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *RaftMemberListResponse) GetMembers() []*RaftMember {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Members
 	}
@@ -1140,6 +1273,7 @@ type ValidateTerminatorsRequest struct {
 }
 
 func (x *ValidateTerminatorsRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateTerminatorsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[10]
@@ -1149,12 +1283,16 @@ func (x *ValidateTerminatorsRequest) Reset() {
 }
 
 func (x *ValidateTerminatorsRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTerminatorsRequest) ProtoMessage() {}
+func (*ValidateTerminatorsRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateTerminatorsRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1168,10 +1306,12 @@ func (x *ValidateTerminatorsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateTerminatorsRequest.ProtoReflect.Descriptor instead.
 func (*ValidateTerminatorsRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ValidateTerminatorsRequest) GetFilter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Filter
 	}
@@ -1179,6 +1319,7 @@ func (x *ValidateTerminatorsRequest) GetFilter() string {
 }
 
 func (x *ValidateTerminatorsRequest) GetFixInvalid() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.FixInvalid
 	}
@@ -1196,6 +1337,7 @@ type ValidateTerminatorsResponse struct {
 }
 
 func (x *ValidateTerminatorsResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateTerminatorsResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[11]
@@ -1205,12 +1347,16 @@ func (x *ValidateTerminatorsResponse) Reset() {
 }
 
 func (x *ValidateTerminatorsResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTerminatorsResponse) ProtoMessage() {}
+func (*ValidateTerminatorsResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateTerminatorsResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1224,10 +1370,12 @@ func (x *ValidateTerminatorsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateTerminatorsResponse.ProtoReflect.Descriptor instead.
 func (*ValidateTerminatorsResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ValidateTerminatorsResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -1235,6 +1383,7 @@ func (x *ValidateTerminatorsResponse) GetSuccess() bool {
 }
 
 func (x *ValidateTerminatorsResponse) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -1242,6 +1391,7 @@ func (x *ValidateTerminatorsResponse) GetMessage() string {
 }
 
 func (x *ValidateTerminatorsResponse) GetTerminatorCount() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorCount
 	}
@@ -1268,6 +1418,7 @@ type TerminatorDetail struct {
 }
 
 func (x *TerminatorDetail) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = TerminatorDetail{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[12]
@@ -1277,12 +1428,16 @@ func (x *TerminatorDetail) Reset() {
 }
 
 func (x *TerminatorDetail) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TerminatorDetail) ProtoMessage() {}
+func (*TerminatorDetail) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *TerminatorDetail) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1296,10 +1451,12 @@ func (x *TerminatorDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TerminatorDetail.ProtoReflect.Descriptor instead.
 func (*TerminatorDetail) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *TerminatorDetail) GetTerminatorId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorId
 	}
@@ -1307,6 +1464,7 @@ func (x *TerminatorDetail) GetTerminatorId() string {
 }
 
 func (x *TerminatorDetail) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -1314,6 +1472,7 @@ func (x *TerminatorDetail) GetServiceId() string {
 }
 
 func (x *TerminatorDetail) GetServiceName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceName
 	}
@@ -1321,6 +1480,7 @@ func (x *TerminatorDetail) GetServiceName() string {
 }
 
 func (x *TerminatorDetail) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1328,6 +1488,7 @@ func (x *TerminatorDetail) GetRouterId() string {
 }
 
 func (x *TerminatorDetail) GetRouterName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterName
 	}
@@ -1335,6 +1496,7 @@ func (x *TerminatorDetail) GetRouterName() string {
 }
 
 func (x *TerminatorDetail) GetBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Binding
 	}
@@ -1342,6 +1504,7 @@ func (x *TerminatorDetail) GetBinding() string {
 }
 
 func (x *TerminatorDetail) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -1349,6 +1512,7 @@ func (x *TerminatorDetail) GetAddress() string {
 }
 
 func (x *TerminatorDetail) GetHostId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.HostId
 	}
@@ -1356,6 +1520,7 @@ func (x *TerminatorDetail) GetHostId() string {
 }
 
 func (x *TerminatorDetail) GetCreateDate() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CreateDate
 	}
@@ -1363,6 +1528,7 @@ func (x *TerminatorDetail) GetCreateDate() string {
 }
 
 func (x *TerminatorDetail) GetState() TerminatorState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.State
 	}
@@ -1370,6 +1536,7 @@ func (x *TerminatorDetail) GetState() TerminatorState {
 }
 
 func (x *TerminatorDetail) GetFixed() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fixed
 	}
@@ -1377,6 +1544,7 @@ func (x *TerminatorDetail) GetFixed() bool {
 }
 
 func (x *TerminatorDetail) GetDetail() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Detail
 	}
@@ -1392,6 +1560,7 @@ type ValidateRouterLinksRequest struct {
 }
 
 func (x *ValidateRouterLinksRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterLinksRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[13]
@@ -1401,12 +1570,16 @@ func (x *ValidateRouterLinksRequest) Reset() {
 }
 
 func (x *ValidateRouterLinksRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterLinksRequest) ProtoMessage() {}
+func (*ValidateRouterLinksRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterLinksRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1420,10 +1593,12 @@ func (x *ValidateRouterLinksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateRouterLinksRequest.ProtoReflect.Descriptor instead.
 func (*ValidateRouterLinksRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ValidateRouterLinksRequest) GetFilter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Filter
 	}
@@ -1441,6 +1616,7 @@ type ValidateRouterLinksResponse struct {
 }
 
 func (x *ValidateRouterLinksResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterLinksResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[14]
@@ -1450,12 +1626,16 @@ func (x *ValidateRouterLinksResponse) Reset() {
 }
 
 func (x *ValidateRouterLinksResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterLinksResponse) ProtoMessage() {}
+func (*ValidateRouterLinksResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterLinksResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1469,10 +1649,12 @@ func (x *ValidateRouterLinksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateRouterLinksResponse.ProtoReflect.Descriptor instead.
 func (*ValidateRouterLinksResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ValidateRouterLinksResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -1480,6 +1662,7 @@ func (x *ValidateRouterLinksResponse) GetSuccess() bool {
 }
 
 func (x *ValidateRouterLinksResponse) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -1487,6 +1670,7 @@ func (x *ValidateRouterLinksResponse) GetMessage() string {
 }
 
 func (x *ValidateRouterLinksResponse) GetRouterCount() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterCount
 	}
@@ -1506,6 +1690,7 @@ type RouterLinkDetails struct {
 }
 
 func (x *RouterLinkDetails) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterLinkDetails{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[15]
@@ -1515,12 +1700,16 @@ func (x *RouterLinkDetails) Reset() {
 }
 
 func (x *RouterLinkDetails) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterLinkDetails) ProtoMessage() {}
+func (*RouterLinkDetails) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterLinkDetails) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1534,10 +1723,12 @@ func (x *RouterLinkDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterLinkDetails.ProtoReflect.Descriptor instead.
 func (*RouterLinkDetails) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *RouterLinkDetails) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1545,6 +1736,7 @@ func (x *RouterLinkDetails) GetRouterId() string {
 }
 
 func (x *RouterLinkDetails) GetRouterName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterName
 	}
@@ -1552,6 +1744,7 @@ func (x *RouterLinkDetails) GetRouterName() string {
 }
 
 func (x *RouterLinkDetails) GetValidateSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ValidateSuccess
 	}
@@ -1559,6 +1752,7 @@ func (x *RouterLinkDetails) GetValidateSuccess() bool {
 }
 
 func (x *RouterLinkDetails) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -1566,6 +1760,7 @@ func (x *RouterLinkDetails) GetMessage() string {
 }
 
 func (x *RouterLinkDetails) GetLinkDetails() []*RouterLinkDetail {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkDetails
 	}
@@ -1587,6 +1782,7 @@ type RouterLinkDetail struct {
 }
 
 func (x *RouterLinkDetail) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterLinkDetail{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[16]
@@ -1596,12 +1792,16 @@ func (x *RouterLinkDetail) Reset() {
 }
 
 func (x *RouterLinkDetail) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterLinkDetail) ProtoMessage() {}
+func (*RouterLinkDetail) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterLinkDetail) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1615,10 +1815,12 @@ func (x *RouterLinkDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterLinkDetail.ProtoReflect.Descriptor instead.
 func (*RouterLinkDetail) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *RouterLinkDetail) GetLinkId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkId
 	}
@@ -1626,6 +1828,7 @@ func (x *RouterLinkDetail) GetLinkId() string {
 }
 
 func (x *RouterLinkDetail) GetCtrlState() LinkState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CtrlState
 	}
@@ -1633,6 +1836,7 @@ func (x *RouterLinkDetail) GetCtrlState() LinkState {
 }
 
 func (x *RouterLinkDetail) GetRouterState() LinkState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterState
 	}
@@ -1640,6 +1844,7 @@ func (x *RouterLinkDetail) GetRouterState() LinkState {
 }
 
 func (x *RouterLinkDetail) GetDestConnected() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DestConnected
 	}
@@ -1647,6 +1852,7 @@ func (x *RouterLinkDetail) GetDestConnected() bool {
 }
 
 func (x *RouterLinkDetail) GetIsValid() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsValid
 	}
@@ -1654,6 +1860,7 @@ func (x *RouterLinkDetail) GetIsValid() bool {
 }
 
 func (x *RouterLinkDetail) GetDestRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DestRouterId
 	}
@@ -1661,6 +1868,7 @@ func (x *RouterLinkDetail) GetDestRouterId() string {
 }
 
 func (x *RouterLinkDetail) GetDialed() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Dialed
 	}
@@ -1676,6 +1884,7 @@ type ValidateRouterSdkTerminatorsRequest struct {
 }
 
 func (x *ValidateRouterSdkTerminatorsRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterSdkTerminatorsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[17]
@@ -1685,12 +1894,16 @@ func (x *ValidateRouterSdkTerminatorsRequest) Reset() {
 }
 
 func (x *ValidateRouterSdkTerminatorsRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterSdkTerminatorsRequest) ProtoMessage() {}
+func (*ValidateRouterSdkTerminatorsRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterSdkTerminatorsRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1704,10 +1917,12 @@ func (x *ValidateRouterSdkTerminatorsRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ValidateRouterSdkTerminatorsRequest.ProtoReflect.Descriptor instead.
 func (*ValidateRouterSdkTerminatorsRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ValidateRouterSdkTerminatorsRequest) GetFilter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Filter
 	}
@@ -1725,6 +1940,7 @@ type ValidateRouterSdkTerminatorsResponse struct {
 }
 
 func (x *ValidateRouterSdkTerminatorsResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterSdkTerminatorsResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[18]
@@ -1734,12 +1950,16 @@ func (x *ValidateRouterSdkTerminatorsResponse) Reset() {
 }
 
 func (x *ValidateRouterSdkTerminatorsResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterSdkTerminatorsResponse) ProtoMessage() {}
+func (*ValidateRouterSdkTerminatorsResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterSdkTerminatorsResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1753,10 +1973,12 @@ func (x *ValidateRouterSdkTerminatorsResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ValidateRouterSdkTerminatorsResponse.ProtoReflect.Descriptor instead.
 func (*ValidateRouterSdkTerminatorsResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ValidateRouterSdkTerminatorsResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -1764,6 +1986,7 @@ func (x *ValidateRouterSdkTerminatorsResponse) GetSuccess() bool {
 }
 
 func (x *ValidateRouterSdkTerminatorsResponse) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -1771,6 +1994,7 @@ func (x *ValidateRouterSdkTerminatorsResponse) GetMessage() string {
 }
 
 func (x *ValidateRouterSdkTerminatorsResponse) GetRouterCount() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterCount
 	}
@@ -1790,6 +2014,7 @@ type RouterSdkTerminatorsDetails struct {
 }
 
 func (x *RouterSdkTerminatorsDetails) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterSdkTerminatorsDetails{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[19]
@@ -1799,12 +2024,16 @@ func (x *RouterSdkTerminatorsDetails) Reset() {
 }
 
 func (x *RouterSdkTerminatorsDetails) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterSdkTerminatorsDetails) ProtoMessage() {}
+func (*RouterSdkTerminatorsDetails) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterSdkTerminatorsDetails) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1818,10 +2047,12 @@ func (x *RouterSdkTerminatorsDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterSdkTerminatorsDetails.ProtoReflect.Descriptor instead.
 func (*RouterSdkTerminatorsDetails) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RouterSdkTerminatorsDetails) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1829,6 +2060,7 @@ func (x *RouterSdkTerminatorsDetails) GetRouterId() string {
 }
 
 func (x *RouterSdkTerminatorsDetails) GetRouterName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterName
 	}
@@ -1836,6 +2068,7 @@ func (x *RouterSdkTerminatorsDetails) GetRouterName() string {
 }
 
 func (x *RouterSdkTerminatorsDetails) GetValidateSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ValidateSuccess
 	}
@@ -1843,6 +2076,7 @@ func (x *RouterSdkTerminatorsDetails) GetValidateSuccess() bool {
 }
 
 func (x *RouterSdkTerminatorsDetails) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -1850,6 +2084,7 @@ func (x *RouterSdkTerminatorsDetails) GetMessage() string {
 }
 
 func (x *RouterSdkTerminatorsDetails) GetDetails() []*RouterSdkTerminatorDetail {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Details
 	}
@@ -1871,6 +2106,7 @@ type RouterSdkTerminatorDetail struct {
 }
 
 func (x *RouterSdkTerminatorDetail) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterSdkTerminatorDetail{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[20]
@@ -1880,12 +2116,16 @@ func (x *RouterSdkTerminatorDetail) Reset() {
 }
 
 func (x *RouterSdkTerminatorDetail) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterSdkTerminatorDetail) ProtoMessage() {}
+func (*RouterSdkTerminatorDetail) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterSdkTerminatorDetail) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1899,10 +2139,12 @@ func (x *RouterSdkTerminatorDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterSdkTerminatorDetail.ProtoReflect.Descriptor instead.
 func (*RouterSdkTerminatorDetail) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *RouterSdkTerminatorDetail) GetTerminatorId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorId
 	}
@@ -1910,6 +2152,7 @@ func (x *RouterSdkTerminatorDetail) GetTerminatorId() string {
 }
 
 func (x *RouterSdkTerminatorDetail) GetCtrlState() TerminatorState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CtrlState
 	}
@@ -1917,6 +2160,7 @@ func (x *RouterSdkTerminatorDetail) GetCtrlState() TerminatorState {
 }
 
 func (x *RouterSdkTerminatorDetail) GetRouterState() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterState
 	}
@@ -1924,6 +2168,7 @@ func (x *RouterSdkTerminatorDetail) GetRouterState() string {
 }
 
 func (x *RouterSdkTerminatorDetail) GetIsValid() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsValid
 	}
@@ -1931,6 +2176,7 @@ func (x *RouterSdkTerminatorDetail) GetIsValid() bool {
 }
 
 func (x *RouterSdkTerminatorDetail) GetOperationActive() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OperationActive
 	}
@@ -1938,6 +2184,7 @@ func (x *RouterSdkTerminatorDetail) GetOperationActive() bool {
 }
 
 func (x *RouterSdkTerminatorDetail) GetCreateTime() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CreateTime
 	}
@@ -1945,6 +2192,7 @@ func (x *RouterSdkTerminatorDetail) GetCreateTime() string {
 }
 
 func (x *RouterSdkTerminatorDetail) GetLastAttempt() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LastAttempt
 	}
@@ -1962,6 +2210,7 @@ type ValidateRouterDataModelRequest struct {
 }
 
 func (x *ValidateRouterDataModelRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterDataModelRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[21]
@@ -1971,12 +2220,16 @@ func (x *ValidateRouterDataModelRequest) Reset() {
 }
 
 func (x *ValidateRouterDataModelRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterDataModelRequest) ProtoMessage() {}
+func (*ValidateRouterDataModelRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterDataModelRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1990,10 +2243,12 @@ func (x *ValidateRouterDataModelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateRouterDataModelRequest.ProtoReflect.Descriptor instead.
 func (*ValidateRouterDataModelRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ValidateRouterDataModelRequest) GetRouterFilter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterFilter
 	}
@@ -2001,6 +2256,7 @@ func (x *ValidateRouterDataModelRequest) GetRouterFilter() string {
 }
 
 func (x *ValidateRouterDataModelRequest) GetValidateCtrl() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ValidateCtrl
 	}
@@ -2008,6 +2264,7 @@ func (x *ValidateRouterDataModelRequest) GetValidateCtrl() bool {
 }
 
 func (x *ValidateRouterDataModelRequest) GetFix() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fix
 	}
@@ -2025,6 +2282,7 @@ type ValidateRouterDataModelResponse struct {
 }
 
 func (x *ValidateRouterDataModelResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateRouterDataModelResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[22]
@@ -2034,12 +2292,16 @@ func (x *ValidateRouterDataModelResponse) Reset() {
 }
 
 func (x *ValidateRouterDataModelResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateRouterDataModelResponse) ProtoMessage() {}
+func (*ValidateRouterDataModelResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateRouterDataModelResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2053,10 +2315,12 @@ func (x *ValidateRouterDataModelResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateRouterDataModelResponse.ProtoReflect.Descriptor instead.
 func (*ValidateRouterDataModelResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ValidateRouterDataModelResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -2064,6 +2328,7 @@ func (x *ValidateRouterDataModelResponse) GetSuccess() bool {
 }
 
 func (x *ValidateRouterDataModelResponse) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -2071,6 +2336,7 @@ func (x *ValidateRouterDataModelResponse) GetMessage() string {
 }
 
 func (x *ValidateRouterDataModelResponse) GetComponentCount() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentCount
 	}
@@ -2090,6 +2356,7 @@ type RouterDataModelDetails struct {
 }
 
 func (x *RouterDataModelDetails) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterDataModelDetails{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[23]
@@ -2099,12 +2366,16 @@ func (x *RouterDataModelDetails) Reset() {
 }
 
 func (x *RouterDataModelDetails) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterDataModelDetails) ProtoMessage() {}
+func (*RouterDataModelDetails) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterDataModelDetails) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2118,10 +2389,12 @@ func (x *RouterDataModelDetails) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterDataModelDetails.ProtoReflect.Descriptor instead.
 func (*RouterDataModelDetails) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *RouterDataModelDetails) GetComponentType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentType
 	}
@@ -2129,6 +2402,7 @@ func (x *RouterDataModelDetails) GetComponentType() string {
 }
 
 func (x *RouterDataModelDetails) GetComponentId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentId
 	}
@@ -2136,6 +2410,7 @@ func (x *RouterDataModelDetails) GetComponentId() string {
 }
 
 func (x *RouterDataModelDetails) GetComponentName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentName
 	}
@@ -2143,6 +2418,7 @@ func (x *RouterDataModelDetails) GetComponentName() string {
 }
 
 func (x *RouterDataModelDetails) GetValidateSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ValidateSuccess
 	}
@@ -2150,6 +2426,7 @@ func (x *RouterDataModelDetails) GetValidateSuccess() bool {
 }
 
 func (x *RouterDataModelDetails) GetErrors() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Errors
 	}
@@ -2165,6 +2442,7 @@ type ValidateIdentityConnectionStatusesRequest struct {
 }
 
 func (x *ValidateIdentityConnectionStatusesRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateIdentityConnectionStatusesRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[24]
@@ -2174,12 +2452,16 @@ func (x *ValidateIdentityConnectionStatusesRequest) Reset() {
 }
 
 func (x *ValidateIdentityConnectionStatusesRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateIdentityConnectionStatusesRequest) ProtoMessage() {}
+func (*ValidateIdentityConnectionStatusesRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateIdentityConnectionStatusesRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2193,10 +2475,12 @@ func (x *ValidateIdentityConnectionStatusesRequest) ProtoReflect() protoreflect.
 
 // Deprecated: Use ValidateIdentityConnectionStatusesRequest.ProtoReflect.Descriptor instead.
 func (*ValidateIdentityConnectionStatusesRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ValidateIdentityConnectionStatusesRequest) GetRouterFilter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterFilter
 	}
@@ -2214,6 +2498,7 @@ type ValidateIdentityConnectionStatusesResponse struct {
 }
 
 func (x *ValidateIdentityConnectionStatusesResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateIdentityConnectionStatusesResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[25]
@@ -2223,12 +2508,16 @@ func (x *ValidateIdentityConnectionStatusesResponse) Reset() {
 }
 
 func (x *ValidateIdentityConnectionStatusesResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateIdentityConnectionStatusesResponse) ProtoMessage() {}
+func (*ValidateIdentityConnectionStatusesResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateIdentityConnectionStatusesResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2242,10 +2531,12 @@ func (x *ValidateIdentityConnectionStatusesResponse) ProtoReflect() protoreflect
 
 // Deprecated: Use ValidateIdentityConnectionStatusesResponse.ProtoReflect.Descriptor instead.
 func (*ValidateIdentityConnectionStatusesResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ValidateIdentityConnectionStatusesResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -2253,6 +2544,7 @@ func (x *ValidateIdentityConnectionStatusesResponse) GetSuccess() bool {
 }
 
 func (x *ValidateIdentityConnectionStatusesResponse) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -2260,6 +2552,7 @@ func (x *ValidateIdentityConnectionStatusesResponse) GetMessage() string {
 }
 
 func (x *ValidateIdentityConnectionStatusesResponse) GetComponentCount() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentCount
 	}
@@ -2279,6 +2572,7 @@ type RouterIdentityConnectionStatusesDetails struct {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterIdentityConnectionStatusesDetails{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[26]
@@ -2288,12 +2582,16 @@ func (x *RouterIdentityConnectionStatusesDetails) Reset() {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterIdentityConnectionStatusesDetails) ProtoMessage() {}
+func (*RouterIdentityConnectionStatusesDetails) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterIdentityConnectionStatusesDetails) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2307,10 +2605,12 @@ func (x *RouterIdentityConnectionStatusesDetails) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use RouterIdentityConnectionStatusesDetails.ProtoReflect.Descriptor instead.
 func (*RouterIdentityConnectionStatusesDetails) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) GetComponentType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentType
 	}
@@ -2318,6 +2618,7 @@ func (x *RouterIdentityConnectionStatusesDetails) GetComponentType() string {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) GetComponentId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentId
 	}
@@ -2325,6 +2626,7 @@ func (x *RouterIdentityConnectionStatusesDetails) GetComponentId() string {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) GetComponentName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ComponentName
 	}
@@ -2332,6 +2634,7 @@ func (x *RouterIdentityConnectionStatusesDetails) GetComponentName() string {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) GetValidateSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ValidateSuccess
 	}
@@ -2339,6 +2642,7 @@ func (x *RouterIdentityConnectionStatusesDetails) GetValidateSuccess() bool {
 }
 
 func (x *RouterIdentityConnectionStatusesDetails) GetErrors() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Errors
 	}
@@ -2356,6 +2660,7 @@ type InitRequest struct {
 }
 
 func (x *InitRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InitRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[27]
@@ -2365,12 +2670,16 @@ func (x *InitRequest) Reset() {
 }
 
 func (x *InitRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InitRequest) ProtoMessage() {}
+func (*InitRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InitRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2384,10 +2693,12 @@ func (x *InitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InitRequest.ProtoReflect.Descriptor instead.
 func (*InitRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *InitRequest) GetUsername() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Username
 	}
@@ -2395,6 +2706,7 @@ func (x *InitRequest) GetUsername() string {
 }
 
 func (x *InitRequest) GetPassword() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Password
 	}
@@ -2402,6 +2714,7 @@ func (x *InitRequest) GetPassword() string {
 }
 
 func (x *InitRequest) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2418,6 +2731,7 @@ type StreamMetricsRequest_MetricMatcher struct {
 }
 
 func (x *StreamMetricsRequest_MetricMatcher) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamMetricsRequest_MetricMatcher{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[28]
@@ -2427,12 +2741,16 @@ func (x *StreamMetricsRequest_MetricMatcher) Reset() {
 }
 
 func (x *StreamMetricsRequest_MetricMatcher) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamMetricsRequest_MetricMatcher) ProtoMessage() {}
+func (*StreamMetricsRequest_MetricMatcher) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamMetricsRequest_MetricMatcher) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2446,10 +2764,12 @@ func (x *StreamMetricsRequest_MetricMatcher) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use StreamMetricsRequest_MetricMatcher.ProtoReflect.Descriptor instead.
 func (*StreamMetricsRequest_MetricMatcher) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{0, 0}
 }
 
 func (x *StreamMetricsRequest_MetricMatcher) GetNameRegex() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NameRegex
 	}
@@ -2457,6 +2777,7 @@ func (x *StreamMetricsRequest_MetricMatcher) GetNameRegex() string {
 }
 
 func (x *StreamMetricsRequest_MetricMatcher) GetSourceIDRegex() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SourceIDRegex
 	}
@@ -2475,6 +2796,7 @@ type StreamMetricsEvent_IntervalMetric struct {
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = StreamMetricsEvent_IntervalMetric{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[32]
@@ -2484,12 +2806,16 @@ func (x *StreamMetricsEvent_IntervalMetric) Reset() {
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamMetricsEvent_IntervalMetric) ProtoMessage() {}
+func (*StreamMetricsEvent_IntervalMetric) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *StreamMetricsEvent_IntervalMetric) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2503,10 +2829,12 @@ func (x *StreamMetricsEvent_IntervalMetric) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use StreamMetricsEvent_IntervalMetric.ProtoReflect.Descriptor instead.
 func (*StreamMetricsEvent_IntervalMetric) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{1, 3}
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2514,6 +2842,7 @@ func (x *StreamMetricsEvent_IntervalMetric) GetName() string {
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) GetIntervalStartUTC() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IntervalStartUTC
 	}
@@ -2521,6 +2850,7 @@ func (x *StreamMetricsEvent_IntervalMetric) GetIntervalStartUTC() *timestamppb.T
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) GetIntervalEndUTC() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IntervalEndUTC
 	}
@@ -2528,6 +2858,7 @@ func (x *StreamMetricsEvent_IntervalMetric) GetIntervalEndUTC() *timestamppb.Tim
 }
 
 func (x *StreamMetricsEvent_IntervalMetric) GetValues() map[string]uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Values
 	}
@@ -2545,6 +2876,7 @@ type InspectResponse_InspectValue struct {
 }
 
 func (x *InspectResponse_InspectValue) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectResponse_InspectValue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_mgmt_proto_msgTypes[35]
@@ -2554,12 +2886,16 @@ func (x *InspectResponse_InspectValue) Reset() {
 }
 
 func (x *InspectResponse_InspectValue) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectResponse_InspectValue) ProtoMessage() {}
+func (*InspectResponse_InspectValue) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectResponse_InspectValue) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_mgmt_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2573,10 +2909,12 @@ func (x *InspectResponse_InspectValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectResponse_InspectValue.ProtoReflect.Descriptor instead.
 func (*InspectResponse_InspectValue) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_mgmt_proto_rawDescGZIP(), []int{7, 0}
 }
 
 func (x *InspectResponse_InspectValue) GetAppId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppId
 	}
@@ -2584,6 +2922,7 @@ func (x *InspectResponse_InspectValue) GetAppId() string {
 }
 
 func (x *InspectResponse_InspectValue) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2591,6 +2930,7 @@ func (x *InspectResponse_InspectValue) GetName() string {
 }
 
 func (x *InspectResponse_InspectValue) GetValue() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Value
 	}
@@ -3081,6 +3421,7 @@ var (
 )
 
 func file_mgmt_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_mgmt_proto_rawDescOnce.Do(func() {
 		file_mgmt_proto_rawDescData = protoimpl.X.CompressGZIP(file_mgmt_proto_rawDescData)
 	})
@@ -3163,8 +3504,12 @@ var file_mgmt_proto_depIdxs = []int32{
 	0,  // [0:21] is the sub-list for field type_name
 }
 
-func init() { file_mgmt_proto_init() }
+func init() { 
+	file_mgmt_proto_init()
+    logtrace.LogWithFunctionName()
+}
 func file_mgmt_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_mgmt_proto != nil {
 		return
 	}

@@ -17,20 +17,25 @@
 package handler_ctrl
 
 import (
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 )
 
 type pingHandler struct{}
 
 func newPingHandler() *pingHandler {
+	logtrace.LogWithFunctionName()
 	return &pingHandler{}
 }
 
 func (h *pingHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return channel.ContentTypePingType
 }
 
 func (h *pingHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go handler_common.SendResult(msg, ch, "ok", true)
 }

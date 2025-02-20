@@ -17,9 +17,10 @@
 package xt_smartrouting
 
 import (
+	"time"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/controller/xt_common"
-	"time"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 const (
@@ -34,16 +35,19 @@ will only reduce costs by the amount that failures have previously increased it.
 */
 
 func NewFactory() xt.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{}
 }
 
 type factory struct{}
 
 func (self *factory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return Name
 }
 
 func (self *factory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	strategy := strategy{
 		CostVisitor: *xt_common.NewCostVisitor(2, 20, 2),
 	}
@@ -56,5 +60,6 @@ type strategy struct {
 }
 
 func (self *strategy) Select(_ xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	return terminators[0], nil, nil
 }

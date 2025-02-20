@@ -2,6 +2,8 @@ package logcontext
 
 import (
 	"fmt"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 )
@@ -16,15 +18,18 @@ const (
 var channelMap = map[string]uint32{}
 
 func init() {
+	logtrace.LogWithFunctionName()
 	channelMap[SelectPath] = MaskSelectPath
 	channelMap[EstablishPath] = MaskEstablishPath
 }
 
 func GetChannelMask(s string) uint32 {
+	logtrace.LogWithFunctionName()
 	return channelMap[s]
 }
 
 func getDebugLogger() *logrus.Logger {
+	logtrace.LogWithFunctionName()
 	return pfxlog.LevelLogger(logrus.DebugLevel)
 }
 
@@ -40,12 +45,14 @@ type Context interface {
 }
 
 func NewContext() Context {
+	logtrace.LogWithFunctionName()
 	return &contextImpl{
 		fields: map[string]interface{}{},
 	}
 }
 
 func NewContextWith(channelMask uint32, fields map[string]string) Context {
+	logtrace.LogWithFunctionName()
 	result := &contextImpl{
 		channels: channelMask,
 		fields:   map[string]interface{}{},
@@ -64,6 +71,7 @@ type contextImpl struct {
 }
 
 func (self *contextImpl) WireEntry(entry *logrus.Entry) *logrus.Entry {
+	logtrace.LogWithFunctionName()
 	if self != nil {
 		if len(self.fields) > 0 {
 			entry = entry.WithFields(self.fields)
@@ -86,18 +94,22 @@ func (self *contextImpl) WireEntry(entry *logrus.Entry) *logrus.Entry {
 }
 
 func (self *contextImpl) GetChannelsMask() uint32 {
+	logtrace.LogWithFunctionName()
 	return self.channels
 }
 
 func (self *contextImpl) SetChannelsMask(s uint32) {
+	logtrace.LogWithFunctionName()
 	self.channels = s
 }
 
 func (self *contextImpl) GetFields() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return self.fields
 }
 
 func (self *contextImpl) GetStringFields() map[string]string {
+	logtrace.LogWithFunctionName()
 	result := map[string]string{}
 	for k, v := range self.fields {
 		if s, ok := v.(string); ok {
@@ -110,6 +122,7 @@ func (self *contextImpl) GetStringFields() map[string]string {
 }
 
 func (self *contextImpl) WithFields(fields map[string]interface{}) Context {
+	logtrace.LogWithFunctionName()
 	for k, v := range fields {
 		self.fields[k] = v
 	}
@@ -117,11 +130,13 @@ func (self *contextImpl) WithFields(fields map[string]interface{}) Context {
 }
 
 func (self *contextImpl) WithField(k string, v interface{}) Context {
+	logtrace.LogWithFunctionName()
 	self.fields[k] = v
 	return self
 }
 
 func (self *contextImpl) Clone() Context {
+	logtrace.LogWithFunctionName()
 	result := &contextImpl{
 		channels: self.channels,
 		fields:   map[string]interface{}{},

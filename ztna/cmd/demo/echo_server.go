@@ -18,17 +18,6 @@ package demo
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/agent"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/debugz"
-	"github.com/openziti/identity"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/common/version"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"io"
 	"net"
 	"net/http"
@@ -37,6 +26,19 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/version"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/agent"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/debugz"
+	"github.com/openziti/identity"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -65,6 +67,7 @@ type echoServer struct {
 }
 
 func newEchoServerCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	server := &echoServer{}
 
 	cmd := &cobra.Command{
@@ -92,6 +95,7 @@ func newEchoServerCmd() *cobra.Command {
 }
 
 func (self *echoServer) initLogging() {
+	logtrace.LogWithFunctionName()
 	logLevel := logrus.InfoLevel
 	if self.verbose {
 		logLevel = logrus.DebugLevel
@@ -113,6 +117,7 @@ func (self *echoServer) initLogging() {
 }
 
 func (self *echoServer) run(*cobra.Command, []string) {
+	logtrace.LogWithFunctionName()
 	self.initLogging()
 
 	log := pfxlog.Logger()
@@ -240,6 +245,7 @@ func (self *echoServer) run(*cobra.Command, []string) {
 }
 
 func (self *echoServer) accept(connType string, listener net.Listener) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	for {
@@ -257,6 +263,7 @@ func (self *echoServer) accept(connType string, listener net.Listener) {
 }
 
 func (self *echoServer) echo(connType string, conn io.ReadWriteCloser) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	defer func() {
@@ -288,6 +295,7 @@ func (self *echoServer) echo(connType string, conn io.ReadWriteCloser) {
 }
 
 func (self *echoServer) HandleCustomAgentAsyncOp(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	logrus.Debug("received agent operation request")
 
 	appIdBuf := []byte{0}
@@ -311,11 +319,13 @@ func (self *echoServer) HandleCustomAgentAsyncOp(conn net.Conn) error {
 }
 
 func (self *echoServer) bindAgentChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddReceiveHandlerF(EchoServerUpdateTerminator, self.HandleUpdateTerminator)
 	return nil
 }
 
 func (self *echoServer) HandleUpdateTerminator(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	precedenceLabel, hasPrecedence := msg.GetStringHeader(EchoServerPrecedenceHeader)
 	var precedence edge.Precedence
@@ -359,6 +369,7 @@ func (self *echoServer) HandleUpdateTerminator(msg *channel.Message, ch channel.
 }
 
 func (self *echoServer) SendOpResult(request *channel.Message, ch channel.Channel, op string, message string, success bool) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).WithField("operation", op)
 	if !success {
 		log.Errorf("%v error performing %v: (%s)", ch.LogicalName(), op, message)

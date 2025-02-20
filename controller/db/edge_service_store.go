@@ -17,10 +17,12 @@
 package db
 
 import (
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
 	"go.etcd.io/bbolt"
 )
 
@@ -39,6 +41,7 @@ type EdgeService struct {
 }
 
 func newEdgeService(name string, roleAttributes ...string) *EdgeService {
+	logtrace.LogWithFunctionName()
 	return &EdgeService{
 		Service: Service{
 			BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
@@ -61,6 +64,7 @@ type EdgeServiceStore interface {
 }
 
 func newEdgeServiceStore(stores *stores) *edgeServiceStoreImpl {
+	logtrace.LogWithFunctionName()
 	parentMapper := func(entity boltz.Entity) boltz.Entity {
 		if edgeService, ok := entity.(*EdgeService); ok {
 			return &edgeService.Service
@@ -102,6 +106,7 @@ type edgeServiceStoreImpl struct {
 }
 
 func (store *edgeServiceStoreImpl) HandleUpdate(ctx boltz.MutateContext, entity *Service, checker boltz.FieldChecker) (bool, error) {
+	logtrace.LogWithFunctionName()
 	edgeService, found, err := store.FindById(ctx.Tx(), entity.Id)
 	if err != nil {
 		return false, err
@@ -115,18 +120,22 @@ func (store *edgeServiceStoreImpl) HandleUpdate(ctx boltz.MutateContext, entity 
 }
 
 func (store *edgeServiceStoreImpl) HandleDelete(ctx boltz.MutateContext, entity *Service) error {
+	logtrace.LogWithFunctionName()
 	return store.cleanupEdgeService(ctx, entity.Id)
 }
 
 func (store *edgeServiceStoreImpl) GetStore() boltz.Store {
+	logtrace.LogWithFunctionName()
 	return store
 }
 
 func (store *edgeServiceStoreImpl) GetRoleAttributesIndex() boltz.SetReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexRoleAttributes
 }
 
 func (store *edgeServiceStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.GetParentStore().GrantSymbols(store)
 
 	store.symbolRoleAttributes = store.AddPublicSetSymbol(FieldRoleAttributes, ast.NodeTypeString)
@@ -152,6 +161,7 @@ func (store *edgeServiceStoreImpl) initializeLocal() {
 }
 
 func (store *edgeServiceStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddLinkCollection(store.symbolServiceEdgeRouterPolicies, store.stores.serviceEdgeRouterPolicy.symbolServices)
 	store.AddLinkCollection(store.symbolServicePolicies, store.stores.servicePolicy.symbolServices)
 	store.AddLinkCollection(store.symbolConfigs, store.stores.config.symbolServices)
@@ -162,10 +172,12 @@ func (store *edgeServiceStoreImpl) initializeLinked() {
 }
 
 func (self *edgeServiceStoreImpl) NewEntity() *EdgeService {
+	logtrace.LogWithFunctionName()
 	return &EdgeService{}
 }
 
 func (store *edgeServiceStoreImpl) FillEntity(entity *EdgeService, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	store.stores.service.FillEntity(&entity.Service, store.getParentBucket(entity, bucket))
 
 	entity.RoleAttributes = bucket.GetStringList(FieldRoleAttributes)
@@ -176,6 +188,7 @@ func (store *edgeServiceStoreImpl) FillEntity(entity *EdgeService, bucket *boltz
 }
 
 func (store *edgeServiceStoreImpl) PersistEntity(entity *EdgeService, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	store.stores.service.PersistEntity(&entity.Service, ctx.GetParentContext())
 
 	ctx.SetString(FieldName, entity.Name)
@@ -191,6 +204,7 @@ func (store *edgeServiceStoreImpl) PersistEntity(entity *EdgeService, ctx *boltz
 }
 
 func (store *edgeServiceStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, rowId []byte, _ []boltz.FieldTypeAndValue, new []boltz.FieldTypeAndValue, holder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	// Recalculate service policy links
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             mutateCtx,
@@ -214,10 +228,12 @@ func (store *edgeServiceStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, r
 }
 
 func (store *edgeServiceStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *edgeServiceStoreImpl) Update(ctx boltz.MutateContext, entity *EdgeService, checker boltz.FieldChecker) error {
+	logtrace.LogWithFunctionName()
 	if result := store.baseStore.Update(ctx, entity, checker); result != nil {
 		return result
 	}
@@ -258,6 +274,7 @@ func (store *edgeServiceStoreImpl) Update(ctx boltz.MutateContext, entity *EdgeS
 }
 
 func (store *edgeServiceStoreImpl) cleanupEdgeService(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	if entity, _ := store.LoadById(ctx.Tx(), id); entity != nil {
 		// Remove entity from ServiceRoles in service policies
 		if err := store.deleteEntityReferences(ctx.Tx(), entity, store.stores.servicePolicy.symbolServiceRoles); err != nil {
@@ -313,15 +330,18 @@ func (store *edgeServiceStoreImpl) cleanupEdgeService(ctx boltz.MutateContext, i
 }
 
 func (store *edgeServiceStoreImpl) GetRoleAttributesCursorProvider(values []string, semantic string) (ast.SetCursorProvider, error) {
+	logtrace.LogWithFunctionName()
 	return store.getRoleAttributesCursorProvider(store.indexRoleAttributes, values, semantic)
 }
 
 func (store *edgeServiceStoreImpl) IsBindableByIdentity(tx *bbolt.Tx, id string, identityId string) bool {
+	logtrace.LogWithFunctionName()
 	linkCount := store.bindIdentitiesCollection.GetLinkCount(tx, []byte(id), []byte(identityId))
 	return linkCount != nil && *linkCount > 0
 }
 
 func (store *edgeServiceStoreImpl) IsDialableByIdentity(tx *bbolt.Tx, id string, identityId string) bool {
+	logtrace.LogWithFunctionName()
 	linkCount := store.dialIdentitiesCollection.GetLinkCount(tx, []byte(id), []byte(identityId))
 	return linkCount != nil && *linkCount > 0
 }

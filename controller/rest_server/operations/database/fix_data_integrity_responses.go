@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type FixDataIntegrityAccepted struct {
 
 // NewFixDataIntegrityAccepted creates FixDataIntegrityAccepted with default headers values
 func NewFixDataIntegrityAccepted() *FixDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 
 	return &FixDataIntegrityAccepted{}
 }
 
 // WithPayload adds the payload to the fix data integrity accepted response
 func (o *FixDataIntegrityAccepted) WithPayload(payload *rest_model.Empty) *FixDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the fix data integrity accepted response
 func (o *FixDataIntegrityAccepted) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *FixDataIntegrityAccepted) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(202)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type FixDataIntegrityUnauthorized struct {
 
 // NewFixDataIntegrityUnauthorized creates FixDataIntegrityUnauthorized with default headers values
 func NewFixDataIntegrityUnauthorized() *FixDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &FixDataIntegrityUnauthorized{}
 }
 
 // WithPayload adds the payload to the fix data integrity unauthorized response
 func (o *FixDataIntegrityUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *FixDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the fix data integrity unauthorized response
 func (o *FixDataIntegrityUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *FixDataIntegrityUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type FixDataIntegrityTooManyRequests struct {
 
 // NewFixDataIntegrityTooManyRequests creates FixDataIntegrityTooManyRequests with default headers values
 func NewFixDataIntegrityTooManyRequests() *FixDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &FixDataIntegrityTooManyRequests{}
 }
 
 // WithPayload adds the payload to the fix data integrity too many requests response
 func (o *FixDataIntegrityTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *FixDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the fix data integrity too many requests response
 func (o *FixDataIntegrityTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *FixDataIntegrityTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

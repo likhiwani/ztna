@@ -18,17 +18,20 @@ package xgress_proxy_udp
 
 import (
 	"fmt"
+	"net"
+	"time"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_udp"
+
 	"github.com/openziti/foundation/v2/info"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"net"
-	"time"
 )
 
 func (l *listener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	if address == "" {
 		return errors.New("address must be specified for proxy_udp listeners")
 	}
@@ -54,27 +57,33 @@ func (l *listener) Listen(address string, bindHandler xgress.BindHandler) error 
 }
 
 func (l *listener) WriteTo(data []byte, addr net.Addr) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	return l.conn.WriteTo(data, addr)
 }
 
 func (l *listener) GetSession(sessionId string) (xgress_udp.Session, bool) {
+	logtrace.LogWithFunctionName()
 	session, found := l.sessions[sessionId]
 	return session, found
 }
 
 func (l *listener) DeleteSession(sessionId string) {
+	logtrace.LogWithFunctionName()
 	delete(l.sessions, sessionId)
 }
 
 func (l *listener) QueueEvent(event xgress_udp.EventHandler) {
+	logtrace.LogWithFunctionName()
 	l.eventChan <- event
 }
 
 func (l *listener) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return l.address
 }
 
 func (l *listener) relay() {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		if err := l.Close(); err != nil {
 			logrus.Errorf("error closing packet connection (%v)", err)
@@ -95,6 +104,7 @@ func (l *listener) relay() {
 }
 
 func (l *listener) rx() {
+	logtrace.LogWithFunctionName()
 	scanTicker := time.NewTicker(time.Second * 10)
 	defer scanTicker.Stop()
 
@@ -139,6 +149,7 @@ func (l *listener) rx() {
 }
 
 func (l *listener) handleConnect(session xgress_udp.Session) {
+	logtrace.LogWithFunctionName()
 	request := &xgress.Request{ServiceId: l.service}
 	response := xgress.CreateCircuit(l.ctrl, session, request, l.bindHandler, l.options)
 	if response.Success {
@@ -150,6 +161,7 @@ func (l *listener) handleConnect(session xgress_udp.Session) {
 }
 
 func (l *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	if l.conn != nil {
 		return l.conn.Close()
 	}
@@ -157,6 +169,7 @@ func (l *listener) Close() error {
 }
 
 func newListener(service string, ctrl env.NetworkControllers, options *xgress.Options) xgress.Listener {
+	logtrace.LogWithFunctionName()
 	return &listener{
 		service:   service,
 		ctrl:      ctrl,

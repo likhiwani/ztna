@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"fmt"
 
@@ -32,6 +33,7 @@ type AgentSnapshoptDbAction struct {
 }
 
 func NewAgentSnapshotDb(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentSnapshoptDbAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -54,6 +56,7 @@ func NewAgentSnapshotDb(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentSnapshoptDbAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_SnapshotDbRequestType), nil)
 	if len(self.Args) > 0 {
 		msg.PutStringHeader(controller.AgentSnapshotFileName, self.Args[0])

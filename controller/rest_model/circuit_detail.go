@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -62,6 +63,7 @@ type CircuitDetail struct {
 
 // UnmarshalJSON unmarshals this object from a JSON structure
 func (m *CircuitDetail) UnmarshalJSON(raw []byte) error {
+    logtrace.LogWithFunctionName()
 	// AO0
 	var aO0 BaseEntity
 	if err := swag.ReadJSON(raw, &aO0); err != nil {
@@ -96,6 +98,7 @@ func (m *CircuitDetail) UnmarshalJSON(raw []byte) error {
 
 // MarshalJSON marshals this object to a JSON structure
 func (m CircuitDetail) MarshalJSON() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	_parts := make([][]byte, 0, 2)
 
 	aO0, err := swag.WriteJSON(m.BaseEntity)
@@ -131,6 +134,7 @@ func (m CircuitDetail) MarshalJSON() ([]byte, error) {
 
 // Validate validates this circuit detail
 func (m *CircuitDetail) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	// validation for a type composition with BaseEntity
@@ -157,6 +161,7 @@ func (m *CircuitDetail) Validate(formats strfmt.Registry) error {
 }
 
 func (m *CircuitDetail) validatePath(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("path", "body", m.Path); err != nil {
 		return err
@@ -177,6 +182,7 @@ func (m *CircuitDetail) validatePath(formats strfmt.Registry) error {
 }
 
 func (m *CircuitDetail) validateService(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("service", "body", m.Service); err != nil {
 		return err
@@ -197,6 +203,7 @@ func (m *CircuitDetail) validateService(formats strfmt.Registry) error {
 }
 
 func (m *CircuitDetail) validateTerminator(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("terminator", "body", m.Terminator); err != nil {
 		return err
@@ -218,6 +225,7 @@ func (m *CircuitDetail) validateTerminator(formats strfmt.Registry) error {
 
 // ContextValidate validate this circuit detail based on the context it is used
 func (m *CircuitDetail) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	// validation for a type composition with BaseEntity
@@ -244,6 +252,7 @@ func (m *CircuitDetail) ContextValidate(ctx context.Context, formats strfmt.Regi
 }
 
 func (m *CircuitDetail) contextValidatePath(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Path != nil {
 		if err := m.Path.ContextValidate(ctx, formats); err != nil {
@@ -260,6 +269,7 @@ func (m *CircuitDetail) contextValidatePath(ctx context.Context, formats strfmt.
 }
 
 func (m *CircuitDetail) contextValidateService(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Service != nil {
 		if err := m.Service.ContextValidate(ctx, formats); err != nil {
@@ -276,6 +286,7 @@ func (m *CircuitDetail) contextValidateService(ctx context.Context, formats strf
 }
 
 func (m *CircuitDetail) contextValidateTerminator(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Terminator != nil {
 		if err := m.Terminator.ContextValidate(ctx, formats); err != nil {
@@ -293,6 +304,7 @@ func (m *CircuitDetail) contextValidateTerminator(ctx context.Context, formats s
 
 // MarshalBinary interface implementation
 func (m *CircuitDetail) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -301,6 +313,7 @@ func (m *CircuitDetail) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *CircuitDetail) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res CircuitDetail
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

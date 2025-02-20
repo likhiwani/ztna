@@ -17,14 +17,17 @@
 package events
 
 import (
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
 	"strings"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddEntityCountEventHandler(handler event.EntityCountEventHandler, interval time.Duration, onlyLeaderEvents bool) {
+	logtrace.LogWithFunctionName()
 	self.entityCountEventHandlers.Append(&entityCountState{
 		handler:          handler,
 		onlyLeaderEvents: onlyLeaderEvents,
@@ -34,6 +37,7 @@ func (self *Dispatcher) AddEntityCountEventHandler(handler event.EntityCountEven
 }
 
 func (self *Dispatcher) RemoveEntityCountEventHandler(handler event.EntityCountEventHandler) {
+	logtrace.LogWithFunctionName()
 	for _, state := range self.entityCountEventHandlers.Value() {
 		if state.handler == handler {
 			self.entityCountEventHandlers.Delete(state)
@@ -42,10 +46,12 @@ func (self *Dispatcher) RemoveEntityCountEventHandler(handler event.EntityCountE
 }
 
 func (self *Dispatcher) initEntityEvents() {
+	logtrace.LogWithFunctionName()
 	go self.generateEntityEvents()
 }
 
 func (self *Dispatcher) generateEntityEvents() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
 
@@ -72,6 +78,7 @@ func (self *Dispatcher) generateEntityEvents() {
 }
 
 func (self *Dispatcher) generateEntityCountEvent() *event.EntityCountEvent {
+	logtrace.LogWithFunctionName()
 	event := &event.EntityCountEvent{
 		Namespace:  event.EntityCountEventNS,
 		EventSrcId: self.ctrlId,
@@ -89,6 +96,7 @@ func (self *Dispatcher) generateEntityCountEvent() *event.EntityCountEvent {
 }
 
 func (self *Dispatcher) registerEntityCountEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.EntityCountEventHandler)
 
 	if !ok {
@@ -126,6 +134,7 @@ func (self *Dispatcher) registerEntityCountEventHandler(val interface{}, config 
 }
 
 func (self *Dispatcher) unregisterEntityCountEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.EntityCountEventHandler); ok {
 		self.RemoveEntityCountEventHandler(handler)
 	}

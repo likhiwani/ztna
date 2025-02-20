@@ -17,14 +17,16 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/xctrl"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type CtrlAccepter struct {
@@ -40,6 +42,7 @@ func NewCtrlAccepter(network *network.Network,
 	options *channel.Options,
 	heartbeatOptions *channel.HeartbeatOptions,
 	traceHandler *channel.TraceHandler) *CtrlAccepter {
+	logtrace.LogWithFunctionName()
 	return &CtrlAccepter{
 		network:          network,
 		xctrls:           xctrls,
@@ -50,11 +53,13 @@ func NewCtrlAccepter(network *network.Network,
 }
 
 func (self *CtrlAccepter) AcceptUnderlay(underlay channel.Underlay) error {
+	logtrace.LogWithFunctionName()
 	_, err := channel.NewChannelWithUnderlay("ctrl", underlay, channel.BindHandlerF(self.Bind), self.options)
 	return err
 }
 
 func (self *CtrlAccepter) Bind(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.GetChannel().SetLogicalName(binding.GetChannel().Id())
 	ch := binding.GetChannel()
 

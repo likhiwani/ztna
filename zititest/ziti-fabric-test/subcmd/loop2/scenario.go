@@ -17,8 +17,10 @@
 package loop2
 
 import (
-	"gopkg.in/yaml.v2"
 	"os"
+	"ztna-core/ztna/logtrace"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Scenario struct {
@@ -43,6 +45,7 @@ type Test struct {
 }
 
 func LoadScenario(path string) (*Scenario, error) {
+	logtrace.LogWithFunctionName()
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -57,6 +60,7 @@ func LoadScenario(path string) (*Scenario, error) {
 }
 
 func (scenario *Scenario) String() string {
+	logtrace.LogWithFunctionName()
 	data, err := yaml.Marshal(scenario)
 	if err != nil {
 		panic(err)

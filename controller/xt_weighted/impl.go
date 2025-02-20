@@ -17,10 +17,11 @@
 package xt_weighted
 
 import (
-	"ztna-core/ztna/controller/xt"
-	"ztna-core/ztna/controller/xt_common"
 	"math/rand"
 	"time"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/controller/xt_common"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 /**
@@ -30,16 +31,19 @@ as often.
 */
 
 func NewFactory() xt.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{}
 }
 
 type factory struct{}
 
 func (self *factory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return "weighted"
 }
 
 func (self *factory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	strategy := &strategy{
 		CostVisitor: *xt_common.NewCostVisitor(2, 20, 2),
 	}
@@ -52,6 +56,7 @@ type strategy struct {
 }
 
 func (self *strategy) Select(_ xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	terminators = xt.GetRelatedTerminators(terminators)
 	if len(terminators) == 1 {
 		return terminators[0], nil, nil

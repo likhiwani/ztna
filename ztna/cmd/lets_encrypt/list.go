@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -33,6 +34,7 @@ import (
 
 // newListCmd creates a command object for the "controller list" command
 func newListCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &leOptions{}
 
 	cmd := &cobra.Command{
@@ -61,6 +63,7 @@ func newListCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runList(options *leOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	if options.accounts && !options.names {
 		if err := listAccount(options); err != nil {
 			return err
@@ -71,6 +74,7 @@ func runList(options *leOptions) (err error) {
 }
 
 func listAccount(options *leOptions) error {
+	logtrace.LogWithFunctionName()
 
 	accountsStorage := NewAccountsStorage(options)
 
@@ -112,6 +116,7 @@ func listAccount(options *leOptions) error {
 }
 
 func listCertificates(options *leOptions) error {
+	logtrace.LogWithFunctionName()
 	certsStorage := NewCertificatesStorage(options.path)
 
 	matches, err := filepath.Glob(filepath.Join(certsStorage.GetRootPath(), "*.crt"))

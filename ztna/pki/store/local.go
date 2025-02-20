@@ -28,6 +28,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/ztna/pki/certificate"
 
@@ -62,6 +63,7 @@ type Local struct {
 
 // path returns private and public key path.
 func (l *Local) path(caName, name string) (key string, cert string) {
+	logtrace.LogWithFunctionName()
 	key = filepath.Join(l.Root, caName, LocalKeysDir, name+".key")
 	cert = filepath.Join(l.Root, caName, LocalCertsDir, name+".cert")
 	return
@@ -70,6 +72,7 @@ func (l *Local) path(caName, name string) (key string, cert string) {
 // Exists checks if a certificate or private key already exist on the local
 // filesystem for a given name.
 func (l *Local) Exists(caName, name string) bool {
+	logtrace.LogWithFunctionName()
 	privPath, certPath := l.path(caName, name)
 	if _, err := os.Stat(privPath); err == nil {
 		return true
@@ -82,6 +85,7 @@ func (l *Local) Exists(caName, name string) bool {
 
 // Fetch fetches the private key and certificate for a given name signed by caName.
 func (l *Local) Fetch(caName, name string) ([]byte, []byte, error) {
+	logtrace.LogWithFunctionName()
 	filepath.Join(l.Root, caName)
 
 	keyPath, certPath := l.path(caName, name)
@@ -98,6 +102,7 @@ func (l *Local) Fetch(caName, name string) ([]byte, []byte, error) {
 
 // FetchKeyBytes fetches the private key and certificate for a given name signed by caName.
 func (l *Local) FetchKeyBytes(caName, name string) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	filepath.Join(l.Root, caName)
 
 	keyPath, _ := l.path(caName, name)
@@ -109,6 +114,7 @@ func (l *Local) FetchKeyBytes(caName, name string) ([]byte, error) {
 }
 
 func readPEM(path string) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	bytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed reading %v: %v", path, err)
@@ -122,6 +128,7 @@ func readPEM(path string) ([]byte, error) {
 
 // Add adds the given bundle to the local filesystem.
 func (l *Local) Add(caName, name string, isCa bool, key, cert []byte, allowOverwrite bool) error {
+	logtrace.LogWithFunctionName()
 	if !allowOverwrite && l.Exists(caName, name) {
 		return fmt.Errorf("a bundle already exists for the name %v within CA %v", name, caName)
 	}
@@ -136,6 +143,7 @@ func (l *Local) Add(caName, name string, isCa bool, key, cert []byte, allowOverw
 
 // Chain concats an intermediate cert and a newly signed certificate bundle and adds the chained cert to the store.
 func (l *Local) Chain(caName, destCaName, name string) error {
+	logtrace.LogWithFunctionName()
 	chainName := name + ".chain.pem"
 	if l.Exists(destCaName, chainName) {
 		return fmt.Errorf("a bundle already exists for the name %v within CA %v", chainName, destCaName)
@@ -148,6 +156,7 @@ func (l *Local) Chain(caName, destCaName, name string) error {
 
 // AddCSR adds the given csr to the local filesystem.
 func (l *Local) AddCSR(caName, name string, isCa bool, key, cert []byte) error {
+	logtrace.LogWithFunctionName()
 	if l.Exists(caName, name) {
 		return fmt.Errorf("a CSR already exists for the name %v within CA %v", name, caName)
 	}
@@ -159,6 +168,7 @@ func (l *Local) AddCSR(caName, name string, isCa bool, key, cert []byte) error {
 
 // AddKey adds the given private key to the local filesystem.
 func (l *Local) AddKey(caName string, name string, key []byte) error {
+	logtrace.LogWithFunctionName()
 	if l.Exists(caName, name) {
 		return fmt.Errorf("a key already exists for the key name %v within CA %v", name, caName)
 	}
@@ -173,6 +183,7 @@ func (l *Local) AddKey(caName string, name string, key []byte) error {
 
 // writeKey encodes in PEM format the bundle private key and stores it on the local filesystem.
 func (l *Local) writeKey(caName, name, pemType string, key []byte) error {
+	logtrace.LogWithFunctionName()
 	caDir := filepath.Join(l.Root, caName)
 	if _, err := os.Stat(caDir); err != nil {
 		if err := InitCADir(caDir); err != nil {
@@ -187,6 +198,7 @@ func (l *Local) writeKey(caName, name, pemType string, key []byte) error {
 }
 
 func getPkPemType(key []byte) string {
+	logtrace.LogWithFunctionName()
 	var pkcs1Err error
 	_, pkcs1Err = x509.ParsePKCS1PrivateKey(key)
 
@@ -207,6 +219,7 @@ func getPkPemType(key []byte) string {
 // writeBundle encodes in PEM format the bundle private key and
 // certificate and stores them on the local filesystem.
 func (l *Local) writeBundle(caName, name string, isCa bool, key, cert []byte) error {
+	logtrace.LogWithFunctionName()
 	caDir := filepath.Join(l.Root, caName)
 	if _, err := os.Stat(caDir); err != nil {
 		if err := InitCADir(caDir); err != nil {
@@ -242,6 +255,7 @@ func (l *Local) writeBundle(caName, name string, isCa bool, key, cert []byte) er
 
 // writeChainBundle concats...
 func (l *Local) writeChainBundle(caName, destCaName, name string, chainName string) error {
+	logtrace.LogWithFunctionName()
 	caDir := filepath.Join(l.Root, caName)
 	if _, err := os.Stat(caDir); err != nil {
 		if err := InitCADir(caDir); err != nil {
@@ -289,6 +303,7 @@ func (l *Local) writeChainBundle(caName, destCaName, name string, chainName stri
 }
 
 func encodeAndWrite(path, pemType string, data []byte) error {
+	logtrace.LogWithFunctionName()
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -304,6 +319,7 @@ func encodeAndWrite(path, pemType string, data []byte) error {
 // updateIndex appends a line to the index.txt with few information about the
 // given the certificate.
 func (l *Local) updateIndex(caName, name string, rawCert []byte) error {
+	logtrace.LogWithFunctionName()
 	f, err := os.OpenFile(filepath.Join(l.Root, caName, "index.txt"), os.O_WRONLY|os.O_APPEND, 0644)
 	if err != nil {
 		return err
@@ -357,6 +373,7 @@ func (l *Local) updateIndex(caName, name string, rawCert []byte) error {
 
 // Update updates the state of a given certificate in the index.txt.
 func (l *Local) Update(caName string, sn *big.Int, st certificate.State) error {
+	logtrace.LogWithFunctionName()
 	f, err := os.OpenFile(filepath.Join(l.Root, caName, "index.txt"), os.O_RDWR, 0644)
 	if err != nil {
 		return err
@@ -426,6 +443,7 @@ func (l *Local) Update(caName string, sn *big.Int, st certificate.State) error {
 
 // Revoked returns a list of revoked certificates.
 func (l *Local) Revoked(caName string) ([]pkix.RevokedCertificate, error) {
+	logtrace.LogWithFunctionName()
 	index, err := os.Open(filepath.Join(l.Root, caName, "index.txt"))
 	if err != nil {
 		return nil, err
@@ -472,6 +490,7 @@ func (l *Local) Revoked(caName string) ([]pkix.RevokedCertificate, error) {
 //	  |- ca.key
 //	  |- name.key
 func InitCADir(path string) error {
+	logtrace.LogWithFunctionName()
 	if _, err := os.Stat(path); err == nil {
 		return nil
 	}
@@ -507,6 +526,7 @@ func InitCADir(path string) error {
 }
 
 func createFile(path, content string) error {
+	logtrace.LogWithFunctionName()
 	fh, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("failed creating file  %v: %v", path, err)

@@ -19,12 +19,14 @@
 package tests
 
 import (
-	"ztna-core/sdk-golang/ziti/edge"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_UpdateTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

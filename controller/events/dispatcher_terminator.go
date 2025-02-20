@@ -17,25 +17,29 @@
 package events
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
+	"reflect"
+	"strings"
+	"time"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"reflect"
-	"strings"
-	"time"
 )
 
 func (self *Dispatcher) AddTerminatorEventHandler(handler event.TerminatorEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.terminatorEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveTerminatorEventHandler(handler event.TerminatorEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.terminatorEventHandlers.DeleteIf(func(val event.TerminatorEventHandler) bool {
 		if val == handler {
 			return true
@@ -48,6 +52,7 @@ func (self *Dispatcher) RemoveTerminatorEventHandler(handler event.TerminatorEve
 }
 
 func (self *Dispatcher) AcceptTerminatorEvent(event *event.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.terminatorEventHandlers.Value() {
 			handler.AcceptTerminatorEvent(event)
@@ -56,6 +61,7 @@ func (self *Dispatcher) AcceptTerminatorEvent(event *event.TerminatorEvent) {
 }
 
 func (self *Dispatcher) registerTerminatorEventHandler(val interface{}, options map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.TerminatorEventHandler)
 
 	if !ok {
@@ -83,12 +89,14 @@ func (self *Dispatcher) registerTerminatorEventHandler(val interface{}, options 
 }
 
 func (self *Dispatcher) unregisterTerminatorEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.TerminatorEventHandler); ok {
 		self.RemoveTerminatorEventHandler(handler)
 	}
 }
 
 func (self *Dispatcher) initTerminatorEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	terminatorEvtAdapter := &terminatorEventAdapter{
 		Network:    n,
 		Dispatcher: self,
@@ -106,6 +114,7 @@ type terminatorEventFilter struct {
 }
 
 func (self *terminatorEventFilter) IsWrapping(value event.TerminatorEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.TerminatorEventHandler == value {
 		return true
 	}
@@ -116,6 +125,7 @@ func (self *terminatorEventFilter) IsWrapping(value event.TerminatorEventHandler
 }
 
 func (self *terminatorEventFilter) AcceptTerminatorEvent(evt *event.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	if !evt.IsModelEvent() || evt.PropagateIndicator {
 		self.TerminatorEventHandler.AcceptTerminatorEvent(evt)
 	}
@@ -129,14 +139,17 @@ type terminatorEventAdapter struct {
 }
 
 func (self *terminatorEventAdapter) RouterConnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChange(event.TerminatorRouterOnline, r)
 }
 
 func (self *terminatorEventAdapter) RouterDisconnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChange(event.TerminatorRouterOffline, r)
 }
 
 func (self *terminatorEventAdapter) routerChange(eventType event.TerminatorEventType, r *model.Router) {
+	logtrace.LogWithFunctionName()
 	var terminators []*db.Terminator
 	err := self.Network.GetDb().View(func(tx *bbolt.Tx) error {
 		cursor := self.Network.GetStores().Router.GetRelatedEntitiesCursor(tx, r.Id, db.EntityTypeTerminators, true)
@@ -164,23 +177,28 @@ func (self *terminatorEventAdapter) routerChange(eventType event.TerminatorEvent
 }
 
 func (self *terminatorEventAdapter) terminatorCreated(terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	self.terminatorChanged(event.TerminatorCreated, terminator)
 }
 
 func (self *terminatorEventAdapter) terminatorUpdated(terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	self.terminatorChanged(event.TerminatorUpdated, terminator)
 }
 
 func (self *terminatorEventAdapter) terminatorDeleted(terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	self.terminatorChanged(event.TerminatorDeleted, terminator)
 }
 
 func (self *terminatorEventAdapter) terminatorChanged(eventType event.TerminatorEventType, terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	terminator = self.Network.Service.NotifyTerminatorChanged(terminator)
 	self.createTerminatorEvent(eventType, terminator)
 }
 
 func (self *terminatorEventAdapter) createTerminatorEvent(eventType event.TerminatorEventType, terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	service, _ := self.Network.Service.Read(terminator.Service)
 
 	totalTerminators := -1

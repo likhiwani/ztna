@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateTerminatorParams() *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewUpdateTerminatorParams() *UpdateTerminatorParams {
 // NewUpdateTerminatorParamsWithTimeout creates a new UpdateTerminatorParams object
 // with the ability to set a timeout on a request.
 func NewUpdateTerminatorParamsWithTimeout(timeout time.Duration) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewUpdateTerminatorParamsWithTimeout(timeout time.Duration) *UpdateTerminat
 // NewUpdateTerminatorParamsWithContext creates a new UpdateTerminatorParams object
 // with the ability to set a context for a request.
 func NewUpdateTerminatorParamsWithContext(ctx context.Context) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewUpdateTerminatorParamsWithContext(ctx context.Context) *UpdateTerminator
 // NewUpdateTerminatorParamsWithHTTPClient creates a new UpdateTerminatorParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewUpdateTerminatorParamsWithHTTPClient(client *http.Client) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type UpdateTerminatorParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateTerminatorParams) WithDefaults() *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *UpdateTerminatorParams) WithDefaults() *UpdateTerminatorParams {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateTerminatorParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the update terminator params
 func (o *UpdateTerminatorParams) WithTimeout(timeout time.Duration) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the update terminator params
 func (o *UpdateTerminatorParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the update terminator params
 func (o *UpdateTerminatorParams) WithContext(ctx context.Context) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the update terminator params
 func (o *UpdateTerminatorParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the update terminator params
 func (o *UpdateTerminatorParams) WithHTTPClient(client *http.Client) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the update terminator params
 func (o *UpdateTerminatorParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the update terminator params
 func (o *UpdateTerminatorParams) WithID(id string) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the update terminator params
 func (o *UpdateTerminatorParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithTerminator adds the terminator to the update terminator params
 func (o *UpdateTerminatorParams) WithTerminator(terminator *rest_model.TerminatorUpdate) *UpdateTerminatorParams {
+    logtrace.LogWithFunctionName()
 	o.SetTerminator(terminator)
 	return o
 }
 
 // SetTerminator adds the terminator to the update terminator params
 func (o *UpdateTerminatorParams) SetTerminator(terminator *rest_model.TerminatorUpdate) {
+    logtrace.LogWithFunctionName()
 	o.Terminator = terminator
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *UpdateTerminatorParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

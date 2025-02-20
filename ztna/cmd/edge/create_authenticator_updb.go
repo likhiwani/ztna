@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	"ztna-core/edge-api/rest_management_api_client/authenticator"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -39,6 +40,7 @@ type createAuthenticatorUpdb struct {
 }
 
 func newCreateAuthenticatorUpdb(idType string, options api.Options) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	updbOptions := &createAuthenticatorUpdb{Options: options}
 
 	cmd := &cobra.Command{
@@ -80,6 +82,7 @@ func newCreateAuthenticatorUpdb(idType string, options api.Options) *cobra.Comma
 }
 
 func runCreateIdentityPassword(idType string, options *createAuthenticatorUpdb) error {
+	logtrace.LogWithFunctionName()
 	if options.idOrName == "" {
 		return errors.New("an identity must be specified")
 	}

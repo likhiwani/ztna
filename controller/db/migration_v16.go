@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/ast"
@@ -9,6 +10,7 @@ import (
 )
 
 func (m *Migrations) removeOrphanedOttCaEnrollments(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	var enrollmentsToDelete []string
 
 	for cursor := m.stores.Enrollment.IterateIds(step.Ctx.Tx(), ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {

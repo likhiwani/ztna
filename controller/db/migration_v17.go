@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
@@ -10,6 +11,7 @@ import (
 // Removes all ApiSession and Session from the edge. Necessary from 0.18 -> 0.19
 // as the id format changed and API Session sync'ing depends on monotonic ids.
 func (m *Migrations) removeAllSessions(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	for cursor := m.stores.Session.IterateIds(step.Ctx.Tx(), ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		current := cursor.Current()
 		currentSessionId := string(current)

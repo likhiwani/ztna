@@ -18,6 +18,7 @@ package model
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 )
 
 type Path struct {
@@ -32,6 +33,7 @@ type Path struct {
 }
 
 func (self *Path) Cost(minRouterCost uint16) int64 {
+	logtrace.LogWithFunctionName()
 	var cost int64
 	for _, l := range self.Links {
 		cost += l.GetCost()
@@ -43,6 +45,7 @@ func (self *Path) Cost(minRouterCost uint16) int64 {
 }
 
 func (self *Path) String() string {
+	logtrace.LogWithFunctionName()
 	if len(self.Nodes) < 1 {
 		return "{}"
 	}
@@ -58,6 +61,7 @@ func (self *Path) String() string {
 }
 
 func (self *Path) EqualPath(other *Path) bool {
+	logtrace.LogWithFunctionName()
 	if len(self.Nodes) != len(other.Nodes) {
 		return false
 	}
@@ -78,6 +82,7 @@ func (self *Path) EqualPath(other *Path) bool {
 }
 
 func (self *Path) EgressRouter() *Router {
+	logtrace.LogWithFunctionName()
 	if len(self.Nodes) > 0 {
 		return self.Nodes[len(self.Nodes)-1]
 	}
@@ -85,6 +90,7 @@ func (self *Path) EgressRouter() *Router {
 }
 
 func (self *Path) UsesLink(l *Link) bool {
+	logtrace.LogWithFunctionName()
 	if self.Links != nil {
 		for _, o := range self.Links {
 			if o == l {

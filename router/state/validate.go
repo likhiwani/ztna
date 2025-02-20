@@ -1,12 +1,14 @@
 package state
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	controllerEnv "ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -17,6 +19,7 @@ type ValidateDataStateRequestHandler struct {
 }
 
 func NewValidateDataStateRequestHandler(state Manager, env Env) *ValidateDataStateRequestHandler {
+	logtrace.LogWithFunctionName()
 	return &ValidateDataStateRequestHandler{
 		state: state,
 		env:   env,
@@ -24,10 +27,12 @@ func NewValidateDataStateRequestHandler(state Manager, env Env) *ValidateDataSta
 }
 
 func (*ValidateDataStateRequestHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return controllerEnv.ValidateDataStateType
 }
 
 func (self *ValidateDataStateRequestHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	request := &edge_ctrl_pb.RouterDataModelValidateRequest{}
 
 	if err := proto.Unmarshal(msg.Body, request); err != nil {

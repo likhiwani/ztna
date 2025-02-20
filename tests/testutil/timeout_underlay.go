@@ -1,12 +1,15 @@
 package testutil
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
-	"time"
 )
 
 func NewTimeoutUnderlayFactory(factory channel.UnderlayFactory, timeout time.Duration) *UnderlayFactoryWrapper {
+	logtrace.LogWithFunctionName()
 	return &UnderlayFactoryWrapper{
 		timeout: timeout,
 		wrapped: factory,
@@ -19,6 +22,7 @@ type UnderlayFactoryWrapper struct {
 }
 
 func (self *UnderlayFactoryWrapper) Create(timeout time.Duration) (channel.Underlay, error) {
+	logtrace.LogWithFunctionName()
 	underlayC := make(chan channel.Underlay, 1)
 	errC := make(chan error, 1)
 	go func() {

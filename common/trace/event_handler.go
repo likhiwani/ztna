@@ -17,17 +17,21 @@
 package trace
 
 import (
-	"github.com/openziti/channel/v3/trace/pb"
+	logtrace "ztna-core/ztna/logtrace"
+
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
 	"github.com/openziti/foundation/v2/concurrenz"
 )
 
 var EventHandlerRegistry = concurrenz.CopyOnWriteSlice[EventHandler]{}
 
 func AddTraceEventHandler(handler EventHandler) {
+	logtrace.LogWithFunctionName()
 	EventHandlerRegistry.Append(handler)
 }
 
 func RemoveTraceEventHandler(handler EventHandler) {
+	logtrace.LogWithFunctionName()
 	EventHandlerRegistry.Delete(handler)
 }
 
@@ -41,6 +45,7 @@ type eventWrapper struct {
 }
 
 func (event *eventWrapper) handle(impl *controllerImpl) {
+	logtrace.LogWithFunctionName()
 	for _, handler := range EventHandlerRegistry.Value() {
 		handler.Accept(event.wrapped)
 	}

@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new service API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -77,6 +79,7 @@ type ClientService interface {
   Create a service resource. Requires admin access.
 */
 func (a *Client) CreateService(params *CreateServiceParams, opts ...ClientOption) (*CreateServiceCreated, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateServiceParams()
@@ -117,6 +120,7 @@ func (a *Client) CreateService(params *CreateServiceParams, opts ...ClientOption
   Delete a service by id. Requires admin access.
 */
 func (a *Client) DeleteService(params *DeleteServiceParams, opts ...ClientOption) (*DeleteServiceOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteServiceParams()
@@ -157,6 +161,7 @@ func (a *Client) DeleteService(params *DeleteServiceParams, opts ...ClientOption
   Retrieves a single service by id. Requires admin access.
 */
 func (a *Client) DetailService(params *DetailServiceParams, opts ...ClientOption) (*DetailServiceOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDetailServiceParams()
@@ -198,6 +203,7 @@ func (a *Client) DetailService(params *DetailServiceParams, opts ...ClientOption
 
 */
 func (a *Client) ListServiceTerminators(params *ListServiceTerminatorsParams, opts ...ClientOption) (*ListServiceTerminatorsOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListServiceTerminatorsParams()
@@ -239,6 +245,7 @@ func (a *Client) ListServiceTerminators(params *ListServiceTerminatorsParams, op
 
 */
 func (a *Client) ListServices(params *ListServicesParams, opts ...ClientOption) (*ListServicesOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListServicesParams()
@@ -279,6 +286,7 @@ func (a *Client) ListServices(params *ListServicesParams, opts ...ClientOption) 
   Update the supplied fields on a service. Requires admin access.
 */
 func (a *Client) PatchService(params *PatchServiceParams, opts ...ClientOption) (*PatchServiceOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPatchServiceParams()
@@ -319,6 +327,7 @@ func (a *Client) PatchService(params *PatchServiceParams, opts ...ClientOption) 
   Update all fields on a service by id. Requires admin access.
 */
 func (a *Client) UpdateService(params *UpdateServiceParams, opts ...ClientOption) (*UpdateServiceOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewUpdateServiceParams()
@@ -355,5 +364,6 @@ func (a *Client) UpdateService(params *UpdateServiceParams, opts ...ClientOption
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

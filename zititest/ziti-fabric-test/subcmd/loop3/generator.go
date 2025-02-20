@@ -18,9 +18,11 @@ package loop3
 
 import (
 	"crypto/sha512"
+	"math/rand"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/info"
-	"math/rand"
 )
 
 type randomHashedBlockGenerator struct {
@@ -33,6 +35,7 @@ type randomHashedBlockGenerator struct {
 }
 
 func newRandomHashedBlockGenerator(count, minSize, maxSize, latencyFreq int) *randomHashedBlockGenerator {
+	logtrace.LogWithFunctionName()
 	g := &randomHashedBlockGenerator{
 		count:       count,
 		minSize:     minSize,
@@ -45,6 +48,7 @@ func newRandomHashedBlockGenerator(count, minSize, maxSize, latencyFreq int) *ra
 }
 
 func (g *randomHashedBlockGenerator) run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Debug("started")
 	defer log.Debug("complete")
@@ -78,6 +82,7 @@ func (g *randomHashedBlockGenerator) run() {
 }
 
 func newPool() [][]byte {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	start := info.NowInMilliseconds()
 	log.Debug("building")
@@ -98,6 +103,7 @@ func newPool() [][]byte {
 }
 
 func newSeqGenerator(count, minSize, maxSize int) *seqGenerator {
+	logtrace.LogWithFunctionName()
 	g := &seqGenerator{
 		count:   count,
 		minSize: minSize,
@@ -108,6 +114,7 @@ func newSeqGenerator(count, minSize, maxSize int) *seqGenerator {
 }
 
 func (g *seqGenerator) run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Debug("started")
 	defer log.Debug("complete")

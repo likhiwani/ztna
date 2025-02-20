@@ -22,12 +22,14 @@ import (
 	"net/http"
 	"testing"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	"github.com/google/uuid"
 )
 
 func Test_EnrollmentUpdb(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

@@ -18,18 +18,20 @@ package model
 
 import (
 	"fmt"
-	lru "github.com/hashicorp/golang-lru/v2"
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	lru "github.com/hashicorp/golang-lru/v2"
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 const (
@@ -37,6 +39,7 @@ const (
 )
 
 func NewPostureCheckManager(env Env) *PostureCheckManager {
+	logtrace.LogWithFunctionName()
 	cache, err := lru.New[string, *PostureCheck](256)
 	if err != nil {
 		panic(err)
@@ -63,23 +66,28 @@ type PostureCheckManager struct {
 }
 
 func (self *PostureCheckManager) newModelEntity() *PostureCheck {
+	logtrace.LogWithFunctionName()
 	return &PostureCheck{}
 }
 
 func (self *PostureCheckManager) Create(entity *PostureCheck, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*PostureCheck](self, entity, ctx)
 }
 
 func (self *PostureCheckManager) ApplyCreate(cmd *command.CreateEntityCommand[*PostureCheck], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *PostureCheckManager) Update(entity *PostureCheck, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*PostureCheck](self, entity, checker, ctx)
 }
 
 func (self *PostureCheckManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*PostureCheck], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = self
 	if cmd.UpdatedFields != nil {
 		checker = &AndFieldChecker{first: self, second: cmd.UpdatedFields}
@@ -88,6 +96,7 @@ func (self *PostureCheckManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*P
 }
 
 func (self *PostureCheckManager) Read(id string) (*PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	if postureCheck, ok := self.cache.Get(id); ok {
 		return postureCheck, nil
 	}
@@ -99,6 +108,7 @@ func (self *PostureCheckManager) Read(id string) (*PostureCheck, error) {
 }
 
 func (self *PostureCheckManager) readInTx(tx *bbolt.Tx, id string) (*PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	if postureCheck, ok := self.cache.Get(id); ok {
 		return postureCheck, nil
 	}
@@ -113,6 +123,7 @@ func (self *PostureCheckManager) readInTx(tx *bbolt.Tx, id string) (*PostureChec
 }
 
 func (self *PostureCheckManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return strings.EqualFold(field, db.FieldName) ||
 		strings.EqualFold(field, boltz.FieldTags) ||
 		strings.EqualFold(field, db.FieldRoleAttributes) ||
@@ -137,6 +148,7 @@ func (self *PostureCheckManager) IsUpdated(field string) bool {
 }
 
 func (self *PostureCheckManager) Query(query string) (*PostureCheckListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &PostureCheckListResult{manager: self}
 	if err := self.ListWithHandler(query, result.collect); err != nil {
 		return nil, err
@@ -145,6 +157,7 @@ func (self *PostureCheckManager) Query(query string) (*PostureCheckListResult, e
 }
 
 func (self *PostureCheckManager) QueryPostureChecks(query ast.Query) (*PostureCheckListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &PostureCheckListResult{manager: self}
 	err := self.PreparedListWithHandler(query, result.collect)
 	if err != nil {
@@ -154,11 +167,13 @@ func (self *PostureCheckManager) QueryPostureChecks(query ast.Query) (*PostureCh
 }
 
 func (self *PostureCheckManager) QueryRoleAttributes(queryString string) ([]string, *models.QueryMetaData, error) {
+	logtrace.LogWithFunctionName()
 	index := self.env.GetStores().PostureCheck.GetRoleAttributesIndex()
 	return self.queryRoleAttributes(index, queryString)
 }
 
 func (self *PostureCheckManager) Marshall(entity *PostureCheck) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -182,6 +197,7 @@ func (self *PostureCheckManager) Marshall(entity *PostureCheck) ([]byte, error) 
 }
 
 func (self *PostureCheckManager) Unmarshall(bytes []byte) (*PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.PostureCheck{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -219,6 +235,7 @@ type PostureCheckListResult struct {
 }
 
 func (result *PostureCheckListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		entity, err := result.manager.readInTx(tx, key)

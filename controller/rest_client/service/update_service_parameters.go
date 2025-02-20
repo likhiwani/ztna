@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewUpdateServiceParams() *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewUpdateServiceParams() *UpdateServiceParams {
 // NewUpdateServiceParamsWithTimeout creates a new UpdateServiceParams object
 // with the ability to set a timeout on a request.
 func NewUpdateServiceParamsWithTimeout(timeout time.Duration) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewUpdateServiceParamsWithTimeout(timeout time.Duration) *UpdateServicePara
 // NewUpdateServiceParamsWithContext creates a new UpdateServiceParams object
 // with the ability to set a context for a request.
 func NewUpdateServiceParamsWithContext(ctx context.Context) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewUpdateServiceParamsWithContext(ctx context.Context) *UpdateServiceParams
 // NewUpdateServiceParamsWithHTTPClient creates a new UpdateServiceParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewUpdateServiceParamsWithHTTPClient(client *http.Client) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &UpdateServiceParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type UpdateServiceParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateServiceParams) WithDefaults() *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *UpdateServiceParams) WithDefaults() *UpdateServiceParams {
 //
 // All values with no default are reset to their zero value.
 func (o *UpdateServiceParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the update service params
 func (o *UpdateServiceParams) WithTimeout(timeout time.Duration) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the update service params
 func (o *UpdateServiceParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the update service params
 func (o *UpdateServiceParams) WithContext(ctx context.Context) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the update service params
 func (o *UpdateServiceParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the update service params
 func (o *UpdateServiceParams) WithHTTPClient(client *http.Client) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the update service params
 func (o *UpdateServiceParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the update service params
 func (o *UpdateServiceParams) WithID(id string) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the update service params
 func (o *UpdateServiceParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithService adds the service to the update service params
 func (o *UpdateServiceParams) WithService(service *rest_model.ServiceUpdate) *UpdateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetService(service)
 	return o
 }
 
 // SetService adds the service to the update service params
 func (o *UpdateServiceParams) SetService(service *rest_model.ServiceUpdate) {
+    logtrace.LogWithFunctionName()
 	o.Service = service
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *UpdateServiceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

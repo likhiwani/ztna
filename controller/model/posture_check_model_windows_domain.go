@@ -23,6 +23,8 @@ import (
 
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
@@ -34,10 +36,12 @@ type PostureCheckDomains struct {
 }
 
 func (p *PostureCheckDomains) TypeId() string {
+	logtrace.LogWithFunctionName()
 	return db.PostureCheckTypeDomain
 }
 
 func (p *PostureCheckDomains) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	msg.Subtype = &edge_cmd_pb.PostureCheck_Domains_{
 		Domains: &edge_cmd_pb.PostureCheck_Domains{
 			Domains: p.Domains,
@@ -46,6 +50,7 @@ func (p *PostureCheckDomains) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
 }
 
 func (p *PostureCheckDomains) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	if domains_, ok := msg.Subtype.(*edge_cmd_pb.PostureCheck_Domains_); ok {
 		if domains := domains_.Domains; domains != nil {
 			p.Domains = domains.Domains
@@ -57,18 +62,22 @@ func (p *PostureCheckDomains) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) er
 }
 
 func (p *PostureCheckDomains) LastUpdatedAt(string, *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (p *PostureCheckDomains) GetTimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckDomains) GetTimeoutRemainingSeconds(_ string, _ *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckDomains) FailureValues(_ string, pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckFailureValuesDomain{
 		ActualValue:   pd.Domain.Name,
 		ExpectedValue: p.Domains,
@@ -76,16 +85,19 @@ func (p *PostureCheckDomains) FailureValues(_ string, pd *PostureData) PostureCh
 }
 
 func (p *PostureCheckDomains) ActualValue(_ string, pd *PostureData) interface{} {
+	logtrace.LogWithFunctionName()
 	return pd.Domain.Name
 }
 
 func (p *PostureCheckDomains) ExpectedValue() interface{} {
+	logtrace.LogWithFunctionName()
 	return map[string]interface{}{
 		"domains": p.Domains,
 	}
 }
 
 func (p *PostureCheckDomains) Evaluate(_ string, pd *PostureData) bool {
+	logtrace.LogWithFunctionName()
 	if pd.Domain.TimedOut {
 		return false
 	}
@@ -100,10 +112,12 @@ func (p *PostureCheckDomains) Evaluate(_ string, pd *PostureData) bool {
 }
 
 func newPostureCheckWindowsDomains() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckDomains{}
 }
 
 func (p *PostureCheckDomains) fillFrom(_ Env, _ *bbolt.Tx, _ *db.PostureCheck, subType db.PostureCheckSubType) error {
+	logtrace.LogWithFunctionName()
 	subCheck := subType.(*db.PostureCheckWindowsDomains)
 
 	if subCheck == nil {
@@ -115,6 +129,7 @@ func (p *PostureCheckDomains) fillFrom(_ Env, _ *bbolt.Tx, _ *db.PostureCheck, s
 }
 
 func (p *PostureCheckDomains) toBoltEntityForCreate(*bbolt.Tx, Env) (db.PostureCheckSubType, error) {
+	logtrace.LogWithFunctionName()
 	return &db.PostureCheckWindowsDomains{
 		Domains: p.Domains,
 	}, nil
@@ -126,9 +141,11 @@ type PostureCheckFailureValuesDomain struct {
 }
 
 func (p PostureCheckFailureValuesDomain) Expected() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ExpectedValue
 }
 
 func (p PostureCheckFailureValuesDomain) Actual() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ActualValue
 }

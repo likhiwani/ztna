@@ -2,9 +2,11 @@ package tests
 
 import (
 	"testing"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_Root_Endpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

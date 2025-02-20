@@ -20,12 +20,9 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
+	"reflect"
+	"strings"
+	"time"
 	edgeCert "ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
@@ -35,12 +32,17 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"reflect"
-	"strings"
-	"time"
 )
 
 const updateUnrestricted = 1
@@ -51,6 +53,7 @@ type AuthenticatorManager struct {
 }
 
 func NewAuthenticatorManager(env Env) *AuthenticatorManager {
+	logtrace.LogWithFunctionName()
 	manager := &AuthenticatorManager{
 		baseEntityManager: newBaseEntityManager[*Authenticator, *db.Authenticator](env, env.GetStores().Authenticator),
 		authStore:         env.GetStores().Authenticator,
@@ -64,14 +67,17 @@ func NewAuthenticatorManager(env Env) *AuthenticatorManager {
 }
 
 func (self *AuthenticatorManager) newModelEntity() *Authenticator {
+	logtrace.LogWithFunctionName()
 	return &Authenticator{}
 }
 
 func (self *AuthenticatorManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return !strings.EqualFold(field, "method") && !strings.EqualFold(field, "identityId")
 }
 
 func (self *AuthenticatorManager) Authorize(authContext AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	authModule := self.env.GetAuthRegistry().GetByMethod(authContext.GetMethod())
 
 	if authModule == nil {
@@ -82,6 +88,7 @@ func (self *AuthenticatorManager) Authorize(authContext AuthContext) (AuthResult
 }
 
 func (self *AuthenticatorManager) ReadFingerprints(authenticatorId string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	var authenticator *db.Authenticator
 
 	err := self.env.GetDb().View(func(tx *bbolt.Tx) error {
@@ -98,6 +105,7 @@ func (self *AuthenticatorManager) ReadFingerprints(authenticatorId string) ([]st
 }
 
 func (self *AuthenticatorManager) Read(id string) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Authenticator{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -106,10 +114,12 @@ func (self *AuthenticatorManager) Read(id string) (*Authenticator, error) {
 }
 
 func (self *AuthenticatorManager) Create(entity *Authenticator, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Authenticator](self, entity, ctx)
 }
 
 func (self *AuthenticatorManager) ApplyCreate(cmd *command.CreateEntityCommand[*Authenticator], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	authenticator := cmd.Entity
 	if authenticator.Method != db.MethodAuthenticatorUpdb && authenticator.Method != db.MethodAuthenticatorCert {
 		return errorz.NewFieldError("method must be updb or cert", "method", authenticator.Method)
@@ -169,6 +179,7 @@ func (self *AuthenticatorManager) ApplyCreate(cmd *command.CreateEntityCommand[*
 }
 
 func (self *AuthenticatorManager) Update(entity *Authenticator, unrestricted bool, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &command.UpdateEntityCommand[*Authenticator]{
 		Context:       ctx,
 		Updater:       self,
@@ -182,6 +193,7 @@ func (self *AuthenticatorManager) Update(entity *Authenticator, unrestricted boo
 }
 
 func (self *AuthenticatorManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Authenticator], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	authenticator := cmd.Entity
 	if updb := authenticator.ToUpdb(); updb != nil {
 		if cmd.UpdatedFields == nil || cmd.UpdatedFields.IsUpdated("password") {
@@ -211,6 +223,7 @@ func (self *AuthenticatorManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*
 }
 
 func (self *AuthenticatorManager) getRootPool() *x509.CertPool {
+	logtrace.LogWithFunctionName()
 	roots := x509.NewCertPool()
 
 	roots.AppendCertsFromPEM(self.env.GetConfig().Edge.CaPems())
@@ -237,6 +250,7 @@ func (self *AuthenticatorManager) getRootPool() *x509.CertPool {
 }
 
 func (self *AuthenticatorManager) ReadByUsername(username string) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	query := fmt.Sprintf("%s = \"%v\"", db.FieldAuthenticatorUpdbUsername, username)
 
 	entity, err := self.readEntityByQuery(query)
@@ -259,6 +273,7 @@ func (self *AuthenticatorManager) ReadByUsername(username string) (*Authenticato
 }
 
 func (self *AuthenticatorManager) ReadByFingerprint(fingerprint string) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	query := fmt.Sprintf("%s = \"%v\"", db.FieldAuthenticatorCertFingerprint, fingerprint)
 
 	entity, err := self.readEntityByQuery(query)
@@ -281,6 +296,7 @@ func (self *AuthenticatorManager) ReadByFingerprint(fingerprint string) (*Authen
 }
 
 func (self *AuthenticatorManager) UpdateSelf(authenticatorSelf *AuthenticatorSelf, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	authenticator, err := self.ReadForIdentity(authenticatorSelf.IdentityId, authenticatorSelf.Id)
 
 	if err != nil {
@@ -318,6 +334,7 @@ func (self *AuthenticatorManager) UpdateSelf(authenticatorSelf *AuthenticatorSel
 }
 
 func (self *AuthenticatorManager) PatchSelf(authenticatorSelf *AuthenticatorSelf, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if checker.IsUpdated("password") {
 		checker.AddField("salt")
 	}
@@ -359,6 +376,7 @@ func (self *AuthenticatorManager) PatchSelf(authenticatorSelf *AuthenticatorSelf
 }
 
 func (self *AuthenticatorManager) HashPassword(password string) *HashedPassword {
+	logtrace.LogWithFunctionName()
 	newResult := Hash(password)
 	b64Password := base64.StdEncoding.EncodeToString(newResult.Hash)
 	b64Salt := base64.StdEncoding.EncodeToString(newResult.Salt)
@@ -371,6 +389,7 @@ func (self *AuthenticatorManager) HashPassword(password string) *HashedPassword 
 }
 
 func (self *AuthenticatorManager) ReHashPassword(password string, salt []byte) *HashedPassword {
+	logtrace.LogWithFunctionName()
 	newResult := ReHash(password, salt)
 	b64Password := base64.StdEncoding.EncodeToString(newResult.Hash)
 	b64Salt := base64.StdEncoding.EncodeToString(newResult.Salt)
@@ -383,11 +402,13 @@ func (self *AuthenticatorManager) ReHashPassword(password string, salt []byte) *
 }
 
 func (self *AuthenticatorManager) DecodeSalt(salt string) []byte {
+	logtrace.LogWithFunctionName()
 	result, _ := DecodeSalt(salt)
 	return result
 }
 
 func (self *AuthenticatorManager) ListForIdentity(identityId string, query ast.Query) (*models.EntityListResult[*Authenticator], error) {
+	logtrace.LogWithFunctionName()
 	filterString := fmt.Sprintf(`identity = "%s"`, identityId)
 	filter, err := ast.Parse(self.Store, filterString)
 	if err != nil {
@@ -404,6 +425,7 @@ func (self *AuthenticatorManager) ListForIdentity(identityId string, query ast.Q
 }
 
 func (self *AuthenticatorManager) ReadForIdentity(identityId string, authenticatorId string) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	authenticator, err := self.Read(authenticatorId)
 
 	if err != nil {
@@ -418,6 +440,7 @@ func (self *AuthenticatorManager) ReadForIdentity(identityId string, authenticat
 }
 
 func (self *AuthenticatorManager) ExtendCertForIdentity(identityId string, authenticatorId string, peerCerts []*x509.Certificate, csrPem string, ctx *change.Context) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	authenticator, _ := self.Read(authenticatorId)
 
 	if authenticator == nil {
@@ -534,6 +557,7 @@ func (self *AuthenticatorManager) ExtendCertForIdentity(identityId string, authe
 }
 
 func (self *AuthenticatorManager) VerifyExtendCertForIdentity(apiSessionId, identityId, authenticatorId string, verifyCertPem string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	authenticator, _ := self.Read(authenticatorId)
 
 	if authenticator == nil {
@@ -617,6 +641,7 @@ func (self *AuthenticatorManager) VerifyExtendCertForIdentity(apiSessionId, iden
 // constraints that expires at the time specified by `expiresAt`. The result is a string id of the new enrollment
 // or an error.
 func (self *AuthenticatorManager) ReEnroll(id string, expiresAt time.Time, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	authenticator, err := self.Read(id)
 	if err != nil {
 		return "", err
@@ -669,6 +694,7 @@ func (self *AuthenticatorManager) ReEnroll(id string, expiresAt time.Time, ctx *
 
 // getCaId returns the string id of the issuing Ziti 3rd Party CA or empty string
 func getCaId(env Env, auth *AuthenticatorCert) string {
+	logtrace.LogWithFunctionName()
 	certs := nfpem.PemStringToCertificates(auth.Pem)
 
 	if len(certs) == 0 {
@@ -710,6 +736,7 @@ func getCaId(env Env, auth *AuthenticatorCert) string {
 }
 
 func (self *AuthenticatorManager) AuthenticatorToProtobuf(entity *Authenticator) (*edge_cmd_pb.Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -744,6 +771,7 @@ func (self *AuthenticatorManager) AuthenticatorToProtobuf(entity *Authenticator)
 }
 
 func (self *AuthenticatorManager) Marshall(entity *Authenticator) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg, err := self.AuthenticatorToProtobuf(entity)
 	if err != nil {
 		return nil, err
@@ -752,6 +780,7 @@ func (self *AuthenticatorManager) Marshall(entity *Authenticator) ([]byte, error
 }
 
 func (self *AuthenticatorManager) Unmarshall(bytes []byte) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Authenticator{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -760,6 +789,7 @@ func (self *AuthenticatorManager) Unmarshall(bytes []byte) (*Authenticator, erro
 }
 
 func (self *AuthenticatorManager) ProtobufToAuthenticator(msg *edge_cmd_pb.Authenticator) (*Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	authenticator := &Authenticator{
 		BaseEntity: models.BaseEntity{
 			Id:   msg.Id,

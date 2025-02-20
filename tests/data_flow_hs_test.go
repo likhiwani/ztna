@@ -20,15 +20,18 @@
 package tests
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/ztna/common/eid"
 	"sync/atomic"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func Test_HSDataflow(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type FixDataIntegrityHandlerFunc func(FixDataIntegrityParams, interface{}) middl
 
 // Handle executing the request and returning a response
 func (fn FixDataIntegrityHandlerFunc) Handle(params FixDataIntegrityParams, principal interface{}) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params, principal)
 }
 
@@ -50,6 +52,7 @@ type FixDataIntegrityHandler interface {
 
 // NewFixDataIntegrity creates a new http.Handler for the fix data integrity operation
 func NewFixDataIntegrity(ctx *middleware.Context, handler FixDataIntegrityHandler) *FixDataIntegrity {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrity{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type FixDataIntegrity struct {
 }
 
 func (o *FixDataIntegrity) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

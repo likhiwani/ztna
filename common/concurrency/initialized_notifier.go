@@ -17,8 +17,10 @@
 package concurrency
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"sync/atomic"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 type InitState interface {
@@ -27,6 +29,7 @@ type InitState interface {
 }
 
 func NewInitState() InitState {
+	logtrace.LogWithFunctionName()
 	return &channelInitState{
 		c: make(chan struct{}),
 	}
@@ -38,10 +41,12 @@ type channelInitState struct {
 }
 
 func (self *channelInitState) WaitTillInitialized() {
+	logtrace.LogWithFunctionName()
 	<-self.c
 }
 
 func (self *channelInitState) MarkInitialized() {
+	logtrace.LogWithFunctionName()
 	if self.initialized.CompareAndSwap(false, true) {
 		close(self.c)
 	} else {

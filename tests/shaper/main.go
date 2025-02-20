@@ -4,10 +4,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/openziti/metrics"
-	"github.com/openziti/transport/v2/shaper"
 	"sync/atomic"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics"
+	"github.com/openziti/transport/v2/shaper"
 )
 
 type metricsWriter struct {
@@ -15,12 +17,14 @@ type metricsWriter struct {
 }
 
 func (self *metricsWriter) Write(p []byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	l := len(p)
 	self.m.Mark(int64(l))
 	return l, nil
 }
 
 func printRate(rate float64, desc string) {
+	logtrace.LogWithFunctionName()
 	units := []string{"B", "K", "M", "G", "T", "P"}
 	index := 0
 	for rate > 1000 {
@@ -31,6 +35,7 @@ func printRate(rate float64, desc string) {
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	r := metrics.NewRegistry("test", nil)
 	meter := r.Meter("writes")
 	w := &metricsWriter{m: meter}

@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"google.golang.org/protobuf/proto"
@@ -34,6 +35,7 @@ type AgentClusterListAction struct {
 }
 
 func NewAgentClusterList(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentClusterListAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -57,6 +59,7 @@ func NewAgentClusterList(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentClusterListAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_RaftListMembersRequestType), nil)
 	reply, err := msg.WithTimeout(self.timeout).SendForReply(ch)
 	if err != nil {

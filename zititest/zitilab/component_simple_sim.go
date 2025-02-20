@@ -18,10 +18,12 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
-	"github.com/sirupsen/logrus"
 	"strings"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 var _ model.ComponentType = (*SimpleSimType)(nil)
@@ -32,14 +34,17 @@ type SimpleSimType struct {
 }
 
 func (self *SimpleSimType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "simple-sim"
 }
 
 func (self *SimpleSimType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return "local"
 }
 
 func (self *SimpleSimType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":     "simple-sim",
 		"local_path":  self.LocalPath,
@@ -48,16 +53,19 @@ func (self *SimpleSimType) Dump() any {
 }
 
 func (self *SimpleSimType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return stageziti.StageLocalOnce(r, "simple-sim", c, self.LocalPath)
 }
 
 func (self *SimpleSimType) getProcessFilter() func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, "simple-sim")
 	}
 }
 
 func (self *SimpleSimType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter())
 	if err != nil {
 		return false, err
@@ -66,6 +74,7 @@ func (self *SimpleSimType) IsRunning(_ model.Run, c *model.Component) (bool, err
 }
 
 func (self *SimpleSimType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := getBinaryPath(c, "simple-sim", "")
@@ -90,5 +99,6 @@ func (self *SimpleSimType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *SimpleSimType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter())
 }

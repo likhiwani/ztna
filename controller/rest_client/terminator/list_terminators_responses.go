@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type ListTerminatorsReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *ListTerminatorsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewListTerminatorsOK()
@@ -78,6 +80,7 @@ func (o *ListTerminatorsReader) ReadResponse(response runtime.ClientResponse, co
 
 // NewListTerminatorsOK creates a ListTerminatorsOK with default headers values
 func NewListTerminatorsOK() *ListTerminatorsOK {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsOK{}
 }
 
@@ -90,13 +93,16 @@ type ListTerminatorsOK struct {
 }
 
 func (o *ListTerminatorsOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /terminators][%d] listTerminatorsOK  %+v", 200, o.Payload)
 }
 func (o *ListTerminatorsOK) GetPayload() *rest_model.ListTerminatorsEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListTerminatorsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.ListTerminatorsEnvelope)
 
@@ -110,6 +116,7 @@ func (o *ListTerminatorsOK) readResponse(response runtime.ClientResponse, consum
 
 // NewListTerminatorsBadRequest creates a ListTerminatorsBadRequest with default headers values
 func NewListTerminatorsBadRequest() *ListTerminatorsBadRequest {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsBadRequest{}
 }
 
@@ -122,13 +129,16 @@ type ListTerminatorsBadRequest struct {
 }
 
 func (o *ListTerminatorsBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /terminators][%d] listTerminatorsBadRequest  %+v", 400, o.Payload)
 }
 func (o *ListTerminatorsBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListTerminatorsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *ListTerminatorsBadRequest) readResponse(response runtime.ClientResponse
 
 // NewListTerminatorsUnauthorized creates a ListTerminatorsUnauthorized with default headers values
 func NewListTerminatorsUnauthorized() *ListTerminatorsUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsUnauthorized{}
 }
 
@@ -154,13 +165,16 @@ type ListTerminatorsUnauthorized struct {
 }
 
 func (o *ListTerminatorsUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /terminators][%d] listTerminatorsUnauthorized  %+v", 401, o.Payload)
 }
 func (o *ListTerminatorsUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListTerminatorsUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *ListTerminatorsUnauthorized) readResponse(response runtime.ClientRespon
 
 // NewListTerminatorsTooManyRequests creates a ListTerminatorsTooManyRequests with default headers values
 func NewListTerminatorsTooManyRequests() *ListTerminatorsTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type ListTerminatorsTooManyRequests struct {
 }
 
 func (o *ListTerminatorsTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /terminators][%d] listTerminatorsTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *ListTerminatorsTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListTerminatorsTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

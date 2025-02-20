@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteRouterParams() *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDeleteRouterParams() *DeleteRouterParams {
 // NewDeleteRouterParamsWithTimeout creates a new DeleteRouterParams object
 // with the ability to set a timeout on a request.
 func NewDeleteRouterParamsWithTimeout(timeout time.Duration) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDeleteRouterParamsWithTimeout(timeout time.Duration) *DeleteRouterParams
 // NewDeleteRouterParamsWithContext creates a new DeleteRouterParams object
 // with the ability to set a context for a request.
 func NewDeleteRouterParamsWithContext(ctx context.Context) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDeleteRouterParamsWithContext(ctx context.Context) *DeleteRouterParams {
 // NewDeleteRouterParamsWithHTTPClient creates a new DeleteRouterParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDeleteRouterParamsWithHTTPClient(client *http.Client) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteRouterParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DeleteRouterParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteRouterParams) WithDefaults() *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DeleteRouterParams) WithDefaults() *DeleteRouterParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteRouterParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete router params
 func (o *DeleteRouterParams) WithTimeout(timeout time.Duration) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the delete router params
 func (o *DeleteRouterParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the delete router params
 func (o *DeleteRouterParams) WithContext(ctx context.Context) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the delete router params
 func (o *DeleteRouterParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the delete router params
 func (o *DeleteRouterParams) WithHTTPClient(client *http.Client) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the delete router params
 func (o *DeleteRouterParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the delete router params
 func (o *DeleteRouterParams) WithID(id string) *DeleteRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the delete router params
 func (o *DeleteRouterParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DeleteRouterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

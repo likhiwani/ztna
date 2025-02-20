@@ -33,6 +33,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
 
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/identity/certtools"
@@ -40,6 +41,7 @@ import (
 )
 
 func Test_EnrollmentIdentityExtend(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

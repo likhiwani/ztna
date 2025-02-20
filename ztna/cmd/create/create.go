@@ -19,9 +19,11 @@ package create
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/pki"
 	"ztna-core/ztna/ztna/cmd/templates"
+
 	"github.com/spf13/cobra"
 )
 
@@ -34,6 +36,7 @@ var (
 
 // NewCmdCreate creates a command object for the "create" command
 func NewCmdCreate(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "Create a new resource",

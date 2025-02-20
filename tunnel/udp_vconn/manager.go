@@ -18,14 +18,16 @@ package udp_vconn
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/tunnel"
-	"ztna-core/ztna/tunnel/entities"
-	"github.com/openziti/foundation/v2/mempool"
 	"io"
 	"net"
 	"strconv"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/entities"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/mempool"
 )
 
 type manager struct {
@@ -37,14 +39,17 @@ type manager struct {
 }
 
 func (manager *manager) QueueEvent(event Event) {
+	logtrace.LogWithFunctionName()
 	manager.eventC <- event
 }
 
 func (manager *manager) QueueError(err error) {
+	logtrace.LogWithFunctionName()
 	manager.QueueEvent(&errorEvent{err})
 }
 
 func (manager *manager) run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	defer log.Info("shutting down udp listener")
 
@@ -73,6 +78,7 @@ func (manager *manager) run() {
 }
 
 func (manager *manager) GetWriteQueue(srcAddr net.Addr) WriteQueue {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Debugf("Looking up address %v", srcAddr.String())
 	result := manager.connMap[srcAddr.String()]
 	if result == nil {
@@ -82,6 +88,7 @@ func (manager *manager) GetWriteQueue(srcAddr net.Addr) WriteQueue {
 }
 
 func (manager *manager) CreateWriteQueue(targetAddr *net.UDPAddr, srcAddr net.Addr, service *entities.Service, writeConn UDPWriterTo) (WriteQueue, error) {
+	logtrace.LogWithFunctionName()
 	switch manager.newConnPolicy.NewConnection(uint32(len(manager.connMap))) {
 	case AllowDropLRU:
 		manager.dropLRU()
@@ -108,6 +115,7 @@ func (manager *manager) CreateWriteQueue(targetAddr *net.UDPAddr, srcAddr net.Ad
 }
 
 func (manager *manager) dropLRU() {
+	logtrace.LogWithFunctionName()
 	if len(manager.connMap) < 1 {
 		return
 	}
@@ -123,6 +131,7 @@ func (manager *manager) dropLRU() {
 }
 
 func (manager *manager) dropExpired() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	now := time.Now()
 	for key, conn := range manager.connMap {
@@ -137,6 +146,7 @@ func (manager *manager) dropExpired() {
 }
 
 func (manager *manager) close(conn *udpConn) {
+	logtrace.LogWithFunctionName()
 	_ = conn.Close()
 	delete(manager.connMap, conn.srcAddr.String())
 }
@@ -146,5 +156,6 @@ type errorEvent struct {
 }
 
 func (event *errorEvent) Handle(Manager) error {
+	logtrace.LogWithFunctionName()
 	return event
 }

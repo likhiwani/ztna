@@ -19,8 +19,10 @@ package ctrl_msg
 import (
 	"errors"
 	"fmt"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 )
 
 const (
@@ -65,16 +67,19 @@ const (
 )
 
 func NewCircuitSuccessMsg(sessionId, address string) *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(CircuitSuccessType, []byte(sessionId))
 	msg.Headers[CircuitSuccessAddressHeader] = []byte(address)
 	return msg
 }
 
 func NewCircuitFailedMsg(message string) *channel.Message {
+	logtrace.LogWithFunctionName()
 	return channel.NewMessage(CircuitFailedType, []byte(message))
 }
 
 func NewRouteResultSuccessMsg(sessionId string, attempt int) *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(RouteResultType, []byte(sessionId))
 	msg.PutUint32Header(RouteResultAttemptHeader, uint32(attempt))
 	msg.PutUint32Header(RouteResultAttemptHeader, uint32(attempt))
@@ -83,6 +88,7 @@ func NewRouteResultSuccessMsg(sessionId string, attempt int) *channel.Message {
 }
 
 func NewRouteResultFailedMessage(sessionId string, attempt int, rerr string) *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(RouteResultType, []byte(sessionId))
 	msg.PutUint32Header(RouteResultAttemptHeader, uint32(attempt))
 	msg.Headers[RouteResultErrorHeader] = []byte(rerr)
@@ -98,26 +104,32 @@ type CreateCircuitRequest struct {
 }
 
 func (self *CreateCircuitRequest) GetApiSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.ApiSessionToken
 }
 
 func (self *CreateCircuitRequest) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.SessionToken
 }
 
 func (self *CreateCircuitRequest) GetFingerprints() []string {
+	logtrace.LogWithFunctionName()
 	return self.Fingerprints
 }
 
 func (self *CreateCircuitRequest) GetTerminatorInstanceId() string {
+	logtrace.LogWithFunctionName()
 	return self.TerminatorInstanceId
 }
 
 func (self *CreateCircuitRequest) GetPeerData() map[uint32][]byte {
+	logtrace.LogWithFunctionName()
 	return self.PeerData
 }
 
 func (self *CreateCircuitRequest) ToMessage() *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_CreateCircuitV2RequestType), nil)
 	msg.PutStringHeader(CreateCircuitReqSessionTokenHeader, self.SessionToken)
 	msg.PutStringHeader(CreateCircuitReqApiSessionTokenHeader, self.ApiSessionToken)
@@ -128,6 +140,7 @@ func (self *CreateCircuitRequest) ToMessage() *channel.Message {
 }
 
 func DecodeCreateCircuitRequest(m *channel.Message) (*CreateCircuitRequest, error) {
+	logtrace.LogWithFunctionName()
 	sessionToken, _ := m.GetStringHeader(CreateCircuitReqSessionTokenHeader)
 	if len(sessionToken) == 0 {
 		return nil, errors.New("no session token provided in create circuit request")
@@ -163,6 +176,7 @@ type CreateCircuitResponse struct {
 }
 
 func (self *CreateCircuitResponse) ToMessage() *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_CreateCircuitV2ResponseType), nil)
 	msg.PutStringHeader(CreateCircuitRespCircuitId, self.CircuitId)
 	msg.PutStringHeader(CreateCircuitRespAddress, self.Address)
@@ -172,6 +186,7 @@ func (self *CreateCircuitResponse) ToMessage() *channel.Message {
 }
 
 func DecodeCreateCircuitResponse(m *channel.Message) (*CreateCircuitResponse, error) {
+	logtrace.LogWithFunctionName()
 	circuitId, _ := m.GetStringHeader(CreateCircuitRespCircuitId)
 	address, _ := m.GetStringHeader(CreateCircuitRespAddress)
 	peerData, _, err := m.GetU32ToBytesMapHeader(CreateCircuitPeerDataHeader)

@@ -17,6 +17,7 @@
 package api
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"io"
 	"net/http"
 	"strings"
@@ -31,6 +32,7 @@ import (
 )
 
 func NewWsMgmtChannel(bindHandler channel.BindHandler) (channel.Channel, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	restClientIdentity, err := util.LoadSelectedIdentity()
 	if err != nil {

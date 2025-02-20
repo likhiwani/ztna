@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewFixDataIntegrityParams() *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewFixDataIntegrityParams() *FixDataIntegrityParams {
 // NewFixDataIntegrityParamsWithTimeout creates a new FixDataIntegrityParams object
 // with the ability to set a timeout on a request.
 func NewFixDataIntegrityParamsWithTimeout(timeout time.Duration) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewFixDataIntegrityParamsWithTimeout(timeout time.Duration) *FixDataIntegri
 // NewFixDataIntegrityParamsWithContext creates a new FixDataIntegrityParams object
 // with the ability to set a context for a request.
 func NewFixDataIntegrityParamsWithContext(ctx context.Context) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewFixDataIntegrityParamsWithContext(ctx context.Context) *FixDataIntegrity
 // NewFixDataIntegrityParamsWithHTTPClient creates a new FixDataIntegrityParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewFixDataIntegrityParamsWithHTTPClient(client *http.Client) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	return &FixDataIntegrityParams{
 		HTTPClient: client,
 	}
@@ -91,6 +96,7 @@ type FixDataIntegrityParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *FixDataIntegrityParams) WithDefaults() *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -99,44 +105,52 @@ func (o *FixDataIntegrityParams) WithDefaults() *FixDataIntegrityParams {
 //
 // All values with no default are reset to their zero value.
 func (o *FixDataIntegrityParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the fix data integrity params
 func (o *FixDataIntegrityParams) WithTimeout(timeout time.Duration) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the fix data integrity params
 func (o *FixDataIntegrityParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the fix data integrity params
 func (o *FixDataIntegrityParams) WithContext(ctx context.Context) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the fix data integrity params
 func (o *FixDataIntegrityParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the fix data integrity params
 func (o *FixDataIntegrityParams) WithHTTPClient(client *http.Client) *FixDataIntegrityParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the fix data integrity params
 func (o *FixDataIntegrityParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *FixDataIntegrityParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

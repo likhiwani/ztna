@@ -18,18 +18,21 @@ package db
 
 import (
 	"fmt"
+	"testing"
+	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/change"
 	"go.etcd.io/bbolt"
-	"testing"
-	"time"
 )
 
 func Test_ApiSessionStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -42,6 +45,7 @@ func Test_ApiSessionStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidApiSessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.BaseTestContext.NextTest(t)
 	defer ctx.CleanupAll()
 
@@ -68,6 +72,7 @@ func (ctx *TestContext) testCreateInvalidApiSessions(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateApiSessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.BaseTestContext.NextTest(t)
 	ctx.CleanupAll()
 
@@ -113,6 +118,7 @@ type apiSessionTestEntities struct {
 }
 
 func (ctx *TestContext) createApiSessionTestEntities() *apiSessionTestEntities {
+	logtrace.LogWithFunctionName()
 	identity1 := ctx.RequireNewIdentity("admin1", true)
 	identity2 := ctx.RequireNewIdentity("user1", false)
 
@@ -146,6 +152,7 @@ func (ctx *TestContext) createApiSessionTestEntities() *apiSessionTestEntities {
 }
 
 func (ctx *TestContext) testLoadQueryApiSessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.BaseTestContext.NextTest(t)
 	ctx.CleanupAll()
 
@@ -170,6 +177,7 @@ func (ctx *TestContext) testLoadQueryApiSessions(t *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateApiSessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.BaseTestContext.NextTest(t)
 	ctx.CleanupAll()
 	entities := ctx.createApiSessionTestEntities()
@@ -210,6 +218,7 @@ func (ctx *TestContext) testUpdateApiSessions(t *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteApiSessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.BaseTestContext.NextTest(t)
 	ctx.CleanupAll()
 	entities := ctx.createApiSessionTestEntities()

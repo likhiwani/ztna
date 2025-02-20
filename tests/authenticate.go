@@ -38,12 +38,14 @@ import (
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/Jeffail/gabs"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/pkg/errors"
 	"gopkg.in/resty.v1"
 )
@@ -73,32 +75,38 @@ type certAuthenticator struct {
 }
 
 func (authenticator *certAuthenticator) RequireAuthenticateManagementApi(ctx *TestContext) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.AuthenticateManagementApi(ctx)
 	ctx.Req.NoError(err)
 	return session
 }
 
 func (authenticator *certAuthenticator) AuthenticateManagementApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return authenticator.Authenticate(ctx, EdgeManagementApiPath)
 }
 
 func (authenticator *certAuthenticator) RequireAuthenticateClientApi(ctx *TestContext) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.AuthenticateClientApi(ctx)
 	ctx.Req.NoError(err)
 	return session
 }
 
 func (authenticator *certAuthenticator) AuthenticateClientApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return authenticator.Authenticate(ctx, EdgeClientApiPath)
 }
 
 func (authenticator *certAuthenticator) RequireAuthenticate(ctx *TestContext, apiPath string) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.Authenticate(ctx, apiPath)
 	ctx.Req.NoError(err)
 	return session
 }
 
 func (authenticator *certAuthenticator) Authenticate(ctx *TestContext, apiPath string) (*session, error) {
+	logtrace.LogWithFunctionName()
 	sess := &session{
 		authenticator: authenticator,
 		testContext:   ctx,
@@ -152,6 +160,7 @@ func (authenticator *certAuthenticator) Authenticate(ctx *TestContext, apiPath s
 }
 
 func (authenticator *certAuthenticator) TLSCertificates() []tls.Certificate {
+	logtrace.LogWithFunctionName()
 	return []tls.Certificate{
 		{
 			Certificate: [][]byte{authenticator.cert.Raw},
@@ -161,6 +170,7 @@ func (authenticator *certAuthenticator) TLSCertificates() []tls.Certificate {
 }
 
 func (authenticator *certAuthenticator) Fingerprint() string {
+	logtrace.LogWithFunctionName()
 	return cert.NewFingerprintGenerator().FromRaw(authenticator.cert.Raw)
 }
 
@@ -173,6 +183,7 @@ type updbAuthenticator struct {
 }
 
 func (authenticator *updbAuthenticator) RequireAuthenticateManagementApi(ctx *TestContext) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.AuthenticateManagementApi(ctx)
 	ctx.Req.NoError(err)
 
@@ -180,10 +191,12 @@ func (authenticator *updbAuthenticator) RequireAuthenticateManagementApi(ctx *Te
 }
 
 func (authenticator *updbAuthenticator) AuthenticateManagementApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return authenticator.Authenticate(ctx, EdgeManagementApiPath)
 }
 
 func (authenticator *updbAuthenticator) RequireAuthenticateClientApi(ctx *TestContext) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.AuthenticateClientApi(ctx)
 	ctx.Req.NoError(err)
 
@@ -191,10 +204,12 @@ func (authenticator *updbAuthenticator) RequireAuthenticateClientApi(ctx *TestCo
 }
 
 func (authenticator *updbAuthenticator) AuthenticateClientApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return authenticator.Authenticate(ctx, EdgeClientApiPath)
 }
 
 func (authenticator *updbAuthenticator) RequireAuthenticate(ctx *TestContext, apiPath string) *session {
+	logtrace.LogWithFunctionName()
 	session, err := authenticator.Authenticate(ctx, apiPath)
 	ctx.Req.NoError(err)
 
@@ -202,6 +217,7 @@ func (authenticator *updbAuthenticator) RequireAuthenticate(ctx *TestContext, ap
 }
 
 func (authenticator *updbAuthenticator) Authenticate(ctx *TestContext, apiPath string) (*session, error) {
+	logtrace.LogWithFunctionName()
 	sess := &session{
 		authenticator: authenticator,
 		testContext:   ctx,
@@ -270,6 +286,7 @@ type session struct {
 // cross API security testing. Clone does not authenticate. It attempts to use the token in the source
 // session. If the session is not authenticated, then the cloned result is not authenticated as well.
 func (sess *session) Clone(ctx *TestContext, apiPath string) (*session, error) {
+	logtrace.LogWithFunctionName()
 	clone := &session{
 		authenticator:     sess.authenticator,
 		AuthResponse:      sess.AuthResponse,
@@ -299,16 +316,19 @@ func (sess *session) Clone(ctx *TestContext, apiPath string) (*session, error) {
 // CloneToClientApi is a helper function to clone a session (most likely from the Management API) to the Client API.
 // See Clone for details.
 func (sess *session) CloneToClientApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return sess.Clone(ctx, EdgeClientApiPath)
 }
 
 // CloneToManagementApi is a helper function to clone a session (most likely from the Client API) to the Management API.
 // See Clone for details.
 func (sess *session) CloneToManagementApi(ctx *TestContext) (*session, error) {
+	logtrace.LogWithFunctionName()
 	return sess.Clone(ctx, EdgeManagementApiPath)
 }
 
 func (sess *session) NewRequest() *resty.Request {
+	logtrace.LogWithFunctionName()
 	if sess.AuthResponse != nil && sess.AuthResponse.Token != nil {
 		return sess.client.R().SetHeader(env.ZitiSession, *sess.AuthResponse.Token)
 	}
@@ -320,6 +340,7 @@ func (sess *session) NewRequest() *resty.Request {
 // resolveApiUrl takes a URL prefix, apiHost, in the format of "https://domain:port" and joins
 // it with apiPath. apiPath may be a relative path.
 func (sess *session) resolveApiUrl(apiHost string, apiPath string) (string, error) {
+	logtrace.LogWithFunctionName()
 	hostUrl, err := url.Parse("https://" + apiHost)
 
 	if err != nil {
@@ -338,6 +359,7 @@ func (sess *session) resolveApiUrl(apiHost string, apiPath string) (string, erro
 }
 
 func (sess *session) logout() error {
+	logtrace.LogWithFunctionName()
 	resp, err := sess.NewRequest().Delete("current-api-session")
 
 	if err != nil {
@@ -357,16 +379,19 @@ type authenticatedRequests struct {
 }
 
 func (request *authenticatedRequests) newAuthenticatedRequest() *resty.Request {
+	logtrace.LogWithFunctionName()
 	return request.session.NewRequest().SetHeader("content-type", "application/json")
 }
 
 func (request *authenticatedRequests) newAuthenticatedRequestWithBody(body interface{}) *resty.Request {
+	logtrace.LogWithFunctionName()
 	return request.session.NewRequest().
 		SetHeader("content-type", "application/json").
 		SetBody(body)
 }
 
 func (request *authenticatedRequests) RequireCreateSdkContext(roleAttributes ...string) (*identity, ziti.Context) {
+	logtrace.LogWithFunctionName()
 	identity := request.RequireNewIdentityWithOtt(false, roleAttributes...)
 	identity.config = request.testContext.EnrollIdentity(identity.Id)
 
@@ -380,6 +405,7 @@ func (request *authenticatedRequests) RequireCreateSdkContext(roleAttributes ...
 }
 
 func (request *authenticatedRequests) requireCreateIdentity(name string, isAdmin bool, rolesAttributes ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	request.testContext.setJsonValue(entityData, name, "name")
 	request.testContext.setJsonValue(entityData, rest_model.IdentityTypeDefault, "type")
@@ -403,6 +429,7 @@ type postureResponseDomain struct {
 }
 
 func (request *authenticatedRequests) requireNewPostureResponseDomain(postureCheckId, domain string) {
+	logtrace.LogWithFunctionName()
 	entity := &postureResponseDomain{
 		Id:     postureCheckId,
 		TypeId: "DOMAIN",
@@ -423,6 +450,7 @@ func (request *authenticatedRequests) requireNewPostureResponseDomain(postureChe
 }
 
 func (request *authenticatedRequests) requireNewPostureResponseBulkDomain(postureCheckId, domain string) {
+	logtrace.LogWithFunctionName()
 	entity := &postureResponseDomain{
 		Id:     postureCheckId,
 		TypeId: "DOMAIN",
@@ -447,6 +475,7 @@ type SessionRequest struct {
 }
 
 func (request *authenticatedRequests) requireNewSession(serviceId string) string {
+	logtrace.LogWithFunctionName()
 	resp, err := request.createNewSession(serviceId)
 	request.testContext.Req.NoError(err)
 	request.testContext.logJson(resp.Body())
@@ -457,6 +486,7 @@ func (request *authenticatedRequests) requireNewSession(serviceId string) string
 }
 
 func (request *authenticatedRequests) createNewSession(serviceId string) (*resty.Response, error) {
+	logtrace.LogWithFunctionName()
 	entity := &SessionRequest{
 		ServiceId: serviceId,
 	}
@@ -469,6 +499,7 @@ func (request *authenticatedRequests) createNewSession(serviceId string) (*resty
 }
 
 func (request *authenticatedRequests) requireCreateIdentityWithUpdbEnrollment(name string, password string, isAdmin bool, rolesAttributes ...string) (*identity, *updbAuthenticator) {
+	logtrace.LogWithFunctionName()
 	userAuth := &updbAuthenticator{
 		Username: name,
 		Password: password,
@@ -490,6 +521,7 @@ func (request *authenticatedRequests) requireCreateIdentityWithUpdbEnrollment(na
 }
 
 func (request *authenticatedRequests) requireCreateIdentityOttEnrollment(name string, isAdmin bool, rolesAttributes ...string) (string, *certAuthenticator) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	request.testContext.setJsonValue(entityData, name, "name")
 	request.testContext.setJsonValue(entityData, rest_model.IdentityTypeDefault, "type")
@@ -509,6 +541,7 @@ func (request *authenticatedRequests) requireCreateIdentityOttEnrollment(name st
 }
 
 func (request *authenticatedRequests) requireCreateIdentityOttEnrollmentUnfinished(name string, isAdmin bool, rolesAttributes ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	request.testContext.setJsonValue(entityData, name, "name")
 	request.testContext.setJsonValue(entityData, rest_model.IdentityTypeDefault, "type")
@@ -529,12 +562,14 @@ func (request *authenticatedRequests) requireCreateIdentityOttEnrollmentUnfinish
 }
 
 func (request *authenticatedRequests) requireNewPostureCheckDomain(domains []string, roleAttributes []string) *postureCheckDomain {
+	logtrace.LogWithFunctionName()
 	postureCheck := request.testContext.newPostureCheckDomain(domains, roleAttributes)
 	request.requireCreateEntity(postureCheck)
 	return postureCheck
 }
 
 func (request *authenticatedRequests) requireNewPostureCheckProcessMulti(semantic rest_model.Semantic, processes []*rest_model.ProcessMulti, roleAttributes []string) *rest_model.PostureCheckProcessMultiDetail {
+	logtrace.LogWithFunctionName()
 	postureCheck := request.testContext.newPostureCheckProcessMulti(semantic, processes, roleAttributes)
 	id := request.requireCreateRestModelEntity("posture-checks", postureCheck)
 
@@ -552,6 +587,7 @@ func (request *authenticatedRequests) requireNewPostureCheckProcessMulti(semanti
 }
 
 func (request *authenticatedRequests) requireNewService(roleAttributes, configs []string) *service {
+	logtrace.LogWithFunctionName()
 	service := request.testContext.newService(roleAttributes, configs)
 	id := request.requireCreateEntity(service)
 	service.Id = id
@@ -559,6 +595,7 @@ func (request *authenticatedRequests) requireNewService(roleAttributes, configs 
 }
 
 func (request *authenticatedRequests) RequireNewServiceAccessibleToAll(terminatorStrategy string) *service {
+	logtrace.LogWithFunctionName()
 	request.requireNewServicePolicy("Dial", s("#all"), s("#all"), nil)
 	request.requireNewServicePolicy("Bind", s("#all"), s("#all"), nil)
 	request.requireNewEdgeRouterPolicy(s("#all"), s("#all"))
@@ -572,18 +609,21 @@ func (request *authenticatedRequests) RequireNewServiceAccessibleToAll(terminato
 }
 
 func (request *authenticatedRequests) requireNewTerminator(serviceId, routerId, binding, address string) *terminator {
+	logtrace.LogWithFunctionName()
 	terminator := request.testContext.newTerminator(serviceId, routerId, binding, address)
 	request.requireCreateEntity(terminator)
 	return terminator
 }
 
 func (request *authenticatedRequests) requireNewEdgeRouter(roleAttributes ...string) *edgeRouter {
+	logtrace.LogWithFunctionName()
 	edgeRouter := newTestEdgeRouter(roleAttributes...)
 	request.requireCreateEntity(edgeRouter)
 	return edgeRouter
 }
 
 func (request *authenticatedRequests) requireNewTunnelerEnabledEdgeRouter(roleAttributes ...string) *edgeRouter {
+	logtrace.LogWithFunctionName()
 	edgeRouter := newTestEdgeRouter(roleAttributes...)
 	edgeRouter.isTunnelerEnabled = true
 	request.requireCreateEntity(edgeRouter)
@@ -591,54 +631,63 @@ func (request *authenticatedRequests) requireNewTunnelerEnabledEdgeRouter(roleAt
 }
 
 func (request *authenticatedRequests) requireNewTransitRouter() *transitRouter {
+	logtrace.LogWithFunctionName()
 	transitRouter := newTestTransitRouter()
 	request.requireCreateEntity(transitRouter)
 	return transitRouter
 }
 
 func (request *authenticatedRequests) requireNewServicePolicy(policyType string, serviceRoles, identityRoles, postureCheckRoles []string) *servicePolicy {
+	logtrace.LogWithFunctionName()
 	policy := newServicePolicy(policyType, "AllOf", serviceRoles, identityRoles, postureCheckRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewServicePolicyWithSemantic(policyType string, semantic string, serviceRoles, identityRoles, postureCheckRoles []string) *servicePolicy {
+	logtrace.LogWithFunctionName()
 	policy := newServicePolicy(policyType, semantic, serviceRoles, identityRoles, postureCheckRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewEdgeRouterPolicy(edgeRouterRoles, identityRoles []string) *edgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := newEdgeRouterPolicy("AllOf", edgeRouterRoles, identityRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewEdgeRouterPolicyWithSemantic(semantic string, edgeRouterRoles, identityRoles []string) *edgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := newEdgeRouterPolicy(semantic, edgeRouterRoles, identityRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewServiceEdgeRouterPolicy(edgeRouterRoles, serviceRoles []string) *serviceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := newServiceEdgeRouterPolicy("AllOf", edgeRouterRoles, serviceRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewServiceEdgeRouterPolicyWithSemantic(semantic string, edgeRouterRoles, identityRoles []string) *serviceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := newServiceEdgeRouterPolicy(semantic, edgeRouterRoles, identityRoles)
 	request.requireCreateEntity(policy)
 	return policy
 }
 
 func (request *authenticatedRequests) requireNewIdentity(isAdmin bool, roleAttributes ...string) *identity {
+	logtrace.LogWithFunctionName()
 	identity := newTestIdentity(isAdmin, roleAttributes...)
 	request.requireCreateEntity(identity)
 	return identity
 }
 
 func (request *authenticatedRequests) RequireNewIdentityWithOtt(isAdmin bool, roleAttributes ...string) *identity {
+	logtrace.LogWithFunctionName()
 	identity := newTestIdentity(isAdmin, roleAttributes...)
 	identity.enrollment = map[string]interface{}{"ott": true}
 	request.requireCreateEntity(identity)
@@ -646,6 +695,7 @@ func (request *authenticatedRequests) RequireNewIdentityWithOtt(isAdmin bool, ro
 }
 
 func (request *authenticatedRequests) RequireNewIdentityWithCaOtt(isAdmin bool, caId string, roleAttributes ...string) *identity {
+	logtrace.LogWithFunctionName()
 	identity := newTestIdentity(isAdmin, roleAttributes...)
 	identity.enrollment = map[string]interface{}{"ottca": caId}
 	request.requireCreateEntity(identity)
@@ -653,6 +703,7 @@ func (request *authenticatedRequests) RequireNewIdentityWithCaOtt(isAdmin bool, 
 }
 
 func (request *authenticatedRequests) requireCreateEntity(entity entity) string {
+	logtrace.LogWithFunctionName()
 	resp := request.createEntity(entity)
 	standardJsonResponseTests(resp, http.StatusCreated, request.testContext.testing)
 	id := request.testContext.getEntityId(resp.Body())
@@ -665,6 +716,7 @@ type JsonMarshallable interface {
 }
 
 func (request *authenticatedRequests) requireCreateRestModelEntity(path string, entity JsonMarshallable) string {
+	logtrace.LogWithFunctionName()
 	body, err := entity.MarshalJSON()
 	request.testContext.Req.NoError(err)
 
@@ -679,6 +731,7 @@ func (request *authenticatedRequests) requireCreateRestModelEntity(path string, 
 }
 
 func (request *authenticatedRequests) requireCreateRestModelPostureResponse(entity JsonMarshallable) {
+	logtrace.LogWithFunctionName()
 	body, err := entity.MarshalJSON()
 	request.testContext.Req.NoError(err)
 
@@ -689,16 +742,19 @@ func (request *authenticatedRequests) requireCreateRestModelPostureResponse(enti
 }
 
 func (request *authenticatedRequests) requireDeleteEntity(entity entity) {
+	logtrace.LogWithFunctionName()
 	resp := request.deleteEntityOfType(entity.getEntityType(), entity.getId())
 	standardJsonResponseTests(resp, http.StatusOK, request.testContext.testing)
 }
 
 func (request *authenticatedRequests) requireUpdateEntity(entity entity) {
+	logtrace.LogWithFunctionName()
 	resp := request.updateEntity(entity)
 	standardJsonResponseTests(resp, http.StatusOK, request.testContext.testing)
 }
 
 func (request *authenticatedRequests) requireList(url string) []string {
+	logtrace.LogWithFunctionName()
 	httpStatus, body := request.query(url)
 	request.testContext.logJson(body)
 	request.testContext.Req.Equal(http.StatusOK, httpStatus)
@@ -717,6 +773,7 @@ func (request *authenticatedRequests) requireList(url string) []string {
 }
 
 func (request *authenticatedRequests) requireQuery(url string) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	httpStatus, body := request.query(url)
 	request.testContext.logJson(body)
 	request.testContext.Req.Equal(http.StatusOK, httpStatus)
@@ -724,6 +781,7 @@ func (request *authenticatedRequests) requireQuery(url string) *gabs.Container {
 }
 
 func (request *authenticatedRequests) createEntityOfType(entityType string, body interface{}) *resty.Response {
+	logtrace.LogWithFunctionName()
 	resp, err := request.newAuthenticatedRequest().
 		SetBody(body).
 		Post(entityType)
@@ -741,30 +799,36 @@ type serviceConfig struct {
 type sortableServiceConfigSlice []serviceConfig
 
 func (s sortableServiceConfigSlice) Len() int {
+	logtrace.LogWithFunctionName()
 	return len(s)
 }
 
 func (s sortableServiceConfigSlice) Less(i, j int) bool {
+	logtrace.LogWithFunctionName()
 	return s[i].ServiceId < s[j].ServiceId || (s[i].ServiceId == s[j].ServiceId && s[i].ConfigId < s[j].ConfigId)
 }
 
 func (s sortableServiceConfigSlice) Swap(i, j int) {
+	logtrace.LogWithFunctionName()
 	val := s[i]
 	s[i] = s[j]
 	s[j] = val
 }
 
 func (request *authenticatedRequests) requireAssignIdentityServiceConfigs(identityId string, serviceConfigs ...serviceConfig) {
+	logtrace.LogWithFunctionName()
 	httpStatus, _ := request.updateIdentityServiceConfigs(resty.MethodPost, identityId, serviceConfigs)
 	request.testContext.Req.Equal(http.StatusOK, httpStatus)
 }
 
 func (request *authenticatedRequests) requireRemoveIdentityServiceConfigs(identityId string, serviceConfigs ...serviceConfig) {
+	logtrace.LogWithFunctionName()
 	httpStatus, _ := request.updateIdentityServiceConfigs(resty.MethodDelete, identityId, serviceConfigs)
 	request.testContext.Req.Equal(http.StatusOK, httpStatus)
 }
 
 func (request *authenticatedRequests) listIdentityServiceConfigs(identityId string) []serviceConfig {
+	logtrace.LogWithFunctionName()
 	jsonBody := request.requireQuery("identities/" + identityId + "/service-configs")
 	data := request.testContext.RequireGetNonNilPathValue(jsonBody, "data")
 	var children []*gabs.Container
@@ -787,6 +851,7 @@ func (request *authenticatedRequests) listIdentityServiceConfigs(identityId stri
 }
 
 func (request *authenticatedRequests) updateIdentityServiceConfigs(method string, identityId string, serviceConfigs []serviceConfig) (int, []byte) {
+	logtrace.LogWithFunctionName()
 	req := request.newAuthenticatedRequest()
 	if len(serviceConfigs) > 0 {
 		body, err := json.MarshalIndent(serviceConfigs, "", "   ")
@@ -805,10 +870,12 @@ func (request *authenticatedRequests) updateIdentityServiceConfigs(method string
 }
 
 func (request *authenticatedRequests) createEntity(entity entity) *resty.Response {
+	logtrace.LogWithFunctionName()
 	return request.createEntityOfType(entity.getEntityType(), entity.toJson(true, request.testContext))
 }
 
 func (request *authenticatedRequests) deleteEntityOfType(entityType string, id string) *resty.Response {
+	logtrace.LogWithFunctionName()
 	resp, err := request.newAuthenticatedRequest().Delete(entityType + "/" + id)
 
 	request.testContext.Req.NoError(err)
@@ -818,10 +885,12 @@ func (request *authenticatedRequests) deleteEntityOfType(entityType string, id s
 }
 
 func (request *authenticatedRequests) updateEntity(entity entity) *resty.Response {
+	logtrace.LogWithFunctionName()
 	return request.updateEntityOfType(entity.getId(), entity.getEntityType(), entity.toJson(false, request.testContext), false)
 }
 
 func (request *authenticatedRequests) updateEntityOfType(id string, entityType string, body string, patch bool) *resty.Response {
+	logtrace.LogWithFunctionName()
 	if request.testContext.enabledJsonLogging {
 		pfxlog.Logger().Tracef("update body:\n%v\n", body)
 	}
@@ -846,12 +915,14 @@ func (request *authenticatedRequests) updateEntityOfType(id string, entityType s
 }
 
 func (request *authenticatedRequests) query(url string) (int, []byte) {
+	logtrace.LogWithFunctionName()
 	resp, err := request.newAuthenticatedRequest().Get(url)
 	request.testContext.Req.NoError(err)
 	return resp.StatusCode(), resp.Body()
 }
 
 func (request *authenticatedRequests) validateAssociations(entity entity, childType string, children ...entity) {
+	logtrace.LogWithFunctionName()
 	var ids []string
 	for _, child := range children {
 		ids = append(ids, child.getId())
@@ -860,6 +931,7 @@ func (request *authenticatedRequests) validateAssociations(entity entity, childT
 }
 
 func (request *authenticatedRequests) validateAssociationContains(entity entity, childType string, children ...entity) {
+	logtrace.LogWithFunctionName()
 	var ids []string
 	for _, child := range children {
 		ids = append(ids, child.getId())
@@ -868,6 +940,7 @@ func (request *authenticatedRequests) validateAssociationContains(entity entity,
 }
 
 func (request *authenticatedRequests) validateAssociationsAt(url string, ids ...string) {
+	logtrace.LogWithFunctionName()
 	result := request.requireQuery(url)
 	data := request.testContext.RequireGetNonNilPathValue(result, "data")
 	children, err := data.Children()
@@ -884,6 +957,7 @@ func (request *authenticatedRequests) validateAssociationsAt(url string, ids ...
 }
 
 func (request *authenticatedRequests) validateAssociationsAtContains(url string, ids ...string) {
+	logtrace.LogWithFunctionName()
 	result := request.requireQuery(url)
 	data := request.testContext.RequireGetNonNilPathValue(result, "data")
 	children, err := data.Children()
@@ -900,6 +974,7 @@ func (request *authenticatedRequests) validateAssociationsAtContains(url string,
 }
 
 func (request *authenticatedRequests) isServiceVisibleToUser(serviceId string) bool {
+	logtrace.LogWithFunctionName()
 	query := url.QueryEscape(fmt.Sprintf(`id = "%v"`, serviceId))
 	result := request.requireQuery("services?filter=" + query)
 	data := request.testContext.RequireGetNonNilPathValue(result, "data")
@@ -907,6 +982,7 @@ func (request *authenticatedRequests) isServiceVisibleToUser(serviceId string) b
 }
 
 func (request *authenticatedRequests) createUserAndLoginClientApi(isAdmin bool, roleAttributes, configTypes []string) *session {
+	logtrace.LogWithFunctionName()
 	_, userAuth := request.requireCreateIdentityWithUpdbEnrollment(eid.New(), eid.New(), isAdmin, roleAttributes...)
 	userAuth.ConfigTypes = configTypes
 
@@ -916,6 +992,7 @@ func (request *authenticatedRequests) createUserAndLoginClientApi(isAdmin bool, 
 }
 
 func (request *authenticatedRequests) requireServiceUpdateTimeUnchanged() {
+	logtrace.LogWithFunctionName()
 	time.Sleep(5 * time.Millisecond)
 	lastUpdated := request.getServiceUpdateTime()
 	request.testContext.Req.True(request.session.lastServiceUpdate.Equal(lastUpdated),
@@ -923,6 +1000,7 @@ func (request *authenticatedRequests) requireServiceUpdateTimeUnchanged() {
 }
 
 func (request *authenticatedRequests) requireServiceUpdateTimeAdvanced() {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	var lastUpdated time.Time
 	for time.Since(start) < time.Minute {
@@ -938,6 +1016,7 @@ func (request *authenticatedRequests) requireServiceUpdateTimeAdvanced() {
 }
 
 func (request *authenticatedRequests) getServiceUpdateTime() time.Time {
+	logtrace.LogWithFunctionName()
 	respBody := request.requireQuery("current-api-session/service-updates")
 	lastChanged := request.testContext.requireString(respBody, "data", "lastChangeAt")
 	t, err := time.Parse(time.RFC3339, lastChanged)
@@ -946,6 +1025,7 @@ func (request *authenticatedRequests) getServiceUpdateTime() time.Time {
 }
 
 func (request *authenticatedRequests) validateEntityWithQuery(entity entity) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	query := url.QueryEscape(fmt.Sprintf(`id = "%v"`, entity.getId()))
 	result := request.requireQuery(entity.getEntityType() + "?filter=" + query)
 	data := request.testContext.RequireGetNonNilPathValue(result, "data")
@@ -954,6 +1034,7 @@ func (request *authenticatedRequests) validateEntityWithQuery(entity entity) *ga
 }
 
 func (request *authenticatedRequests) listTerminators(filter string) []*terminator {
+	logtrace.LogWithFunctionName()
 	query := "terminators"
 	if filter != "" {
 		query += "?" + filter
@@ -970,6 +1051,7 @@ func (request *authenticatedRequests) listTerminators(filter string) []*terminat
 }
 
 func (request *authenticatedRequests) listIdentities(filter string) []*identity {
+	logtrace.LogWithFunctionName()
 	query := "identities"
 	if filter != "" {
 		query += "?" + filter
@@ -986,6 +1068,7 @@ func (request *authenticatedRequests) listIdentities(filter string) []*identity 
 }
 
 func (request *authenticatedRequests) listEdgeRouterPolicies(filter string) []*edgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	query := "edge-router-policies"
 	if filter != "" {
 		query += "?" + filter
@@ -1002,6 +1085,7 @@ func (request *authenticatedRequests) listEdgeRouterPolicies(filter string) []*e
 }
 
 func (request *authenticatedRequests) listEntities(query string, factory func() loadableEntity) {
+	logtrace.LogWithFunctionName()
 	result := request.requireQuery(query)
 	data := request.testContext.RequireGetNonNilPathValue(result, "data")
 	children, err := data.Children()
@@ -1013,17 +1097,20 @@ func (request *authenticatedRequests) listEntities(query string, factory func() 
 }
 
 func (request *authenticatedRequests) validateEntityWithLookup(entity entity) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	result := request.requireQuery(entity.getEntityType() + "/" + entity.getId())
 	jsonEntity := request.testContext.RequireGetNonNilPathValue(result, "data")
 	return request.testContext.validateEntity(entity, jsonEntity)
 }
 
 func (request *authenticatedRequests) requireNotFoundEntityLookup(entityType string, entityId string) {
+	logtrace.LogWithFunctionName()
 	statusCode, _ := request.query(entityType + "/" + entityId)
 	request.testContext.Req.Equal(http.StatusNotFound, statusCode)
 }
 
 func (request *authenticatedRequests) validateUpdate(entity entity) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	result := request.requireQuery(entity.getEntityType() + "/" + entity.getId())
 	jsonConfig := request.testContext.RequireGetNonNilPathValue(result, "data")
 	entity.validate(request.testContext, jsonConfig)
@@ -1031,12 +1118,14 @@ func (request *authenticatedRequests) validateUpdate(entity entity) *gabs.Contai
 }
 
 func (request *authenticatedRequests) requireCreateNewConfig(configType string, data map[string]interface{}) *Config {
+	logtrace.LogWithFunctionName()
 	config := request.testContext.newConfig(configType, data)
 	config.Id = request.requireCreateEntity(config)
 	return config
 }
 
 func (request *authenticatedRequests) requireCreateNewConfigTypeWithPrefix(prefix string) *configType {
+	logtrace.LogWithFunctionName()
 	entity := request.testContext.newConfigType()
 	entity.Name = prefix + "-" + entity.Name
 	entity.Id = request.requireCreateEntity(entity)
@@ -1044,39 +1133,46 @@ func (request *authenticatedRequests) requireCreateNewConfigTypeWithPrefix(prefi
 }
 
 func (request *authenticatedRequests) requireCreateNewConfigType() *configType {
+	logtrace.LogWithFunctionName()
 	entity := request.testContext.newConfigType()
 	entity.Id = request.requireCreateEntity(entity)
 	return entity
 }
 
 func (request *authenticatedRequests) requirePatchEntity(entity entity, fields ...string) {
+	logtrace.LogWithFunctionName()
 	resp := request.patchEntity(entity, fields...)
 	standardJsonResponseTests(resp, http.StatusOK, request.testContext.testing)
 }
 
 func (request *authenticatedRequests) patchEntity(entity entity, fields ...string) *resty.Response {
+	logtrace.LogWithFunctionName()
 	return request.updateEntityOfType(entity.getId(), entity.getEntityType(), entity.toJson(false, request.testContext, fields...), true)
 }
 
 func (request *authenticatedRequests) getEdgeRouterJwt(edgeRouterId string) string {
+	logtrace.LogWithFunctionName()
 	jsonBody := request.requireQuery("edge-routers/" + edgeRouterId)
 	data := request.testContext.RequireGetNonNilPathValue(jsonBody, "data", "enrollmentJwt")
 	return data.Data().(string)
 }
 
 func (request *authenticatedRequests) getTransitRouterJwt(transitRouterId string) string {
+	logtrace.LogWithFunctionName()
 	jsonBody := request.requireQuery("transit-routers/" + transitRouterId)
 	data := request.testContext.RequireGetNonNilPathValue(jsonBody, "data", "enrollmentJwt")
 	return data.Data().(string)
 }
 
 func (request *authenticatedRequests) getIdentityJwt(identityId string) string {
+	logtrace.LogWithFunctionName()
 	jsonBody := request.requireQuery("identities/" + identityId)
 	data := request.testContext.RequireGetNonNilPathValue(jsonBody, "data", "enrollment", "ott", "jwt")
 	return data.Data().(string)
 }
 
 func (request *authenticatedRequests) streamEvents(req *subscriptionRequest) (func(), error) {
+	logtrace.LogWithFunctionName()
 	streamEventsRequest := map[string]interface{}{}
 	streamEventsRequest["format"] = "json"
 	streamEventsRequest["subscriptions"] = req.Subscriptions
@@ -1129,6 +1225,7 @@ func (request *authenticatedRequests) streamEvents(req *subscriptionRequest) (fu
 }
 
 func (request *authenticatedRequests) newTerminatorWatcher() *terminatorWatcher {
+	logtrace.LogWithFunctionName()
 	watcher := &terminatorWatcher{
 		testContext: request.testContext,
 		counts:      map[string]int{},
@@ -1164,10 +1261,12 @@ type terminatorWatcher struct {
 }
 
 func (self *terminatorWatcher) Close() {
+	logtrace.LogWithFunctionName()
 	self.closer()
 }
 
 func (self *terminatorWatcher) HandleMessage(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	eventType, _ := msg.GetStringHeader(int32(mgmt_pb.Header_EventTypeHeader))
 	if eventType != "terminator" {
 		return
@@ -1191,6 +1290,7 @@ func (self *terminatorWatcher) HandleMessage(msg *channel.Message, _ channel.Cha
 }
 
 func (self *terminatorWatcher) waitForTerminators(service string, count int, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	for {
 		self.lock.Lock()
@@ -1211,6 +1311,7 @@ func (self *terminatorWatcher) waitForTerminators(service string, count int, tim
 }
 
 func newSelfSignedCert(commonName string) (*x509.Certificate, crypto.PrivateKey) {
+	logtrace.LogWithFunctionName()
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		panic(err)

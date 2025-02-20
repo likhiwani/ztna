@@ -18,10 +18,12 @@ package edge_ctrl_pb
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 type Decoder struct{}
@@ -29,6 +31,7 @@ type Decoder struct{}
 const DECODER = "edge_ctrl"
 
 func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
+	logtrace.LogWithFunctionName()
 	switch msg.ContentType {
 	case int32(ContentType_ServerHelloType):
 		request := &ServerHello{}

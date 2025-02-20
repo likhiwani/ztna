@@ -9,8 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"
@@ -112,10 +114,12 @@ type ApiOptions struct {
 var hostname string
 
 func init() {
+	logtrace.LogWithFunctionName()
 	hostname, _ = os.Hostname()
 }
 
 func TestControllerOutputPathDoesNotExist(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Create the options with non-existent path
 	options := &CreateConfigControllerOptions{}
 	options.Output = "/IDoNotExist/MyController.yaml"
@@ -127,6 +131,7 @@ func TestControllerOutputPathDoesNotExist(t *testing.T) {
 }
 
 func TestCreateConfigControllerTemplateValues(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	// Create and run the CLI command (capture output, otherwise config prints to stdout instead of test results)
 	// This must run first, otherwise the addresses used later won't be correct; this command re-allocates the `data` struct
@@ -252,6 +257,7 @@ func TestCreateConfigControllerTemplateValues(t *testing.T) {
 }
 
 func TestCtrlConfigDefaultsWhenUnset(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctrlConfig, data := execCreateConfigControllerCommand(nil, nil)
 
 	// identity:
@@ -459,6 +465,7 @@ func TestCtrlConfigDefaultsWhenUnset(t *testing.T) {
 }
 
 func TestCtrlConfigDefaultsWhenEmpty(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	keys := map[string]string{
 		"ZITI_PKI_CTRL_CERT":                "",
 		"ZITI_CTRL_EDGE_ADVERTISED_ADDRESS": "",
@@ -674,6 +681,7 @@ func TestCtrlConfigDefaultsWhenEmpty(t *testing.T) {
 
 // ensure that a custom database file path is normalized with forward slashes
 func TestDatabaseFileNormalization(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	var customValue string
 	if runtime.GOOS == "windows" {
 		customValue = "C:\\custom\\path\\file.db"
@@ -697,6 +705,7 @@ func TestDatabaseFileNormalization(t *testing.T) {
 }
 
 func TestZitiCtrlIdentitySection(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	certPath := "/var/test/custom/path/file.cert"
 	serverCertPath := "/var/test/custom/path/file.chain.pem"
 	keyPath := "/var/test/custom/path/file.key"
@@ -721,6 +730,7 @@ func TestZitiCtrlIdentitySection(t *testing.T) {
 }
 
 func TestDefaultPkiPath(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedPkiRoot := "/tmp/expectedPkiRoot"
 	keys := map[string]string{
 		"ZITI_HOME": expectedPkiRoot,
@@ -738,6 +748,7 @@ func TestDefaultPkiPath(t *testing.T) {
 }
 
 func TestCtrlBindAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "123.456.7.8"
 	keys := map[string]string{
 		"ZITI_CTRL_BIND_ADDRESS": customValue,
@@ -750,6 +761,7 @@ func TestCtrlBindAddress(t *testing.T) {
 }
 
 func TestCtrlAdvertisedPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "9996"
 	keys := map[string]string{
 		"ZITI_CTRL_ADVERTISED_PORT": customValue,
@@ -762,6 +774,7 @@ func TestCtrlAdvertisedPort(t *testing.T) {
 }
 
 func TestCtrlEdgeAPIAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "123.456.7.8"
 	keys := map[string]string{
 		"ZITI_CTRL_EDGE_ADVERTISED_ADDRESS": customValue,
@@ -774,6 +787,7 @@ func TestCtrlEdgeAPIAddress(t *testing.T) {
 }
 
 func TestCtrlEdgeAPIPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "9995"
 	keys := map[string]string{
 		"ZITI_CTRL_EDGE_ADVERTISED_PORT": customValue,
@@ -786,6 +800,7 @@ func TestCtrlEdgeAPIPort(t *testing.T) {
 }
 
 func TestCtrlEdgeAPIEnrollmentSignerCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	certPath := "/var/test/custom/path/file.cert"
 	keyPath := "/var/test/custom/path/file.key"
 	keys := map[string]string{
@@ -802,6 +817,7 @@ func TestCtrlEdgeAPIEnrollmentSignerCert(t *testing.T) {
 }
 
 func TestEdgeIdentityEnrollmentDurationEnvVar(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customDuration := time.Duration(5) * time.Minute
 	customValue := "5"
 	expectedValue := customValue + "m" // Env Var int is converted to minutes format
@@ -816,6 +832,7 @@ func TestEdgeIdentityEnrollmentDurationEnvVar(t *testing.T) {
 }
 
 func TestEdgeIdentityEnrollmentDurationCLITakesPriority(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	envVarValue := "5" // Setting a custom duration which is not the default value
 	cliValue := "10m"  // Setting a CLI custom duration which is also not the default value
 	expectedConfigValue := cliValue
@@ -835,6 +852,7 @@ func TestEdgeIdentityEnrollmentDurationCLITakesPriority(t *testing.T) {
 }
 
 func TestEdgeIdentityEnrollmentDurationCLIConvertsToMin(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	cliValue := "1h"             // Setting a CLI custom duration which is also not the default value
 	expectedConfigValue := "60m" // Config value representation should be in minutes
 
@@ -850,6 +868,7 @@ func TestEdgeIdentityEnrollmentDurationCLIConvertsToMin(t *testing.T) {
 }
 
 func TestEdgeRouterEnrollmentDurationEnvVar(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customDuration := time.Duration(5) * time.Minute
 	customValue := "5"
 	expectedValue := customValue + "m" // Env Var int is converted to minutes format
@@ -864,6 +883,7 @@ func TestEdgeRouterEnrollmentDurationEnvVar(t *testing.T) {
 }
 
 func TestEdgeRouterEnrollmentDurationCLITakesPriority(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	envVarValue := "5" // Setting a custom duration which is not the default value
 	cliValue := "10m"  // Setting a CLI custom duration which is also not the default value
 	expectedConfigValue := cliValue
@@ -883,6 +903,7 @@ func TestEdgeRouterEnrollmentDurationCLITakesPriority(t *testing.T) {
 }
 
 func TestEdgeRouterEnrollmentDurationCLIConvertsToMin(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	cliValue := "1h"             // Setting a CLI custom duration which is also not the default value
 	expectedConfigValue := "60m" // Config value representation should be in minutes
 
@@ -898,6 +919,7 @@ func TestEdgeRouterEnrollmentDurationCLIConvertsToMin(t *testing.T) {
 }
 
 func TestEdgeRouterAndIdentityEnrollmentDurationTogetherCLI(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	cliIdentityDurationValue := "1h"
 	cliRouterDurationValue := "30m"
 	expectedIdentityConfigValue := "60m"
@@ -913,6 +935,7 @@ func TestEdgeRouterAndIdentityEnrollmentDurationTogetherCLI(t *testing.T) {
 }
 
 func TestEdgeRouterAndIdentityEnrollmentDurationTogetherEnvVar(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	envVarIdentityDurationValue := "120"
 	envVarRouterDurationValue := "60"
 	expectedIdentityConfigValue := envVarIdentityDurationValue + "m"
@@ -931,6 +954,7 @@ func TestEdgeRouterAndIdentityEnrollmentDurationTogetherEnvVar(t *testing.T) {
 }
 
 func TestCtrlEdgeInterfaceAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	addy := "custom.domain.name"
 	port := "9998"
 	keys := map[string]string{
@@ -946,6 +970,7 @@ func TestCtrlEdgeInterfaceAddress(t *testing.T) {
 }
 
 func TestCtrlEdgeAdvertisedAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "123.456.7.8"
 	keys := map[string]string{
 		"ZITI_CTRL_EDGE_ADVERTISED_ADDRESS": customValue,
@@ -958,6 +983,7 @@ func TestCtrlEdgeAdvertisedAddress(t *testing.T) {
 }
 
 func TestCtrlEdgeAdvertisedPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	customValue := "9997"
 	keys := map[string]string{
 		"ZITI_CTRL_EDGE_ADVERTISED_PORT": customValue,
@@ -970,6 +996,7 @@ func TestCtrlEdgeAdvertisedPort(t *testing.T) {
 }
 
 func TestCtrlEdgeIdentitySection(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	caPath := "/var/test/custom/path/file.pem"
 	keyPath := "/var/test/custom/path/file.key"
 	serverCertPath := "/var/test/custom/path/file.chain.pem"
@@ -994,6 +1021,7 @@ func TestCtrlEdgeIdentitySection(t *testing.T) {
 }
 
 func TestCtrlEdgeAltAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// first test when it's not set
 	ctrlConfig, data := execCreateConfigControllerCommand(nil, map[string]string{})
 	assert.Equal(t, hostname, data.Controller.Ctrl.AltAdvertisedAddress)
@@ -1011,6 +1039,7 @@ func TestCtrlEdgeAltAddress(t *testing.T) {
 }
 
 func configToStruct(config string) ControllerConfig {
+	logtrace.LogWithFunctionName()
 	configStruct := ControllerConfig{}
 	err2 := yaml.Unmarshal([]byte(config), &configStruct)
 	if err2 != nil {
@@ -1020,6 +1049,7 @@ func configToStruct(config string) ControllerConfig {
 }
 
 func execCreateConfigControllerCommand(args []string, keys map[string]string) (ControllerConfig, *ConfigTemplateValues) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	clearEnvAndInitializeTestData()
 	controllerOptions := CreateConfigControllerOptions{}

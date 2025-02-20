@@ -18,19 +18,22 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 func NewConfigManager(env Env) *ConfigManager {
+	logtrace.LogWithFunctionName()
 	manager := &ConfigManager{
 		baseEntityManager: newBaseEntityManager[*Config, *db.Config](env, env.GetStores().Config),
 	}
@@ -46,23 +49,28 @@ type ConfigManager struct {
 }
 
 func (self *ConfigManager) newModelEntity() *Config {
+	logtrace.LogWithFunctionName()
 	return &Config{}
 }
 
 func (self *ConfigManager) Create(entity *Config, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Config](self, entity, ctx)
 }
 
 func (self *ConfigManager) ApplyCreate(cmd *command.CreateEntityCommand[*Config], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ConfigManager) Update(entity *Config, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Config](self, entity, checker, ctx)
 }
 
 func (self *ConfigManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Config], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = self
 	if cmd.UpdatedFields != nil {
 		checker = &AndFieldChecker{first: self, second: cmd.UpdatedFields}
@@ -71,6 +79,7 @@ func (self *ConfigManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Config]
 }
 
 func (self *ConfigManager) Read(id string) (*Config, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Config{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -79,6 +88,7 @@ func (self *ConfigManager) Read(id string) (*Config, error) {
 }
 
 func (self *ConfigManager) readInTx(tx *bbolt.Tx, id string) (*Config, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Config{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -87,10 +97,12 @@ func (self *ConfigManager) readInTx(tx *bbolt.Tx, id string) (*Config, error) {
 }
 
 func (self *ConfigManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return !strings.EqualFold(field, "type")
 }
 
 func (self *ConfigManager) Marshall(entity *Config) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -113,6 +125,7 @@ func (self *ConfigManager) Marshall(entity *Config) ([]byte, error) {
 }
 
 func (self *ConfigManager) Unmarshall(bytes []byte) (*Config, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Config{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

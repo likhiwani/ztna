@@ -17,15 +17,17 @@
 package forwarder
 
 import (
+	"strings"
+	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
-	"strings"
-	"time"
 )
 
 type Faulter struct {
@@ -41,6 +43,7 @@ type FaultReceiver interface {
 }
 
 func NewFaulter(ctrls env.NetworkControllers, interval time.Duration, closeNotify chan struct{}) *Faulter {
+	logtrace.LogWithFunctionName()
 	f := &Faulter{
 		ctrls:       ctrls,
 		interval:    interval,
@@ -56,12 +59,14 @@ func NewFaulter(ctrls env.NetworkControllers, interval time.Duration, closeNotif
 }
 
 func (self *Faulter) Report(circuitId string, ctrlId string) {
+	logtrace.LogWithFunctionName()
 	if self.interval > 0 {
 		self.circuitIds.Set(circuitId, ctrlId)
 	}
 }
 
 func (self *Faulter) NotifyInvalidLink(linkId string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	self.ctrls.ForEach(func(ctrlId string, ch channel.Channel) {
 		fault := &ctrl_pb.Fault{Subject: ctrl_pb.FaultSubject_LinkFault, Id: linkId}
@@ -75,6 +80,7 @@ func (self *Faulter) NotifyInvalidLink(linkId string) {
 }
 
 func (self *Faulter) run() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("started")
 	defer logrus.Errorf("exited")
 

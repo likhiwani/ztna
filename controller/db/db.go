@@ -18,6 +18,8 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
@@ -30,6 +32,7 @@ const (
 )
 
 func Open(path string) (boltz.Db, error) {
+	logtrace.LogWithFunctionName()
 	db, err := boltz.Open(path, RootBucket)
 	if err != nil {
 		return nil, err
@@ -48,6 +51,7 @@ func Open(path string) (boltz.Db, error) {
 }
 
 func LoadCurrentRaftIndex(tx *bbolt.Tx) uint64 {
+	logtrace.LogWithFunctionName()
 	if raftBucket := boltz.Path(tx, RootBucket, MetadataBucket); raftBucket != nil {
 		if val := raftBucket.GetInt64(FieldRaftIndex); val != nil {
 			return uint64(*val)
@@ -57,6 +61,7 @@ func LoadCurrentRaftIndex(tx *bbolt.Tx) uint64 {
 }
 
 func LoadClusterId(db boltz.Db) (string, error) {
+	logtrace.LogWithFunctionName()
 	var result string
 	err := db.View(func(tx *bbolt.Tx) error {
 		raftBucket := boltz.Path(tx, RootBucket, MetadataBucket)
@@ -70,6 +75,7 @@ func LoadClusterId(db boltz.Db) (string, error) {
 }
 
 func InitClusterId(db boltz.Db, ctx boltz.MutateContext, clusterId string) error {
+	logtrace.LogWithFunctionName()
 	return db.Update(ctx, func(ctx boltz.MutateContext) error {
 		raftBucket := boltz.GetOrCreatePath(ctx.Tx(), RootBucket, MetadataBucket)
 		if raftBucket.HasError() {

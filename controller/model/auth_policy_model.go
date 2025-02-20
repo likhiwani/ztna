@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -63,6 +65,7 @@ type AuthPolicyUpdb struct {
 }
 
 func (entity *AuthPolicy) fillFrom(_ Env, _ *bbolt.Tx, boltAuthPolicy *db.AuthPolicy) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltAuthPolicy)
 	entity.Name = boltAuthPolicy.Name
 	entity.Primary = AuthPolicyPrimary{
@@ -93,6 +96,7 @@ func (entity *AuthPolicy) fillFrom(_ Env, _ *bbolt.Tx, boltAuthPolicy *db.AuthPo
 }
 
 func (entity *AuthPolicy) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.AuthPolicy, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.AuthPolicy{
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:          entity.Name,
@@ -125,5 +129,6 @@ func (entity *AuthPolicy) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.AuthPolicy,
 }
 
 func (entity *AuthPolicy) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.AuthPolicy, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }

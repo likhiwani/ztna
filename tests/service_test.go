@@ -20,16 +20,19 @@ package tests
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/ztna/common/eid"
 	"net/url"
 	"sort"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 func Test_Services(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -180,6 +183,7 @@ func Test_Services(t *testing.T) {
 }
 
 func Test_ServiceListWithConfigs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -334,6 +338,7 @@ func Test_ServiceListWithConfigs(t *testing.T) {
 }
 
 func Test_ServiceListWithConfigDuplicate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -357,6 +362,7 @@ func Test_ServiceListWithConfigDuplicate(t *testing.T) {
 }
 
 func Test_ServiceRoleAttributes(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

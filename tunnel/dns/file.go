@@ -23,6 +23,7 @@ import (
 	"net"
 	"os"
 	"sync"
+	"ztna-core/ztna/logtrace"
 )
 
 const hostFormat = "%s\t%s\t# NetFoundry"
@@ -33,6 +34,7 @@ type hostFile struct {
 }
 
 func NewHostFile(path string) Resolver {
+	logtrace.LogWithFunctionName()
 	return &hostFile{
 		path:  path,
 		mutex: sync.Mutex{},
@@ -40,6 +42,7 @@ func NewHostFile(path string) Resolver {
 }
 
 func isHostPresent(hostname string, ip net.IP, f *os.File) bool {
+	logtrace.LogWithFunctionName()
 	scanner := bufio.NewScanner(f)
 	match := fmt.Sprintf(hostFormat, ip.String(), hostname)
 	for scanner.Scan() {
@@ -51,20 +54,26 @@ func isHostPresent(hostname string, ip net.IP, f *os.File) bool {
 }
 
 func (h *hostFile) AddDomain(name string, _ func(string) (net.IP, error)) error {
+	logtrace.LogWithFunctionName()
 	return fmt.Errorf("cannot add wildcard domain[%s] to hostfile resolver", name)
 }
 
-func (h *hostFile) RemoveDomain(string) {}
+func (h *hostFile) RemoveDomain(string) {
+	logtrace.LogWithFunctionName()
+}
 
 func (h *hostFile) Lookup(_ net.IP) (string, error) {
+	logtrace.LogWithFunctionName()
 	return "", fmt.Errorf("not implemented")
 }
 
 func (h *hostFile) LookupIP(_ string) (net.IP, bool) {
+	logtrace.LogWithFunctionName()
 	return nil, false
 }
 
 func (h *hostFile) AddHostname(hostname string, ip net.IP) error {
+	logtrace.LogWithFunctionName()
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
 	f, err := os.OpenFile(h.path, os.O_RDWR, 0600)
@@ -88,9 +97,11 @@ func (h *hostFile) AddHostname(hostname string, ip net.IP) error {
 }
 
 func (h *hostFile) RemoveHostname(_ string) net.IP {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (h *hostFile) Cleanup() error {
+	logtrace.LogWithFunctionName()
 	return nil
 }

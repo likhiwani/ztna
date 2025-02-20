@@ -21,6 +21,7 @@ import (
 	"io/fs"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"ztna-core/ztna/ztna/constants"
 
@@ -44,22 +45,27 @@ type CaddyType struct {
 }
 
 func (self *CaddyType) InitializeHost(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().ExecLogOnlyOnError("cd www && tar xfjv files.tar.bz2")
 }
 
 func (self *CaddyType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "caddy"
 }
 
 func (self *CaddyType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *CaddyType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 }
 
 func (self *CaddyType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":       "caddy",
 		"config_source": self.ConfigSource,
@@ -70,6 +76,7 @@ func (self *CaddyType) Dump() any {
 }
 
 func (self *CaddyType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	configSource := self.ConfigSource
 	if configSource == "" {
 		configSource = "Caddyfile.tmpl"
@@ -85,6 +92,7 @@ func (self *CaddyType) StageFiles(r model.Run, c *model.Component) error {
 }
 
 func (self *CaddyType) getConfigName(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	configName := self.ConfigName
 	if configName == "" {
 		configName = c.Id
@@ -93,12 +101,14 @@ func (self *CaddyType) getConfigName(c *model.Component) string {
 }
 
 func (self *CaddyType) getProcessFilter() func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, "caddy")
 	}
 }
 
 func (self *CaddyType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter())
 	if err != nil {
 		return false, err
@@ -107,6 +117,7 @@ func (self *CaddyType) IsRunning(_ model.Run, c *model.Component) (bool, error) 
 }
 
 func (self *CaddyType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	binaryPath := getBinaryPath(c, constants.Caddy, self.Version)
 	configPath := self.getConfigPath(c)
 
@@ -132,9 +143,11 @@ func (self *CaddyType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *CaddyType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter())
 }
 
 func (self *CaddyType) getConfigPath(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("/home/%s/fablab/cfg/%s", c.GetHost().GetSshUser(), self.getConfigName(c))
 }

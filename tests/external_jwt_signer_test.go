@@ -25,12 +25,14 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 	nfpem "github.com/openziti/foundation/v2/pem"
 )
 
 func Test_ExternalJWTSigner(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

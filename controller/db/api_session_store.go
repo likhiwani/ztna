@@ -17,17 +17,19 @@
 package db
 
 import (
+	"strings"
+	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/kataras/go-events"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/change"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
-	"strings"
-	"time"
 )
 
 const (
@@ -60,6 +62,7 @@ type ApiSession struct {
 }
 
 func NewApiSession(identityId string) *ApiSession {
+	logtrace.LogWithFunctionName()
 	return &ApiSession{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		IdentityId:    identityId,
@@ -68,6 +71,7 @@ func NewApiSession(identityId string) *ApiSession {
 }
 
 func (entity *ApiSession) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeApiSessions
 }
 
@@ -82,6 +86,7 @@ type ApiSessionStore interface {
 }
 
 func newApiSessionStore(stores *stores) *apiSessionStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &apiSessionStoreImpl{
 		eventsEmitter: events.New(),
 	}
@@ -102,10 +107,12 @@ type apiSessionStoreImpl struct {
 }
 
 func (store *apiSessionStoreImpl) NewEntity() *ApiSession {
+	logtrace.LogWithFunctionName()
 	return &ApiSession{}
 }
 
 func (store *apiSessionStoreImpl) FillEntity(entity *ApiSession, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.IdentityId = bucket.GetStringOrError(FieldApiSessionIdentity)
 	entity.Token = bucket.GetStringOrError(FieldApiSessionToken)
@@ -123,6 +130,7 @@ func (store *apiSessionStoreImpl) FillEntity(entity *ApiSession, bucket *boltz.T
 }
 
 func (store *apiSessionStoreImpl) PersistEntity(entity *ApiSession, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldApiSessionIdentity, entity.IdentityId)
 	ctx.SetString(FieldApiSessionToken, entity.Token)
@@ -136,10 +144,12 @@ func (store *apiSessionStoreImpl) PersistEntity(entity *ApiSession, ctx *boltz.P
 }
 
 func (store *apiSessionStoreImpl) GetEventsEmitter() events.EventEmmiter {
+	logtrace.LogWithFunctionName()
 	return store.eventsEmitter
 }
 
 func (store *apiSessionStoreImpl) onEventualDelete(db boltz.Db, name string, apiSessionId []byte) {
+	logtrace.LogWithFunctionName()
 	idCollector := &sessionIdCollector{}
 	indexPath := []string{RootBucket, boltz.IndexesBucket, EntityTypeApiSessions, EntityTypeSessions}
 
@@ -166,6 +176,7 @@ func (store *apiSessionStoreImpl) onEventualDelete(db boltz.Db, name string, api
 }
 
 func (store *apiSessionStoreImpl) cleanupSessions(db boltz.Db, name string, apiSessionId []byte, sessionIds []string) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("eventName", name).
 		WithField("apiSessionId", string(apiSessionId))
 
@@ -199,6 +210,7 @@ func (store *apiSessionStoreImpl) cleanupSessions(db boltz.Db, name string, apiS
 }
 
 func (store *apiSessionStoreImpl) Create(ctx boltz.MutateContext, entity *ApiSession) error {
+	logtrace.LogWithFunctionName()
 	err := store.baseStore.Create(ctx, entity)
 
 	if err == nil {
@@ -213,6 +225,7 @@ func (store *apiSessionStoreImpl) Create(ctx boltz.MutateContext, entity *ApiSes
 	return err
 }
 func (store *apiSessionStoreImpl) Update(ctx boltz.MutateContext, entity *ApiSession, checker boltz.FieldChecker) error {
+	logtrace.LogWithFunctionName()
 	err := store.baseStore.Update(ctx, entity, checker)
 
 	if err == nil {
@@ -227,6 +240,7 @@ func (store *apiSessionStoreImpl) Update(ctx boltz.MutateContext, entity *ApiSes
 }
 
 func (store *apiSessionStoreImpl) ProcessPreCommit(state *boltz.EntityChangeState[*ApiSession]) error {
+	logtrace.LogWithFunctionName()
 	if state.ChangeType == boltz.EntityDeleted {
 		return store.handleDeleteCleanup(state.Ctx, state.EntityId)
 	}
@@ -234,10 +248,12 @@ func (store *apiSessionStoreImpl) ProcessPreCommit(state *boltz.EntityChangeStat
 }
 
 func (store *apiSessionStoreImpl) ProcessPostCommit(_ *boltz.EntityChangeState[*ApiSession]) {
+	logtrace.LogWithFunctionName()
 	/* does nothing */
 }
 
 func (store *apiSessionStoreImpl) handleDeleteCleanup(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	for _, apiSessionCertId := range store.GetRelatedEntitiesIdList(ctx.Tx(), id, EntityTypeApiSessionCertificates) {
 		if err := store.stores.apiSessionCertificate.DeleteById(ctx, apiSessionCertId); err != nil {
 			return err
@@ -256,10 +272,12 @@ func (store *apiSessionStoreImpl) handleDeleteCleanup(ctx boltz.MutateContext, i
 }
 
 func (store *apiSessionStoreImpl) GetTokenIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexToken
 }
 
 func (store *apiSessionStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	symbolToken := store.AddSymbol(FieldApiSessionToken, ast.NodeTypeString)
 	store.indexToken = store.AddUniqueIndex(symbolToken)
@@ -275,9 +293,11 @@ func (store *apiSessionStoreImpl) initializeLocal() {
 }
 
 func (store *apiSessionStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 }
 
 func (store *apiSessionStoreImpl) LoadOneByToken(tx *bbolt.Tx, token string) (*ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	id := store.indexToken.Read(tx, []byte(token))
 	if id != nil {
 		return store.LoadById(tx, string(id))
@@ -286,6 +306,7 @@ func (store *apiSessionStoreImpl) LoadOneByToken(tx *bbolt.Tx, token string) (*A
 }
 
 func (store *apiSessionStoreImpl) GetCachedSessionId(tx *bbolt.Tx, apiSessionId, sessionType, serviceId string) *string {
+	logtrace.LogWithFunctionName()
 	bucket := boltz.Path(tx,
 		RootBucket, boltz.IndexesBucket,
 		EntityTypeApiSessions, EntityTypeSessions,
@@ -302,6 +323,7 @@ func (store *apiSessionStoreImpl) GetCachedSessionId(tx *bbolt.Tx, apiSessionId,
 type UpdateLastActivityAtChecker struct{}
 
 func (u UpdateLastActivityAtChecker) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return field == FieldApiSessionLastActivityAt
 }
 
@@ -310,10 +332,12 @@ type sessionIdCollector struct {
 }
 
 func (self *sessionIdCollector) VisitBucket(string, []byte, *bbolt.Bucket) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *sessionIdCollector) VisitKeyValue(_ string, _, value []byte) bool {
+	logtrace.LogWithFunctionName()
 	if sessionId := boltz.FieldToString(boltz.GetTypeAndValue(value)); sessionId != nil {
 		self.ids = append(self.ids, *sessionId)
 	}

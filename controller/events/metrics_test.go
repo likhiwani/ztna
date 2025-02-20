@@ -19,15 +19,18 @@ package events
 import (
 	"encoding/json"
 	"fmt"
-	metrics2 "github.com/openziti/metrics"
-	"ztna-core/ztna/controller/event"
-	"github.com/stretchr/testify/require"
 	"regexp"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	metrics2 "github.com/openziti/metrics"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_ExtractId(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	name := "ctrl.3tOOkKfDn.tx.bytesrate"
 
 	req := require.New(t)
@@ -57,6 +60,7 @@ func Test_ExtractId(t *testing.T) {
 }
 
 func Test_FilterMetrics(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 
 	closeNotify := make(chan struct{})
@@ -116,6 +120,7 @@ func Test_FilterMetrics(t *testing.T) {
 }
 
 func Test_MetricsFormat(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 
 	closeNotify := make(chan struct{})

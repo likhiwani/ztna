@@ -18,15 +18,17 @@ package model
 
 import (
 	"encoding/json"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
@@ -36,6 +38,7 @@ const (
 )
 
 func NewConfigTypeManager(env Env) *ConfigTypeManager {
+	logtrace.LogWithFunctionName()
 	manager := &ConfigTypeManager{
 		baseEntityManager: newBaseEntityManager[*ConfigType, *db.ConfigType](env, env.GetStores().ConfigType),
 	}
@@ -51,27 +54,33 @@ type ConfigTypeManager struct {
 }
 
 func (self *ConfigTypeManager) newModelEntity() *ConfigType {
+	logtrace.LogWithFunctionName()
 	return &ConfigType{}
 }
 
 func (self *ConfigTypeManager) Create(entity *ConfigType, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*ConfigType](self, entity, ctx)
 }
 
 func (self *ConfigTypeManager) ApplyCreate(cmd *command.CreateEntityCommand[*ConfigType], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ConfigTypeManager) Update(entity *ConfigType, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*ConfigType](self, entity, checker, ctx)
 }
 
 func (self *ConfigTypeManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*ConfigType], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *ConfigTypeManager) Read(id string) (*ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &ConfigType{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -80,6 +89,7 @@ func (self *ConfigTypeManager) Read(id string) (*ConfigType, error) {
 }
 
 func (self *ConfigTypeManager) readInTx(tx *bbolt.Tx, id string) (*ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &ConfigType{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -88,6 +98,7 @@ func (self *ConfigTypeManager) readInTx(tx *bbolt.Tx, id string) (*ConfigType, e
 }
 
 func (self *ConfigTypeManager) ReadByName(name string) (*ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &ConfigType{}
 	nameIndex := self.env.GetStores().ConfigType.GetNameIndex()
 	if err := self.readEntityWithIndex("name", []byte(name), nameIndex, modelEntity); err != nil {
@@ -97,6 +108,7 @@ func (self *ConfigTypeManager) ReadByName(name string) (*ConfigType, error) {
 }
 
 func (self *ConfigTypeManager) MapConfigTypeNamesToIds(values []string, identityId string) map[string]struct{} {
+	logtrace.LogWithFunctionName()
 	var result []string
 	if stringz.Contains(values, "all") {
 		result = []string{"all"}
@@ -115,6 +127,7 @@ func (self *ConfigTypeManager) MapConfigTypeNamesToIds(values []string, identity
 }
 
 func (self *ConfigTypeManager) Marshall(entity *ConfigType) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -136,6 +149,7 @@ func (self *ConfigTypeManager) Marshall(entity *ConfigType) ([]byte, error) {
 }
 
 func (self *ConfigTypeManager) Unmarshall(bytes []byte) (*ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.ConfigType{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

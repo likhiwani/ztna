@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -31,6 +32,7 @@ import (
 
 // newUpdatePostureCheckCmd creates the 'edge controller update posture-check' command
 func newUpdatePostureCheckCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use: "posture-check",
 	}
@@ -82,6 +84,7 @@ type updatePostureCheckOsOptions struct {
 }
 
 func newUpdatePostureCheckMacCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updatePostureCheckMacOptions{
 		updatePostureCheckOptions: updatePostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -116,6 +119,7 @@ func newUpdatePostureCheckMacCmd(out io.Writer, errOut io.Writer) *cobra.Command
 
 // runUpdatePostureCheckMac update a new identity on the Ziti Edge Controller
 func runUpdatePostureCheckMac(o *updatePostureCheckMacOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("posture-checks", o.Args[0], o.Options)
 	if err != nil {
 		return err
@@ -154,6 +158,7 @@ func runUpdatePostureCheckMac(o *updatePostureCheckMacOptions) error {
 }
 
 func newUpdatePostureCheckDomainCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updatePostureCheckDomainOptions{
 		updatePostureCheckOptions: updatePostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -186,6 +191,7 @@ func newUpdatePostureCheckDomainCmd(out io.Writer, errOut io.Writer) *cobra.Comm
 }
 
 func newUpdatePostureCheckMfaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updatePostureCheckMfaOptions{
 		updatePostureCheckOptions: updatePostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -229,6 +235,7 @@ func newUpdatePostureCheckMfaCmd(out io.Writer, errOut io.Writer) *cobra.Command
 }
 
 func runUpdatePostureCheckMfa(o *updatePostureCheckMfaOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("posture-checks", o.Args[0], o.Options)
 	if err != nil {
 		return err
@@ -298,6 +305,7 @@ func runUpdatePostureCheckMfa(o *updatePostureCheckMfaOptions) error {
 
 // runUpdatePostureCheckDomain update a new identity on the Ziti Edge Controller
 func runUpdatePostureCheckDomain(o *updatePostureCheckDomainOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("posture-checks", o.Args[0], o.Options)
 	if err != nil {
 		return err
@@ -342,6 +350,7 @@ func runUpdatePostureCheckDomain(o *updatePostureCheckDomainOptions) error {
 //process
 
 func newUpdatePostureCheckProcessCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updatePostureCheckProcessOptions{
 		updatePostureCheckOptions: updatePostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -380,6 +389,7 @@ func newUpdatePostureCheckProcessCmd(out io.Writer, errOut io.Writer) *cobra.Com
 
 // runUpdatePostureCheckProcess update a new identity on the Ziti Edge Controller
 func runUpdatePostureCheckProcess(o *updatePostureCheckProcessOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("posture-checks", o.Args[0], o.Options)
 	if err != nil {
 		return err
@@ -452,6 +462,7 @@ func runUpdatePostureCheckProcess(o *updatePostureCheckProcessOptions) error {
 
 // os
 func newUpdatePostureCheckOsCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updatePostureCheckOsOptions{
 		updatePostureCheckOptions: updatePostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -485,6 +496,7 @@ func newUpdatePostureCheckOsCmd(out io.Writer, errOut io.Writer) *cobra.Command 
 
 // runUpdatePostureCheckOs update a new identity on the Ziti Edge Controller
 func runUpdatePostureCheckOs(o *updatePostureCheckOsOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("posture-checks", o.Args[0], o.Options)
 	if err != nil {
 		return err

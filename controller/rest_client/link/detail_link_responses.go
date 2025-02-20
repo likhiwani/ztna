@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DetailLinkReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DetailLinkReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDetailLinkOK()
@@ -78,6 +80,7 @@ func (o *DetailLinkReader) ReadResponse(response runtime.ClientResponse, consume
 
 // NewDetailLinkOK creates a DetailLinkOK with default headers values
 func NewDetailLinkOK() *DetailLinkOK {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkOK{}
 }
 
@@ -90,13 +93,16 @@ type DetailLinkOK struct {
 }
 
 func (o *DetailLinkOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /links/{id}][%d] detailLinkOK  %+v", 200, o.Payload)
 }
 func (o *DetailLinkOK) GetPayload() *rest_model.DetailLinkEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailLinkOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.DetailLinkEnvelope)
 
@@ -110,6 +116,7 @@ func (o *DetailLinkOK) readResponse(response runtime.ClientResponse, consumer ru
 
 // NewDetailLinkUnauthorized creates a DetailLinkUnauthorized with default headers values
 func NewDetailLinkUnauthorized() *DetailLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkUnauthorized{}
 }
 
@@ -122,13 +129,16 @@ type DetailLinkUnauthorized struct {
 }
 
 func (o *DetailLinkUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /links/{id}][%d] detailLinkUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DetailLinkUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailLinkUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *DetailLinkUnauthorized) readResponse(response runtime.ClientResponse, c
 
 // NewDetailLinkNotFound creates a DetailLinkNotFound with default headers values
 func NewDetailLinkNotFound() *DetailLinkNotFound {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkNotFound{}
 }
 
@@ -154,13 +165,16 @@ type DetailLinkNotFound struct {
 }
 
 func (o *DetailLinkNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /links/{id}][%d] detailLinkNotFound  %+v", 404, o.Payload)
 }
 func (o *DetailLinkNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailLinkNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *DetailLinkNotFound) readResponse(response runtime.ClientResponse, consu
 
 // NewDetailLinkTooManyRequests creates a DetailLinkTooManyRequests with default headers values
 func NewDetailLinkTooManyRequests() *DetailLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type DetailLinkTooManyRequests struct {
 }
 
 func (o *DetailLinkTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /links/{id}][%d] detailLinkTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DetailLinkTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailLinkTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

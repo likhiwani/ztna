@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
@@ -51,6 +53,7 @@ type Session struct {
 }
 
 func (entity *Session) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeSessions
 }
 
@@ -63,6 +66,7 @@ type SessionStore interface {
 }
 
 func newSessionStore(stores *stores) *sessionStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &sessionStoreImpl{}
 	store.baseStore = newBaseStore[*Session](stores, store)
 	store.InitImpl(store)
@@ -79,14 +83,17 @@ type sessionStoreImpl struct {
 }
 
 func (store *sessionStoreImpl) NewEntity() *Session {
+	logtrace.LogWithFunctionName()
 	return &Session{}
 }
 
 func (store *sessionStoreImpl) GetTokenIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexToken
 }
 
 func (store *sessionStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	symbolToken := store.AddSymbol(FieldSessionToken, ast.NodeTypeString)
@@ -107,9 +114,12 @@ func (store *sessionStoreImpl) initializeLocal() {
 	})
 }
 
-func (store *sessionStoreImpl) initializeLinked() {}
+func (store *sessionStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (*sessionStoreImpl) FillEntity(entity *Session, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Token = bucket.GetStringOrError(FieldSessionToken)
 	entity.ApiSessionId = bucket.GetStringOrError(FieldSessionApiSession)
@@ -120,6 +130,7 @@ func (*sessionStoreImpl) FillEntity(entity *Session, bucket *boltz.TypedBucket) 
 }
 
 func (*sessionStoreImpl) PersistEntity(entity *Session, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	if entity.Type == "" {
 		entity.Type = SessionTypeDial
 	}
@@ -150,6 +161,7 @@ func (*sessionStoreImpl) PersistEntity(entity *Session, ctx *boltz.PersistContex
 }
 
 func (store *sessionStoreImpl) LoadOneByToken(tx *bbolt.Tx, token string) (*Session, error) {
+	logtrace.LogWithFunctionName()
 	id := store.indexToken.Read(tx, []byte(token))
 	if id != nil {
 		return store.LoadById(tx, string(id))
@@ -165,12 +177,16 @@ type sessionApiSessionIndex struct {
 }
 
 func (index *sessionApiSessionIndex) Label() string {
+	logtrace.LogWithFunctionName()
 	return "session -> api session index"
 }
 
-func (self *sessionApiSessionIndex) ProcessBeforeUpdate(*boltz.IndexingContext) {}
+func (self *sessionApiSessionIndex) ProcessBeforeUpdate(*boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *sessionApiSessionIndex) ProcessAfterUpdate(ctx *boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
 	if ctx.IsCreate && !ctx.ErrHolder.HasError() {
 		_, sessionType := self.sessionTypeSymbol.Eval(ctx.Tx(), ctx.RowId)
 		_, apiSessionId := self.apiSessionSymbol.Eval(ctx.Tx(), ctx.RowId)
@@ -203,10 +219,15 @@ func (self *sessionApiSessionIndex) ProcessAfterUpdate(ctx *boltz.IndexingContex
 	}
 }
 
-func (self *sessionApiSessionIndex) ProcessBeforeDelete(*boltz.IndexingContext) {}
+func (self *sessionApiSessionIndex) ProcessBeforeDelete(*boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
+}
 
-func (self *sessionApiSessionIndex) Initialize(*bbolt.Tx, errorz.ErrorHolder) {}
+func (self *sessionApiSessionIndex) Initialize(*bbolt.Tx, errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *sessionApiSessionIndex) CheckIntegrity(boltz.MutateContext, bool, func(err error, fixed bool)) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }

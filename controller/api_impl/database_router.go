@@ -19,23 +19,26 @@ package api_impl
 import (
 	"context"
 	"errors"
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/strfmt"
-	"github.com/michaelquigley/pfxlog"
+	"sync/atomic"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/rest_model"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/database"
-	"sync/atomic"
+	"ztna-core/ztna/logtrace"
 
-	"ztna-core/ztna/controller/network"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/michaelquigley/pfxlog"
+
 	"net/http"
 	"sync"
 	"time"
+	"ztna-core/ztna/controller/network"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewDatabaseRouter()
 	AddRouter(r)
 }
@@ -56,10 +59,12 @@ type DatabaseRouter struct {
 }
 
 func NewDatabaseRouter() *DatabaseRouter {
+	logtrace.LogWithFunctionName()
 	return &DatabaseRouter{}
 }
 
 func (r *DatabaseRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.DatabaseCreateDatabaseSnapshotHandler = database.CreateDatabaseSnapshotHandlerFunc(func(params database.CreateDatabaseSnapshotParams, _ interface{}) middleware.Responder {
 		return wrapper.WrapRequest(r.CreateSnapshot, params.HTTPRequest, "", "")
 	})
@@ -84,6 +89,7 @@ func (r *DatabaseRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper R
 }
 
 func (r *DatabaseRouter) CreateSnapshot(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	if err := n.SnapshotDatabase(); err != nil {
 		if errors.Is(err, network.DbSnapshotTooFrequentError) {
 			rc.RespondWithApiError(apierror.NewRateLimited())
@@ -96,6 +102,7 @@ func (r *DatabaseRouter) CreateSnapshot(n *network.Network, rc api.RequestContex
 }
 
 func (r *DatabaseRouter) CreateSnapshotWithPath(n *network.Network, rc api.RequestContext, snapshot *rest_model.DatabaseSnapshotCreate) {
+	logtrace.LogWithFunctionName()
 	var path string
 	if snapshot != nil {
 		path = snapshot.Path
@@ -121,6 +128,7 @@ func (r *DatabaseRouter) CreateSnapshotWithPath(n *network.Network, rc api.Reque
 }
 
 func (r *DatabaseRouter) CheckDatastoreIntegrity(n *network.Network, rc api.RequestContext, fixErrors bool) {
+	logtrace.LogWithFunctionName()
 	if r.integrityCheck.running.CompareAndSwap(false, true) {
 		r.integrityCheck.fixingErrors = fixErrors
 		go r.runDataIntegrityCheck(n, rc.NewChangeContext().GetContext(), fixErrors)
@@ -131,6 +139,7 @@ func (r *DatabaseRouter) CheckDatastoreIntegrity(n *network.Network, rc api.Requ
 }
 
 func (r *DatabaseRouter) GetCheckProgress(_ *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	integrityCheck := &r.integrityCheck
 
 	integrityCheck.lock.Lock()
@@ -172,6 +181,7 @@ func (r *DatabaseRouter) GetCheckProgress(_ *network.Network, rc api.RequestCont
 }
 
 func (r *DatabaseRouter) runDataIntegrityCheck(n *network.Network, ctx context.Context, fixErrors bool) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		r.integrityCheck.lock.Lock()
 		now := time.Now()

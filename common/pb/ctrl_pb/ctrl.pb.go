@@ -7,6 +7,7 @@
 package ctrl_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -127,29 +128,35 @@ var (
 )
 
 func (x ContentType) Enum() *ContentType {
+    logtrace.LogWithFunctionName()
 	p := new(ContentType)
 	*p = x
 	return p
 }
 
 func (x ContentType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (ContentType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[0].Descriptor()
 }
 
 func (ContentType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[0]
 }
 
 func (x ContentType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use ContentType.Descriptor instead.
 func (ContentType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{0}
 }
 
@@ -179,29 +186,35 @@ var (
 )
 
 func (x ControlHeaders) Enum() *ControlHeaders {
+    logtrace.LogWithFunctionName()
 	p := new(ControlHeaders)
 	*p = x
 	return p
 }
 
 func (x ControlHeaders) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (ControlHeaders) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[1].Descriptor()
 }
 
 func (ControlHeaders) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[1]
 }
 
 func (x ControlHeaders) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use ControlHeaders.Descriptor instead.
 func (ControlHeaders) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{1}
 }
 
@@ -225,29 +238,35 @@ var (
 )
 
 func (x RouterCapability) Enum() *RouterCapability {
+    logtrace.LogWithFunctionName()
 	p := new(RouterCapability)
 	*p = x
 	return p
 }
 
 func (x RouterCapability) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (RouterCapability) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[2].Descriptor()
 }
 
 func (RouterCapability) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[2]
 }
 
 func (x RouterCapability) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use RouterCapability.Descriptor instead.
 func (RouterCapability) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{2}
 }
 
@@ -275,29 +294,35 @@ var (
 )
 
 func (x SettingTypes) Enum() *SettingTypes {
+    logtrace.LogWithFunctionName()
 	p := new(SettingTypes)
 	*p = x
 	return p
 }
 
 func (x SettingTypes) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (SettingTypes) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[3].Descriptor()
 }
 
 func (SettingTypes) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[3]
 }
 
 func (x SettingTypes) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use SettingTypes.Descriptor instead.
 func (SettingTypes) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{3}
 }
 
@@ -324,29 +349,35 @@ var (
 )
 
 func (x TerminatorPrecedence) Enum() *TerminatorPrecedence {
+    logtrace.LogWithFunctionName()
 	p := new(TerminatorPrecedence)
 	*p = x
 	return p
 }
 
 func (x TerminatorPrecedence) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (TerminatorPrecedence) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[4].Descriptor()
 }
 
 func (TerminatorPrecedence) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[4]
 }
 
 func (x TerminatorPrecedence) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use TerminatorPrecedence.Descriptor instead.
 func (TerminatorPrecedence) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{4}
 }
 
@@ -373,29 +404,35 @@ var (
 )
 
 func (x TerminatorInvalidReason) Enum() *TerminatorInvalidReason {
+    logtrace.LogWithFunctionName()
 	p := new(TerminatorInvalidReason)
 	*p = x
 	return p
 }
 
 func (x TerminatorInvalidReason) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (TerminatorInvalidReason) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[5].Descriptor()
 }
 
 func (TerminatorInvalidReason) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[5]
 }
 
 func (x TerminatorInvalidReason) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use TerminatorInvalidReason.Descriptor instead.
 func (TerminatorInvalidReason) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{5}
 }
 
@@ -431,29 +468,35 @@ var (
 )
 
 func (x FaultSubject) Enum() *FaultSubject {
+    logtrace.LogWithFunctionName()
 	p := new(FaultSubject)
 	*p = x
 	return p
 }
 
 func (x FaultSubject) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (FaultSubject) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[6].Descriptor()
 }
 
 func (FaultSubject) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[6]
 }
 
 func (x FaultSubject) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use FaultSubject.Descriptor instead.
 func (FaultSubject) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{6}
 }
 
@@ -480,29 +523,35 @@ var (
 )
 
 func (x DestType) Enum() *DestType {
+    logtrace.LogWithFunctionName()
 	p := new(DestType)
 	*p = x
 	return p
 }
 
 func (x DestType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (DestType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[7].Descriptor()
 }
 
 func (DestType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[7]
 }
 
 func (x DestType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use DestType.Descriptor instead.
 func (DestType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{7}
 }
 
@@ -529,29 +578,35 @@ var (
 )
 
 func (x PeerState) Enum() *PeerState {
+    logtrace.LogWithFunctionName()
 	p := new(PeerState)
 	*p = x
 	return p
 }
 
 func (x PeerState) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (PeerState) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_enumTypes[8].Descriptor()
 }
 
 func (PeerState) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_ctrl_proto_enumTypes[8]
 }
 
 func (x PeerState) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use PeerState.Descriptor instead.
 func (PeerState) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{8}
 }
 
@@ -565,6 +620,7 @@ type Settings struct {
 }
 
 func (x *Settings) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Settings{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[0]
@@ -574,12 +630,16 @@ func (x *Settings) Reset() {
 }
 
 func (x *Settings) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Settings) ProtoMessage() {}
+func (*Settings) ProtoMessage() {
+	logtrace.LogWithFunctionName()
+}
 
 func (x *Settings) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -593,10 +653,12 @@ func (x *Settings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Settings.ProtoReflect.Descriptor instead.
 func (*Settings) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Settings) GetData() map[int32][]byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Data
 	}
@@ -614,6 +676,7 @@ type CircuitRequest struct {
 }
 
 func (x *CircuitRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CircuitRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[1]
@@ -623,12 +686,16 @@ func (x *CircuitRequest) Reset() {
 }
 
 func (x *CircuitRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CircuitRequest) ProtoMessage() {}
+func (*CircuitRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CircuitRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -642,10 +709,12 @@ func (x *CircuitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CircuitRequest.ProtoReflect.Descriptor instead.
 func (*CircuitRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CircuitRequest) GetIngressId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IngressId
 	}
@@ -653,6 +722,7 @@ func (x *CircuitRequest) GetIngressId() string {
 }
 
 func (x *CircuitRequest) GetService() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Service
 	}
@@ -660,6 +730,7 @@ func (x *CircuitRequest) GetService() string {
 }
 
 func (x *CircuitRequest) GetPeerData() map[uint32][]byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PeerData
 	}
@@ -676,6 +747,7 @@ type CircuitConfirmation struct {
 }
 
 func (x *CircuitConfirmation) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CircuitConfirmation{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[2]
@@ -685,12 +757,16 @@ func (x *CircuitConfirmation) Reset() {
 }
 
 func (x *CircuitConfirmation) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CircuitConfirmation) ProtoMessage() {}
+func (*CircuitConfirmation) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CircuitConfirmation) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -704,10 +780,12 @@ func (x *CircuitConfirmation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CircuitConfirmation.ProtoReflect.Descriptor instead.
 func (*CircuitConfirmation) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CircuitConfirmation) GetCircuitIds() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CircuitIds
 	}
@@ -715,6 +793,7 @@ func (x *CircuitConfirmation) GetCircuitIds() []string {
 }
 
 func (x *CircuitConfirmation) GetIdleTimes() map[string]int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdleTimes
 	}
@@ -737,6 +816,7 @@ type CreateTerminatorRequest struct {
 }
 
 func (x *CreateTerminatorRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateTerminatorRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[3]
@@ -746,12 +826,16 @@ func (x *CreateTerminatorRequest) Reset() {
 }
 
 func (x *CreateTerminatorRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateTerminatorRequest) ProtoMessage() {}
+func (*CreateTerminatorRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CreateTerminatorRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -765,10 +849,12 @@ func (x *CreateTerminatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTerminatorRequest.ProtoReflect.Descriptor instead.
 func (*CreateTerminatorRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CreateTerminatorRequest) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -776,6 +862,7 @@ func (x *CreateTerminatorRequest) GetServiceId() string {
 }
 
 func (x *CreateTerminatorRequest) GetBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Binding
 	}
@@ -783,6 +870,7 @@ func (x *CreateTerminatorRequest) GetBinding() string {
 }
 
 func (x *CreateTerminatorRequest) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -790,6 +878,7 @@ func (x *CreateTerminatorRequest) GetAddress() string {
 }
 
 func (x *CreateTerminatorRequest) GetPeerData() map[uint32][]byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PeerData
 	}
@@ -797,6 +886,7 @@ func (x *CreateTerminatorRequest) GetPeerData() map[uint32][]byte {
 }
 
 func (x *CreateTerminatorRequest) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -804,6 +894,7 @@ func (x *CreateTerminatorRequest) GetCost() uint32 {
 }
 
 func (x *CreateTerminatorRequest) GetPrecedence() TerminatorPrecedence {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Precedence
 	}
@@ -811,6 +902,7 @@ func (x *CreateTerminatorRequest) GetPrecedence() TerminatorPrecedence {
 }
 
 func (x *CreateTerminatorRequest) GetInstanceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.InstanceId
 	}
@@ -818,6 +910,7 @@ func (x *CreateTerminatorRequest) GetInstanceId() string {
 }
 
 func (x *CreateTerminatorRequest) GetInstanceSecret() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.InstanceSecret
 	}
@@ -833,6 +926,7 @@ type RemoveTerminatorRequest struct {
 }
 
 func (x *RemoveTerminatorRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RemoveTerminatorRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[4]
@@ -842,12 +936,16 @@ func (x *RemoveTerminatorRequest) Reset() {
 }
 
 func (x *RemoveTerminatorRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RemoveTerminatorRequest) ProtoMessage() {}
+func (*RemoveTerminatorRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RemoveTerminatorRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -861,10 +959,12 @@ func (x *RemoveTerminatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveTerminatorRequest.ProtoReflect.Descriptor instead.
 func (*RemoveTerminatorRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *RemoveTerminatorRequest) GetTerminatorId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorId
 	}
@@ -880,6 +980,7 @@ type RemoveTerminatorsRequest struct {
 }
 
 func (x *RemoveTerminatorsRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RemoveTerminatorsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[5]
@@ -889,12 +990,16 @@ func (x *RemoveTerminatorsRequest) Reset() {
 }
 
 func (x *RemoveTerminatorsRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RemoveTerminatorsRequest) ProtoMessage() {}
+func (*RemoveTerminatorsRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RemoveTerminatorsRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -908,10 +1013,12 @@ func (x *RemoveTerminatorsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveTerminatorsRequest.ProtoReflect.Descriptor instead.
 func (*RemoveTerminatorsRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RemoveTerminatorsRequest) GetTerminatorIds() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorIds
 	}
@@ -930,6 +1037,7 @@ type Terminator struct {
 }
 
 func (x *Terminator) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Terminator{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[6]
@@ -939,12 +1047,16 @@ func (x *Terminator) Reset() {
 }
 
 func (x *Terminator) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Terminator) ProtoMessage() {}
+func (*Terminator) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Terminator) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -958,10 +1070,12 @@ func (x *Terminator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Terminator.ProtoReflect.Descriptor instead.
 func (*Terminator) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Terminator) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -969,6 +1083,7 @@ func (x *Terminator) GetId() string {
 }
 
 func (x *Terminator) GetBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Binding
 	}
@@ -976,6 +1091,7 @@ func (x *Terminator) GetBinding() string {
 }
 
 func (x *Terminator) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -983,6 +1099,7 @@ func (x *Terminator) GetAddress() string {
 }
 
 func (x *Terminator) GetMarker() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Marker
 	}
@@ -998,6 +1115,7 @@ type ValidateTerminatorsRequest struct {
 }
 
 func (x *ValidateTerminatorsRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateTerminatorsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[7]
@@ -1007,12 +1125,16 @@ func (x *ValidateTerminatorsRequest) Reset() {
 }
 
 func (x *ValidateTerminatorsRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTerminatorsRequest) ProtoMessage() {}
+func (*ValidateTerminatorsRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateTerminatorsRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1026,10 +1148,12 @@ func (x *ValidateTerminatorsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateTerminatorsRequest.ProtoReflect.Descriptor instead.
 func (*ValidateTerminatorsRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ValidateTerminatorsRequest) GetTerminators() []*Terminator {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Terminators
 	}
@@ -1046,6 +1170,7 @@ type ValidateTerminatorsV2Request struct {
 }
 
 func (x *ValidateTerminatorsV2Request) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateTerminatorsV2Request{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[8]
@@ -1055,12 +1180,16 @@ func (x *ValidateTerminatorsV2Request) Reset() {
 }
 
 func (x *ValidateTerminatorsV2Request) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTerminatorsV2Request) ProtoMessage() {}
+func (*ValidateTerminatorsV2Request) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateTerminatorsV2Request) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1074,10 +1203,12 @@ func (x *ValidateTerminatorsV2Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateTerminatorsV2Request.ProtoReflect.Descriptor instead.
 func (*ValidateTerminatorsV2Request) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ValidateTerminatorsV2Request) GetTerminators() []*Terminator {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Terminators
 	}
@@ -1085,6 +1216,7 @@ func (x *ValidateTerminatorsV2Request) GetTerminators() []*Terminator {
 }
 
 func (x *ValidateTerminatorsV2Request) GetFixInvalid() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.FixInvalid
 	}
@@ -1103,6 +1235,7 @@ type RouterTerminatorState struct {
 }
 
 func (x *RouterTerminatorState) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterTerminatorState{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[9]
@@ -1112,12 +1245,16 @@ func (x *RouterTerminatorState) Reset() {
 }
 
 func (x *RouterTerminatorState) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterTerminatorState) ProtoMessage() {}
+func (*RouterTerminatorState) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterTerminatorState) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1131,10 +1268,12 @@ func (x *RouterTerminatorState) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterTerminatorState.ProtoReflect.Descriptor instead.
 func (*RouterTerminatorState) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *RouterTerminatorState) GetValid() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Valid
 	}
@@ -1142,6 +1281,7 @@ func (x *RouterTerminatorState) GetValid() bool {
 }
 
 func (x *RouterTerminatorState) GetReason() TerminatorInvalidReason {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Reason
 	}
@@ -1149,6 +1289,7 @@ func (x *RouterTerminatorState) GetReason() TerminatorInvalidReason {
 }
 
 func (x *RouterTerminatorState) GetDetail() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Detail
 	}
@@ -1156,6 +1297,7 @@ func (x *RouterTerminatorState) GetDetail() string {
 }
 
 func (x *RouterTerminatorState) GetMarker() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Marker
 	}
@@ -1171,6 +1313,7 @@ type ValidateTerminatorsV2Response struct {
 }
 
 func (x *ValidateTerminatorsV2Response) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ValidateTerminatorsV2Response{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[10]
@@ -1180,12 +1323,16 @@ func (x *ValidateTerminatorsV2Response) Reset() {
 }
 
 func (x *ValidateTerminatorsV2Response) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTerminatorsV2Response) ProtoMessage() {}
+func (*ValidateTerminatorsV2Response) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ValidateTerminatorsV2Response) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1199,10 +1346,12 @@ func (x *ValidateTerminatorsV2Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateTerminatorsV2Response.ProtoReflect.Descriptor instead.
 func (*ValidateTerminatorsV2Response) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ValidateTerminatorsV2Response) GetStates() map[string]*RouterTerminatorState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.States
 	}
@@ -1222,6 +1371,7 @@ type UpdateTerminatorRequest struct {
 }
 
 func (x *UpdateTerminatorRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateTerminatorRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[11]
@@ -1231,12 +1381,16 @@ func (x *UpdateTerminatorRequest) Reset() {
 }
 
 func (x *UpdateTerminatorRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateTerminatorRequest) ProtoMessage() {}
+func (*UpdateTerminatorRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateTerminatorRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1250,10 +1404,12 @@ func (x *UpdateTerminatorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTerminatorRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTerminatorRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateTerminatorRequest) GetTerminatorId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorId
 	}
@@ -1261,6 +1417,7 @@ func (x *UpdateTerminatorRequest) GetTerminatorId() string {
 }
 
 func (x *UpdateTerminatorRequest) GetUpdatePrecedence() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UpdatePrecedence
 	}
@@ -1268,6 +1425,7 @@ func (x *UpdateTerminatorRequest) GetUpdatePrecedence() bool {
 }
 
 func (x *UpdateTerminatorRequest) GetUpdateCost() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UpdateCost
 	}
@@ -1275,6 +1433,7 @@ func (x *UpdateTerminatorRequest) GetUpdateCost() bool {
 }
 
 func (x *UpdateTerminatorRequest) GetPrecedence() TerminatorPrecedence {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Precedence
 	}
@@ -1282,6 +1441,7 @@ func (x *UpdateTerminatorRequest) GetPrecedence() TerminatorPrecedence {
 }
 
 func (x *UpdateTerminatorRequest) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -1301,6 +1461,7 @@ type Dial struct {
 }
 
 func (x *Dial) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Dial{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[12]
@@ -1310,12 +1471,16 @@ func (x *Dial) Reset() {
 }
 
 func (x *Dial) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Dial) ProtoMessage() {}
+func (*Dial) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Dial) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1329,10 +1494,12 @@ func (x *Dial) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Dial.ProtoReflect.Descriptor instead.
 func (*Dial) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Dial) GetLinkId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkId
 	}
@@ -1340,6 +1507,7 @@ func (x *Dial) GetLinkId() string {
 }
 
 func (x *Dial) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -1347,6 +1515,7 @@ func (x *Dial) GetAddress() string {
 }
 
 func (x *Dial) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1354,6 +1523,7 @@ func (x *Dial) GetRouterId() string {
 }
 
 func (x *Dial) GetLinkProtocol() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkProtocol
 	}
@@ -1361,6 +1531,7 @@ func (x *Dial) GetLinkProtocol() string {
 }
 
 func (x *Dial) GetRouterVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterVersion
 	}
@@ -1378,6 +1549,7 @@ type LinkConn struct {
 }
 
 func (x *LinkConn) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = LinkConn{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[13]
@@ -1387,12 +1559,16 @@ func (x *LinkConn) Reset() {
 }
 
 func (x *LinkConn) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LinkConn) ProtoMessage() {}
+func (*LinkConn) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *LinkConn) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1406,10 +1582,12 @@ func (x *LinkConn) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LinkConn.ProtoReflect.Descriptor instead.
 func (*LinkConn) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *LinkConn) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1417,6 +1595,7 @@ func (x *LinkConn) GetId() string {
 }
 
 func (x *LinkConn) GetLocalAddr() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LocalAddr
 	}
@@ -1424,6 +1603,7 @@ func (x *LinkConn) GetLocalAddr() string {
 }
 
 func (x *LinkConn) GetRemoteAddr() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RemoteAddr
 	}
@@ -1440,6 +1620,7 @@ type LinkConnected struct {
 }
 
 func (x *LinkConnected) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = LinkConnected{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[14]
@@ -1449,12 +1630,16 @@ func (x *LinkConnected) Reset() {
 }
 
 func (x *LinkConnected) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LinkConnected) ProtoMessage() {}
+func (*LinkConnected) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *LinkConnected) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1468,10 +1653,12 @@ func (x *LinkConnected) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LinkConnected.ProtoReflect.Descriptor instead.
 func (*LinkConnected) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LinkConnected) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1479,6 +1666,7 @@ func (x *LinkConnected) GetId() string {
 }
 
 func (x *LinkConnected) GetConns() []*LinkConn {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Conns
 	}
@@ -1494,6 +1682,7 @@ type RouterLinks struct {
 }
 
 func (x *RouterLinks) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterLinks{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[15]
@@ -1503,12 +1692,16 @@ func (x *RouterLinks) Reset() {
 }
 
 func (x *RouterLinks) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterLinks) ProtoMessage() {}
+func (*RouterLinks) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterLinks) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1522,10 +1715,12 @@ func (x *RouterLinks) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterLinks.ProtoReflect.Descriptor instead.
 func (*RouterLinks) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *RouterLinks) GetLinks() []*RouterLinks_RouterLink {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Links
 	}
@@ -1543,6 +1738,7 @@ type Fault struct {
 }
 
 func (x *Fault) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Fault{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[16]
@@ -1552,12 +1748,16 @@ func (x *Fault) Reset() {
 }
 
 func (x *Fault) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Fault) ProtoMessage() {}
+func (*Fault) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Fault) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1571,10 +1771,12 @@ func (x *Fault) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Fault.ProtoReflect.Descriptor instead.
 func (*Fault) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Fault) GetSubject() FaultSubject {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Subject
 	}
@@ -1582,6 +1784,7 @@ func (x *Fault) GetSubject() FaultSubject {
 }
 
 func (x *Fault) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1589,6 +1792,7 @@ func (x *Fault) GetId() string {
 }
 
 func (x *Fault) GetIteration() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Iteration
 	}
@@ -1605,6 +1809,7 @@ type Context struct {
 }
 
 func (x *Context) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Context{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[17]
@@ -1614,12 +1819,16 @@ func (x *Context) Reset() {
 }
 
 func (x *Context) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Context) ProtoMessage() {}
+func (*Context) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Context) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1633,10 +1842,12 @@ func (x *Context) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Context.ProtoReflect.Descriptor instead.
 func (*Context) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Context) GetFields() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fields
 	}
@@ -1644,6 +1855,7 @@ func (x *Context) GetFields() map[string]string {
 }
 
 func (x *Context) GetChannelMask() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ChannelMask
 	}
@@ -1665,6 +1877,7 @@ type Route struct {
 }
 
 func (x *Route) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Route{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[18]
@@ -1674,12 +1887,16 @@ func (x *Route) Reset() {
 }
 
 func (x *Route) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Route) ProtoMessage() {}
+func (*Route) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Route) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1693,10 +1910,12 @@ func (x *Route) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Route.ProtoReflect.Descriptor instead.
 func (*Route) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Route) GetCircuitId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CircuitId
 	}
@@ -1704,6 +1923,7 @@ func (x *Route) GetCircuitId() string {
 }
 
 func (x *Route) GetAttempt() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Attempt
 	}
@@ -1711,6 +1931,7 @@ func (x *Route) GetAttempt() uint32 {
 }
 
 func (x *Route) GetEgress() *Route_Egress {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Egress
 	}
@@ -1718,6 +1939,7 @@ func (x *Route) GetEgress() *Route_Egress {
 }
 
 func (x *Route) GetForwards() []*Route_Forward {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Forwards
 	}
@@ -1725,6 +1947,7 @@ func (x *Route) GetForwards() []*Route_Forward {
 }
 
 func (x *Route) GetContext() *Context {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Context
 	}
@@ -1732,6 +1955,7 @@ func (x *Route) GetContext() *Context {
 }
 
 func (x *Route) GetTimeout() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Timeout
 	}
@@ -1739,6 +1963,7 @@ func (x *Route) GetTimeout() uint64 {
 }
 
 func (x *Route) GetTags() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1755,6 +1980,7 @@ type Unroute struct {
 }
 
 func (x *Unroute) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Unroute{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[19]
@@ -1764,12 +1990,16 @@ func (x *Unroute) Reset() {
 }
 
 func (x *Unroute) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Unroute) ProtoMessage() {}
+func (*Unroute) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Unroute) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1783,10 +2013,12 @@ func (x *Unroute) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Unroute.ProtoReflect.Descriptor instead.
 func (*Unroute) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Unroute) GetCircuitId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CircuitId
 	}
@@ -1794,6 +2026,7 @@ func (x *Unroute) GetCircuitId() string {
 }
 
 func (x *Unroute) GetNow() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Now
 	}
@@ -1809,6 +2042,7 @@ type InspectRequest struct {
 }
 
 func (x *InspectRequest) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[20]
@@ -1818,12 +2052,16 @@ func (x *InspectRequest) Reset() {
 }
 
 func (x *InspectRequest) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectRequest) ProtoMessage() {}
+func (*InspectRequest) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectRequest) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1837,10 +2075,12 @@ func (x *InspectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectRequest.ProtoReflect.Descriptor instead.
 func (*InspectRequest) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *InspectRequest) GetRequestedValues() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequestedValues
 	}
@@ -1858,6 +2098,7 @@ type InspectResponse struct {
 }
 
 func (x *InspectResponse) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[21]
@@ -1867,12 +2108,16 @@ func (x *InspectResponse) Reset() {
 }
 
 func (x *InspectResponse) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectResponse) ProtoMessage() {}
+func (*InspectResponse) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectResponse) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1886,10 +2131,12 @@ func (x *InspectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectResponse.ProtoReflect.Descriptor instead.
 func (*InspectResponse) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *InspectResponse) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -1897,6 +2144,7 @@ func (x *InspectResponse) GetSuccess() bool {
 }
 
 func (x *InspectResponse) GetErrors() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Errors
 	}
@@ -1904,6 +2152,7 @@ func (x *InspectResponse) GetErrors() []string {
 }
 
 func (x *InspectResponse) GetValues() []*InspectResponse_InspectValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Values
 	}
@@ -1920,6 +2169,7 @@ type VerifyRouter struct {
 }
 
 func (x *VerifyRouter) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = VerifyRouter{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[22]
@@ -1929,12 +2179,16 @@ func (x *VerifyRouter) Reset() {
 }
 
 func (x *VerifyRouter) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*VerifyRouter) ProtoMessage() {}
+func (*VerifyRouter) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *VerifyRouter) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1948,10 +2202,12 @@ func (x *VerifyRouter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyRouter.ProtoReflect.Descriptor instead.
 func (*VerifyRouter) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *VerifyRouter) GetRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RouterId
 	}
@@ -1959,6 +2215,7 @@ func (x *VerifyRouter) GetRouterId() string {
 }
 
 func (x *VerifyRouter) GetFingerprints() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprints
 	}
@@ -1978,6 +2235,7 @@ type Listener struct {
 }
 
 func (x *Listener) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Listener{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[23]
@@ -1987,12 +2245,16 @@ func (x *Listener) Reset() {
 }
 
 func (x *Listener) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Listener) ProtoMessage() {}
+func (*Listener) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Listener) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2006,10 +2268,12 @@ func (x *Listener) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Listener.ProtoReflect.Descriptor instead.
 func (*Listener) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *Listener) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -2017,6 +2281,7 @@ func (x *Listener) GetAddress() string {
 }
 
 func (x *Listener) GetProtocol() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Protocol
 	}
@@ -2024,6 +2289,7 @@ func (x *Listener) GetProtocol() string {
 }
 
 func (x *Listener) GetCostTags() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CostTags
 	}
@@ -2031,6 +2297,7 @@ func (x *Listener) GetCostTags() []string {
 }
 
 func (x *Listener) GetGroups() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Groups
 	}
@@ -2038,6 +2305,7 @@ func (x *Listener) GetGroups() []string {
 }
 
 func (x *Listener) GetLocalBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LocalBinding
 	}
@@ -2053,6 +2321,7 @@ type Listeners struct {
 }
 
 func (x *Listeners) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Listeners{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[24]
@@ -2062,12 +2331,16 @@ func (x *Listeners) Reset() {
 }
 
 func (x *Listeners) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Listeners) ProtoMessage() {}
+func (*Listeners) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Listeners) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2081,10 +2354,12 @@ func (x *Listeners) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Listeners.ProtoReflect.Descriptor instead.
 func (*Listeners) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *Listeners) GetListeners() []*Listener {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Listeners
 	}
@@ -2102,6 +2377,7 @@ type UpdateCtrlAddresses struct {
 }
 
 func (x *UpdateCtrlAddresses) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateCtrlAddresses{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[25]
@@ -2111,12 +2387,16 @@ func (x *UpdateCtrlAddresses) Reset() {
 }
 
 func (x *UpdateCtrlAddresses) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateCtrlAddresses) ProtoMessage() {}
+func (*UpdateCtrlAddresses) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateCtrlAddresses) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2130,10 +2410,12 @@ func (x *UpdateCtrlAddresses) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCtrlAddresses.ProtoReflect.Descriptor instead.
 func (*UpdateCtrlAddresses) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *UpdateCtrlAddresses) GetAddresses() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Addresses
 	}
@@ -2141,6 +2423,7 @@ func (x *UpdateCtrlAddresses) GetAddresses() []string {
 }
 
 func (x *UpdateCtrlAddresses) GetIndex() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Index
 	}
@@ -2148,6 +2431,7 @@ func (x *UpdateCtrlAddresses) GetIndex() uint64 {
 }
 
 func (x *UpdateCtrlAddresses) GetIsLeader() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsLeader
 	}
@@ -2163,6 +2447,7 @@ type UpdateClusterLeader struct {
 }
 
 func (x *UpdateClusterLeader) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateClusterLeader{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[26]
@@ -2172,12 +2457,16 @@ func (x *UpdateClusterLeader) Reset() {
 }
 
 func (x *UpdateClusterLeader) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateClusterLeader) ProtoMessage() {}
+func (*UpdateClusterLeader) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateClusterLeader) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2191,10 +2480,12 @@ func (x *UpdateClusterLeader) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateClusterLeader.ProtoReflect.Descriptor instead.
 func (*UpdateClusterLeader) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *UpdateClusterLeader) GetIndex() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Index
 	}
@@ -2213,6 +2504,7 @@ type PeerStateChange struct {
 }
 
 func (x *PeerStateChange) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PeerStateChange{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[27]
@@ -2222,12 +2514,16 @@ func (x *PeerStateChange) Reset() {
 }
 
 func (x *PeerStateChange) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PeerStateChange) ProtoMessage() {}
+func (*PeerStateChange) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PeerStateChange) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2241,10 +2537,12 @@ func (x *PeerStateChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PeerStateChange.ProtoReflect.Descriptor instead.
 func (*PeerStateChange) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *PeerStateChange) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2252,6 +2550,7 @@ func (x *PeerStateChange) GetId() string {
 }
 
 func (x *PeerStateChange) GetVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Version
 	}
@@ -2259,6 +2558,7 @@ func (x *PeerStateChange) GetVersion() string {
 }
 
 func (x *PeerStateChange) GetState() PeerState {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.State
 	}
@@ -2266,6 +2566,7 @@ func (x *PeerStateChange) GetState() PeerState {
 }
 
 func (x *PeerStateChange) GetListeners() []*Listener {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Listeners
 	}
@@ -2281,6 +2582,7 @@ type PeerStateChanges struct {
 }
 
 func (x *PeerStateChanges) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PeerStateChanges{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[28]
@@ -2290,12 +2592,16 @@ func (x *PeerStateChanges) Reset() {
 }
 
 func (x *PeerStateChanges) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PeerStateChanges) ProtoMessage() {}
+func (*PeerStateChanges) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PeerStateChanges) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2309,10 +2615,12 @@ func (x *PeerStateChanges) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PeerStateChanges.ProtoReflect.Descriptor instead.
 func (*PeerStateChanges) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *PeerStateChanges) GetChanges() []*PeerStateChange {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Changes
 	}
@@ -2328,6 +2636,7 @@ type RouterMetadata struct {
 }
 
 func (x *RouterMetadata) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterMetadata{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[29]
@@ -2337,12 +2646,16 @@ func (x *RouterMetadata) Reset() {
 }
 
 func (x *RouterMetadata) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterMetadata) ProtoMessage() {}
+func (*RouterMetadata) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterMetadata) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2356,10 +2669,12 @@ func (x *RouterMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterMetadata.ProtoReflect.Descriptor instead.
 func (*RouterMetadata) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *RouterMetadata) GetCapabilities() []RouterCapability {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Capabilities
 	}
@@ -2380,6 +2695,7 @@ type RouterLinks_RouterLink struct {
 }
 
 func (x *RouterLinks_RouterLink) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = RouterLinks_RouterLink{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[35]
@@ -2389,12 +2705,16 @@ func (x *RouterLinks_RouterLink) Reset() {
 }
 
 func (x *RouterLinks_RouterLink) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RouterLinks_RouterLink) ProtoMessage() {}
+func (*RouterLinks_RouterLink) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *RouterLinks_RouterLink) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2408,10 +2728,12 @@ func (x *RouterLinks_RouterLink) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouterLinks_RouterLink.ProtoReflect.Descriptor instead.
 func (*RouterLinks_RouterLink) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{15, 0}
 }
 
 func (x *RouterLinks_RouterLink) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2419,6 +2741,7 @@ func (x *RouterLinks_RouterLink) GetId() string {
 }
 
 func (x *RouterLinks_RouterLink) GetDestRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DestRouterId
 	}
@@ -2426,6 +2749,7 @@ func (x *RouterLinks_RouterLink) GetDestRouterId() string {
 }
 
 func (x *RouterLinks_RouterLink) GetLinkProtocol() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkProtocol
 	}
@@ -2433,6 +2757,7 @@ func (x *RouterLinks_RouterLink) GetLinkProtocol() string {
 }
 
 func (x *RouterLinks_RouterLink) GetLinkCostTags() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LinkCostTags
 	}
@@ -2440,6 +2765,7 @@ func (x *RouterLinks_RouterLink) GetLinkCostTags() []string {
 }
 
 func (x *RouterLinks_RouterLink) GetDialAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DialAddress
 	}
@@ -2447,6 +2773,7 @@ func (x *RouterLinks_RouterLink) GetDialAddress() string {
 }
 
 func (x *RouterLinks_RouterLink) GetIteration() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Iteration
 	}
@@ -2465,6 +2792,7 @@ type Route_Egress struct {
 }
 
 func (x *Route_Egress) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Route_Egress{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[37]
@@ -2474,12 +2802,16 @@ func (x *Route_Egress) Reset() {
 }
 
 func (x *Route_Egress) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Route_Egress) ProtoMessage() {}
+func (*Route_Egress) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Route_Egress) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2493,10 +2825,12 @@ func (x *Route_Egress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Route_Egress.ProtoReflect.Descriptor instead.
 func (*Route_Egress) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{18, 0}
 }
 
 func (x *Route_Egress) GetBinding() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Binding
 	}
@@ -2504,6 +2838,7 @@ func (x *Route_Egress) GetBinding() string {
 }
 
 func (x *Route_Egress) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -2511,6 +2846,7 @@ func (x *Route_Egress) GetAddress() string {
 }
 
 func (x *Route_Egress) GetDestination() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Destination
 	}
@@ -2518,6 +2854,7 @@ func (x *Route_Egress) GetDestination() string {
 }
 
 func (x *Route_Egress) GetPeerData() map[uint32][]byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PeerData
 	}
@@ -2535,6 +2872,7 @@ type Route_Forward struct {
 }
 
 func (x *Route_Forward) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Route_Forward{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[38]
@@ -2544,12 +2882,16 @@ func (x *Route_Forward) Reset() {
 }
 
 func (x *Route_Forward) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Route_Forward) ProtoMessage() {}
+func (*Route_Forward) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Route_Forward) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2563,10 +2905,12 @@ func (x *Route_Forward) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Route_Forward.ProtoReflect.Descriptor instead.
 func (*Route_Forward) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{18, 1}
 }
 
 func (x *Route_Forward) GetSrcAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SrcAddress
 	}
@@ -2574,6 +2918,7 @@ func (x *Route_Forward) GetSrcAddress() string {
 }
 
 func (x *Route_Forward) GetDstAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DstAddress
 	}
@@ -2581,6 +2926,7 @@ func (x *Route_Forward) GetDstAddress() string {
 }
 
 func (x *Route_Forward) GetDstType() DestType {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DstType
 	}
@@ -2597,6 +2943,7 @@ type InspectResponse_InspectValue struct {
 }
 
 func (x *InspectResponse_InspectValue) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = InspectResponse_InspectValue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_ctrl_proto_msgTypes[41]
@@ -2606,12 +2953,16 @@ func (x *InspectResponse_InspectValue) Reset() {
 }
 
 func (x *InspectResponse_InspectValue) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InspectResponse_InspectValue) ProtoMessage() {}
+func (*InspectResponse_InspectValue) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *InspectResponse_InspectValue) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_ctrl_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2625,10 +2976,12 @@ func (x *InspectResponse_InspectValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InspectResponse_InspectValue.ProtoReflect.Descriptor instead.
 func (*InspectResponse_InspectValue) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_ctrl_proto_rawDescGZIP(), []int{21, 0}
 }
 
 func (x *InspectResponse_InspectValue) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2636,6 +2989,7 @@ func (x *InspectResponse_InspectValue) GetName() string {
 }
 
 func (x *InspectResponse_InspectValue) GetValue() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Value
 	}
@@ -3038,6 +3392,7 @@ var (
 )
 
 func file_ctrl_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_ctrl_proto_rawDescOnce.Do(func() {
 		file_ctrl_proto_rawDescData = protoimpl.X.CompressGZIP(file_ctrl_proto_rawDescData)
 	})
@@ -3134,8 +3489,12 @@ var file_ctrl_proto_depIdxs = []int32{
 	0,  // [0:27] is the sub-list for field type_name
 }
 
-func init() { file_ctrl_proto_init() }
+func init() { 
+	file_ctrl_proto_init()
+    logtrace.LogWithFunctionName()
+}
 func file_ctrl_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_ctrl_proto != nil {
 		return
 	}

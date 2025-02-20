@@ -22,11 +22,6 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/identity"
-	"ztna-core/ztna/controller/command"
-	"github.com/pkg/errors"
 	"net"
 	"net/url"
 	"os"
@@ -35,6 +30,13 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/openziti/identity"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -119,6 +121,7 @@ type HttpTimeouts struct {
 }
 
 func DefaultHttpTimeouts() *HttpTimeouts {
+	logtrace.LogWithFunctionName()
 	httpTimeouts := &HttpTimeouts{
 		ReadTimeoutDuration:       DefaultHttpReadTimeout,
 		ReadHeaderTimeoutDuration: DefaultHttpReadHeaderTimeout,
@@ -143,6 +146,7 @@ type IdentityStatusConfig struct {
 }
 
 func NewEdgeConfig() *EdgeConfig {
+	logtrace.LogWithFunctionName()
 	return &EdgeConfig{
 		Enabled: false,
 		caPems:  bytes.NewBuffer(nil),
@@ -150,10 +154,12 @@ func NewEdgeConfig() *EdgeConfig {
 }
 
 func (c *EdgeConfig) SessionTimeoutDuration() time.Duration {
+	logtrace.LogWithFunctionName()
 	return c.Api.SessionTimeout
 }
 
 func (c *EdgeConfig) CaPems() []byte {
+	logtrace.LogWithFunctionName()
 	c.caPemsOnce.Do(func() {
 		c.RefreshCas()
 	})
@@ -162,6 +168,7 @@ func (c *EdgeConfig) CaPems() []byte {
 }
 
 func (c *EdgeConfig) CaCerts() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	c.caPemsOnce.Do(func() {
 		c.RefreshCas()
 	})
@@ -173,16 +180,19 @@ func (c *EdgeConfig) CaCerts() []*x509.Certificate {
 // should be in PEM format separated by new lines. RefreshCas should be called after all
 // calls to AddCaPems are completed.
 func (c *EdgeConfig) AddCaPems(caPems []byte) {
+	logtrace.LogWithFunctionName()
 	c.caPems.WriteString("\n")
 	c.caPems.Write(caPems)
 }
 
 func (c *EdgeConfig) RefreshCas() {
+	logtrace.LogWithFunctionName()
 	c.caPems = CalculateCaPems(c.caPems)
 	c.caCerts = nfpem.PemBytesToCertificates(c.caPems.Bytes())
 }
 
 func (c *EdgeConfig) loadTotpSection(edgeConfigMap map[any]any) error {
+	logtrace.LogWithFunctionName()
 	c.Totp = Totp{}
 	c.Totp.Hostname = DefaultTotpDomain
 
@@ -224,6 +234,7 @@ func (c *EdgeConfig) loadTotpSection(edgeConfigMap map[any]any) error {
 }
 
 func (c *EdgeConfig) loadApiSection(edgeConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	c.Api = Api{}
 	c.Api.HttpTimeouts = *DefaultHttpTimeouts()
 	var err error
@@ -298,6 +309,7 @@ func (c *EdgeConfig) loadApiSection(edgeConfigMap map[interface{}]interface{}) e
 }
 
 func validateHostPortString(address string) error {
+	logtrace.LogWithFunctionName()
 	address = strings.TrimSpace(address)
 
 	if address == "" {
@@ -328,6 +340,7 @@ func validateHostPortString(address string) error {
 }
 
 func (c *EdgeConfig) loadEnrollmentSection(edgeConfigMap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	c.Enrollment = Enrollment{}
 	var err error
 
@@ -437,6 +450,7 @@ func (c *EdgeConfig) loadEnrollmentSection(edgeConfigMap map[interface{}]interfa
 }
 
 func (c *EdgeConfig) loadAuthRateLimiterConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	c.AuthRateLimiter.SetDefaults()
 
 	c.AuthRateLimiter.Enabled = DefaultAuthRateLimiterEnabled
@@ -474,6 +488,7 @@ func (c *EdgeConfig) loadAuthRateLimiterConfig(cfgmap map[interface{}]interface{
 }
 
 func (c *EdgeConfig) loadIdentityStatusConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	c.IdentityStatusConfig.ScanInterval = DefaultIdentityOnlineStatusScanInterval
 	c.IdentityStatusConfig.UnknownTimeout = DefaultIdentityOnlineStatusUnknownTimeout
 	c.IdentityStatusConfig.Source = DefaultIdentityOnlineStatusSource
@@ -525,6 +540,7 @@ func (c *EdgeConfig) loadIdentityStatusConfig(cfgmap map[interface{}]interface{}
 }
 
 func LoadEdgeConfigFromMap(configMap map[interface{}]interface{}) (*EdgeConfig, error) {
+	logtrace.LogWithFunctionName()
 	edgeConfig := NewEdgeConfig()
 
 	var edgeConfigMap map[interface{}]interface{}
@@ -571,6 +587,7 @@ func LoadEdgeConfigFromMap(configMap map[interface{}]interface{}) (*EdgeConfig, 
 // CalculateCaPems takes the supplied caPems buffer as a set of PEM Certificates separated by new lines. Duplicate
 // certificates are removed, and the result is returned as a bytes.Buffer of PEM Certificates separated by new lines.
 func CalculateCaPems(caPems *bytes.Buffer) *bytes.Buffer {
+	logtrace.LogWithFunctionName()
 	caPemMap := map[string][]byte{}
 
 	newCaPems := bytes.Buffer{}
@@ -628,6 +645,7 @@ func CalculateCaPems(caPems *bytes.Buffer) *bytes.Buffer {
 
 // toHex takes a byte array returns a hex formatted fingerprint
 func toHex(data []byte) string {
+	logtrace.LogWithFunctionName()
 	var buf bytes.Buffer
 	for i, b := range data {
 		if i > 0 {

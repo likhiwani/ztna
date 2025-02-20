@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 	"ztna-core/edge-api/rest_model"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/health"
 	"ztna-core/ztna/tunnel/utils"
@@ -38,18 +39,22 @@ type ServiceConfig struct {
 }
 
 func (self *ServiceConfig) GetPortChecks() []*health.PortCheckDefinition {
+	logtrace.LogWithFunctionName()
 	return self.PortChecks
 }
 
 func (self *ServiceConfig) GetHttpChecks() []*health.HttpCheckDefinition {
+	logtrace.LogWithFunctionName()
 	return self.HttpChecks
 }
 
 func (s *ServiceConfig) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v:%v:%v", s.Protocol, s.Hostname, s.Port)
 }
 
 func (self *ServiceConfig) ToInterceptV1Config() *InterceptV1Config {
+	logtrace.LogWithFunctionName()
 	return &InterceptV1Config{
 		Protocols:  []string{"tcp", "udp"},
 		Addresses:  []string{self.Hostname},
@@ -58,6 +63,7 @@ func (self *ServiceConfig) ToInterceptV1Config() *InterceptV1Config {
 }
 
 func (self *ServiceConfig) ToHostV2Config() *HostV2Config {
+	logtrace.LogWithFunctionName()
 	terminator := &HostV1Config{
 		Protocol:   self.Protocol,
 		Address:    self.Hostname,
@@ -105,6 +111,7 @@ type HostV1Config struct {
 }
 
 func (self *HostV1Config) ToHostV2Config() *HostV2Config {
+	logtrace.LogWithFunctionName()
 	return &HostV2Config{
 		Terminators: []*HostV1Config{
 			self,
@@ -132,6 +139,7 @@ type cidrAddress struct {
 }
 
 func (self *cidrAddress) Allows(addr interface{}) bool {
+	logtrace.LogWithFunctionName()
 	if ip, ok := addr.(net.IP); ok {
 		return self.cidr.Contains(ip)
 	}
@@ -143,6 +151,7 @@ type hostnameAddress struct {
 }
 
 func (self *hostnameAddress) Allows(addr interface{}) bool {
+	logtrace.LogWithFunctionName()
 	host, ok := addr.(string)
 	return ok && strings.ToLower(host) == self.hostname
 }
@@ -152,12 +161,14 @@ type domainAddress struct {
 }
 
 func (self *domainAddress) Allows(addr interface{}) bool {
+	logtrace.LogWithFunctionName()
 	host, ok := addr.(string)
 	host = strings.ToLower(host)
 	return ok && (self.domain == "*" || (strings.HasSuffix(host, self.domain[1:]) || host == self.domain[2:]))
 }
 
 func makeAllowedAddress(addr string) (allowedAddress, error) {
+	logtrace.LogWithFunctionName()
 	if addr[0] == '*' {
 		if len(addr) != 1 && (len(addr) < 3 || addr[1] != '.') {
 			return nil, errors.Errorf("invalid domain[%s]", addr)
@@ -178,6 +189,7 @@ type ProxyConfiguration struct {
 }
 
 func (self *HostV1Config) GetDialTimeout(defaultTimeout time.Duration) time.Duration {
+	logtrace.LogWithFunctionName()
 	if self.ListenOptions != nil {
 		if self.ListenOptions.ConnectTimeout != nil {
 			return *self.ListenOptions.ConnectTimeout
@@ -190,6 +202,7 @@ func (self *HostV1Config) GetDialTimeout(defaultTimeout time.Duration) time.Dura
 }
 
 func (self *HostV1Config) GetAllowedAddresses() []allowedAddress {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	if self.allowedAddrs != nil {
 		return self.allowedAddrs
@@ -207,14 +220,17 @@ func (self *HostV1Config) GetAllowedAddresses() []allowedAddress {
 }
 
 func (self *HostV1Config) GetPortChecks() []*health.PortCheckDefinition {
+	logtrace.LogWithFunctionName()
 	return self.PortChecks
 }
 
 func (self *HostV1Config) GetHttpChecks() []*health.HttpCheckDefinition {
+	logtrace.LogWithFunctionName()
 	return self.HttpChecks
 }
 
 func (self *HostV1Config) getValue(options map[string]interface{}, key string) (string, error) {
+	logtrace.LogWithFunctionName()
 	val, ok := options[key]
 	if !ok {
 		return "", errors.Errorf("%v required but not provided", key)
@@ -227,6 +243,7 @@ func (self *HostV1Config) getValue(options map[string]interface{}, key string) (
 }
 
 func (self *HostV1Config) GetProtocol(options map[string]interface{}) (string, error) {
+	logtrace.LogWithFunctionName()
 	if self.ForwardProtocol {
 		protocol, err := self.getValue(options, tunnel.DestinationProtocolKey)
 		if err != nil {
@@ -241,6 +258,7 @@ func (self *HostV1Config) GetProtocol(options map[string]interface{}) (string, e
 }
 
 func (self *HostV1Config) GetAddress(options map[string]interface{}) (string, error) {
+	logtrace.LogWithFunctionName()
 	if self.ForwardAddress {
 		allowedAddresses := self.GetAllowedAddresses()
 
@@ -269,6 +287,7 @@ func (self *HostV1Config) GetAddress(options map[string]interface{}) (string, er
 }
 
 func (self *HostV1Config) GetPort(options map[string]interface{}) (string, error) {
+	logtrace.LogWithFunctionName()
 	if self.ForwardPort {
 		portStr, err := self.getValue(options, tunnel.DestinationPortKey)
 		if err != nil {
@@ -289,6 +308,7 @@ func (self *HostV1Config) GetPort(options map[string]interface{}) (string, error
 }
 
 func (self *HostV1Config) GetAllowedSourceAddressRoutes() ([]*net.IPNet, error) {
+	logtrace.LogWithFunctionName()
 	var routes []*net.IPNet
 	for _, addr := range self.AllowedSourceAddresses {
 		// need to get CIDR from address - iputils.getInterceptIp?
@@ -339,6 +359,7 @@ type Service struct {
 }
 
 func (self *Service) GetConfigOfType(configType string, target interface{}) (bool, error) {
+	logtrace.LogWithFunctionName()
 	configMap, found := self.Config[configType]
 	if !found {
 		pfxlog.Logger().Debugf("no service config of type %v defined for service %v", configType, *self.Name)
@@ -359,16 +380,19 @@ func (self *Service) GetConfigOfType(configType string, target interface{}) (boo
 }
 
 func (self *Service) GetFabricProvider() tunnel.FabricProvider {
+	logtrace.LogWithFunctionName()
 	return self.FabricProvider
 }
 
 func (self *Service) AddCleanupAction(f func()) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	self.cleanupActions = append(self.cleanupActions, f)
 }
 
 func (self *Service) RunCleanupActions() {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -380,6 +404,7 @@ func (self *Service) RunCleanupActions() {
 }
 
 func (self *Service) GetSourceAddr(sourceAddr net.Addr, destAddr net.Addr) string {
+	logtrace.LogWithFunctionName()
 	if self.SourceAddrProvider == nil {
 		return ""
 	}
@@ -387,18 +412,22 @@ func (self *Service) GetSourceAddr(sourceAddr net.Addr, destAddr net.Addr) strin
 }
 
 func (self *Service) GetName() string {
+	logtrace.LogWithFunctionName()
 	return *self.ServiceDetail.Name
 }
 
 func (self *Service) GetId() string {
+	logtrace.LogWithFunctionName()
 	return *self.ServiceDetail.ID
 }
 
 func (self *Service) GetDialTimeout() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.DialTimeout
 }
 
 func (self *Service) GetDialIdentity(sourceAddr net.Addr, destAddr net.Addr) string {
+	logtrace.LogWithFunctionName()
 	if self.DialIdentityProvider == nil {
 		return ""
 	}
@@ -406,6 +435,7 @@ func (self *Service) GetDialIdentity(sourceAddr net.Addr, destAddr net.Addr) str
 }
 
 func (self *Service) GetSourceIpTemplate() string {
+	logtrace.LogWithFunctionName()
 	if self.InterceptV1Config == nil {
 		return ""
 	}
@@ -416,6 +446,7 @@ func (self *Service) GetSourceIpTemplate() string {
 }
 
 func (self *Service) GetDialIdentityTemplate() string {
+	logtrace.LogWithFunctionName()
 	if self.InterceptV1Config == nil {
 		return ""
 	}
@@ -429,5 +460,6 @@ func (self *Service) GetDialIdentityTemplate() string {
 }
 
 func (self *Service) IsEncryptionRequired() bool {
+	logtrace.LogWithFunctionName()
 	return genext.OrDefault(self.EncryptionRequired)
 }

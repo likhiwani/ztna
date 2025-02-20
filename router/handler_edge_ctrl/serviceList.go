@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
@@ -15,16 +16,19 @@ type ServiceListHandler struct {
 }
 
 func NewServiceListHandler(handler func(ch channel.Channel, lastUpdateToken []byte, list []*rest_model.ServiceDetail)) *ServiceListHandler {
+	logtrace.LogWithFunctionName()
 	return &ServiceListHandler{
 		handler: handler,
 	}
 }
 
 func (self *ServiceListHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_ServiceListType)
 }
 
 func (self *ServiceListHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	serviceList := &edge_ctrl_pb.ServicesList{}
 	if err := proto.Unmarshal(msg.Body, serviceList); err == nil {
 		logrus.Debugf("received services list with %v entries", len(serviceList.Services))
@@ -35,6 +39,7 @@ func (self *ServiceListHandler) HandleReceive(msg *channel.Message, ch channel.C
 }
 
 func (self *ServiceListHandler) handleServicesList(ch channel.Channel, list *edge_ctrl_pb.ServicesList) {
+	logtrace.LogWithFunctionName()
 	var serviceList []*rest_model.ServiceDetail
 
 	for _, entry := range list.Services {

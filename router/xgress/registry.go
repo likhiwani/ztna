@@ -18,6 +18,7 @@ package xgress
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 )
 
 type registry struct {
@@ -25,16 +26,19 @@ type registry struct {
 }
 
 func NewRegistry() *registry {
+	logtrace.LogWithFunctionName()
 	return &registry{
 		factories: make(map[string]Factory),
 	}
 }
 
 func (registry *registry) Register(name string, factory Factory) {
+	logtrace.LogWithFunctionName()
 	registry.factories[name] = factory
 }
 
 func (registry *registry) Factory(name string) (Factory, error) {
+	logtrace.LogWithFunctionName()
 	if factory, found := registry.factories[name]; found {
 		return factory, nil
 	} else {
@@ -43,6 +47,7 @@ func (registry *registry) Factory(name string) (Factory, error) {
 }
 
 func (registry *registry) List() []string {
+	logtrace.LogWithFunctionName()
 	names := make([]string, 0)
 	for k := range registry.factories {
 		names = append(names, k)
@@ -51,6 +56,7 @@ func (registry *registry) List() []string {
 }
 
 func (registry *registry) Debug() string {
+	logtrace.LogWithFunctionName()
 	out := "{"
 	for _, name := range registry.List() {
 		out += " " + name
@@ -62,6 +68,7 @@ func (registry *registry) Debug() string {
 var globalRegistry *registry
 
 func GlobalRegistry() *registry {
+	logtrace.LogWithFunctionName()
 	if globalRegistry == nil {
 		globalRegistry = NewRegistry()
 	}

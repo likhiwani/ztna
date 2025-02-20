@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type APIErrorEnvelope struct {
 
 // Validate validates this api error envelope
 func (m *APIErrorEnvelope) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateError(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *APIErrorEnvelope) Validate(formats strfmt.Registry) error {
 }
 
 func (m *APIErrorEnvelope) validateError(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("error", "body", m.Error); err != nil {
 		return err
@@ -91,6 +94,7 @@ func (m *APIErrorEnvelope) validateError(formats strfmt.Registry) error {
 }
 
 func (m *APIErrorEnvelope) validateMeta(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("meta", "body", m.Meta); err != nil {
 		return err
@@ -112,6 +116,7 @@ func (m *APIErrorEnvelope) validateMeta(formats strfmt.Registry) error {
 
 // ContextValidate validate this api error envelope based on the context it is used
 func (m *APIErrorEnvelope) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateError(ctx, formats); err != nil {
@@ -129,6 +134,7 @@ func (m *APIErrorEnvelope) ContextValidate(ctx context.Context, formats strfmt.R
 }
 
 func (m *APIErrorEnvelope) contextValidateError(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Error != nil {
 		if err := m.Error.ContextValidate(ctx, formats); err != nil {
@@ -145,6 +151,7 @@ func (m *APIErrorEnvelope) contextValidateError(ctx context.Context, formats str
 }
 
 func (m *APIErrorEnvelope) contextValidateMeta(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Meta != nil {
 		if err := m.Meta.ContextValidate(ctx, formats); err != nil {
@@ -162,6 +169,7 @@ func (m *APIErrorEnvelope) contextValidateMeta(ctx context.Context, formats strf
 
 // MarshalBinary interface implementation
 func (m *APIErrorEnvelope) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -170,6 +178,7 @@ func (m *APIErrorEnvelope) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *APIErrorEnvelope) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res APIErrorEnvelope
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

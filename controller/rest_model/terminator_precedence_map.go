@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -43,6 +44,7 @@ type TerminatorPrecedenceMap map[string]TerminatorPrecedence
 
 // Validate validates this terminator precedence map
 func (m TerminatorPrecedenceMap) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {
@@ -68,6 +70,7 @@ func (m TerminatorPrecedenceMap) Validate(formats strfmt.Registry) error {
 
 // ContextValidate validate this terminator precedence map based on the context it is used
 func (m TerminatorPrecedenceMap) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {

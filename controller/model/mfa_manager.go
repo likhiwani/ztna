@@ -20,10 +20,7 @@ import (
 	"crypto/rand"
 	"encoding/base32"
 	"fmt"
-	"github.com/dgryski/dgoogauth"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
@@ -31,11 +28,16 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/dgryski/dgoogauth"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"github.com/skip2/go-qrcode"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 const (
@@ -43,6 +45,7 @@ const (
 )
 
 func NewMfaManager(env Env) *MfaManager {
+	logtrace.LogWithFunctionName()
 	manager := &MfaManager{
 		baseEntityManager: newBaseEntityManager[*Mfa, *db.Mfa](env, env.GetStores().Mfa),
 	}
@@ -58,10 +61,12 @@ type MfaManager struct {
 }
 
 func (self *MfaManager) newModelEntity() *Mfa {
+	logtrace.LogWithFunctionName()
 	return &Mfa{}
 }
 
 func (self *MfaManager) CreateForIdentityId(identityId string, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	identity, err := self.env.GetManagers().Identity.Read(identityId)
 
 	if err != nil {
@@ -72,6 +77,7 @@ func (self *MfaManager) CreateForIdentityId(identityId string, ctx *change.Conte
 }
 
 func (self *MfaManager) CreateForIdentity(identity *Identity, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	secretBytes := make([]byte, 10)
 	_, _ = rand.Read(secretBytes)
 	secret := base32.StdEncoding.EncodeToString(secretBytes)
@@ -98,10 +104,12 @@ func (self *MfaManager) CreateForIdentity(identity *Identity, ctx *change.Contex
 }
 
 func (self *MfaManager) Create(entity *Mfa, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Mfa](self, entity, ctx)
 }
 
 func (self *MfaManager) ApplyCreate(cmd *command.CreateEntityCommand[*Mfa], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		result := &MfaListResult{manager: self}
 		err := self.ListWithTx(ctx.Tx(), fmt.Sprintf(`identity = "%s"`, cmd.Entity.IdentityId), result.collect)
@@ -121,10 +129,12 @@ func (self *MfaManager) ApplyCreate(cmd *command.CreateEntityCommand[*Mfa], ctx 
 }
 
 func (self *MfaManager) Update(entity *Mfa, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Mfa](self, entity, checker, ctx)
 }
 
 func (self *MfaManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Mfa], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = self
 	if cmd.UpdatedFields != nil {
 		checker = &AndFieldChecker{first: self, second: cmd.UpdatedFields}
@@ -133,10 +143,12 @@ func (self *MfaManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Mfa], ctx 
 }
 
 func (self *MfaManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return field == db.FieldMfaIsVerified || field == db.FieldMfaRecoveryCodes
 }
 
 func (self *MfaManager) Query(query string) (*MfaListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &MfaListResult{manager: self}
 	err := self.ListWithHandler(query, result.collect)
 	if err != nil {
@@ -146,6 +158,7 @@ func (self *MfaManager) Query(query string) (*MfaListResult, error) {
 }
 
 func (self *MfaManager) ReadOneByIdentityId(identityId string) (*Mfa, error) {
+	logtrace.LogWithFunctionName()
 	query := fmt.Sprintf(`identity = "%s"`, identityId)
 
 	resultList, err := self.Query(query)
@@ -166,6 +179,7 @@ func (self *MfaManager) ReadOneByIdentityId(identityId string) (*Mfa, error) {
 }
 
 func (self *MfaManager) Verify(mfa *Mfa, code string, ctx *change.Context) (bool, error) {
+	logtrace.LogWithFunctionName()
 	//check recovery codes
 	for i, recoveryCode := range mfa.RecoveryCodes {
 		if recoveryCode == code {
@@ -182,6 +196,7 @@ func (self *MfaManager) Verify(mfa *Mfa, code string, ctx *change.Context) (bool
 
 // VerifyTOTP verifies TOTP values only, not recovery codes
 func (self *MfaManager) VerifyTOTP(mfa *Mfa, code string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	otp := dgoogauth.OTPConfig{
 		Secret:     mfa.Secret,
 		WindowSize: WindowSizeTOTP,
@@ -192,6 +207,7 @@ func (self *MfaManager) VerifyTOTP(mfa *Mfa, code string) (bool, error) {
 }
 
 func (self *MfaManager) DeleteForIdentity(identity *Identity, code string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	mfa, err := self.ReadOneByIdentityId(identity.Id)
 
 	if err != nil {
@@ -219,6 +235,7 @@ func (self *MfaManager) DeleteForIdentity(identity *Identity, code string, ctx *
 }
 
 func (self *MfaManager) QrCodePng(mfa *Mfa) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if mfa.IsVerified {
 		return nil, fmt.Errorf("MFA is already verified")
 	}
@@ -229,6 +246,7 @@ func (self *MfaManager) QrCodePng(mfa *Mfa) ([]byte, error) {
 }
 
 func (self *MfaManager) GetProvisioningUrl(mfa *Mfa) string {
+	logtrace.LogWithFunctionName()
 	otcConfig := &dgoogauth.OTPConfig{
 		Secret:     mfa.Secret,
 		WindowSize: WindowSizeTOTP,
@@ -238,6 +256,7 @@ func (self *MfaManager) GetProvisioningUrl(mfa *Mfa) string {
 }
 
 func (self *MfaManager) RecreateRecoveryCodes(mfa *Mfa, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	newCodes, err := self.generateRecoveryCodes()
 	if err != nil {
 		return err
@@ -249,6 +268,7 @@ func (self *MfaManager) RecreateRecoveryCodes(mfa *Mfa, ctx *change.Context) err
 }
 
 func (self *MfaManager) generateRecoveryCodes() ([]string, error) {
+	logtrace.LogWithFunctionName()
 	recoveryCodes := []string{}
 
 	for i := 0; i < 20; i++ {
@@ -265,6 +285,7 @@ func (self *MfaManager) generateRecoveryCodes() ([]string, error) {
 }
 
 func (self *MfaManager) Marshall(entity *Mfa) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -283,6 +304,7 @@ func (self *MfaManager) Marshall(entity *Mfa) ([]byte, error) {
 }
 
 func (self *MfaManager) Unmarshall(bytes []byte) (*Mfa, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Mfa{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -308,12 +330,14 @@ func (self *MfaManager) Unmarshall(bytes []byte) (*Mfa, error) {
 
 // DeleteAllForIdentity is meant for administrators to remove all MFAs (enrolled or not) from an identity
 func (self *MfaManager) DeleteAllForIdentity(id string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().Update(ctx.NewMutateContext(), func(ctx boltz.MutateContext) error {
 		return self.Store.DeleteWhere(ctx, fmt.Sprintf("identity = \"%s\"", id))
 	})
 }
 
 func (self *MfaManager) CompleteTotpEnrollment(identityId string, code string, changeCtx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	mfa, err := self.ReadOneByIdentityId(identityId)
 
 	if err != nil {
@@ -351,6 +375,7 @@ type MfaListResult struct {
 }
 
 func (result *MfaListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		Mfa, err := result.manager.readInTx(tx, key)

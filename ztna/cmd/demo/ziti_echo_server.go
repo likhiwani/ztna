@@ -21,8 +21,10 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/fatih/color"
 	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/fatih/color"
 )
 
 type zitiEchoServer struct {
@@ -31,6 +33,7 @@ type zitiEchoServer struct {
 }
 
 func (s *zitiEchoServer) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	input := r.URL.Query().Get("input")
 	result := fmt.Sprintf("As you say, '%v', indeed!\n", input)
 	c := color.New(color.FgGreen, color.Bold)
@@ -42,6 +45,7 @@ func (s *zitiEchoServer) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (s *zitiEchoServer) run() (err error) {
+	logtrace.LogWithFunctionName()
 	config, err := ziti.NewConfigFromFile(s.identityJson)
 	if err != nil {
 		return err
@@ -65,5 +69,6 @@ func (s *zitiEchoServer) run() (err error) {
 }
 
 func (s *zitiEchoServer) stop() error {
+	logtrace.LogWithFunctionName()
 	return s.listener.Close()
 }

@@ -18,6 +18,7 @@ package model
 
 import (
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type PostureResponseMac struct {
@@ -26,6 +27,7 @@ type PostureResponseMac struct {
 }
 
 func (pr *PostureResponseMac) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 	var cleanedAddresses []string
 	for _, address := range pr.Addresses {
 		cleanedAddresses = append(cleanedAddresses, CleanHexString(address))

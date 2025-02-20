@@ -22,16 +22,19 @@ import (
 	"strings"
 
 	"ztna-core/ztna/common/getziti"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/constants"
 
 	"github.com/fatih/color"
 
-	"github.com/blang/semver"
 	"ztna-core/ztna/common/version"
+
+	"github.com/blang/semver"
 	"github.com/michaelquigley/pfxlog"
 )
 
 func LogReleaseVersionCheck(zitiComponent string) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	if strings.ToLower(os.Getenv("ZITI_CHECK_VERSION")) == "true" {
 		logger.Debug("ZITI_CHECK_VERSION is true. starting version check")

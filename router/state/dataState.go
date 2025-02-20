@@ -1,11 +1,13 @@
 package state
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	controllerEnv "ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -14,16 +16,19 @@ type DataStateHandler struct {
 }
 
 func NewDataStateHandler(state Manager) *DataStateHandler {
+	logtrace.LogWithFunctionName()
 	return &DataStateHandler{
 		state: state,
 	}
 }
 
 func (*DataStateHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return controllerEnv.DataStateType
 }
 
 func (self *DataStateHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("ctrlId", ch.Id())
 	currentCtrlId := self.state.GetCurrentDataModelSource()
 

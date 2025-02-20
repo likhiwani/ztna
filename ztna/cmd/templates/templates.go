@@ -19,6 +19,7 @@ package templates
 import (
 	"strings"
 	"unicode"
+	"ztna-core/ztna/logtrace"
 )
 
 const (
@@ -65,11 +66,13 @@ const (
 
 // MainHelpTemplate if the template for 'help' used by most commands.
 func MainHelpTemplate() string {
+	logtrace.LogWithFunctionName()
 	return `{{with or .Long .Short }}{{. | trim}}{{end}}{{if or .Runnable .HasSubCommands}}{{.UsageString}}{{end}}`
 }
 
 // MainUsageTemplate if the template for 'usage' used by most commands.
 func MainUsageTemplate() string {
+	logtrace.LogWithFunctionName()
 	sections := []string{
 		"\n\n",
 		SectionVars,
@@ -86,11 +89,13 @@ func MainUsageTemplate() string {
 
 // OptionsHelpTemplate if the template for 'help' used by the 'options' command.
 func OptionsHelpTemplate() string {
+	logtrace.LogWithFunctionName()
 	return ""
 }
 
 // OptionsUsageTemplate if the template for 'usage' used by the 'options' command.
 func OptionsUsageTemplate() string {
+	logtrace.LogWithFunctionName()
 	return `{{ if .HasInheritedFlags}}The following options can be passed to any command:
 {{flagsUsages .InheritedFlags}}{{end}}`
 }

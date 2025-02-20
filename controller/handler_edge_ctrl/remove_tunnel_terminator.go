@@ -17,10 +17,12 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,6 +31,7 @@ type removeTunnelTerminatorHandler struct {
 }
 
 func NewRemoveTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &removeTunnelTerminatorHandler{
 		baseRequestHandler{
 			ch:     ch,
@@ -38,14 +41,17 @@ func NewRemoveTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) ch
 }
 
 func (self *removeTunnelTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_RemoveTunnelTerminatorRequestType)
 }
 
 func (self *removeTunnelTerminatorHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.remove.terminator"
 }
 
 func (self *removeTunnelTerminatorHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctx := &RemoveTunnelTerminatorRequestContext{
 		baseSessionRequestContext: baseSessionRequestContext{handler: self, msg: msg, env: self.appEnv},
 		terminatorId:              string(msg.Body),
@@ -55,6 +61,7 @@ func (self *removeTunnelTerminatorHandler) HandleReceive(msg *channel.Message, _
 }
 
 func (self *removeTunnelTerminatorHandler) RemoveTerminator(ctx *RemoveTunnelTerminatorRequestContext) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.WithField("routerId", self.ch.Id()).WithField("terminatorId", ctx.terminatorId)
 
 	if !ctx.loadRouter() {

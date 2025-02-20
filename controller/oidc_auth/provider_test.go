@@ -1,11 +1,14 @@
 package oidc_auth
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_GetHandledHostNames(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("localhost:443 returns all local addresses and supports implicit 443 port", func(t *testing.T) {
 		result := getHandledHostnames("localhost:443")

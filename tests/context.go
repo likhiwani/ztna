@@ -30,6 +30,7 @@ import (
 	"testing"
 	"time"
 	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zitirest"
 
 	edge_apis "ztna-core/sdk-golang/edge-apis"
@@ -57,6 +58,10 @@ import (
 	"ztna-core/ztna/router/xgress_edge"
 	"ztna-core/ztna/router/xgress_edge_tunnel"
 
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	sdkEnroll "ztna-core/sdk-golang/ziti/enroll"
+
 	"github.com/Jeffail/gabs"
 	"github.com/go-openapi/strfmt"
 	"github.com/google/uuid"
@@ -68,9 +73,6 @@ import (
 	"github.com/openziti/foundation/v2/versions"
 	idlib "github.com/openziti/identity"
 	"github.com/openziti/identity/certtools"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	sdkEnroll "ztna-core/sdk-golang/ziti/enroll"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
 	"github.com/openziti/transport/v2/tls"
@@ -88,6 +90,7 @@ const (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	pfxlog.GlobalInit(logrus.DebugLevel, pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").StartingToday())
 
 	_ = os.Setenv("ZITI_TRACE_ENABLED", "false")
@@ -97,28 +100,34 @@ func init() {
 }
 
 func ToPtr[T any](in T) *T {
+	logtrace.LogWithFunctionName()
 	return &in
 }
 
 func S(s string) *string {
+	logtrace.LogWithFunctionName()
 	return &s
 }
 
 func B(b bool) *bool {
+	logtrace.LogWithFunctionName()
 	return &b
 }
 
 func I(i int64) *int64 {
+	logtrace.LogWithFunctionName()
 	return &i
 }
 
 func T(t time.Time) *time.Time {
+	logtrace.LogWithFunctionName()
 	return &t
 }
 
 // ST returns a pointer to a strfmt.Date time. A helper function
 // for creating rest_model types
 func ST(t time.Time) *strfmt.DateTime {
+	logtrace.LogWithFunctionName()
 	st := strfmt.DateTime(t)
 	return &st
 }
@@ -153,6 +162,7 @@ var defaultTestContext = &TestContext{
 }
 
 func NewTestContext(t *testing.T) *TestContext {
+	logtrace.LogWithFunctionName()
 	ret := &TestContext{
 		ApiHost: "127.0.0.1:1281",
 		AdminAuthenticator: &updbAuthenticator{
@@ -169,6 +179,7 @@ func NewTestContext(t *testing.T) *TestContext {
 }
 
 func GetTestContext() *TestContext {
+	logtrace.LogWithFunctionName()
 	return defaultTestContext
 }
 
@@ -176,20 +187,24 @@ func GetTestContext() *TestContext {
 // level tests. Necessary because using the wrong *testing.T will cause go test library
 // errors.
 func (ctx *TestContext) testContextChanged(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.testing = t
 	ctx.Req = require.New(t)
 	ctx.Assertions = ctx.Req
 }
 
 func (ctx *TestContext) T() *testing.T {
+	logtrace.LogWithFunctionName()
 	return ctx.testing
 }
 
 func (ctx *TestContext) NewTransport() *http.Transport {
+	logtrace.LogWithFunctionName()
 	return ctx.NewTransportWithClientCert(nil, nil)
 }
 
 func (ctx *TestContext) ClientApiUrl() *url.URL {
+	logtrace.LogWithFunctionName()
 	clientApiUrl, err := url.Parse("https://" + ctx.ApiHost + EdgeClientApiPath)
 
 	if err != nil {
@@ -199,6 +214,7 @@ func (ctx *TestContext) ClientApiUrl() *url.URL {
 }
 
 func (ctx *TestContext) ManagementApiUrl() *url.URL {
+	logtrace.LogWithFunctionName()
 	manApiUrl, err := url.Parse("https://" + ctx.ApiHost + EdgeManagementApiPath)
 
 	if err != nil {
@@ -208,10 +224,12 @@ func (ctx *TestContext) ManagementApiUrl() *url.URL {
 }
 
 func (ctx *TestContext) ControllerCaPool() *x509.CertPool {
+	logtrace.LogWithFunctionName()
 	return ctx.ControllerConfig.Id.CA()
 }
 
 func (ctx *TestContext) NewEdgeClientApi(totpProvider func(chan string)) *edge_apis.ClientApiClient {
+	logtrace.LogWithFunctionName()
 	if totpProvider == nil {
 		totpProvider = func(chan string) {}
 	}
@@ -219,6 +237,7 @@ func (ctx *TestContext) NewEdgeClientApi(totpProvider func(chan string)) *edge_a
 }
 
 func (ctx *TestContext) NewEdgeManagementApi(totpProvider func(chan string)) *edge_apis.ManagementApiClient {
+	logtrace.LogWithFunctionName()
 	if totpProvider == nil {
 		totpProvider = func(chan string) {}
 	}
@@ -226,6 +245,7 @@ func (ctx *TestContext) NewEdgeManagementApi(totpProvider func(chan string)) *ed
 }
 
 func (ctx *TestContext) NewTransportWithIdentity(i idlib.Identity) *http.Transport {
+	logtrace.LogWithFunctionName()
 	return &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
@@ -242,6 +262,7 @@ func (ctx *TestContext) NewTransportWithIdentity(i idlib.Identity) *http.Transpo
 }
 
 func (ctx *TestContext) NewTransportWithClientCert(cert *x509.Certificate, privateKey crypto.PrivateKey) *http.Transport {
+	logtrace.LogWithFunctionName()
 	// #nosec
 	tlsClientConfig := &cryptoTls.Config{
 		InsecureSkipVerify: true,
@@ -269,6 +290,7 @@ func (ctx *TestContext) NewTransportWithClientCert(cert *x509.Certificate, priva
 }
 
 func (ctx *TestContext) NewHttpClient(transport *http.Transport) *http.Client {
+	logtrace.LogWithFunctionName()
 	jar, err := cookiejar.New(nil)
 	ctx.Req.NoError(err)
 
@@ -281,14 +303,17 @@ func (ctx *TestContext) NewHttpClient(transport *http.Transport) *http.Client {
 }
 
 func (ctx *TestContext) NewRestClientWithDefaults() *resty.Client {
+	logtrace.LogWithFunctionName()
 	return resty.NewWithClient(ctx.NewHttpClient(ctx.NewTransport()))
 }
 
 func (ctx *TestContext) NewRestClient(i idlib.Identity) *resty.Client {
+	logtrace.LogWithFunctionName()
 	return resty.NewWithClient(ctx.NewHttpClient(ctx.NewTransportWithIdentity(i)))
 }
 
 func (ctx *TestContext) DefaultClientApiClient() *resty.Client {
+	logtrace.LogWithFunctionName()
 	if ctx.clientApiClient == nil {
 		ctx.clientApiClient, _, _ = ctx.NewClientComponents(EdgeClientApiPath)
 		ctx.clientApiClient.AllowGetMethodPayload = true
@@ -297,6 +322,7 @@ func (ctx *TestContext) DefaultClientApiClient() *resty.Client {
 }
 
 func (ctx *TestContext) DefaultManagementApiClient() *resty.Client {
+	logtrace.LogWithFunctionName()
 	if ctx.managementApiClient == nil {
 		ctx.managementApiClient, _, _ = ctx.NewClientComponents(EdgeManagementApiPath)
 		ctx.managementApiClient.AllowGetMethodPayload = true
@@ -305,6 +331,7 @@ func (ctx *TestContext) DefaultManagementApiClient() *resty.Client {
 }
 
 func (ctx *TestContext) NewClientComponents(apiPath string) (*resty.Client, *http.Client, *http.Transport) {
+	logtrace.LogWithFunctionName()
 	clientTransport := ctx.NewTransport()
 	httpClient := ctx.NewHttpClient(clientTransport)
 	client := resty.NewWithClient(httpClient)
@@ -329,6 +356,7 @@ func (ctx *TestContext) NewClientComponents(apiPath string) (*resty.Client, *htt
 }
 
 func (ctx *TestContext) NewWsMgmtChannel(bindHandler channel.BindHandler) (channel.Channel, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	wsUrl := "wss://" + ctx.ApiHost + "/fabric/v1/ws-api"
@@ -365,6 +393,7 @@ func (ctx *TestContext) NewWsMgmtChannel(bindHandler channel.BindHandler) (chann
 }
 
 func (ctx *TestContext) NewClientComponentsWithClientCert(cert *x509.Certificate, privateKey crypto.PrivateKey) (*resty.Client, *http.Client, *http.Transport) {
+	logtrace.LogWithFunctionName()
 	clientTransport := ctx.NewTransportWithClientCert(cert, privateKey)
 	httpClient := ctx.NewHttpClient(clientTransport)
 	client := resty.NewWithClient(httpClient)
@@ -376,10 +405,12 @@ func (ctx *TestContext) NewClientComponentsWithClientCert(cert *x509.Certificate
 }
 
 func (ctx *TestContext) StartServer() {
+	logtrace.LogWithFunctionName()
 	ctx.StartServerFor("testdata/default.db", true)
 }
 
 func (ctx *TestContext) StartServerFor(testDb string, clean bool) {
+	logtrace.LogWithFunctionName()
 	if ctx.LogLevel != "" {
 		if level, err := logrus.ParseLevel(ctx.LogLevel); err == nil {
 			logrus.StandardLogger().SetLevel(level)
@@ -439,12 +470,14 @@ func (ctx *TestContext) StartServerFor(testDb string, clean bool) {
 }
 
 func (ctx *TestContext) createAndEnrollEdgeRouter(tunneler bool, roleAttributes ...string) *edgeRouter {
+	logtrace.LogWithFunctionName()
 	ctx.requireCreateEdgeRouter(tunneler, roleAttributes...)
 	ctx.requireEnrollEdgeRouter(tunneler, ctx.edgeRouterEntity.id)
 	return ctx.edgeRouterEntity
 }
 
 func (ctx *TestContext) requireCreateEdgeRouter(tunneler bool, roleAttributes ...string) *edgeRouter {
+	logtrace.LogWithFunctionName()
 	// If an edge router has already been created, delete it and create a new one
 	if ctx.edgeRouterEntity != nil {
 		ctx.AdminManagementSession.requireDeleteEntity(ctx.edgeRouterEntity)
@@ -463,6 +496,7 @@ func (ctx *TestContext) requireCreateEdgeRouter(tunneler bool, roleAttributes ..
 }
 
 func (ctx *TestContext) requireEnrollEdgeRouter(tunneler bool, routerId string) {
+	logtrace.LogWithFunctionName()
 	jwt := ctx.AdminManagementSession.getEdgeRouterJwt(routerId)
 
 	configFile := EdgeRouterConfFile
@@ -480,6 +514,7 @@ func (ctx *TestContext) requireEnrollEdgeRouter(tunneler bool, routerId string) 
 }
 
 func (ctx *TestContext) createAndEnrollTransitRouter() *transitRouter {
+	logtrace.LogWithFunctionName()
 	// If a tx router has already been created, delete it and create a new one
 	if ctx.transitRouterEntity != nil {
 		ctx.AdminManagementSession.requireDeleteEntity(ctx.transitRouterEntity)
@@ -504,11 +539,13 @@ func (ctx *TestContext) createAndEnrollTransitRouter() *transitRouter {
 }
 
 func (ctx *TestContext) createEnrollAndStartTransitRouter() {
+	logtrace.LogWithFunctionName()
 	ctx.createAndEnrollTransitRouter()
 	ctx.startTransitRouter()
 }
 
 func (ctx *TestContext) startTransitRouter() {
+	logtrace.LogWithFunctionName()
 	config, err := router.LoadConfig(TransitRouterConfFile)
 	ctx.Req.NoError(err)
 	newRouter := router.Create(config, NewVersionProviderTest())
@@ -518,24 +555,28 @@ func (ctx *TestContext) startTransitRouter() {
 }
 
 func (ctx *TestContext) CreateEnrollAndStartTunnelerEdgeRouter(roleAttributes ...string) {
+	logtrace.LogWithFunctionName()
 	ctx.shutdownRouters()
 	ctx.createAndEnrollEdgeRouter(true, roleAttributes...)
 	ctx.startEdgeRouter(nil)
 }
 
 func (ctx *TestContext) CreateEnrollAndStartEdgeRouter(roleAttributes ...string) *router.Router {
+	logtrace.LogWithFunctionName()
 	ctx.shutdownRouters()
 	ctx.createAndEnrollEdgeRouter(false, roleAttributes...)
 	return ctx.startEdgeRouter(nil)
 }
 
 func (ctx *TestContext) CreateEnrollAndStartHAEdgeRouter(roleAttributes ...string) *router.Router {
+	logtrace.LogWithFunctionName()
 	ctx.shutdownRouters()
 	ctx.createAndEnrollEdgeRouter(false, roleAttributes...)
 	return ctx.startEdgeRouter(nil)
 }
 
 func (ctx *TestContext) startEdgeRouter(cfgTweaks func(*router.Config)) *router.Router {
+	logtrace.LogWithFunctionName()
 	configFile := EdgeRouterConfFile
 	if ctx.edgeRouterEntity.isTunnelerEnabled {
 		configFile = TunnelerEdgeRouterConfFile
@@ -562,6 +603,7 @@ func (ctx *TestContext) startEdgeRouter(cfgTweaks func(*router.Config)) *router.
 }
 
 func (ctx *TestContext) EnrollIdentity(identityId string) *ziti.Config {
+	logtrace.LogWithFunctionName()
 	jwt := ctx.AdminManagementSession.getIdentityJwt(identityId)
 	tkn, _, err := sdkEnroll.ParseToken(jwt)
 	ctx.Req.NoError(err)
@@ -576,10 +618,12 @@ func (ctx *TestContext) EnrollIdentity(identityId string) *ziti.Config {
 }
 
 func (ctx *TestContext) waitForCtrlPort(duration time.Duration) error {
+	logtrace.LogWithFunctionName()
 	return ctx.waitForPort(ctx.ApiHost, duration)
 }
 
 func (ctx *TestContext) waitForPort(address string, duration time.Duration) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	endTime := now.Add(duration)
 	maxWait := duration
@@ -599,6 +643,7 @@ func (ctx *TestContext) waitForPort(address string, duration time.Duration) erro
 }
 
 func (ctx *TestContext) RequireAdminManagementApiLogin() {
+	logtrace.LogWithFunctionName()
 	var err error
 	ctx.AdminManagementSession, err = ctx.AdminAuthenticator.AuthenticateManagementApi(ctx)
 	ctx.Req.NoError(err)
@@ -608,12 +653,14 @@ func (ctx *TestContext) RequireAdminManagementApiLogin() {
 }
 
 func (ctx *TestContext) RequireAdminClientApiLogin() {
+	logtrace.LogWithFunctionName()
 	var err error
 	ctx.AdminClientSession, err = ctx.AdminAuthenticator.AuthenticateClientApi(ctx)
 	ctx.Req.NoError(err)
 }
 
 func (ctx *TestContext) Teardown() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("tearing down test context")
 	ctx.shutdownRouters()
 	if ctx.EdgeController != nil {
@@ -627,16 +674,19 @@ func (ctx *TestContext) Teardown() {
 }
 
 func (ctx *TestContext) newAnonymousClientApiRequest() *resty.Request {
+	logtrace.LogWithFunctionName()
 	return ctx.DefaultClientApiClient().R().
 		SetHeader("content-type", "application/json")
 }
 
 func (ctx *TestContext) newAnonymousManagementApiRequest() *resty.Request {
+	logtrace.LogWithFunctionName()
 	return ctx.DefaultManagementApiClient().R().
 		SetHeader("content-type", "application/json")
 }
 
 func (ctx *TestContext) newRequestWithClientCert(cert *x509.Certificate, privateKey crypto.PrivateKey) *resty.Request {
+	logtrace.LogWithFunctionName()
 	client, _, _ := ctx.NewClientComponentsWithClientCert(cert, privateKey)
 
 	return client.R().
@@ -644,6 +694,7 @@ func (ctx *TestContext) newRequestWithClientCert(cert *x509.Certificate, private
 }
 
 func (ctx *TestContext) completeUpdbEnrollment(identityId string, password string) {
+	logtrace.LogWithFunctionName()
 	result := ctx.AdminManagementSession.requireQuery(fmt.Sprintf("identities/%v", identityId))
 	path := result.Search(path("data.enrollment.updb.token")...)
 	ctx.Req.NotNil(path)
@@ -662,6 +713,7 @@ func (ctx *TestContext) completeUpdbEnrollment(identityId string, password strin
 }
 
 func (ctx *TestContext) completeOttCaEnrollment(certAuth *certAuthenticator) {
+	logtrace.LogWithFunctionName()
 	trans := ctx.NewTransport()
 	trans.TLSClientConfig.Certificates = []cryptoTls.Certificate{
 		{
@@ -682,6 +734,7 @@ func (ctx *TestContext) completeOttCaEnrollment(certAuth *certAuthenticator) {
 }
 
 func (ctx *TestContext) completeCaAutoEnrollmentWithName(certAuth *certAuthenticator, name string) {
+	logtrace.LogWithFunctionName()
 	trans := ctx.NewTransport()
 	trans.TLSClientConfig.Certificates = []cryptoTls.Certificate{
 		{
@@ -705,6 +758,7 @@ func (ctx *TestContext) completeCaAutoEnrollmentWithName(certAuth *certAuthentic
 }
 
 func (ctx *TestContext) completeOttEnrollment(identityId string) *certAuthenticator {
+	logtrace.LogWithFunctionName()
 	result := ctx.AdminManagementSession.requireQuery(fmt.Sprintf("identities/%v", identityId))
 
 	tokenValue := result.Path("data.enrollment.ott.token")
@@ -752,6 +806,7 @@ func (ctx *TestContext) completeOttEnrollment(identityId string) *certAuthentica
 }
 
 func (ctx *TestContext) validateDateFieldsForCreate(start time.Time, jsonEntity *gabs.Container) time.Time {
+	logtrace.LogWithFunctionName()
 	// we lose a little time resolution, so if it's in the same millisecond, it's ok
 	start = start.Add(-time.Millisecond)
 	now := time.Now().Add(time.Millisecond)
@@ -765,6 +820,7 @@ func (ctx *TestContext) validateDateFieldsForCreate(start time.Time, jsonEntity 
 }
 
 func (ctx *TestContext) newPostureCheckProcessMulti(semantic rest_model.Semantic, processes []*rest_model.ProcessMulti, roleAttributes []string) *rest_model.PostureCheckProcessMultiCreate {
+	logtrace.LogWithFunctionName()
 	check := &rest_model.PostureCheckProcessMultiCreate{
 		Processes: processes,
 		Semantic:  &semantic,
@@ -783,6 +839,7 @@ func (ctx *TestContext) newPostureCheckProcessMulti(semantic rest_model.Semantic
 }
 
 func (ctx *TestContext) newPostureCheckDomain(domains []string, roleAttributes []string) *postureCheckDomain {
+	logtrace.LogWithFunctionName()
 	return &postureCheckDomain{
 		postureCheck: postureCheck{
 			name:           eid.New(),
@@ -795,6 +852,7 @@ func (ctx *TestContext) newPostureCheckDomain(domains []string, roleAttributes [
 }
 
 func (ctx *TestContext) newService(roleAttributes, configs []string) *service {
+	logtrace.LogWithFunctionName()
 	return &service{
 		Name:               eid.New(),
 		terminatorStrategy: xt_smartrouting.Name,
@@ -806,6 +864,7 @@ func (ctx *TestContext) newService(roleAttributes, configs []string) *service {
 }
 
 func (ctx *TestContext) newTerminator(serviceId, routerId, binding, address string) *terminator {
+	logtrace.LogWithFunctionName()
 	return &terminator{
 		serviceId:  serviceId,
 		routerId:   routerId,
@@ -818,6 +877,7 @@ func (ctx *TestContext) newTerminator(serviceId, routerId, binding, address stri
 }
 
 func (ctx *TestContext) newConfig(configType string, data map[string]interface{}) *Config {
+	logtrace.LogWithFunctionName()
 	return &Config{
 		Name:         eid.New(),
 		ConfigTypeId: configType,
@@ -827,6 +887,7 @@ func (ctx *TestContext) newConfig(configType string, data map[string]interface{}
 }
 
 func (ctx *TestContext) newConfigType() *configType {
+	logtrace.LogWithFunctionName()
 	return &configType{
 		Name: eid.New(),
 		Tags: nil,
@@ -834,6 +895,7 @@ func (ctx *TestContext) newConfigType() *configType {
 }
 
 func (ctx *TestContext) getEntityDates(jsonEntity *gabs.Container) (time.Time, time.Time) {
+	logtrace.LogWithFunctionName()
 	createdAtStr := jsonEntity.S("createdAt").Data().(string)
 	updatedAtStr := jsonEntity.S("updatedAt").Data().(string)
 
@@ -848,6 +910,7 @@ func (ctx *TestContext) getEntityDates(jsonEntity *gabs.Container) (time.Time, t
 }
 
 func (ctx *TestContext) validateDateFieldsForUpdate(start time.Time, origCreatedAt time.Time, jsonEntity *gabs.Container) time.Time {
+	logtrace.LogWithFunctionName()
 	// we lose a little time resolution, so if it's in the same millisecond, it's ok
 	start = start.Add(-time.Millisecond)
 	now := time.Now().Add(time.Millisecond)
@@ -862,11 +925,13 @@ func (ctx *TestContext) validateDateFieldsForUpdate(start time.Time, origCreated
 }
 
 func (ctx *TestContext) validateEntity(entity entity, jsonEntity *gabs.Container) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	entity.validate(ctx, jsonEntity)
 	return jsonEntity
 }
 
 func (ctx *TestContext) requireEntityNotEnrolled(name string, entity *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	fingerprint := entity.Path("fingerprint").Data()
 	ctx.Req.Nil(fingerprint, "expected "+name+" with isVerified=false to have an empty fingerprint")
 
@@ -900,6 +965,7 @@ func (ctx *TestContext) requireEntityNotEnrolled(name string, entity *gabs.Conta
 }
 
 func (ctx *TestContext) requireEntityEnrolled(name string, entity *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	fingerprint, ok := entity.Path("fingerprint").Data().(string)
 	ctx.Req.True(ok, "expected "+name+" with isVerified=true to have a fingerprint, could not cast")
 	ctx.Req.NotEmpty(fingerprint, "expected "+name+" with isVerified=true to have a fingerprint, was empty")
@@ -920,6 +986,7 @@ func (ctx *TestContext) requireEntityEnrolled(name string, entity *gabs.Containe
 }
 
 func (ctx *TestContext) WrapNetConn(conn edge.Conn, err error) *TestConn {
+	logtrace.LogWithFunctionName()
 	ctx.Req.NoError(err)
 	return &TestConn{
 		Conn: conn,
@@ -928,6 +995,7 @@ func (ctx *TestContext) WrapNetConn(conn edge.Conn, err error) *TestConn {
 }
 
 func (ctx *TestContext) WrapConn(conn edge.Conn, err error) *TestConn {
+	logtrace.LogWithFunctionName()
 	ctx.Req.NoError(err)
 	return &TestConn{
 		Conn: conn,
@@ -936,6 +1004,7 @@ func (ctx *TestContext) WrapConn(conn edge.Conn, err error) *TestConn {
 }
 
 func (ctx *TestContext) shutdownRouters() {
+	logtrace.LogWithFunctionName()
 	for _, r := range ctx.routers {
 		ctx.Req.NoError(r.Shutdown())
 	}
@@ -948,6 +1017,7 @@ type TestConn struct {
 }
 
 func (conn *TestConn) WriteString(val string, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	conn.ctx.Req.NoError(conn.SetWriteDeadline(time.Now().Add(timeout)))
 	defer func() { _ = conn.SetWriteDeadline(time.Time{}) }()
 
@@ -958,6 +1028,7 @@ func (conn *TestConn) WriteString(val string, timeout time.Duration) {
 }
 
 func (conn *TestConn) ReadString(maxSize int, timeout time.Duration) string {
+	logtrace.LogWithFunctionName()
 	conn.ctx.Req.NoError(conn.SetReadDeadline(time.Now().Add(timeout)))
 	defer func() { _ = conn.SetReadDeadline(time.Time{}) }()
 
@@ -968,17 +1039,20 @@ func (conn *TestConn) ReadString(maxSize int, timeout time.Duration) string {
 }
 
 func (conn *TestConn) ReadExpected(expected string, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	val := conn.ReadString(len(expected)+1, timeout)
 	conn.ctx.Req.Equal(expected, val, "read failure on connId=%v", conn.Id())
 }
 
 func (conn *TestConn) RequireClose() {
+	logtrace.LogWithFunctionName()
 	conn.ctx.Req.NoError(conn.Close())
 }
 
 var testServerCounter uint64
 
 func newTestServer(listener edge.Listener, dispatcher func(conn *testServerConn) error) *testServer {
+	logtrace.LogWithFunctionName()
 	idx := atomic.AddUint64(&testServerCounter, 1)
 	return &testServer{
 		idx:        idx,
@@ -1001,6 +1075,7 @@ type testServer struct {
 }
 
 func (server *testServer) waitForDone(ctx *TestContext, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	select {
 	case err, ok := <-server.errorC:
 		if ok {
@@ -1012,14 +1087,17 @@ func (server *testServer) waitForDone(ctx *TestContext, timeout time.Duration) {
 }
 
 func (server *testServer) start() {
+	logtrace.LogWithFunctionName()
 	go server.acceptLoop()
 }
 
 func (server *testServer) close() error {
+	logtrace.LogWithFunctionName()
 	return server.listener.Close()
 }
 
 func (server *testServer) acceptLoop() {
+	logtrace.LogWithFunctionName()
 	var err error
 	for !server.listener.IsClosed() {
 		var conn net.Conn
@@ -1060,6 +1138,7 @@ func (server *testServer) acceptLoop() {
 }
 
 func (server *testServer) dispatch(conn *testServerConn) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		server.waiter.Done()
 	}()
@@ -1096,6 +1175,7 @@ type testServerConn struct {
 }
 
 func (conn *testServerConn) WriteString(val string, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	err := conn.SetWriteDeadline(time.Now().Add(timeout))
 	if err != nil {
 		panic(err)
@@ -1113,6 +1193,7 @@ func (conn *testServerConn) WriteString(val string, timeout time.Duration) {
 }
 
 func (conn *testServerConn) ReadString(maxSize int, timeout time.Duration) (string, bool) {
+	logtrace.LogWithFunctionName()
 	err := conn.SetReadDeadline(time.Now().Add(timeout))
 	if err != nil {
 		panic(err)
@@ -1131,6 +1212,7 @@ func (conn *testServerConn) ReadString(maxSize int, timeout time.Duration) (stri
 }
 
 func (conn *testServerConn) ReadExpected(expected string, timeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	val, eof := conn.ReadString(len(expected)+1, timeout)
 	if eof {
 		panic(errors.Errorf("expected to read string '%v', but got EOF", expected))
@@ -1141,6 +1223,7 @@ func (conn *testServerConn) ReadExpected(expected string, timeout time.Duration)
 }
 
 func (conn *testServerConn) RequireClose() {
+	logtrace.LogWithFunctionName()
 	err := conn.Close()
 	if err != nil {
 		panic(err)
@@ -1151,26 +1234,32 @@ type VersionProviderTest struct {
 }
 
 func (v VersionProviderTest) Branch() string {
+	logtrace.LogWithFunctionName()
 	return "local"
 }
 
 func (v VersionProviderTest) EncoderDecoder() versions.VersionEncDec {
+	logtrace.LogWithFunctionName()
 	return &versions.StdVersionEncDec
 }
 
 func (v VersionProviderTest) Version() string {
+	logtrace.LogWithFunctionName()
 	return "v0.0.0"
 }
 
 func (v VersionProviderTest) BuildDate() string {
+	logtrace.LogWithFunctionName()
 	return time.Now().String()
 }
 
 func (v VersionProviderTest) Revision() string {
+	logtrace.LogWithFunctionName()
 	return ""
 }
 
 func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	return &versions.VersionInfo{
 		Version:   v.Version(),
 		Revision:  v.Revision(),
@@ -1181,5 +1270,6 @@ func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
 }
 
 func NewVersionProviderTest() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return &VersionProviderTest{}
 }

@@ -3,13 +3,18 @@ package main
 import (
 	"embed"
 	_ "embed"
+	"os"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/lib/binding"
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
-	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/semaphore"
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/terraform"
 	distribution "github.com/openziti/fablab/kernel/lib/runlevel/3_distribution"
 	"github.com/openziti/fablab/kernel/lib/runlevel/3_distribution/rsync"
@@ -17,10 +22,6 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"os"
-	"time"
 )
 
 //go:embed configs
@@ -29,10 +30,12 @@ var configResource embed.FS
 type scaleStrategy struct{}
 
 func (self scaleStrategy) IsScaled(entity model.Entity) bool {
+	logtrace.LogWithFunctionName()
 	return entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled")
 }
 
 func (self scaleStrategy) GetEntityCount(entity model.Entity) uint32 {
+	logtrace.LogWithFunctionName()
 	if entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled") {
 		return 4
 	}
@@ -175,6 +178,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("stop", "bootstrap", "start", "syncModelEdgeState")
 	// m.VarConfig.EnableDebugLogger()
 

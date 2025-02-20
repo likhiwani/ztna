@@ -10,15 +10,18 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewNetworkJwtRouter()
 	env.AddRouter(r)
 }
@@ -36,12 +39,14 @@ type NetworkJwtRoute struct {
 }
 
 func NewNetworkJwtRouter() *NetworkJwtRoute {
+	logtrace.LogWithFunctionName()
 	return &NetworkJwtRoute{
 		BasePath: "/" + EntityNameNetworkJwt,
 	}
 }
 
 func (r *NetworkJwtRoute) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 
 	ae.ManagementApi.EnrollmentListNetworkJWTsHandler = enrollment_management.ListNetworkJWTsHandlerFunc(func(params enrollment_management.ListNetworkJWTsParams) middleware.Responder {
 		return ae.IsAllowed(r.List, params.HTTPRequest, "", "", permissions.Always())
@@ -56,6 +61,7 @@ func (r *NetworkJwtRoute) Register(ae *env.AppEnv) {
 var networkJwt string
 
 func (r *NetworkJwtRoute) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 
 	if networkJwt == "" {
 		issuer := fmt.Sprintf(`https://%s/`, ae.GetConfig().Edge.Api.Address)

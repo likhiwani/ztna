@@ -8,15 +8,18 @@ import (
 	"crypto/rand"
 	"crypto/x509"
 	"crypto/x509/pkix"
-	"github.com/google/uuid"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/stretchr/testify/require"
 	"math/big"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_validateHostPortString(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("a hostname and port should pass", func(t *testing.T) {
 		req := require.New(t)
 
@@ -195,6 +198,7 @@ func Test_validateHostPortString(t *testing.T) {
 }
 
 func Test_CalculateCaPems(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ca1, _ := newSelfSignedCert(uuid.NewString(), true)
 	ca2, _ := newSelfSignedCert(uuid.NewString(), true)
 	ca3, _ := newSelfSignedCert(uuid.NewString(), true)
@@ -362,6 +366,7 @@ func Test_CalculateCaPems(t *testing.T) {
 }
 
 func newSelfSignedCert(commonName string, isCas bool) (*x509.Certificate, crypto.PrivateKey) {
+	logtrace.LogWithFunctionName()
 	priv, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		panic(err)

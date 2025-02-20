@@ -3,24 +3,26 @@
 package tests
 
 import (
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/goroutines"
-	id "github.com/openziti/identity"
-	"github.com/openziti/metrics"
-	"github.com/openziti/transport/v2"
+	"io"
+	"testing"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/link"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xlink"
 	"ztna-core/ztna/router/xlink_transport"
 	"ztna-core/ztna/tests/testutil"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/goroutines"
+	id "github.com/openziti/identity"
+	"github.com/openziti/metrics"
+	"github.com/openziti/transport/v2"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"io"
-	"testing"
-	"time"
 )
 
 type testXlinkAcceptor struct {
@@ -28,22 +30,26 @@ type testXlinkAcceptor struct {
 }
 
 func (self *testXlinkAcceptor) Accept(l xlink.Xlink) error {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("xlink accepted: %+v", l)
 	self.link = l
 	return nil
 }
 
 func (self *testXlinkAcceptor) getLink() xlink.Xlink {
+	logtrace.LogWithFunctionName()
 	return self.link
 }
 
 type testBindHandlerFactory struct{}
 
 func (t testBindHandlerFactory) BindChannel(channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (t testBindHandlerFactory) NewBindHandler(l xlink.Xlink, _ bool, _ bool) channel.BindHandler {
+	logtrace.LogWithFunctionName()
 	_ = l.Init(metrics.NewRegistry("test", nil))
 	return t
 }
@@ -55,32 +61,39 @@ type testRegistryEnv struct {
 }
 
 func (self *testRegistryEnv) GetRouterId() *id.TokenId {
+	logtrace.LogWithFunctionName()
 	return &id.TokenId{
 		Token: "test-router",
 	}
 }
 
 func (self *testRegistryEnv) GetNetworkControllers() env.NetworkControllers {
+	logtrace.LogWithFunctionName()
 	return self.ctrls
 }
 
 func (self *testRegistryEnv) GetXlinkDialers() []xlink.Dialer {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testRegistryEnv) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.closeNotify
 }
 
 func (self *testRegistryEnv) GetLinkDialerPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testRegistryEnv) GetRateLimiterPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testRegistryEnv) GetMetricsRegistry() metrics.UsageRegistry {
+	logtrace.LogWithFunctionName()
 	return self.metricsRegistry
 }
 
@@ -94,34 +107,42 @@ type testDial struct {
 }
 
 func (self *testDial) GetLinkKey() string {
+	logtrace.LogWithFunctionName()
 	return self.Key
 }
 
 func (self *testDial) GetLinkId() string {
+	logtrace.LogWithFunctionName()
 	return self.LinkId
 }
 
 func (self *testDial) GetRouterId() string {
+	logtrace.LogWithFunctionName()
 	return self.RouterId
 }
 
 func (self *testDial) GetAddress() string {
+	logtrace.LogWithFunctionName()
 	return self.Address
 }
 
 func (self *testDial) GetLinkProtocol() string {
+	logtrace.LogWithFunctionName()
 	return self.LinkProtocol
 }
 
 func (self *testDial) GetRouterVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.RouterVersion
 }
 
 func (self *testDial) GetIteration() uint32 {
+	logtrace.LogWithFunctionName()
 	return 1
 }
 
 func setupEnv() link.Env {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	ctrls := env.NewNetworkControllers(time.Second, nil, env.NewDefaultHeartbeatOptions())
 	metricsRegistry := metrics.NewUsageRegistry("test", nil, closeNotify)
@@ -133,6 +154,7 @@ func setupEnv() link.Env {
 }
 
 func Test_LinkWithValidCertFromUnknownChain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -168,6 +190,7 @@ func Test_LinkWithValidCertFromUnknownChain(t *testing.T) {
 }
 
 func Test_UnrequestedLinkFromValidRouter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -217,6 +240,7 @@ func Test_UnrequestedLinkFromValidRouter(t *testing.T) {
 }
 
 func Test_DuplicateLinkWithLinkCloseDialer(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

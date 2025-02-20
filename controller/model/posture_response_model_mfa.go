@@ -16,7 +16,10 @@
 
 package model
 
-import "time"
+import (
+	"time"
+	"ztna-core/ztna/logtrace"
+)
 
 const (
 	MfaProviderZiti string = "ziti"
@@ -29,6 +32,7 @@ type PostureResponseMfa struct {
 }
 
 func (pr *PostureResponseMfa) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 
 	if postureData.ApiSessions == nil {
 		postureData.ApiSessions = map[string]*ApiSessionPostureData{}

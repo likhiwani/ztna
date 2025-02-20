@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -44,6 +45,7 @@ type TerminatorCostMap map[string]*TerminatorCost
 
 // Validate validates this terminator cost map
 func (m TerminatorCostMap) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {
@@ -72,6 +74,7 @@ func (m TerminatorCostMap) Validate(formats strfmt.Registry) error {
 
 // ContextValidate validate this terminator cost map based on the context it is used
 func (m TerminatorCostMap) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {

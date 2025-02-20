@@ -30,6 +30,7 @@ import (
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 )
@@ -55,6 +56,7 @@ type testSubscriber struct {
 }
 
 func newTestSubscriber(ctx *TestContext) *testSubscriber {
+	logtrace.LogWithFunctionName()
 	return &testSubscriber{
 		ctx:            ctx,
 		identityEvents: make(chan *identityEvent, 100),
@@ -63,6 +65,7 @@ func newTestSubscriber(ctx *TestContext) *testSubscriber {
 }
 
 func (self *testSubscriber) NotifyIdentityEvent(state *common.IdentityState, eventType common.IdentityEventType) {
+	logtrace.LogWithFunctionName()
 	self.mutex.Lock()
 	defer self.mutex.Unlock()
 	self.identityEvents <- &identityEvent{
@@ -73,6 +76,7 @@ func (self *testSubscriber) NotifyIdentityEvent(state *common.IdentityState, eve
 }
 
 func (self *testSubscriber) NotifyServiceChange(state *common.IdentityState, service *common.IdentityService, eventType common.ServiceEventType) {
+	logtrace.LogWithFunctionName()
 	self.mutex.Lock()
 	defer self.mutex.Unlock()
 
@@ -85,6 +89,7 @@ func (self *testSubscriber) NotifyServiceChange(state *common.IdentityState, ser
 }
 
 func (self *testSubscriber) getNextIdentityEvent(eventType common.IdentityEventType) *identityEvent {
+	logtrace.LogWithFunctionName()
 	select {
 	case evt := <-self.identityEvents:
 		self.ctx.Equal(eventType, evt.eventType)
@@ -96,6 +101,7 @@ func (self *testSubscriber) getNextIdentityEvent(eventType common.IdentityEventT
 }
 
 func (self *testSubscriber) getSavedEvent(eventType common.ServiceEventType) *serviceEvent {
+	logtrace.LogWithFunctionName()
 	var newList []*serviceEvent
 	var result *serviceEvent
 	for _, savedEvent := range self.savedServiceEvents {
@@ -110,6 +116,7 @@ func (self *testSubscriber) getSavedEvent(eventType common.ServiceEventType) *se
 }
 
 func (self *testSubscriber) getNextServiceEvent(eventType common.ServiceEventType) *serviceEvent {
+	logtrace.LogWithFunctionName()
 	evt := self.getSavedEvent(eventType)
 	if evt != nil {
 		return evt
@@ -126,6 +133,7 @@ func (self *testSubscriber) getNextServiceEvent(eventType common.ServiceEventTyp
 }
 
 func (self *testSubscriber) getNextServiceEventOfType(eventType common.ServiceEventType) *serviceEvent {
+	logtrace.LogWithFunctionName()
 	evt := self.getSavedEvent(eventType)
 	if evt != nil {
 		return evt
@@ -150,6 +158,7 @@ func (self *testSubscriber) getNextServiceEventOfType(eventType common.ServiceEv
 }
 
 func Test_RouterDataModel_ServicePolicies(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -228,6 +237,7 @@ func Test_RouterDataModel_ServicePolicies(t *testing.T) {
 }
 
 func Test_RouterDataModel_Configs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -351,6 +361,7 @@ func Test_RouterDataModel_Configs(t *testing.T) {
 }
 
 func Test_RouterDataModel_PostureChecks(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

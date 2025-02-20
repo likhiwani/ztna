@@ -17,8 +17,6 @@
 package api_impl
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/fields"
@@ -26,9 +24,14 @@ import (
 	"ztna-core/ztna/controller/rest_model"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/link"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/openziti/storage/boltz"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewLinkRouter()
 	AddRouter(r)
 }
@@ -38,12 +41,14 @@ type LinkRouter struct {
 }
 
 func NewLinkRouter() *LinkRouter {
+	logtrace.LogWithFunctionName()
 	return &LinkRouter{
 		BasePath: "/" + EntityNameLink,
 	}
 }
 
 func (r *LinkRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.LinkDetailLinkHandler = link.DetailLinkHandlerFunc(func(params link.DetailLinkParams) middleware.Responder {
 		return wrapper.WrapRequest(r.Detail, params.HTTPRequest, params.ID, "")
 	})
@@ -62,6 +67,7 @@ func (r *LinkRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper Reque
 }
 
 func (r *LinkRouter) ListLinks(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, defaultToListEnvelope, func(rc api.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(n.GetLinkStore())
 		if err != nil {
@@ -97,6 +103,7 @@ func (r *LinkRouter) ListLinks(n *network.Network, rc api.RequestContext) {
 }
 
 func (r *LinkRouter) Detail(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	Detail(rc, func(rc api.RequestContext, id string) (interface{}, error) {
 		l, found := n.GetLink(id)
 		if !found {
@@ -111,6 +118,7 @@ func (r *LinkRouter) Detail(n *network.Network, rc api.RequestContext) {
 }
 
 func (r *LinkRouter) Patch(n *network.Network, rc api.RequestContext, params link.PatchLinkParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		l, found := n.GetLink(id)
 		if !found {
@@ -128,6 +136,7 @@ func (r *LinkRouter) Patch(n *network.Network, rc api.RequestContext, params lin
 }
 
 func (r *LinkRouter) Delete(network *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, DeleteHandlerF(func(id string, _ *change.Context) error {
 		network.RemoveLink(id)
 		return nil

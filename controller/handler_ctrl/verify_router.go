@@ -17,12 +17,14 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -32,14 +34,17 @@ type verifyRouterHandler struct {
 }
 
 func newVerifyRouterHandler(r *model.Router, network *network.Network) *verifyRouterHandler {
+	logtrace.LogWithFunctionName()
 	return &verifyRouterHandler{r: r, network: network}
 }
 
 func (h *verifyRouterHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_VerifyRouterType)
 }
 
 func (h *verifyRouterHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).Entry
 
 	verifyRouter := &ctrl_pb.VerifyRouter{}

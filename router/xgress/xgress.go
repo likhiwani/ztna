@@ -30,15 +30,17 @@ import (
 	"sync/atomic"
 	"time"
 
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/debugz"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/identity"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/logcontext"
-	"ztna-core/ztna/controller/xt"
 	"github.com/sirupsen/logrus"
 )
 
@@ -119,6 +121,7 @@ type CloseHandler interface {
 type CloseHandlerF func(x *Xgress)
 
 func (self CloseHandlerF) HandleXgressClose(x *Xgress) {
+	logtrace.LogWithFunctionName()
 	self(x)
 }
 
@@ -159,14 +162,17 @@ type Xgress struct {
 }
 
 func (self *Xgress) GetIntervalId() string {
+	logtrace.LogWithFunctionName()
 	return self.circuitId
 }
 
 func (self *Xgress) GetTags() map[string]string {
+	logtrace.LogWithFunctionName()
 	return self.tags
 }
 
 func NewXgress(circuitId string, ctrlId string, address Address, peer Connection, originator Originator, options *Options, tags map[string]string) *Xgress {
+	logtrace.LogWithFunctionName()
 	result := &Xgress{
 		circuitId:            circuitId,
 		ctrlId:               ctrlId,
@@ -186,58 +192,72 @@ func NewXgress(circuitId string, ctrlId string, address Address, peer Connection
 }
 
 func (self *Xgress) GetTimeOfLastRxFromLink() int64 {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadInt64(&self.timeOfLastRxFromLink)
 }
 
 func (self *Xgress) CircuitId() string {
+	logtrace.LogWithFunctionName()
 	return self.circuitId
 }
 
 func (self *Xgress) CtrlId() string {
+	logtrace.LogWithFunctionName()
 	return self.ctrlId
 }
 
 func (self *Xgress) Address() Address {
+	logtrace.LogWithFunctionName()
 	return self.address
 }
 
 func (self *Xgress) Originator() Originator {
+	logtrace.LogWithFunctionName()
 	return self.originator
 }
 
 func (self *Xgress) IsTerminator() bool {
+	logtrace.LogWithFunctionName()
 	return self.originator == Terminator
 }
 
 func (self *Xgress) SetReceiveHandler(receiveHandler ReceiveHandler) {
+	logtrace.LogWithFunctionName()
 	self.receiveHandler = receiveHandler
 }
 
 func (self *Xgress) AddCloseHandler(closeHandler CloseHandler) {
+	logtrace.LogWithFunctionName()
 	self.closeHandlers = append(self.closeHandlers, closeHandler)
 }
 
 func (self *Xgress) AddPeekHandler(peekHandler PeekHandler) {
+	logtrace.LogWithFunctionName()
 	self.peekHandlers = append(self.peekHandlers, peekHandler)
 }
 
 func (self *Xgress) IsEndOfCircuitReceived() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.IsSet(endOfCircuitRecvdFlag)
 }
 
 func (self *Xgress) markCircuitEndReceived() {
+	logtrace.LogWithFunctionName()
 	self.flags.Set(endOfCircuitRecvdFlag, true)
 }
 
 func (self *Xgress) IsCircuitStarted() bool {
+	logtrace.LogWithFunctionName()
 	return !self.IsTerminator() || self.flags.IsSet(rxerStartedFlag)
 }
 
 func (self *Xgress) firstCircuitStartReceived() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.CompareAndSet(rxerStartedFlag, false, true)
 }
 
 func (self *Xgress) Start() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label())
 	if self.IsTerminator() {
 		log.Debug("terminator: waiting for circuit start before starting receiver")
@@ -253,6 +273,7 @@ func (self *Xgress) Start() {
 }
 
 func (self *Xgress) terminateIfNotStarted() {
+	logtrace.LogWithFunctionName()
 	if !self.IsCircuitStarted() {
 		logrus.WithField("xgress", self.Label()).Warn("xgress circuit not started in time, closing")
 		self.Close()
@@ -260,10 +281,12 @@ func (self *Xgress) terminateIfNotStarted() {
 }
 
 func (self *Xgress) Label() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("{c/%s|@/%s}<%s>", self.circuitId, string(self.address), self.originator.String())
 }
 
 func (self *Xgress) GetStartCircuit() *Payload {
+	logtrace.LogWithFunctionName()
 	startCircuit := &Payload{
 		CircuitId: self.circuitId,
 		Flags:     SetOriginatorFlag(uint32(PayloadFlagCircuitStart), self.originator),
@@ -274,6 +297,7 @@ func (self *Xgress) GetStartCircuit() *Payload {
 }
 
 func (self *Xgress) GetEndCircuit() *Payload {
+	logtrace.LogWithFunctionName()
 	endCircuit := &Payload{
 		CircuitId: self.circuitId,
 		Flags:     SetOriginatorFlag(uint32(PayloadFlagCircuitEnd), self.originator),
@@ -284,6 +308,7 @@ func (self *Xgress) GetEndCircuit() *Payload {
 }
 
 func (self *Xgress) ForwardEndOfCircuit(sendF func(payload *Payload) bool) {
+	logtrace.LogWithFunctionName()
 	// for now always send end of circuit. too many is better than not enough
 	if !self.IsEndOfCircuitSent() {
 		sendF(self.GetEndCircuit())
@@ -292,16 +317,19 @@ func (self *Xgress) ForwardEndOfCircuit(sendF func(payload *Payload) bool) {
 }
 
 func (self *Xgress) IsEndOfCircuitSent() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.IsSet(endOfCircuitSentFlag)
 }
 
 func (self *Xgress) CloseTimeout(duration time.Duration) {
+	logtrace.LogWithFunctionName()
 	if self.payloadBuffer.CloseWhenEmpty() { // If we clear the send buffer, close sooner
 		time.AfterFunc(duration, self.Close)
 	}
 }
 
 func (self *Xgress) Unrouted() {
+	logtrace.LogWithFunctionName()
 	// When we're unrouted, if end of circuit hasn't already arrived, give incoming/queued data
 	// a chance to outflow before closing
 	if !self.flags.IsSet(closedFlag) {
@@ -319,6 +347,7 @@ Things which can trigger close
 4. Unroute received
 */
 func (self *Xgress) Close() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label())
 
 	if self.flags.CompareAndSet(closedFlag, false, true) {
@@ -347,10 +376,12 @@ func (self *Xgress) Close() {
 }
 
 func (self *Xgress) Closed() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.IsSet(closedFlag)
 }
 
 func (self *Xgress) SendPayload(payload *Payload, _ time.Duration, _ PayloadType) error {
+	logtrace.LogWithFunctionName()
 	if self.Closed() {
 		return nil
 	}
@@ -365,16 +396,19 @@ func (self *Xgress) SendPayload(payload *Payload, _ time.Duration, _ PayloadType
 }
 
 func (self *Xgress) SendAcknowledgement(acknowledgement *Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	ackRxMeter.Mark(1)
 	self.payloadBuffer.ReceiveAcknowledgement(acknowledgement)
 	return nil
 }
 
 func (self *Xgress) SendControl(control *Control) error {
+	logtrace.LogWithFunctionName()
 	return self.peer.HandleControlMsg(control.Type, control.Headers, self)
 }
 
 func (self *Xgress) HandleControlReceive(controlType ControlType, headers channel.Headers) {
+	logtrace.LogWithFunctionName()
 	control := &Control{
 		Type:      controlType,
 		CircuitId: self.circuitId,
@@ -384,6 +418,7 @@ func (self *Xgress) HandleControlReceive(controlType ControlType, headers channe
 }
 
 func (self *Xgress) payloadIngester(payload *Payload) {
+	logtrace.LogWithFunctionName()
 	if payload.IsCircuitStartFlagSet() && self.firstCircuitStartReceived() {
 		go self.rx()
 	}
@@ -395,6 +430,7 @@ func (self *Xgress) payloadIngester(payload *Payload) {
 }
 
 func (self *Xgress) queueSends() {
+	logtrace.LogWithFunctionName()
 	payload := self.linkRxBuffer.PeekHead()
 	for payload != nil {
 		select {
@@ -408,6 +444,7 @@ func (self *Xgress) queueSends() {
 }
 
 func (self *Xgress) nextPayload() *Payload {
+	logtrace.LogWithFunctionName()
 	select {
 	case payload := <-self.txQueue:
 		return payload
@@ -433,6 +470,7 @@ func (self *Xgress) nextPayload() *Payload {
 }
 
 func (self *Xgress) tx() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label())
 
 	log.Debug("started")
@@ -561,6 +599,7 @@ func (self *Xgress) tx() {
 }
 
 func (self *Xgress) flushSendThenClose() {
+	logtrace.LogWithFunctionName()
 	self.CloseTimeout(self.Options.MaxCloseWait)
 	self.ForwardEndOfCircuit(func(payload *Payload) bool {
 		if self.payloadBuffer.closed.Load() {
@@ -632,6 +671,7 @@ const (
 )
 
 func (self *Xgress) rx() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label())
 
 	log.Debugf("started with peer: %v", self.peer.LogContext())
@@ -777,6 +817,7 @@ func (self *Xgress) rx() {
 }
 
 func (self *Xgress) sendUnchunkedBuffer(buf []byte, headers map[uint8][]byte) bool {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label())
 
 	payload := &Payload{
@@ -801,6 +842,7 @@ func (self *Xgress) sendUnchunkedBuffer(buf []byte, headers map[uint8][]byte) bo
 }
 
 func (self *Xgress) forwardPayload(payload *Payload) bool {
+	logtrace.LogWithFunctionName()
 	sendCallback, err := self.payloadBuffer.BufferPayload(payload)
 
 	if err != nil {
@@ -818,6 +860,7 @@ func (self *Xgress) forwardPayload(payload *Payload) bool {
 }
 
 func (self *Xgress) nextReceiveSequence() uint64 {
+	logtrace.LogWithFunctionName()
 	self.rxSequenceLock.Lock()
 	defer self.rxSequenceLock.Unlock()
 
@@ -828,6 +871,7 @@ func (self *Xgress) nextReceiveSequence() uint64 {
 }
 
 func (self *Xgress) PayloadReceived(payload *Payload) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Label()).WithFields(payload.GetLoggerFields())
 	log.Debug("payload received")
 	if self.originator == payload.GetOriginator() {
@@ -849,6 +893,7 @@ func (self *Xgress) PayloadReceived(payload *Payload) {
 }
 
 func (self *Xgress) SendEmptyAck() {
+	logtrace.LogWithFunctionName()
 	pfxlog.ContextLogger(self.Label()).WithField("circuit", self.circuitId).Debug("sending empty ack")
 	ack := NewAcknowledgement(self.circuitId, self.originator)
 	ack.RecvBufferSize = self.linkRxBuffer.Size()
@@ -857,12 +902,14 @@ func (self *Xgress) SendEmptyAck() {
 }
 
 func (self *Xgress) GetSequence() uint64 {
+	logtrace.LogWithFunctionName()
 	self.rxSequenceLock.Lock()
 	defer self.rxSequenceLock.Unlock()
 	return uint64(self.rxSequence)
 }
 
 func (self *Xgress) InspectCircuit(detail *inspect.CircuitInspectDetail) {
+	logtrace.LogWithFunctionName()
 	timeSinceLastRxFromLink := time.Duration(info.NowInMilliseconds()-atomic.LoadInt64(&self.timeOfLastRxFromLink)) * time.Millisecond
 	xgressDetail := &inspect.XgressDetail{
 		Address:               string(self.address),
@@ -884,6 +931,7 @@ func (self *Xgress) InspectCircuit(detail *inspect.CircuitInspectDetail) {
 }
 
 func (self *Xgress) getRelatedGoroutines(contains ...string) []string {
+	logtrace.LogWithFunctionName()
 	reader := bytes.NewBufferString(debugz.GenerateStack())
 	scanner := bufio.NewScanner(reader)
 	var result []string
@@ -913,6 +961,7 @@ func (self *Xgress) getRelatedGoroutines(contains ...string) []string {
 }
 
 func (self *Xgress) addGoroutineIfRelated(buf *bytes.Buffer, xgressRelated bool, result []string, contains ...string) []string {
+	logtrace.LogWithFunctionName()
 	if !xgressRelated {
 		return result
 	}
@@ -934,6 +983,7 @@ func (self *Xgress) addGoroutineIfRelated(buf *bytes.Buffer, xgressRelated bool,
 }
 
 func UnmarshallPacketPayload(buf []byte) (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	flagsField := buf[0]
 	if flagsField&1 != 0 {
 		return channel.ReadV2(bytes.NewBuffer(buf))
@@ -1007,6 +1057,7 @@ func UnmarshallPacketPayload(buf []byte) (*channel.Message, error) {
 }
 
 func writeU8ToBytesMap(m map[uint8][]byte, buf []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	written := binary.PutUvarint(buf, uint64(len(m)))
 	buf = buf[written:]
 	for k, v := range m {
@@ -1033,6 +1084,7 @@ func writeU8ToBytesMap(m map[uint8][]byte, buf []byte) (int, error) {
 }
 
 func readU8ToBytesMap(buf []byte) (map[uint8][]byte, []byte, error) {
+	logtrace.LogWithFunctionName()
 	result := map[uint8][]byte{}
 	count, offset := binary.Uvarint(buf)
 	if offset < 1 {

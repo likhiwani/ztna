@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"strconv"
 
@@ -57,6 +58,7 @@ type InspectResponse struct {
 
 // Validate validates this inspect response
 func (m *InspectResponse) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateSuccess(formats); err != nil {
@@ -74,6 +76,7 @@ func (m *InspectResponse) Validate(formats strfmt.Registry) error {
 }
 
 func (m *InspectResponse) validateSuccess(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("success", "body", m.Success); err != nil {
 		return err
@@ -83,6 +86,7 @@ func (m *InspectResponse) validateSuccess(formats strfmt.Registry) error {
 }
 
 func (m *InspectResponse) validateValues(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Values) { // not required
 		return nil
 	}
@@ -110,6 +114,7 @@ func (m *InspectResponse) validateValues(formats strfmt.Registry) error {
 
 // ContextValidate validate this inspect response based on the context it is used
 func (m *InspectResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateValues(ctx, formats); err != nil {
@@ -123,6 +128,7 @@ func (m *InspectResponse) ContextValidate(ctx context.Context, formats strfmt.Re
 }
 
 func (m *InspectResponse) contextValidateValues(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	for i := 0; i < len(m.Values); i++ {
 
@@ -144,6 +150,7 @@ func (m *InspectResponse) contextValidateValues(ctx context.Context, formats str
 
 // MarshalBinary interface implementation
 func (m *InspectResponse) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -152,6 +159,7 @@ func (m *InspectResponse) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *InspectResponse) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res InspectResponse
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

@@ -17,16 +17,18 @@
 package link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/stringz"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/stringz"
 	"github.com/pkg/errors"
-	"sync/atomic"
-	"time"
 )
 
 const (
@@ -42,6 +44,7 @@ type removeLinkDest struct {
 }
 
 func (self *removeLinkDest) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	dest := registry.destinations[self.id]
 	delete(registry.destinations, self.id)
 	if dest != nil {
@@ -68,6 +71,7 @@ type linkDestUpdate struct {
 }
 
 func (self *linkDestUpdate) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	dest := registry.destinations[self.id]
 
 	becameHealthy := false
@@ -88,6 +92,7 @@ func (self *linkDestUpdate) Handle(registry *linkRegistryImpl) {
 }
 
 func (self *linkDestUpdate) ApplyListenerChanges(registry *linkRegistryImpl, dest *linkDest, becameHealthy bool) {
+	logtrace.LogWithFunctionName()
 	currentLinkKeys := map[string]struct{}{}
 
 	for k := range dest.linkMap {
@@ -145,6 +150,7 @@ type dialRequest struct {
 }
 
 func (self *dialRequest) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	dest := registry.destinations[self.dial.RouterId]
 
 	if dest == nil {
@@ -205,6 +211,7 @@ type updateLinkStatusForLink struct {
 }
 
 func (self *updateLinkStatusForLink) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	link := self.link
 	log := pfxlog.Logger().WithField("linkKey", link.Key()).WithField("linkId", link.Id())
 	dest, found := registry.destinations[link.DestinationId()]
@@ -250,6 +257,7 @@ type addLinkFaultForReplacedLink struct {
 }
 
 func (self *addLinkFaultForReplacedLink) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	link := self.link
 	log := pfxlog.Logger().WithField("linkKey", link.Key()).WithField("linkId", link.Id())
 	dest, found := registry.destinations[link.DestinationId()]
@@ -276,6 +284,7 @@ type updateLinkStatusToDialFailed struct {
 }
 
 func (self *updateLinkStatusToDialFailed) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	if self.linkState.status == StatusDialing {
 		self.linkState.updateStatus(StatusDialFailed)
 		self.linkState.dialFailed(registry)
@@ -288,6 +297,7 @@ type inspectLinkStatesEvent struct {
 }
 
 func (self *inspectLinkStatesEvent) Handle(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	var result []*inspect.LinkDest
 	for _, dest := range registry.destinations {
 		inspectDest := &inspect.LinkDest{
@@ -337,6 +347,7 @@ func (self *inspectLinkStatesEvent) Handle(registry *linkRegistryImpl) {
 }
 
 func (self *inspectLinkStatesEvent) GetResults(timeout time.Duration) ([]*inspect.LinkDest, error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case <-self.done:
 		return *self.result.Load(), nil
@@ -350,6 +361,7 @@ type markNewLinksNotified struct {
 }
 
 func (self *markNewLinksNotified) Handle(*linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	for _, pair := range self.links {
 		if pair.state.status == StatusEstablished && pair.link == pair.state.link {
 			pair.state.ctrlsNotified = true
@@ -362,6 +374,7 @@ type markFaultedLinksNotified struct {
 }
 
 func (self *markFaultedLinksNotified) Handle(*linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	for _, pair := range self.successfullySent {
 		state := pair.state
 		for _, fault := range pair.faults {
@@ -376,6 +389,7 @@ type scanForLinkIdEvent struct {
 }
 
 func (self *scanForLinkIdEvent) Handle(r *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	for _, dest := range r.destinations {
 		for _, state := range dest.linkMap {
 			if state.linkId == self.linkId {

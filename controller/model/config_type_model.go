@@ -18,10 +18,12 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"github.com/xeipuuv/gojsonschema"
 	"go.etcd.io/bbolt"
@@ -34,6 +36,7 @@ type ConfigType struct {
 }
 
 func (entity *ConfigType) GetCompiledSchema() (*gojsonschema.Schema, error) {
+	logtrace.LogWithFunctionName()
 	if len(entity.Schema) == 0 {
 		return nil, errors.Errorf("no schema defined on config type %v", entity.Name)
 	}
@@ -43,6 +46,7 @@ func (entity *ConfigType) GetCompiledSchema() (*gojsonschema.Schema, error) {
 }
 
 func (entity *ConfigType) toBoltEntity() (*db.ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	if entity.Name == ConfigTypeAll {
 		return nil, errorz.NewFieldError(fmt.Sprintf("%v is a keyword and may not be used as a config type name", entity.Name), "name", entity.Name)
 	}
@@ -63,14 +67,17 @@ func (entity *ConfigType) toBoltEntity() (*db.ConfigType, error) {
 }
 
 func (entity *ConfigType) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ConfigType) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *ConfigType) fillFrom(_ Env, _ *bbolt.Tx, boltConfigType *db.ConfigType) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltConfigType)
 	entity.Name = boltConfigType.Name
 	entity.Schema = boltConfigType.Schema

@@ -17,14 +17,16 @@
 package xgress_transport
 
 import (
-	"ztna-core/ztna/common/ctrl_msg"
-	"ztna-core/ztna/router/env"
 	"time"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/router/xgress"
 
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/controller/xt"
-	"ztna-core/ztna/common/logcontext"
-	"ztna-core/ztna/router/xgress"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
@@ -38,10 +40,12 @@ type dialer struct {
 }
 
 func (txd *dialer) IsTerminatorValid(string, string) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func newDialer(id *identity.TokenId, ctrl env.NetworkControllers, options *xgress.Options, tcfg transport.Configuration) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	txd := &dialer{
 		id:      id,
 		ctrl:    ctrl,
@@ -52,6 +56,7 @@ func newDialer(id *identity.TokenId, ctrl env.NetworkControllers, options *xgres
 }
 
 func (txd *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	destination := params.GetDestination()
 	circuitId := params.GetCircuitId()
 

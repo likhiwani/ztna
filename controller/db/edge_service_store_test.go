@@ -18,11 +18,13 @@ package db
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/change"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltztest"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/openziti/foundation/v2/stringz"
@@ -31,6 +33,7 @@ import (
 )
 
 func Test_EdgeServiceStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -44,6 +47,7 @@ func Test_EdgeServiceStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testEdgeServiceParentChild(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	fabricService := &Service{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Name:          eid.New(),
@@ -82,6 +86,7 @@ func (ctx *TestContext) testEdgeServiceParentChild(_ *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidEdgeServices(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer ctx.CleanupAll()
 
 	identity := ctx.RequireNewIdentity("test-user", false)
@@ -111,6 +116,7 @@ func (ctx *TestContext) testCreateInvalidEdgeServices(_ *testing.T) {
 }
 
 func (ctx *TestContext) testCreateEdgeServices(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer ctx.CleanupAll()
 
 	edgeService := &EdgeService{
@@ -134,6 +140,7 @@ type edgeServiceTestEntities struct {
 }
 
 func (ctx *TestContext) createEdgeServiceTestEntities() *edgeServiceTestEntities {
+	logtrace.LogWithFunctionName()
 	identity1 := ctx.RequireNewIdentity("admin1", true)
 
 	apiSession1 := NewApiSession(identity1.Id)
@@ -176,6 +183,7 @@ func (ctx *TestContext) createEdgeServiceTestEntities() *edgeServiceTestEntities
 }
 
 func (ctx *TestContext) testLoadQueryEdgeServices(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	entities := ctx.createEdgeServiceTestEntities()
@@ -209,6 +217,7 @@ func (ctx *TestContext) testLoadQueryEdgeServices(_ *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateEdgeServices(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 	entities := ctx.createEdgeServiceTestEntities()
 	earlier := time.Now()
@@ -248,6 +257,7 @@ func (ctx *TestContext) testUpdateEdgeServices(_ *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteEdgeServices(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 	entities := ctx.createEdgeServiceTestEntities()
 	boltztest.RequireDelete(ctx, entities.service1, apiSessionsSessionsIdxPath)

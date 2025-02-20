@@ -17,13 +17,15 @@
 package udp_vconn
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/mempool"
-	"github.com/sirupsen/logrus"
 	"io"
 	"net"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/mempool"
+	"github.com/sirupsen/logrus"
 )
 
 type udpConn struct {
@@ -40,10 +42,12 @@ type udpConn struct {
 }
 
 func (conn *udpConn) Service() string {
+	logtrace.LogWithFunctionName()
 	return conn.service
 }
 
 func (conn *udpConn) Accept(buffer mempool.PooledBuffer) {
+	logtrace.LogWithFunctionName()
 	logrus.WithField("udpConnId", conn.srcAddr.String()).Debugf("udp->ziti: queuing")
 	select {
 	case conn.readC <- buffer:
@@ -54,15 +58,18 @@ func (conn *udpConn) Accept(buffer mempool.PooledBuffer) {
 }
 
 func (conn *udpConn) markUsed() {
+	logtrace.LogWithFunctionName()
 	conn.lastUse.Store(time.Now())
 }
 
 func (conn *udpConn) GetLastUsed() time.Time {
+	logtrace.LogWithFunctionName()
 	val := conn.lastUse.Load()
 	return val.(time.Time)
 }
 
 func (conn *udpConn) WriteTo(w io.Writer) (n int64, err error) {
+	logtrace.LogWithFunctionName()
 	var bytesWritten int64
 	for {
 		var buf mempool.PooledBuffer
@@ -93,6 +100,7 @@ func (conn *udpConn) WriteTo(w io.Writer) (n int64, err error) {
 }
 
 func (conn *udpConn) Read(b []byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	leftOverLen := len(conn.leftOver)
 	if leftOverLen > 0 {
 		copy(b, conn.leftOver)
@@ -145,6 +153,7 @@ func (conn *udpConn) Read(b []byte) (n int, err error) {
 }
 
 func (conn *udpConn) Write(b []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("udpConnId", conn.srcAddr.String()).Debugf("ziti->udp: %v bytes", len(b))
 	// TODO: UDP chunking, MTU chunking?
 	n, err := conn.writeConn.WriteTo(b, conn.srcAddr)
@@ -153,6 +162,7 @@ func (conn *udpConn) Write(b []byte) (int, error) {
 }
 
 func (conn *udpConn) Close() error {
+	logtrace.LogWithFunctionName()
 	if conn.closed.CompareAndSwap(false, true) {
 		close(conn.closeNotify)
 		if err := conn.writeConn.Close(); err != nil {
@@ -166,24 +176,29 @@ func (conn *udpConn) Close() error {
 }
 
 func (conn *udpConn) LocalAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return conn.writeConn.LocalAddr()
 }
 
 func (conn *udpConn) RemoteAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return conn.srcAddr
 }
 
 func (conn *udpConn) SetDeadline(time.Time) error {
+	logtrace.LogWithFunctionName()
 	// ignore, since this is a shared connection
 	return nil
 }
 
 func (conn *udpConn) SetReadDeadline(time.Time) error {
+	logtrace.LogWithFunctionName()
 	// ignore, since this is a shared connection
 	return nil
 }
 
 func (conn *udpConn) SetWriteDeadline(time.Time) error {
+	logtrace.LogWithFunctionName()
 	// ignore, since this is a shared connection
 	return nil
 }

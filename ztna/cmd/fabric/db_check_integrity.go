@@ -1,6 +1,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"net/http"
 
@@ -19,6 +20,7 @@ type dbCheckIntegrityOptions struct {
 }
 
 func newDbCheckIntegrityCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbCheckIntegrityOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -45,6 +47,7 @@ func newDbCheckIntegrityCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func runCheckIntegrityDb(o *dbCheckIntegrityOptions) error {
+	logtrace.LogWithFunctionName()
 	var target string
 	if o.fix {
 		target = "database/fix-data-integrity"
@@ -61,6 +64,7 @@ func runCheckIntegrityDb(o *dbCheckIntegrityOptions) error {
 }
 
 func newDbCheckIntegrityStatusCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &dbCheckIntegrityOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -86,6 +90,7 @@ func newDbCheckIntegrityStatusCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func runCheckIntegrityStatus(o *dbCheckIntegrityOptions) error {
+	logtrace.LogWithFunctionName()
 	body, err := util.EdgeControllerList("database/data-integrity-results", nil, o.OutputJSONResponse, o.Out, o.Options.Timeout, o.Options.Verbose)
 	if err != nil {
 		return err

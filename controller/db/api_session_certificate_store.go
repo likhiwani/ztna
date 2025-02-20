@@ -17,9 +17,11 @@
 package db
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"time"
 )
 
 const (
@@ -42,6 +44,7 @@ type ApiSessionCertificate struct {
 }
 
 func (entity *ApiSessionCertificate) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeApiSessionCertificates
 }
 
@@ -52,6 +55,7 @@ type ApiSessionCertificateStore interface {
 }
 
 func newApiSessionCertificateStore(stores *stores) *ApiSessionCertificateStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &ApiSessionCertificateStoreImpl{}
 	store.baseStore = newBaseStore[*ApiSessionCertificate](stores, store)
 	store.InitImpl(store)
@@ -64,6 +68,7 @@ type ApiSessionCertificateStoreImpl struct {
 }
 
 func (store *ApiSessionCertificateStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.AddSymbol(FieldApiSessionCertificateApiSession, ast.NodeTypeString)
 	store.AddSymbol(FieldApiSessionCertificateSubject, ast.NodeTypeString)
@@ -72,14 +77,17 @@ func (store *ApiSessionCertificateStoreImpl) initializeLocal() {
 }
 
 func (store *ApiSessionCertificateStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddFkIndexCascadeDelete(store.symbolApiSession, store.stores.apiSession.apiSessionCertsSymbol)
 }
 
 func (store *ApiSessionCertificateStoreImpl) NewEntity() *ApiSessionCertificate {
+	logtrace.LogWithFunctionName()
 	return &ApiSessionCertificate{}
 }
 
 func (store *ApiSessionCertificateStoreImpl) FillEntity(entity *ApiSessionCertificate, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.ApiSessionId = bucket.GetStringOrError(FieldApiSessionCertificateApiSession)
 	entity.Subject = bucket.GetStringOrError(FieldApiSessionCertificateSubject)
@@ -90,6 +98,7 @@ func (store *ApiSessionCertificateStoreImpl) FillEntity(entity *ApiSessionCertif
 }
 
 func (store *ApiSessionCertificateStoreImpl) PersistEntity(entity *ApiSessionCertificate, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldApiSessionCertificateApiSession, entity.ApiSessionId)
 	ctx.SetString(FieldApiSessionCertificateSubject, entity.Subject)

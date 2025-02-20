@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
@@ -13,6 +14,7 @@ import (
 // render will attempt to send a responses on the provided http.ResponseWriter. All error output will be directed to the
 // http.ResponseWriter. The provided http.ResponseWriter will have had its header sent after calling this function.
 func render(w http.ResponseWriter, contentType string, status int, data encoding.BinaryMarshaler) {
+	logtrace.LogWithFunctionName()
 	payload, err := data.MarshalBinary()
 
 	if err != nil {
@@ -62,20 +64,24 @@ func render(w http.ResponseWriter, contentType string, status int, data encoding
 
 // renderJson will attempt to render the provided data as JSON.
 func renderJson(w http.ResponseWriter, status int, data encoding.BinaryMarshaler) {
+	logtrace.LogWithFunctionName()
 	render(w, JsonContentType, status, data)
 }
 
 func renderJsonError(w http.ResponseWriter, err error) {
+	logtrace.LogWithFunctionName()
 	restErr, status := errorToRestApiError(err)
 	renderJson(w, status, restErr)
 }
 
 func renderJsonApiError(w http.ResponseWriter, err *errorz.ApiError) {
+	logtrace.LogWithFunctionName()
 	restErr, status := errorToRestApiError(err)
 	renderJson(w, status, restErr)
 }
 
 func errorToRestApiError(err error) (*rest_model.APIError, int) {
+	logtrace.LogWithFunctionName()
 	var typedErr *errorz.ApiError
 	switch {
 	case errors.As(err, &typedErr):

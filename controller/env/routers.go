@@ -16,6 +16,8 @@
 
 package env
 
+import "ztna-core/ztna/logtrace"
+
 var routerFuncs []AddRouterFunc
 
 type AddRouterFunc func(ae *AppEnv)
@@ -25,9 +27,11 @@ type ApiRouter interface {
 }
 
 func AddRouter(rf ApiRouter) {
+	logtrace.LogWithFunctionName()
 	routerFuncs = append(routerFuncs, rf.Register)
 }
 
 func GetRouters() []AddRouterFunc {
+	logtrace.LogWithFunctionName()
 	return routerFuncs
 }

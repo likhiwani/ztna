@@ -20,25 +20,30 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"reflect"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/Jeffail/gabs"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
-	"net/http"
-	"reflect"
-	"strings"
 )
 
 func (ctx *TestContext) setJsonValue(container *gabs.Container, value interface{}, path ...string) {
+	logtrace.LogWithFunctionName()
 	_, err := container.Set(value, path...)
 	ctx.Req.NoError(err)
 }
 
 func (ctx *TestContext) setValue(container *gabs.Container, value interface{}, fields []string, field string) {
+	logtrace.LogWithFunctionName()
 	ctx.setValueWithPath(container, value, fields, field, field)
 }
 
 func (ctx *TestContext) setValueWithPath(container *gabs.Container, value interface{}, fields []string, field string, path ...string) {
+	logtrace.LogWithFunctionName()
 	if len(fields) == 0 || stringz.Contains(fields, field) {
 		_, err := container.Set(value, path...)
 		ctx.Req.NoError(err)
@@ -46,12 +51,14 @@ func (ctx *TestContext) setValueWithPath(container *gabs.Container, value interf
 }
 
 func (ctx *TestContext) parseJson(body []byte) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	result, err := gabs.ParseJSON(body)
 	ctx.Req.NoError(err)
 	return result
 }
 
 func (ctx *TestContext) getEntityId(body []byte) string {
+	logtrace.LogWithFunctionName()
 	result := ctx.parseJson(body)
 	path := result.S("data", "id")
 	ctx.Req.NotNil(path)
@@ -59,6 +66,7 @@ func (ctx *TestContext) getEntityId(body []byte) string {
 }
 
 func (ctx *TestContext) pathEquals(container *gabs.Container, val interface{}, path []string) {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	if val == nil || (reflect.TypeOf(val).Kind() == reflect.Map && reflect.ValueOf(val).IsNil()) {
 		ctx.Req.True(pathValue == nil || pathValue.Data() == nil)
@@ -76,6 +84,7 @@ func (ctx *TestContext) pathEquals(container *gabs.Container, val interface{}, p
 }
 
 func (ctx *TestContext) toFloat(val interface{}) (float64, bool) {
+	logtrace.LogWithFunctionName()
 	if v, ok := val.(int); ok {
 		return float64(v), true
 	}
@@ -108,6 +117,7 @@ func (ctx *TestContext) toFloat(val interface{}) (float64, bool) {
 }
 
 func (ctx *TestContext) requireString(container *gabs.Container, path ...string) string {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	ctx.Req.NotNil(pathValue)
 	result, ok := pathValue.Data().(string)
@@ -116,6 +126,7 @@ func (ctx *TestContext) requireString(container *gabs.Container, path ...string)
 }
 
 func (ctx *TestContext) requireBool(container *gabs.Container, path ...string) bool {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	ctx.Req.NotNil(pathValue)
 	result, ok := pathValue.Data().(bool)
@@ -124,6 +135,7 @@ func (ctx *TestContext) requireBool(container *gabs.Container, path ...string) b
 }
 
 func (ctx *TestContext) requireInt(container *gabs.Container, path ...string) int {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	ctx.Req.NotNil(pathValue)
 	result, ok := pathValue.Data().(float64)
@@ -132,6 +144,7 @@ func (ctx *TestContext) requireInt(container *gabs.Container, path ...string) in
 }
 
 func (ctx *TestContext) requireStringSlice(container *gabs.Container, path ...string) []string {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	if pathValue == nil || pathValue.Data() == nil {
 		return nil
@@ -140,6 +153,7 @@ func (ctx *TestContext) requireStringSlice(container *gabs.Container, path ...st
 }
 
 func (ctx *TestContext) pathEqualsStringSlice(container *gabs.Container, val interface{}, path []string) {
+	logtrace.LogWithFunctionName()
 	pathValue := container.Search(path...)
 	if val == nil || reflect.ValueOf(val).IsNil() {
 		if pathValue != nil {
@@ -152,6 +166,7 @@ func (ctx *TestContext) pathEqualsStringSlice(container *gabs.Container, val int
 }
 
 func (ctx *TestContext) RequireGetNonNilPathValue(container *gabs.Container, searchPath ...string) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	if len(searchPath) == 1 {
 		searchPath = path(searchPath[0])
 	}
@@ -161,6 +176,7 @@ func (ctx *TestContext) RequireGetNonNilPathValue(container *gabs.Container, sea
 }
 
 func (ctx *TestContext) RequirePathExists(container *gabs.Container, searchPath ...string) {
+	logtrace.LogWithFunctionName()
 	if len(searchPath) == 1 {
 		searchPath = path(searchPath[0])
 	}
@@ -168,18 +184,21 @@ func (ctx *TestContext) RequirePathExists(container *gabs.Container, searchPath 
 }
 
 func (ctx *TestContext) RequireChildWith(container *gabs.Container, attribute string, value interface{}) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	child := ctx.childWith(container, attribute, value)
 	ctx.Req.NotNil(child, "no child found with %v = %v", attribute, value)
 	return child
 }
 
 func (ctx *TestContext) RequireNoChildWith(container *gabs.Container, attribute string, value interface{}) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	child := ctx.childWith(container, attribute, value)
 	ctx.Req.Nil(child, "child found with %v = %v", attribute, value)
 	return child
 }
 
 func (ctx *TestContext) childWith(container *gabs.Container, attribute string, value interface{}) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	children, err := container.Children()
 	ctx.Req.NoError(err)
 	for _, child := range children {
@@ -197,6 +216,7 @@ func (ctx *TestContext) childWith(container *gabs.Container, attribute string, v
 }
 
 func (ctx *TestContext) toStringSlice(container *gabs.Container) []string {
+	logtrace.LogWithFunctionName()
 	var result []string
 	if container != nil {
 		if container.Data() == nil {
@@ -214,6 +234,7 @@ func (ctx *TestContext) toStringSlice(container *gabs.Container) []string {
 }
 
 func (ctx *TestContext) requireFieldError(httpStatus int, body []byte, errorCode string, field string) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	ctx.Req.Equal(http.StatusBadRequest, httpStatus)
 	parsed := ctx.parseJson(body)
 	ctx.pathEquals(parsed, errorCode, path("error.code"))
@@ -222,6 +243,7 @@ func (ctx *TestContext) requireFieldError(httpStatus int, body []byte, errorCode
 }
 
 func (ctx *TestContext) RequireNotFoundError(httpStatus int, body []byte) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	ctx.Req.Equal(http.StatusNotFound, httpStatus)
 	parsed := ctx.parseJson(body)
 	ctx.pathEquals(parsed, errorz.NotFoundCode, path("error.code"))
@@ -230,6 +252,7 @@ func (ctx *TestContext) RequireNotFoundError(httpStatus int, body []byte) *gabs.
 }
 
 func (ctx *TestContext) requireUnauthorizedError(httpStatus int, body []byte) *gabs.Container {
+	logtrace.LogWithFunctionName()
 	ctx.Req.Equal(http.StatusUnauthorized, httpStatus)
 	parsed := ctx.parseJson(body)
 	ctx.pathEquals(parsed, errorz.UnauthorizedCode, path("error.code"))
@@ -238,6 +261,7 @@ func (ctx *TestContext) requireUnauthorizedError(httpStatus int, body []byte) *g
 }
 
 func (ctx *TestContext) logJson(data []byte) {
+	logtrace.LogWithFunctionName()
 	if ctx.enabledJsonLogging {
 		var prettyJSON bytes.Buffer
 		if err := json.Indent(&prettyJSON, data, "", "    "); err == nil {
@@ -253,6 +277,7 @@ func (ctx *TestContext) logJson(data []byte) {
 }
 
 func path(path ...string) []string {
+	logtrace.LogWithFunctionName()
 	if len(path) == 1 {
 		return strings.Split(path[0], ".")
 	}
@@ -260,5 +285,6 @@ func path(path ...string) []string {
 }
 
 func s(vals ...string) []string {
+	logtrace.LogWithFunctionName()
 	return vals
 }

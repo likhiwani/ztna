@@ -17,6 +17,7 @@
 package api
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"fmt"
 	"github.com/Jeffail/gabs"
@@ -26,12 +27,14 @@ import (
 )
 
 func SetJSONValue(container *gabs.Container, value interface{}, path ...string) {
+	logtrace.LogWithFunctionName()
 	if _, err := container.Set(value, path...); err != nil {
 		panic(err)
 	}
 }
 
 func GetJsonValue(container *gabs.Container, path string) interface{} {
+	logtrace.LogWithFunctionName()
 	if child := container.Path(path); child != nil {
 		return child.Data()
 	}
@@ -39,6 +42,7 @@ func GetJsonValue(container *gabs.Container, path string) interface{} {
 }
 
 func GetJsonString(container *gabs.Container, path string) string {
+	logtrace.LogWithFunctionName()
 	v := GetJsonValue(container, path)
 	if v == nil {
 		return ""
@@ -50,6 +54,7 @@ func GetJsonString(container *gabs.Container, path string) string {
 }
 
 func GetJsonBool(container *gabs.Container, path string) bool {
+	logtrace.LogWithFunctionName()
 	v := GetJsonValue(container, path)
 	if v == nil {
 		return false
@@ -61,6 +66,7 @@ func GetJsonBool(container *gabs.Container, path string) bool {
 }
 
 func SetTags(container *gabs.Container, tags map[string]string, tagsJson string, path ...string) {
+	logtrace.LogWithFunctionName()
 	result := map[string]interface{}{}
 	if err := json.Unmarshal([]byte(tagsJson), &result); err != nil {
 		panic(errors.Wrap(err, "invalid tags JSON"))
@@ -75,10 +81,12 @@ func SetTags(container *gabs.Container, tags map[string]string, tagsJson string,
 }
 
 func Wrap(c *gabs.Container) *GabsWrapper {
+	logtrace.LogWithFunctionName()
 	return &GabsWrapper{Container: c}
 }
 
 func Wrap2(c *gabs2.Container) *Gabs2Wrapper {
+	logtrace.LogWithFunctionName()
 	return &Gabs2Wrapper{Container: c}
 }
 
@@ -87,6 +95,7 @@ type GabsWrapper struct {
 }
 
 func (self *GabsWrapper) String(path string) string {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return ""
@@ -95,6 +104,7 @@ func (self *GabsWrapper) String(path string) string {
 }
 
 func (self *GabsWrapper) Bool(path string) bool {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return false
@@ -106,6 +116,7 @@ func (self *GabsWrapper) Bool(path string) bool {
 }
 
 func (self *GabsWrapper) tostring(val interface{}) string {
+	logtrace.LogWithFunctionName()
 	if val, ok := val.(string); ok {
 		return val
 	}
@@ -113,6 +124,7 @@ func (self *GabsWrapper) tostring(val interface{}) string {
 }
 
 func (self *GabsWrapper) Float64(path string) float64 {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return 0
@@ -124,6 +136,7 @@ func (self *GabsWrapper) Float64(path string) float64 {
 }
 
 func (self *GabsWrapper) StringSlice(path string) []string {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return nil
@@ -146,6 +159,7 @@ type Gabs2Wrapper struct {
 }
 
 func (self *Gabs2Wrapper) String(path string) string {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return ""
@@ -154,6 +168,7 @@ func (self *Gabs2Wrapper) String(path string) string {
 }
 
 func (self *Gabs2Wrapper) Bool(path string) bool {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return false
@@ -165,6 +180,7 @@ func (self *Gabs2Wrapper) Bool(path string) bool {
 }
 
 func (self *Gabs2Wrapper) tostring(val interface{}) string {
+	logtrace.LogWithFunctionName()
 	if val, ok := val.(string); ok {
 		return val
 	}
@@ -172,6 +188,7 @@ func (self *Gabs2Wrapper) tostring(val interface{}) string {
 }
 
 func (self *Gabs2Wrapper) Float64(path string) float64 {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return 0
@@ -183,6 +200,7 @@ func (self *Gabs2Wrapper) Float64(path string) float64 {
 }
 
 func (self *Gabs2Wrapper) StringSlice(path string) []string {
+	logtrace.LogWithFunctionName()
 	child := self.Path(path)
 	if child == nil || child.Data() == nil {
 		return nil

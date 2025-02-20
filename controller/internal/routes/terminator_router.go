@@ -24,11 +24,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewTerminatorRouter()
 	env.AddRouter(r)
 }
@@ -38,12 +40,14 @@ type TerminatorRouter struct {
 }
 
 func NewTerminatorRouter() *TerminatorRouter {
+	logtrace.LogWithFunctionName()
 	return &TerminatorRouter{
 		BasePath: "/" + EntityNameTerminator,
 	}
 }
 
 func (r *TerminatorRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.TerminatorDeleteTerminatorHandler = terminator.DeleteTerminatorHandlerFunc(func(params terminator.DeleteTerminatorParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -70,14 +74,17 @@ func (r *TerminatorRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *TerminatorRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	api_impl.ListWithHandler[*model.Terminator](ae.GetHostController().GetNetwork(), rc, ae.Managers.Terminator, TerminatorModelMapper{})
 }
 
 func (r *TerminatorRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	api_impl.DetailWithHandler[*model.Terminator](ae.GetHostController().GetNetwork(), rc, ae.Managers.Terminator, TerminatorModelMapper{})
 }
 
 func (r *TerminatorRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params terminator.CreateTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, TerminatorLinkFactory, func() (string, error) {
 		entity := MapCreateTerminatorToModel(params.Terminator)
 		err := ae.Managers.Terminator.Create(entity, rc.NewChangeContext())
@@ -89,16 +96,19 @@ func (r *TerminatorRouter) Create(ae *env.AppEnv, rc *response.RequestContext, p
 }
 
 func (r *TerminatorRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Terminator)
 }
 
 func (r *TerminatorRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params terminator.UpdateTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.Terminator.Update(MapUpdateTerminatorToModel(params.ID, params.Terminator), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *TerminatorRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params terminator.PatchTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.Terminator.Update(MapPatchTerminatorToModel(params.ID, params.Terminator), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})

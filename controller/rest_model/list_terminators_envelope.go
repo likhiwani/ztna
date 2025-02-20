@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type ListTerminatorsEnvelope struct {
 
 // Validate validates this list terminators envelope
 func (m *ListTerminatorsEnvelope) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateData(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *ListTerminatorsEnvelope) Validate(formats strfmt.Registry) error {
 }
 
 func (m *ListTerminatorsEnvelope) validateData(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("data", "body", m.Data); err != nil {
 		return err
@@ -89,6 +92,7 @@ func (m *ListTerminatorsEnvelope) validateData(formats strfmt.Registry) error {
 }
 
 func (m *ListTerminatorsEnvelope) validateMeta(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("meta", "body", m.Meta); err != nil {
 		return err
@@ -110,6 +114,7 @@ func (m *ListTerminatorsEnvelope) validateMeta(formats strfmt.Registry) error {
 
 // ContextValidate validate this list terminators envelope based on the context it is used
 func (m *ListTerminatorsEnvelope) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateData(ctx, formats); err != nil {
@@ -127,6 +132,7 @@ func (m *ListTerminatorsEnvelope) ContextValidate(ctx context.Context, formats s
 }
 
 func (m *ListTerminatorsEnvelope) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := m.Data.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
@@ -141,6 +147,7 @@ func (m *ListTerminatorsEnvelope) contextValidateData(ctx context.Context, forma
 }
 
 func (m *ListTerminatorsEnvelope) contextValidateMeta(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Meta != nil {
 		if err := m.Meta.ContextValidate(ctx, formats); err != nil {
@@ -158,6 +165,7 @@ func (m *ListTerminatorsEnvelope) contextValidateMeta(ctx context.Context, forma
 
 // MarshalBinary interface implementation
 func (m *ListTerminatorsEnvelope) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -166,6 +174,7 @@ func (m *ListTerminatorsEnvelope) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *ListTerminatorsEnvelope) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res ListTerminatorsEnvelope
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

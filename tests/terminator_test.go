@@ -1,3 +1,4 @@
+//go:build apitests
 // +build apitests
 
 /*
@@ -18,9 +19,13 @@
 
 package tests
 
-import "testing"
+import (
+	"testing"
+	"ztna-core/ztna/logtrace"
+)
 
 func Test_Terminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

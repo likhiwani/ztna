@@ -21,10 +21,12 @@ import (
 	"net/url"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/fatih/color"
 	"github.com/openziti/storage/boltz"
 
@@ -38,6 +40,7 @@ type deleteOptions struct {
 
 // newDeleteCmd creates a command object for the "edge controller delete" command
 func newDeleteCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "deletes various entities managed by the Ziti Edge Controller",
@@ -83,6 +86,7 @@ func newDeleteCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // newDeleteCmdForEntityType creates the delete command for the given entity type
 func newDeleteCmdForEntityType(entityType string, options *deleteOptions, aliases ...string) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     entityType + " <id>",
 		Short:   "deletes " + getPlural(entityType) + " managed by the Ziti Edge Controller",
@@ -108,6 +112,7 @@ func newDeleteCmdForEntityType(entityType string, options *deleteOptions, aliase
 }
 
 func newDeleteWhereCmdForEntityType(entityType string, options *deleteOptions) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "where <filter>",
 		Short: "deletes " + getPlural(entityType) + " matching the filter managed by the Ziti Edge Controller",
@@ -130,6 +135,7 @@ func newDeleteWhereCmdForEntityType(entityType string, options *deleteOptions) *
 
 // runDeleteEntityOfType implements the commands to delete various entity types
 func runDeleteEntityOfType(o *deleteOptions, entityType string) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	ids := o.Args
 	if entityType != "terminators" && entityType != "api-sessions" && entityType != "sessions" && entityType != "authenticators" && entityType != "enrollments" {
@@ -141,6 +147,7 @@ func runDeleteEntityOfType(o *deleteOptions, entityType string) error {
 }
 
 func deleteEntitiesOfType(o *deleteOptions, entityType string, ids []string) error {
+	logtrace.LogWithFunctionName()
 	for _, id := range ids {
 		err, statusCode := util.ControllerDelete("edge", entityType, id, "", o.Out, o.OutputJSONRequest, o.OutputJSONResponse, o.Timeout, o.Verbose)
 		if err != nil {
@@ -158,6 +165,7 @@ func deleteEntitiesOfType(o *deleteOptions, entityType string, ids []string) err
 
 // runDeleteEntityOfType implements the commands to delete various entity types
 func runDeleteEntityOfTypeWhere(options *deleteOptions, entityType string) error {
+	logtrace.LogWithFunctionName()
 	filter := strings.Join(options.Args, " ")
 
 	params := url.Values{}
@@ -181,6 +189,7 @@ func runDeleteEntityOfTypeWhere(options *deleteOptions, entityType string) error
 }
 
 func getPlural(entityType string) string {
+	logtrace.LogWithFunctionName()
 	if strings.HasSuffix(entityType, "y") {
 		return strings.TrimSuffix(entityType, "y") + "ies"
 	}

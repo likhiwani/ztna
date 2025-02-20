@@ -19,16 +19,19 @@ package api
 import (
 	"bytes"
 	"fmt"
-	"github.com/go-openapi/runtime"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/ztna/controller/apierror"
 	"net/http"
 	"strconv"
 	"strings"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 func NewResponder(rc RequestContext, mapper ResponseMapper) *ResponderImpl {
+	logtrace.LogWithFunctionName()
 	return &ResponderImpl{
 		rc:       rc,
 		mapper:   mapper,
@@ -43,48 +46,59 @@ type ResponderImpl struct {
 }
 
 func (responder *ResponderImpl) SetProducer(producer runtime.Producer) {
+	logtrace.LogWithFunctionName()
 	responder.producer = producer
 }
 
 func (responder *ResponderImpl) GetProducer() runtime.Producer {
+	logtrace.LogWithFunctionName()
 	return responder.producer
 }
 
 func (responder *ResponderImpl) RespondWithCouldNotReadBody(err error) {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithApiError(apierror.NewCouldNotReadBody(err))
 }
 
 func (responder *ResponderImpl) RespondWithCouldNotParseBody(err error) {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithApiError(apierror.NewCouldNotParseBody(err))
 }
 
 func (responder *ResponderImpl) RespondWithValidationErrors(errors *apierror.ValidationErrors) {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithApiError(errorz.NewCouldNotValidate(errors))
 }
 
 func (responder *ResponderImpl) RespondWithNotFound() {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithApiError(errorz.NewNotFound())
 }
 
 func (responder *ResponderImpl) RespondWithNotFoundWithCause(cause error) {
+	logtrace.LogWithFunctionName()
 	apiErr := errorz.NewNotFound()
 	apiErr.Cause = cause
 	responder.RespondWithApiError(apiErr)
 }
 
 func (responder *ResponderImpl) RespondWithFieldError(fe *errorz.FieldError) {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithApiError(errorz.NewFieldApiError(fe))
 }
 
 func (responder *ResponderImpl) RespondWithEmptyOk() {
+	logtrace.LogWithFunctionName()
 	responder.Respond(responder.mapper.EmptyOkData(), http.StatusOK)
 }
 
 func (responder *ResponderImpl) Respond(data interface{}, httpStatus int) {
+	logtrace.LogWithFunctionName()
 	responder.RespondWithProducer(responder.GetProducer(), data, httpStatus)
 }
 
 func (responder *ResponderImpl) RespondWithProducer(producer runtime.Producer, data interface{}, httpStatus int) bool {
+	logtrace.LogWithFunctionName()
 	w := responder.rc.GetResponseWriter()
 	buff := &bytes.Buffer{}
 	err := producer.Produce(buff, data)
@@ -128,6 +142,7 @@ func (responder *ResponderImpl) RespondWithProducer(producer runtime.Producer, d
 }
 
 func (responder *ResponderImpl) RespondWithError(err error) {
+	logtrace.LogWithFunctionName()
 	var apiError *errorz.ApiError
 	var ok bool
 
@@ -140,6 +155,7 @@ func (responder *ResponderImpl) RespondWithError(err error) {
 }
 
 func (responder *ResponderImpl) RespondWithApiError(apiError *errorz.ApiError) {
+	logtrace.LogWithFunctionName()
 	data := responder.mapper.MapApiError(responder.rc.GetId(), apiError)
 
 	producer := responder.rc.GetProducer()
@@ -159,6 +175,7 @@ func (responder *ResponderImpl) RespondWithApiError(apiError *errorz.ApiError) {
 }
 
 func canRespondWithJson(request *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	//if we can return JSON for errors we should as they provide the most
 	//information
 

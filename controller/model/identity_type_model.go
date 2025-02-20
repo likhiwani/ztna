@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -29,6 +31,7 @@ type IdentityType struct {
 }
 
 func (entity *IdentityType) toBoltEntity() (*db.IdentityType, error) {
+	logtrace.LogWithFunctionName()
 	return &db.IdentityType{
 		Name:          entity.Name,
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
@@ -36,14 +39,17 @@ func (entity *IdentityType) toBoltEntity() (*db.IdentityType, error) {
 }
 
 func (entity *IdentityType) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.IdentityType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *IdentityType) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.IdentityType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *IdentityType) fillFrom(_ Env, _ *bbolt.Tx, boltIdentityType *db.IdentityType) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltIdentityType)
 	entity.Name = boltIdentityType.Name
 	return nil

@@ -17,10 +17,12 @@
 package handler_peer_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,16 +31,19 @@ type inspectHandler struct {
 }
 
 func newInspectHandler(n *network.Network) *inspectHandler {
+	logtrace.LogWithFunctionName()
 	return &inspectHandler{
 		network: n,
 	}
 }
 
 func (*inspectHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_InspectRequestType)
 }
 
 func (handler *inspectHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		context := &inspectRequestContext{
 			handler:  handler,
@@ -72,6 +77,7 @@ type inspectRequestContext struct {
 }
 
 func (context *inspectRequestContext) processLocal() {
+	logtrace.LogWithFunctionName()
 	result := context.handler.network.Inspections.Inspect(context.handler.network.GetAppId(), context.request.RequestedValues)
 	for _, value := range result.Results {
 		context.appendValue(value.Name, value.Value)
@@ -83,6 +89,7 @@ func (context *inspectRequestContext) processLocal() {
 }
 
 func (context *inspectRequestContext) sendResponse() {
+	logtrace.LogWithFunctionName()
 	body, err := proto.Marshal(context.response)
 	if err != nil {
 		pfxlog.Logger().WithError(err).Error("unexpected error serializing InspectResponse")
@@ -97,6 +104,7 @@ func (context *inspectRequestContext) sendResponse() {
 }
 
 func (context *inspectRequestContext) appendValue(name string, value string) {
+	logtrace.LogWithFunctionName()
 	context.response.Values = append(context.response.Values, &ctrl_pb.InspectResponse_InspectValue{
 		Name:  name,
 		Value: value,
@@ -104,6 +112,7 @@ func (context *inspectRequestContext) appendValue(name string, value string) {
 }
 
 func (context *inspectRequestContext) appendError(err string) {
+	logtrace.LogWithFunctionName()
 	context.response.Success = false
 	context.response.Errors = append(context.response.Errors, err)
 }

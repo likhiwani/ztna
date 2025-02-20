@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -48,6 +49,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListTerminatorsParams() *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -56,6 +58,7 @@ func NewListTerminatorsParams() *ListTerminatorsParams {
 // NewListTerminatorsParamsWithTimeout creates a new ListTerminatorsParams object
 // with the ability to set a timeout on a request.
 func NewListTerminatorsParamsWithTimeout(timeout time.Duration) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsParams{
 		timeout: timeout,
 	}
@@ -64,6 +67,7 @@ func NewListTerminatorsParamsWithTimeout(timeout time.Duration) *ListTerminators
 // NewListTerminatorsParamsWithContext creates a new ListTerminatorsParams object
 // with the ability to set a context for a request.
 func NewListTerminatorsParamsWithContext(ctx context.Context) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsParams{
 		Context: ctx,
 	}
@@ -72,6 +76,7 @@ func NewListTerminatorsParamsWithContext(ctx context.Context) *ListTerminatorsPa
 // NewListTerminatorsParamsWithHTTPClient creates a new ListTerminatorsParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewListTerminatorsParamsWithHTTPClient(client *http.Client) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	return &ListTerminatorsParams{
 		HTTPClient: client,
 	}
@@ -102,6 +107,7 @@ type ListTerminatorsParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *ListTerminatorsParams) WithDefaults() *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -110,77 +116,91 @@ func (o *ListTerminatorsParams) WithDefaults() *ListTerminatorsParams {
 //
 // All values with no default are reset to their zero value.
 func (o *ListTerminatorsParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the list terminators params
 func (o *ListTerminatorsParams) WithTimeout(timeout time.Duration) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the list terminators params
 func (o *ListTerminatorsParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the list terminators params
 func (o *ListTerminatorsParams) WithContext(ctx context.Context) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the list terminators params
 func (o *ListTerminatorsParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the list terminators params
 func (o *ListTerminatorsParams) WithHTTPClient(client *http.Client) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the list terminators params
 func (o *ListTerminatorsParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithFilter adds the filter to the list terminators params
 func (o *ListTerminatorsParams) WithFilter(filter *string) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetFilter(filter)
 	return o
 }
 
 // SetFilter adds the filter to the list terminators params
 func (o *ListTerminatorsParams) SetFilter(filter *string) {
+    logtrace.LogWithFunctionName()
 	o.Filter = filter
 }
 
 // WithLimit adds the limit to the list terminators params
 func (o *ListTerminatorsParams) WithLimit(limit *int64) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the list terminators params
 func (o *ListTerminatorsParams) SetLimit(limit *int64) {
+    logtrace.LogWithFunctionName()
 	o.Limit = limit
 }
 
 // WithOffset adds the offset to the list terminators params
 func (o *ListTerminatorsParams) WithOffset(offset *int64) *ListTerminatorsParams {
+    logtrace.LogWithFunctionName()
 	o.SetOffset(offset)
 	return o
 }
 
 // SetOffset adds the offset to the list terminators params
 func (o *ListTerminatorsParams) SetOffset(offset *int64) {
+    logtrace.LogWithFunctionName()
 	o.Offset = offset
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *ListTerminatorsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

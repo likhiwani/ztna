@@ -20,9 +20,11 @@ import (
 	_ "embed"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/openziti/runzmd"
 	"github.com/openziti/runzmd/actionz"
 	"github.com/spf13/cobra"
@@ -38,6 +40,7 @@ type singleSdkHosted struct {
 }
 
 func newSingleSdkHostedCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &singleSdkHosted{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -70,6 +73,7 @@ func newSingleSdkHostedCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *singleSdkHosted) run() error {
+	logtrace.LogWithFunctionName()
 	t := runzmd.NewRunner()
 	t.NewLinePause = self.NewlinePause
 	t.AssumeDefault = !self.interactive

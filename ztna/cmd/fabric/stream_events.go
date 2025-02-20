@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -53,6 +54,7 @@ type streamEventsAction struct {
 }
 
 func NewStreamEventsCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := streamEventsAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -88,6 +90,7 @@ func NewStreamEventsCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *streamEventsAction) buildSubscriptions(cmd *cobra.Command) []*event.Subscription {
+	logtrace.LogWithFunctionName()
 	var subscriptions []*event.Subscription
 
 	if self.apiSessions || (self.all && !cmd.Flags().Changed("api-sessions")) {
@@ -183,6 +186,7 @@ func (self *streamEventsAction) buildSubscriptions(cmd *cobra.Command) []*event.
 }
 
 func (self *streamEventsAction) streamEvents(cmd *cobra.Command, _ []string) error {
+	logtrace.LogWithFunctionName()
 	if self.usageVersion < 2 || self.usageVersion > 3 {
 		return errors.New("invalid usage version")
 	}
@@ -246,5 +250,6 @@ func (self *streamEventsAction) streamEvents(cmd *cobra.Command, _ []string) err
 }
 
 func (self *streamEventsAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	fmt.Println(string(msg.Body))
 }

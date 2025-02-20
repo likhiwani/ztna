@@ -18,10 +18,12 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
-	"github.com/sirupsen/logrus"
 	"strings"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 var _ model.ComponentType = (*ZitiEdgeTunnelType)(nil)
@@ -36,20 +38,24 @@ type ZitiEdgeTunnelType struct {
 }
 
 func (self *ZitiEdgeTunnelType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "ziti-edge-tunnel"
 }
 
 func (self *ZitiEdgeTunnelType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ZitiEdgeTunnelType) GetActions() map[string]model.ComponentAction {
+	logtrace.LogWithFunctionName()
 	return map[string]model.ComponentAction{
 		ZitiTunnelActionsReEnroll: model.ComponentActionF(self.ReEnroll),
 	}
 }
 
 func (self *ZitiEdgeTunnelType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":    "ziti-edge-tunnel",
 		"version":    self.Version,
@@ -58,6 +64,7 @@ func (self *ZitiEdgeTunnelType) Dump() any {
 }
 
 func (self *ZitiEdgeTunnelType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(self.Version, "v") {
 		self.Version = self.Version[1:]
 	}
@@ -65,6 +72,7 @@ func (self *ZitiEdgeTunnelType) InitType(*model.Component) {
 }
 
 func (self *ZitiEdgeTunnelType) getBinaryName() string {
+	logtrace.LogWithFunctionName()
 	binaryName := "ziti-edge-tunnel"
 	version := self.Version
 	if version != "" {
@@ -74,6 +82,7 @@ func (self *ZitiEdgeTunnelType) getBinaryName() string {
 }
 
 func (self *ZitiEdgeTunnelType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	if err := stageziti.StageZitiEdgeTunnelOnce(r, c, self.Version, self.LocalPath); err != nil {
 		return err
 	}
@@ -81,6 +90,7 @@ func (self *ZitiEdgeTunnelType) StageFiles(r model.Run, c *model.Component) erro
 }
 
 func (self *ZitiEdgeTunnelType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, self.getBinaryName()) &&
 			strings.Contains(s, fmt.Sprintf("%s.json", c.Id)) &&
@@ -89,6 +99,7 @@ func (self *ZitiEdgeTunnelType) getProcessFilter(c *model.Component) func(string
 }
 
 func (self *ZitiEdgeTunnelType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -97,6 +108,7 @@ func (self *ZitiEdgeTunnelType) IsRunning(_ model.Run, c *model.Component) (bool
 }
 
 func (self *ZitiEdgeTunnelType) GetConfigPath(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	if self.ConfigPathF != nil {
 		return self.ConfigPathF(c)
 	}
@@ -104,6 +116,7 @@ func (self *ZitiEdgeTunnelType) GetConfigPath(c *model.Component) string {
 }
 
 func (self *ZitiEdgeTunnelType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := fmt.Sprintf("/home/%s/fablab/bin/%s", user, self.getBinaryName())
@@ -135,9 +148,11 @@ func (self *ZitiEdgeTunnelType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *ZitiEdgeTunnelType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter(c))
 }
 
 func (self *ZitiEdgeTunnelType) ReEnroll(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return reEnrollIdentity(run, c, GetZitiBinaryPath(c, self.ZitiVersion), self.GetConfigPath(c))
 }

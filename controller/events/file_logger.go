@@ -18,16 +18,19 @@ package events
 
 import (
 	"fmt"
-	"github.com/natefinch/lumberjack"
-	"github.com/pkg/errors"
 	"io"
 	"os"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/natefinch/lumberjack"
+	"github.com/pkg/errors"
 )
 
 type fabricFormatterFactory struct{}
 
 func (f fabricFormatterFactory) NewLoggingHandler(format string, buffer int, out io.WriteCloser) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	if strings.EqualFold(format, "json") {
 		return NewJsonFormatter(buffer, NewWriterEventSink(out)), nil
 	}
@@ -38,16 +41,19 @@ func (f fabricFormatterFactory) NewLoggingHandler(format string, buffer int, out
 type StdOutLoggerFactory struct{}
 
 func (StdOutLoggerFactory) NewEventHandler(config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return NewFileEventLogger(fabricFormatterFactory{}, true, config)
 }
 
 type FileEventLoggerFactory struct{}
 
 func (FileEventLoggerFactory) NewEventHandler(config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return NewFileEventLogger(fabricFormatterFactory{}, false, config)
 }
 
 func NewFileEventLogger(formatterFactory LoggingHandlerFactory, stdout bool, config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	// allow config to increase the buffer size
 	bufferSize := 10
 	if value, found := config["bufferSize"]; found {
@@ -117,10 +123,12 @@ type newlineWriter struct {
 }
 
 func (self newlineWriter) Close() error {
+	logtrace.LogWithFunctionName()
 	return self.out.Close()
 }
 
 func (self newlineWriter) Write(p []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	n, err := self.out.Write(p)
 	if err != nil {
 		return n, err

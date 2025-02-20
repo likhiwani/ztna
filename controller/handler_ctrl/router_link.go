@@ -17,11 +17,13 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -31,14 +33,17 @@ type routerLinkHandler struct {
 }
 
 func newRouterLinkHandler(r *model.Router, network *network.Network) *routerLinkHandler {
+	logtrace.LogWithFunctionName()
 	return &routerLinkHandler{r: r, network: network}
 }
 
 func (h *routerLinkHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_RouterLinksType)
 }
 
 func (h *routerLinkHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if !h.r.Connected.Load() || ch.IsClosed() {
 		return
 	}
@@ -55,6 +60,7 @@ func (h *routerLinkHandler) HandleReceive(msg *channel.Message, ch channel.Chann
 }
 
 func (h *routerLinkHandler) HandleLinks(links *ctrl_pb.RouterLinks) {
+	logtrace.LogWithFunctionName()
 	for _, link := range links.Links {
 		h.network.NotifyExistingLink(link.Id, link.Iteration, link.LinkProtocol, link.DialAddress, h.r, link.DestRouterId)
 	}

@@ -18,11 +18,13 @@ package db
 
 import (
 	"encoding/binary"
+	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/sequence"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/xt"
 	"go.etcd.io/bbolt"
 )
 
@@ -59,50 +61,62 @@ type Terminator struct {
 }
 
 func (entity *Terminator) GetCost() uint16 {
+	logtrace.LogWithFunctionName()
 	return entity.Cost
 }
 
 func (entity *Terminator) GetPrecedence() xt.Precedence {
+	logtrace.LogWithFunctionName()
 	return xt.GetPrecedenceForName(entity.Precedence)
 }
 
 func (entity *Terminator) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Service
 }
 
 func (entity *Terminator) GetRouterId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Router
 }
 
 func (entity *Terminator) GetBinding() string {
+	logtrace.LogWithFunctionName()
 	return entity.Binding
 }
 
 func (entity *Terminator) GetAddress() string {
+	logtrace.LogWithFunctionName()
 	return entity.Address
 }
 
 func (entity *Terminator) GetInstanceId() string {
+	logtrace.LogWithFunctionName()
 	return entity.InstanceId
 }
 
 func (entity *Terminator) GetInstanceSecret() []byte {
+	logtrace.LogWithFunctionName()
 	return entity.InstanceSecret
 }
 
 func (entity *Terminator) GetPeerData() xt.PeerData {
+	logtrace.LogWithFunctionName()
 	return entity.PeerData
 }
 
 func (entity *Terminator) GetHostId() string {
+	logtrace.LogWithFunctionName()
 	return entity.HostId
 }
 
 func (entity *Terminator) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeTerminators
 }
 
 func (entity *Terminator) GetSourceCtrl() string {
+	logtrace.LogWithFunctionName()
 	return entity.SourceCtrl
 }
 
@@ -112,6 +126,7 @@ type TerminatorStore interface {
 }
 
 func newTerminatorStore(stores *stores) *terminatorStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &terminatorStoreImpl{
 		sequence: sequence.NewSequence(),
 	}
@@ -134,6 +149,7 @@ type terminatorStoreImpl struct {
 }
 
 func (store *terminatorStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.AddSymbol(FieldTerminatorBinding, ast.NodeTypeString)
 	store.AddSymbol(FieldTerminatorAddress, ast.NodeTypeString)
@@ -148,6 +164,7 @@ func (store *terminatorStoreImpl) initializeLocal() {
 }
 
 func (store *terminatorStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddFkIndex(store.serviceSymbol, store.stores.service.terminatorsSymbol)
 	store.AddFkIndex(store.routerSymbol, store.stores.router.terminatorsSymbol)
 
@@ -156,10 +173,12 @@ func (store *terminatorStoreImpl) initializeLinked() {
 }
 
 func (store *terminatorStoreImpl) NewEntity() *Terminator {
+	logtrace.LogWithFunctionName()
 	return &Terminator{}
 }
 
 func (store *terminatorStoreImpl) FillEntity(entity *Terminator, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Service = bucket.GetStringOrError(FieldTerminatorService)
 	entity.Router = bucket.GetStringOrError(FieldTerminatorRouter)
@@ -184,6 +203,7 @@ func (store *terminatorStoreImpl) FillEntity(entity *Terminator, bucket *boltz.T
 }
 
 func (store *terminatorStoreImpl) PersistEntity(entity *Terminator, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 
 	if entity.Precedence == "" {
@@ -253,6 +273,7 @@ func (store *terminatorStoreImpl) PersistEntity(entity *Terminator, ctx *boltz.P
 }
 
 func (store *terminatorStoreImpl) Create(ctx boltz.MutateContext, entity *Terminator) error {
+	logtrace.LogWithFunctionName()
 	if entity.GetId() == "" {
 		var err error
 		id, err := store.sequence.NextHash()
@@ -265,6 +286,7 @@ func (store *terminatorStoreImpl) Create(ctx boltz.MutateContext, entity *Termin
 }
 
 func (store *terminatorStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	ctx = ctx.GetSystemContext()
 	if terminator, _, _ := store.FindById(ctx.Tx(), id); terminator != nil {
 		if service, _, err := store.stores.service.FindById(ctx.Tx(), terminator.Service); service != nil {
@@ -291,6 +313,7 @@ func (store *terminatorStoreImpl) DeleteById(ctx boltz.MutateContext, id string)
 }
 
 func (store *terminatorStoreImpl) GetTerminatorsInIdentityGroup(tx *bbolt.Tx, terminatorId string) ([]*Terminator, error) {
+	logtrace.LogWithFunctionName()
 	terminator, _, err := store.FindById(tx, terminatorId)
 	if err != nil {
 		return nil, err

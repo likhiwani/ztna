@@ -23,6 +23,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
@@ -37,12 +38,14 @@ type AuthenticatorLinkFactoryImpl struct {
 }
 
 func NewAuthenticatorLinkFactory() *AuthenticatorLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &AuthenticatorLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameAuthenticator),
 	}
 }
 
 func (factory *AuthenticatorLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	authenticator := entity.(*model.Authenticator)
 
 	links := factory.BasicLinkFactory.Links(entity)
@@ -54,6 +57,7 @@ func (factory *AuthenticatorLinkFactoryImpl) Links(entity models.Entity) rest_mo
 }
 
 func MapCreateToAuthenticatorModel(in *rest_model.AuthenticatorCreate) (*model.Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	result := &model.Authenticator{
 		BaseEntity: models.BaseEntity{},
 		Method:     stringz.OrEmpty(in.Method),
@@ -97,6 +101,7 @@ func MapCreateToAuthenticatorModel(in *rest_model.AuthenticatorCreate) (*model.A
 }
 
 func MapUpdateAuthenticatorToModel(id string, in *rest_model.AuthenticatorUpdate) *model.Authenticator {
+	logtrace.LogWithFunctionName()
 	result := &model.Authenticator{
 		BaseEntity: models.BaseEntity{
 			Id:   id,
@@ -116,6 +121,7 @@ func MapUpdateAuthenticatorToModel(id string, in *rest_model.AuthenticatorUpdate
 }
 
 func MapPatchAuthenticatorToModel(id string, in *rest_model.AuthenticatorPatch) *model.Authenticator {
+	logtrace.LogWithFunctionName()
 	result := &model.Authenticator{
 		BaseEntity: models.BaseEntity{
 			Id:   id,
@@ -143,10 +149,12 @@ func MapPatchAuthenticatorToModel(id string, in *rest_model.AuthenticatorPatch) 
 }
 
 func MapAuthenticatorToRestEntity(ae *env.AppEnv, _ *response.RequestContext, e *model.Authenticator) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapAuthenticatorToRestModel(ae, e)
 }
 
 func MapAuthenticatorToRestModel(ae *env.AppEnv, i *model.Authenticator) (*rest_model.AuthenticatorDetail, error) {
+	logtrace.LogWithFunctionName()
 
 	identity, err := ae.GetManagers().Identity.Read(i.IdentityId)
 
@@ -176,6 +184,7 @@ func MapAuthenticatorToRestModel(ae *env.AppEnv, i *model.Authenticator) (*rest_
 }
 
 func MapAuthenticatorsToRestEntities(ae *env.AppEnv, _ *response.RequestContext, es []*model.Authenticator) ([]*rest_model.AuthenticatorDetail, error) {
+	logtrace.LogWithFunctionName()
 	apiEntities := make([]*rest_model.AuthenticatorDetail, 0)
 
 	for _, e := range es {

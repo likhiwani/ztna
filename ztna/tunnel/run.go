@@ -20,17 +20,21 @@
 package tunnel
 
 import (
-	"github.com/michaelquigley/pfxlog"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept"
 	"ztna-core/ztna/tunnel/intercept/tproxy"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	hostSpecificCmds = append(hostSpecificCmds, NewRunCmd())
 }
 
 func NewRunCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:     "run <config>",
 		Short:   "Auto-select interceptor",
@@ -42,6 +46,7 @@ func NewRunCmd() *cobra.Command {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	var err error
 	var tProxyInterceptor intercept.Interceptor

@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto/sha1"
 	"fmt"
 
@@ -38,6 +39,7 @@ type createRouterOptions struct {
 
 // newCreateRouterCmd creates the 'fabric create router' command for the given entity type
 func newCreateRouterCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createRouterOptions{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -68,6 +70,7 @@ func newCreateRouterCmd(p common.OptionsProvider) *cobra.Command {
 
 // createRouter implements the command to create a router
 func (o *createRouterOptions) createRouter(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	cert, err := certtools.LoadCertFromFile(args[0])
 	if err != nil {
 		return err

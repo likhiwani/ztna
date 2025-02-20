@@ -18,11 +18,13 @@ package xlink_transport
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/router/xlink"
 )
 
 type channelType byte
@@ -40,6 +42,7 @@ const (
 )
 
 func (self channelType) String() string {
+	logtrace.LogWithFunctionName()
 	if self == PayloadChannel {
 		return "payload"
 	}
@@ -55,6 +58,7 @@ func NewFactory(accepter xlink.Acceptor,
 	xlinkRegistry xlink.Registry,
 	metricsRegistry metrics.Registry) xlink.Factory {
 
+	logtrace.LogWithFunctionName()
 	tcfg[transport.KeyProtocol] = append(tcfg.Protocols(), "ziti-link")
 
 	return &factory{
@@ -67,6 +71,7 @@ func NewFactory(accepter xlink.Acceptor,
 }
 
 func (self *factory) CreateListener(id *identity.TokenId, _ xlink.Forwarder, configData transport.Configuration) (xlink.Listener, error) {
+	logtrace.LogWithFunctionName()
 	config, err := loadListenerConfig(configData)
 
 	if err != nil {
@@ -94,6 +99,7 @@ func (self *factory) CreateListener(id *identity.TokenId, _ xlink.Forwarder, con
 }
 
 func (self *factory) CreateDialer(id *identity.TokenId, _ xlink.Forwarder, configData transport.Configuration) (xlink.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	config, err := loadDialerConfig(configData)
 	if err != nil {
 		return nil, fmt.Errorf("error loading dialer configuration (%w)", err)

@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type InspectOK struct {
 
 // NewInspectOK creates InspectOK with default headers values
 func NewInspectOK() *InspectOK {
+    logtrace.LogWithFunctionName()
 
 	return &InspectOK{}
 }
 
 // WithPayload adds the payload to the inspect o k response
 func (o *InspectOK) WithPayload(payload *rest_model.InspectResponse) *InspectOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the inspect o k response
 func (o *InspectOK) SetPayload(payload *rest_model.InspectResponse) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *InspectOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type InspectUnauthorized struct {
 
 // NewInspectUnauthorized creates InspectUnauthorized with default headers values
 func NewInspectUnauthorized() *InspectUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &InspectUnauthorized{}
 }
 
 // WithPayload adds the payload to the inspect unauthorized response
 func (o *InspectUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *InspectUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the inspect unauthorized response
 func (o *InspectUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *InspectUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type InspectTooManyRequests struct {
 
 // NewInspectTooManyRequests creates InspectTooManyRequests with default headers values
 func NewInspectTooManyRequests() *InspectTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &InspectTooManyRequests{}
 }
 
 // WithPayload adds the payload to the inspect too many requests response
 func (o *InspectTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *InspectTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the inspect too many requests response
 func (o *InspectTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *InspectTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

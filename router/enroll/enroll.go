@@ -29,16 +29,18 @@ import (
 	"os"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router"
 	"ztna-core/ztna/router/internal/edgerouter"
 
 	"ztna-core/edge-api/rest_model"
 
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/enroll"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity/certtools"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/enroll"
 )
 
 type apiPost struct {
@@ -56,10 +58,12 @@ type RestEnroller struct {
 }
 
 func NewRestEnroller() Enroller {
+	logtrace.LogWithFunctionName()
 	return &RestEnroller{}
 }
 
 func (re *RestEnroller) parseCfgMap(cfgmap map[interface{}]interface{}) (*edgerouter.Config, error) {
+	logtrace.LogWithFunctionName()
 	routerConfig := &router.Config{}
 
 	edgeConfig := edgerouter.NewConfig(routerConfig)
@@ -71,6 +75,7 @@ func (re *RestEnroller) parseCfgMap(cfgmap map[interface{}]interface{}) (*edgero
 }
 
 func (re *RestEnroller) LoadConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	re.config, err = re.parseCfgMap(cfgmap)
 
@@ -82,6 +87,7 @@ func (re *RestEnroller) LoadConfig(cfgmap map[interface{}]interface{}) error {
 }
 
 func (re *RestEnroller) Enroll(jwtBuf []byte, silent bool, engine string, keyAlg ziti.KeyAlgVar) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	if re.config == nil {
@@ -210,6 +216,7 @@ func (re *RestEnroller) Enroll(jwtBuf []byte, silent bool, engine string, keyAlg
 }
 
 func (re *RestEnroller) Send(client *resty.Client, enrollUrl string, e *apiPost) (*rest_model.EnrollmentCertsEnvelope, error) {
+	logtrace.LogWithFunctionName()
 	envelope := rest_model.EnrollmentCertsEnvelope{}
 
 	resp, err := client.R().

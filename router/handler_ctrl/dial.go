@@ -17,11 +17,13 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -31,6 +33,7 @@ type dialHandler struct {
 }
 
 func newDialHandler(env env.RouterEnv) *dialHandler {
+	logtrace.LogWithFunctionName()
 	handler := &dialHandler{
 		env: env,
 	}
@@ -39,10 +42,12 @@ func newDialHandler(env env.RouterEnv) *dialHandler {
 }
 
 func (self *dialHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_DialType)
 }
 
 func (self *dialHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	dial := &ctrl_pb.Dial{}
 	if err := proto.Unmarshal(msg.Body, dial); err != nil {
 		logrus.WithError(err).Error("error unmarshalling dial message")
@@ -62,6 +67,7 @@ func (self *dialHandler) HandleReceive(msg *channel.Message, ch channel.Channel)
 }
 
 func (self *dialHandler) sendLinkFault(dial *ctrl_pb.Dial, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	fault := &ctrl_pb.Fault{Subject: ctrl_pb.FaultSubject_LinkFault, Id: dial.LinkId}
 	if err := protobufs.MarshalTyped(fault).Send(ch); err != nil {
 		self.getLogger(dial).WithError(err).Error("error sending link fault")
@@ -69,6 +75,7 @@ func (self *dialHandler) sendLinkFault(dial *ctrl_pb.Dial, ch channel.Channel) {
 }
 
 func (self *dialHandler) getLogger(dial *ctrl_pb.Dial) *logrus.Entry {
+	logtrace.LogWithFunctionName()
 	return pfxlog.ChannelLogger("link", "linkDialer").
 		WithFields(logrus.Fields{
 			"linkId":        dial.LinkId,

@@ -20,12 +20,14 @@ import (
 	"crypto/subtle"
 	"encoding/base64"
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
+	"time"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
 	cmap "github.com/orcaman/concurrent-map/v2"
-	"time"
 )
 
 var _ AuthProcessor = &AuthModuleUpdb{}
@@ -39,6 +41,7 @@ type AuthModuleUpdb struct {
 }
 
 func NewAuthModuleUpdb(env Env) *AuthModuleUpdb {
+	logtrace.LogWithFunctionName()
 	return &AuthModuleUpdb{
 		env:                       env,
 		method:                    AuthMethodPassword,
@@ -47,10 +50,12 @@ func NewAuthModuleUpdb(env Env) *AuthModuleUpdb {
 }
 
 func (module *AuthModuleUpdb) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *AuthModuleUpdb) Process(context AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("authMethod", module.method)
 
 	data := context.GetData()
@@ -158,6 +163,7 @@ func (module *AuthModuleUpdb) Process(context AuthContext) (AuthResult, error) {
 }
 
 func DecodeSalt(s string) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	salt := make([]byte, 1024)
 	n, err := base64.StdEncoding.Decode(salt, []byte(s))
 

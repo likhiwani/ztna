@@ -18,20 +18,24 @@ package events
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/storage/boltz"
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddApiSessionEventHandler(handler event.ApiSessionEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.apiSessionEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveApiSessionEventHandler(handler event.ApiSessionEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.apiSessionEventHandlers.DeleteIf(func(val event.ApiSessionEventHandler) bool {
 		if val == handler {
 			return true
@@ -44,17 +48,20 @@ func (self *Dispatcher) RemoveApiSessionEventHandler(handler event.ApiSessionEve
 }
 
 func (self *Dispatcher) initApiSessionEvents(stores *db.Stores) {
+	logtrace.LogWithFunctionName()
 	stores.ApiSession.AddEntityEventListenerF(self.apiSessionCreated, boltz.EntityCreated)
 	stores.ApiSession.AddEntityEventListenerF(self.apiSessionDeleted, boltz.EntityDeleted)
 }
 
 func (self *Dispatcher) AcceptApiSessionEvent(evt *event.ApiSessionEvent) {
+	logtrace.LogWithFunctionName()
 	for _, handler := range self.apiSessionEventHandlers.Value() {
 		go handler.AcceptApiSessionEvent(evt)
 	}
 }
 
 func (self *Dispatcher) apiSessionCreated(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	evt := &event.ApiSessionEvent{
 		Namespace:  event.ApiSessionEventNS,
 		EventType:  event.ApiSessionEventTypeCreated,
@@ -71,6 +78,7 @@ func (self *Dispatcher) apiSessionCreated(apiSession *db.ApiSession) {
 }
 
 func (self *Dispatcher) apiSessionDeleted(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	evt := &event.ApiSessionEvent{
 		Namespace:  event.ApiSessionEventNS,
 		EventType:  event.ApiSessionEventTypeDeleted,
@@ -87,6 +95,7 @@ func (self *Dispatcher) apiSessionDeleted(apiSession *db.ApiSession) {
 }
 
 func (self *Dispatcher) registerApiSessionEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.ApiSessionEventHandler)
 
 	if !ok {
@@ -125,6 +134,7 @@ func (self *Dispatcher) registerApiSessionEventHandler(val interface{}, config m
 }
 
 func (self *Dispatcher) unregisterApiSessionEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.ApiSessionEventHandler); ok {
 		self.RemoveApiSessionEventHandler(handler)
 	}
@@ -136,12 +146,14 @@ type apiSessionEventAdapter struct {
 }
 
 func (adapter *apiSessionEventAdapter) AcceptApiSessionEvent(event *event.ApiSessionEvent) {
+	logtrace.LogWithFunctionName()
 	if stringz.Contains(adapter.includeList, event.EventType) {
 		adapter.wrapped.AcceptApiSessionEvent(event)
 	}
 }
 
 func (self *apiSessionEventAdapter) IsWrapping(value event.ApiSessionEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.wrapped == value {
 		return true
 	}

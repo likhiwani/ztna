@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"time"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/zitadel/oidc/v2/pkg/oidc"
@@ -72,6 +73,7 @@ type CustomClaims struct {
 }
 
 func (c *CustomClaims) ToMap() (map[string]any, error) {
+	logtrace.LogWithFunctionName()
 	out := map[string]any{}
 	str, err := json.Marshal(c)
 
@@ -94,31 +96,38 @@ type RefreshClaims struct {
 }
 
 func (r *RefreshClaims) GetExpirationTime() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetExpiration()}, nil
 }
 
 func (r *RefreshClaims) GetNotBefore() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	notBefore := r.TokenClaims.NotBefore.AsTime()
 	return &jwt.NumericDate{Time: notBefore}, nil
 }
 
 func (r *RefreshClaims) GetIssuedAt() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetIssuedAt()}, nil
 }
 
 func (r *RefreshClaims) GetIssuer() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Issuer, nil
 }
 
 func (r *RefreshClaims) GetSubject() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Subject, nil
 }
 
 func (r *RefreshClaims) GetAudience() (jwt.ClaimStrings, error) {
+	logtrace.LogWithFunctionName()
 	return jwt.ClaimStrings(r.TokenClaims.Audience), nil
 }
 
 func (c *RefreshClaims) MarshalJSON() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	var customBuf, idBuf []byte
 	var err error
 
@@ -139,6 +148,7 @@ func (c *RefreshClaims) MarshalJSON() ([]byte, error) {
 }
 
 func (c *RefreshClaims) UnmarshalJSON(data []byte) error {
+	logtrace.LogWithFunctionName()
 	var err error
 
 	if err = json.Unmarshal(data, &c.IDTokenClaims); err != nil {
@@ -160,6 +170,7 @@ type ServiceAccessClaims struct {
 }
 
 func (c *ServiceAccessClaims) HasAudience(targetAud string) bool {
+	logtrace.LogWithFunctionName()
 	for _, aud := range c.Audience {
 		if aud == targetAud {
 			return true
@@ -174,6 +185,7 @@ type AccessClaims struct {
 }
 
 func (r *AccessClaims) ConfigTypesAsMap() map[string]struct{} {
+	logtrace.LogWithFunctionName()
 	result := map[string]struct{}{}
 
 	for _, configType := range r.ConfigTypes {
@@ -184,6 +196,7 @@ func (r *AccessClaims) ConfigTypesAsMap() map[string]struct{} {
 }
 
 func (r *AccessClaims) UnmarshalJSON(raw []byte) error {
+	logtrace.LogWithFunctionName()
 	err := json.Unmarshal(raw, &r.AccessTokenClaims)
 	if err != nil {
 		return err
@@ -195,31 +208,38 @@ func (r *AccessClaims) UnmarshalJSON(raw []byte) error {
 }
 
 func (r *AccessClaims) GetExpirationTime() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetExpiration()}, nil
 }
 
 func (r *AccessClaims) GetNotBefore() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	notBefore := r.TokenClaims.NotBefore.AsTime()
 	return &jwt.NumericDate{Time: notBefore}, nil
 }
 
 func (r *AccessClaims) GetIssuedAt() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetIssuedAt()}, nil
 }
 
 func (r *AccessClaims) GetIssuer() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Issuer, nil
 }
 
 func (r *AccessClaims) GetSubject() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Subject, nil
 }
 
 func (r *AccessClaims) GetAudience() (jwt.ClaimStrings, error) {
+	logtrace.LogWithFunctionName()
 	return jwt.ClaimStrings(r.TokenClaims.Audience), nil
 }
 
 func (c *AccessClaims) TotpComplete() bool {
+	logtrace.LogWithFunctionName()
 	for _, amr := range c.AuthenticationMethodsReferences {
 		if amr == "totp" {
 			return true
@@ -230,6 +250,7 @@ func (c *AccessClaims) TotpComplete() bool {
 }
 
 func (c *AccessClaims) HasAudience(targetAud string) bool {
+	logtrace.LogWithFunctionName()
 	for _, aud := range c.Audience {
 		if aud == targetAud {
 			return true
@@ -244,31 +265,38 @@ type IdTokenClaims struct {
 }
 
 func (r *IdTokenClaims) GetExpirationTime() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetExpiration()}, nil
 }
 
 func (r *IdTokenClaims) GetNotBefore() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	notBefore := r.TokenClaims.NotBefore.AsTime()
 	return &jwt.NumericDate{Time: notBefore}, nil
 }
 
 func (r *IdTokenClaims) GetIssuedAt() (*jwt.NumericDate, error) {
+	logtrace.LogWithFunctionName()
 	return &jwt.NumericDate{Time: r.TokenClaims.GetIssuedAt()}, nil
 }
 
 func (r *IdTokenClaims) GetIssuer() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Issuer, nil
 }
 
 func (r *IdTokenClaims) GetSubject() (string, error) {
+	logtrace.LogWithFunctionName()
 	return r.TokenClaims.Subject, nil
 }
 
 func (r *IdTokenClaims) GetAudience() (jwt.ClaimStrings, error) {
+	logtrace.LogWithFunctionName()
 	return jwt.ClaimStrings(r.TokenClaims.Audience), nil
 }
 
 func (c *IdTokenClaims) TotpComplete() bool {
+	logtrace.LogWithFunctionName()
 	for _, amr := range c.AuthenticationMethodsReferences {
 		if amr == "totp" {
 			return true

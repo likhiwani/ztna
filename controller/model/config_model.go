@@ -17,11 +17,13 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"github.com/xeipuuv/gojsonschema"
 	"go.etcd.io/bbolt"
 )
@@ -34,6 +36,7 @@ type Config struct {
 }
 
 func (entity *Config) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Config, error) {
+	logtrace.LogWithFunctionName()
 	if entity.TypeId != "" {
 		providedType := entity.TypeId
 		configTypeStore := env.GetStores().ConfigType
@@ -74,6 +77,7 @@ func (entity *Config) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Config, error) {
 }
 
 func (entity *Config) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Config, error) {
+	logtrace.LogWithFunctionName()
 	if entity.TypeId == "" {
 		return nil, errorz.NewFieldError("config type must be specified", db.FieldConfigType, entity.TypeId)
 	}
@@ -81,10 +85,12 @@ func (entity *Config) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Config, 
 }
 
 func (entity *Config) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Config, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *Config) fillFrom(_ Env, _ *bbolt.Tx, boltConfig *db.Config) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltConfig)
 	entity.Name = boltConfig.Name
 	entity.TypeId = boltConfig.Type

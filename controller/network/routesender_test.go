@@ -1,16 +1,19 @@
 package network
 
 import (
-	"ztna-core/ztna/controller/model"
 	"testing"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/controller/xt_smartrouting"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func TestRouteSender_DestroysTerminatorWhenInvalidOnHandleRouteSendAndWeControl(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -64,6 +67,7 @@ func TestRouteSender_DestroysTerminatorWhenInvalidOnHandleRouteSendAndWeControl(
 }
 
 func TestRouteSender_SetPrecidenceToNilTerminatorWhenInvalidOnHandleRouteSendAndWeDontControl(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 

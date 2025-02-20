@@ -18,6 +18,8 @@ package xgress
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 )
@@ -27,6 +29,7 @@ type Decoder struct{}
 const DECODER = "data"
 
 func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
+	logtrace.LogWithFunctionName()
 	switch msg.ContentType {
 	case int32(ContentTypePayloadType):
 		if payload, err := UnmarshallPayload(msg); err == nil {
@@ -98,6 +101,7 @@ func (d Decoder) Decode(msg *channel.Message) ([]byte, bool) {
 }
 
 func DecodePayload(payload *Payload) ([]byte, bool) {
+	logtrace.LogWithFunctionName()
 	meta := channel.NewTraceMessageDecode(DECODER, "Payload")
 	meta["circuitId"] = payload.CircuitId
 	meta["sequence"] = payload.Sequence

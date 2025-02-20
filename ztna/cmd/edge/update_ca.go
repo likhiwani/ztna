@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"os"
@@ -50,6 +51,7 @@ type updateCaOptions struct {
 
 // newUpdateAuthenticatorCmd creates the 'edge controller update authenticator' command
 func newUpdateCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := updateCaOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 		verify:        false,
@@ -127,6 +129,7 @@ func newUpdateCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runUpdateCa(options updateCaOptions) error {
+	logtrace.LogWithFunctionName()
 	if options.verify {
 		return runVerifyCa(options)
 	}
@@ -238,6 +241,7 @@ func runUpdateCa(options updateCaOptions) error {
 }
 
 func runVerifyCa(options updateCaOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapCaNameToID(options.nameOrId, options.Options)
 
 	if err != nil {

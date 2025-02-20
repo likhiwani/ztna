@@ -18,9 +18,7 @@ package model
 
 import (
 	"crypto/x509"
-	"github.com/michaelquigley/pfxlog"
-	nfpem "github.com/openziti/foundation/v2/pem"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
@@ -28,12 +26,17 @@ import (
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	nfpem "github.com/openziti/foundation/v2/pem"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 func NewControllerManager(env Env) *ControllerManager {
+	logtrace.LogWithFunctionName()
 	manager := &ControllerManager{
 		baseEntityManager: newBaseEntityManager[*Controller, *db.Controller](env, env.GetStores().Controller),
 	}
@@ -49,27 +52,33 @@ type ControllerManager struct {
 }
 
 func (self *ControllerManager) newModelEntity() *Controller {
+	logtrace.LogWithFunctionName()
 	return &Controller{}
 }
 
 func (self *ControllerManager) Create(entity *Controller, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Controller](self, entity, ctx)
 }
 
 func (self *ControllerManager) ApplyCreate(cmd *command.CreateEntityCommand[*Controller], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ControllerManager) Update(entity *Controller, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Controller](self, entity, checker, ctx)
 }
 
 func (self *ControllerManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Controller], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *ControllerManager) Read(id string) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Controller{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -78,6 +87,7 @@ func (self *ControllerManager) Read(id string) (*Controller, error) {
 }
 
 func (self *ControllerManager) readInTx(tx *bbolt.Tx, id string) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Controller{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -86,6 +96,7 @@ func (self *ControllerManager) readInTx(tx *bbolt.Tx, id string) (*Controller, e
 }
 
 func (self *ControllerManager) ReadByName(name string) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Controller{}
 	nameIndex := self.env.GetStores().Controller.GetNameIndex()
 	if err := self.readEntityWithIndex("name", []byte(name), nameIndex, modelEntity); err != nil {
@@ -95,6 +106,7 @@ func (self *ControllerManager) ReadByName(name string) (*Controller, error) {
 }
 
 func (self *ControllerManager) Marshall(entity *Controller) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Controller{
 		Id:           entity.Id,
 		Name:         entity.Name,
@@ -120,6 +132,7 @@ func (self *ControllerManager) Marshall(entity *Controller) ([]byte, error) {
 }
 
 func (self *ControllerManager) Unmarshall(bytes []byte) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Controller{}
 
 	if err := proto.Unmarshal(bytes, msg); err != nil {
@@ -161,6 +174,7 @@ func (self *ControllerManager) Unmarshall(bytes []byte) (*Controller, error) {
 }
 
 func (self *ControllerManager) getCurrentAsClusterPeer() *event.ClusterPeer {
+	logtrace.LogWithFunctionName()
 	addr, id, version := self.env.GetRaftInfo()
 	tlsConfig, _, _ := self.env.GetServerCert()
 	var leaderCerts []*x509.Certificate
@@ -183,6 +197,7 @@ func (self *ControllerManager) getCurrentAsClusterPeer() *event.ClusterPeer {
 }
 
 func (self *ControllerManager) PeersConnected(peers []*event.ClusterPeer, peerConnectedEvent bool) {
+	logtrace.LogWithFunctionName()
 	controllers := map[string]*Controller{}
 
 	result, err := self.BaseList("true limit none")
@@ -271,6 +286,7 @@ func (self *ControllerManager) PeersConnected(peers []*event.ClusterPeer, peerCo
 }
 
 func (self *ControllerManager) PeersDisconnected(peers []*event.ClusterPeer) {
+	logtrace.LogWithFunctionName()
 	changeCtx := change.New()
 	changeCtx.SetSourceType("raft.peers.disconnected").
 		SetChangeAuthorType(change.AuthorTypeController)

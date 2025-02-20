@@ -2,15 +2,18 @@ package oidc_auth
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
 	"net/http"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 // negotiateResponseContentType returns the response content type that should be
 // used based on the results of parseAcceptHeader. If the accept header
 // cannot be satisfied an error is returned.
 func negotiateResponseContentType(r *http.Request) (string, *errorz.ApiError) {
+	logtrace.LogWithFunctionName()
 	acceptHeader := r.Header.Get(AcceptHeader)
 	contentTypes := parseAcceptHeader(acceptHeader)
 
@@ -30,6 +33,7 @@ func negotiateResponseContentType(r *http.Request) (string, *errorz.ApiError) {
 }
 
 func negotiateBodyContentType(r *http.Request) (string, *errorz.ApiError) {
+	logtrace.LogWithFunctionName()
 	contentType := r.Header.Get(ContentTypeHeader)
 
 	switch contentType {
@@ -53,6 +57,7 @@ func negotiateBodyContentType(r *http.Request) (string, *errorz.ApiError) {
 // content types sorted by quality factor (0=most desired response type). The return
 // strings are the content type only (e.g. "application/json")
 func parseAcceptHeader(acceptHeader string) []string {
+	logtrace.LogWithFunctionName()
 	parts := strings.Split(acceptHeader, ",")
 	contentTypes := make([]string, len(parts))
 

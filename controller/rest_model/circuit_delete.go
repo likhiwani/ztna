@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/strfmt"
@@ -47,16 +48,19 @@ type CircuitDelete struct {
 
 // Validate validates this circuit delete
 func (m *CircuitDelete) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // ContextValidate validates this circuit delete based on context it is used
 func (m *CircuitDelete) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *CircuitDelete) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -65,6 +69,7 @@ func (m *CircuitDelete) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *CircuitDelete) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res CircuitDelete
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

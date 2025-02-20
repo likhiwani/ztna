@@ -26,6 +26,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
@@ -43,18 +44,21 @@ type EdgeRouterLinkFactoryImpl struct {
 }
 
 func NewEdgeRouterLinkFactory() *EdgeRouterLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouterLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameEdgeRouter),
 	}
 }
 
 func (factory *EdgeRouterLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameEdgeRouterPolicy] = factory.NewNestedLink(entity, EntityNameEdgeRouterPolicy)
 	return links
 }
 
 func MapCreateEdgeRouterToModel(router *rest_model.EdgeRouterCreate) *model.EdgeRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeRouter{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -72,6 +76,7 @@ func MapCreateEdgeRouterToModel(router *rest_model.EdgeRouterCreate) *model.Edge
 }
 
 func MapUpdateEdgeRouterToModel(id string, router *rest_model.EdgeRouterUpdate) *model.EdgeRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeRouter{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -90,6 +95,7 @@ func MapUpdateEdgeRouterToModel(id string, router *rest_model.EdgeRouterUpdate) 
 }
 
 func MapPatchEdgeRouterToModel(id string, router *rest_model.EdgeRouterPatch) *model.EdgeRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.EdgeRouter{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -108,10 +114,12 @@ func MapPatchEdgeRouterToModel(id string, router *rest_model.EdgeRouterPatch) *m
 }
 
 func MapEdgeRouterToRestEntity(ae *env.AppEnv, _ *response.RequestContext, router *model.EdgeRouter) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapEdgeRouterToRestModel(ae, router)
 }
 
 func MapVersionInfoToRestModel(versionInfo versions.VersionInfo) *rest_model.VersionInfo {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.VersionInfo{
 		Arch:      &versionInfo.Arch,
 		BuildDate: &versionInfo.BuildDate,
@@ -124,6 +132,7 @@ func MapVersionInfoToRestModel(versionInfo versions.VersionInfo) *rest_model.Ver
 }
 
 func MapEdgeRouterToRestModel(ae *env.AppEnv, router *model.EdgeRouter) (*rest_model.EdgeRouterDetail, error) {
+	logtrace.LogWithFunctionName()
 	routerState := ae.Broker.GetEdgeRouterState(router.Id)
 	syncStatusStr := string(routerState.SyncStatus)
 
@@ -194,6 +203,7 @@ func MapEdgeRouterToRestModel(ae *env.AppEnv, router *model.EdgeRouter) (*rest_m
 }
 
 func GetNamedEdgeRouterRoles(edgeRouterHandler *model.EdgeRouterManager, roles []string) rest_model.NamedRoles {
+	logtrace.LogWithFunctionName()
 	result := rest_model.NamedRoles{}
 	for _, role := range roles {
 		if strings.HasPrefix(role, "@") {

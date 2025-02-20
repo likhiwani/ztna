@@ -20,10 +20,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
+	"github.com/Jeffail/gabs"
 	"github.com/spf13/cobra"
 )
 
@@ -36,6 +38,7 @@ type traceIdentityOptions struct {
 
 // newCreateIdentityCmd creates the 'edge controller create identity' command
 func newTraceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "trace",
 		Short: "manages tracing by the Ziti Edge Controller",
@@ -47,6 +50,7 @@ func newTraceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func newTraceIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &traceIdentityOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -78,6 +82,7 @@ func newTraceIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runTraceIdentity(o *traceIdentityOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("identities", o.Args[0], o.Options)
 	if err != nil {
 		return err

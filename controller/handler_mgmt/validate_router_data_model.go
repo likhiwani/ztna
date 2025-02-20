@@ -18,17 +18,19 @@ package handler_mgmt
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/concurrenz"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/concurrenz"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type validateRouterDataModelHandler struct {
@@ -36,18 +38,22 @@ type validateRouterDataModelHandler struct {
 }
 
 func newValidateRouterDataModelHandler(appEnv *env.AppEnv) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &validateRouterDataModelHandler{appEnv: appEnv}
 }
 
 func (*validateRouterDataModelHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_ValidateRouterDataModelRequestType)
 }
 
 func (handler *validateRouterDataModelHandler) getNetwork() *network.Network {
+	logtrace.LogWithFunctionName()
 	return handler.appEnv.GetHostController().GetNetwork()
 }
 
 func (handler *validateRouterDataModelHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &mgmt_pb.ValidateRouterDataModelRequest{}
 
@@ -101,6 +107,7 @@ func (handler *validateRouterDataModelHandler) HandleReceive(msg *channel.Messag
 type RouterDataModelValidationCallback func(detail *mgmt_pb.RouterDataModelDetails)
 
 func (handler *validateRouterDataModelHandler) ValidateRouterDataModel(req *mgmt_pb.ValidateRouterDataModelRequest, cb RouterDataModelValidationCallback) (int64, func(), error) {
+	logtrace.LogWithFunctionName()
 	result, err := handler.appEnv.Managers.Router.BaseList(req.RouterFilter)
 	if err != nil {
 		return 0, nil, err
@@ -170,6 +177,7 @@ func (handler *validateRouterDataModelHandler) ValidateRouterDataModelOnRouter(
 	fix bool,
 	cb RouterDataModelValidationCallback) {
 
+	logtrace.LogWithFunctionName()
 	details := &mgmt_pb.RouterDataModelDetails{
 		ComponentType: "router",
 		ComponentId:   router.Id,

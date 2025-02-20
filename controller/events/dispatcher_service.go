@@ -17,23 +17,28 @@
 package events
 
 import (
-	"github.com/openziti/metrics/metrics_pb"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/network"
-	"github.com/pkg/errors"
 	"reflect"
 	"strings"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics/metrics_pb"
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddServiceEventHandler(handler event.ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.serviceEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveServiceEventHandler(handler event.ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.serviceEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AcceptServiceEvent(event *event.ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.serviceEventHandlers.Value() {
 			handler.AcceptServiceEvent(event)
@@ -42,6 +47,7 @@ func (self *Dispatcher) AcceptServiceEvent(event *event.ServiceEvent) {
 }
 
 func (self *Dispatcher) registerServiceEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.ServiceEventHandler)
 	if !ok {
 		return errors.Errorf("type %v doesn't implement github.com/openziti/edge/event/ServiceEventHandler interface.", reflect.TypeOf(val))
@@ -52,12 +58,14 @@ func (self *Dispatcher) registerServiceEventHandler(val interface{}, _ map[strin
 }
 
 func (self *Dispatcher) unregisterServiceEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.ServiceEventHandler); ok {
 		self.RemoveServiceEventHandler(handler)
 	}
 }
 
 func (self *Dispatcher) initServiceEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	n.InitServiceCounterDispatch(&serviceEventAdapter{
 		Dispatcher: self,
 	})
@@ -69,6 +77,7 @@ type serviceEventAdapter struct {
 }
 
 func (self *serviceEventAdapter) AcceptMetrics(message *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	for name, interval := range message.IntervalCounters {
 		for _, bucket := range interval.Buckets {
 			for combinedId, count := range bucket.Values {

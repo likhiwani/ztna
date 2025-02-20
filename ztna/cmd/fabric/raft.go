@@ -1,6 +1,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 
 	"ztna-core/ztna/controller/rest_client/raft"
@@ -15,6 +16,7 @@ import (
 
 // newRaftCmd creates a command object for the "controller raft" command
 func newRaftCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "raft",
 		Short: "Raft operations",
@@ -33,6 +35,7 @@ func newRaftCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func newRaftListMembersCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &raftListMembersAction{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -56,6 +59,7 @@ type raftListMembersAction struct {
 }
 
 func (self *raftListMembersAction) run(cmd *cobra.Command, _ []string) error {
+	logtrace.LogWithFunctionName()
 	self.Cmd = cmd
 	client, err := util.NewFabricManagementClient(self)
 	if err != nil {
@@ -81,6 +85,7 @@ func (self *raftListMembersAction) run(cmd *cobra.Command, _ []string) error {
 }
 
 func newRaftAddMemberCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &raftAddMemberAction{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -106,6 +111,7 @@ type raftAddMemberAction struct {
 }
 
 func (self *raftAddMemberAction) run(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	self.Cmd = cmd
 	client, err := util.NewFabricManagementClient(self)
 	if err != nil {
@@ -126,6 +132,7 @@ func (self *raftAddMemberAction) run(cmd *cobra.Command, args []string) error {
 }
 
 func newRaftRemoveMemberCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &raftRemoveMemberAction{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -149,6 +156,7 @@ type raftRemoveMemberAction struct {
 }
 
 func (self *raftRemoveMemberAction) run(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	self.Cmd = cmd
 
 	client, err := util.NewFabricManagementClient(self)
@@ -167,6 +175,7 @@ func (self *raftRemoveMemberAction) run(cmd *cobra.Command, args []string) error
 }
 
 func newRaftTransferLeadershipCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &raftTransferLeadershipAction{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -191,6 +200,7 @@ type raftTransferLeadershipAction struct {
 }
 
 func (self *raftTransferLeadershipAction) run(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	self.Cmd = cmd
 
 	client, err := util.NewFabricManagementClient(self)

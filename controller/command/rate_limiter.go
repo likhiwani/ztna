@@ -18,17 +18,19 @@ package command
 
 import (
 	"fmt"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/rate"
 	"github.com/openziti/metrics"
-	"ztna-core/ztna/controller/apierror"
 	"github.com/pkg/errors"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 const (
@@ -50,6 +52,7 @@ type RateLimiterConfig struct {
 }
 
 func NewRateLimiter(config RateLimiterConfig, registry metrics.Registry, closeNotify <-chan struct{}) rate.RateLimiter {
+	logtrace.LogWithFunctionName()
 	if !config.Enabled {
 		return NoOpRateLimiter{}
 	}
@@ -81,30 +84,36 @@ func NewRateLimiter(config RateLimiterConfig, registry metrics.Registry, closeNo
 type NoOpRateLimiter struct{}
 
 func (self NoOpRateLimiter) RunRateLimited(f func() error) error {
+	logtrace.LogWithFunctionName()
 	return f()
 }
 
 func (self NoOpRateLimiter) GetQueueFillPct() float64 {
+	logtrace.LogWithFunctionName()
 	return 0
 }
 
 type NoOpAdaptiveRateLimiter struct{}
 
 func (self NoOpAdaptiveRateLimiter) RunRateLimited(f func() error) (rate.RateLimitControl, error) {
+	logtrace.LogWithFunctionName()
 	return rate.NoOpRateLimitControl(), f()
 }
 
 type NoOpAdaptiveRateLimitTracker struct{}
 
 func (n NoOpAdaptiveRateLimitTracker) RunRateLimited(string) (rate.RateLimitControl, error) {
+	logtrace.LogWithFunctionName()
 	return rate.NoOpRateLimitControl(), nil
 }
 
 func (n NoOpAdaptiveRateLimitTracker) RunRateLimitedF(_ string, f func(control rate.RateLimitControl) error) error {
+	logtrace.LogWithFunctionName()
 	return f(rate.NoOpRateLimitControl())
 }
 
 func (n NoOpAdaptiveRateLimitTracker) IsRateLimited() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
@@ -122,6 +131,7 @@ type DefaultRateLimiter struct {
 }
 
 func (self *DefaultRateLimiter) RunRateLimited(f func() error) error {
+	logtrace.LogWithFunctionName()
 	work := &rateLimitedWork{
 		wrapped: f,
 		result:  make(chan error, 1),
@@ -143,10 +153,12 @@ func (self *DefaultRateLimiter) RunRateLimited(f func() error) error {
 }
 
 func (self *DefaultRateLimiter) GetQueueFillPct() float64 {
+	logtrace.LogWithFunctionName()
 	return float64(self.currentSize.Load()) / float64(self.config.QueueSize)
 }
 
 func (self *DefaultRateLimiter) run() {
+	logtrace.LogWithFunctionName()
 	defer self.workRate.Dispose()
 
 	for {
@@ -192,6 +204,7 @@ type AdaptiveRateLimiterConfig struct {
 }
 
 func (self *AdaptiveRateLimiterConfig) SetDefaults() {
+	logtrace.LogWithFunctionName()
 	self.Enabled = DefaultAdaptiveRateLimiterEnabled
 	self.MinSize = DefaultAdaptiveRateLimiterMinWindowSize
 	self.MaxSize = DefaultAdaptiveRateLimiterMaxWindowSize
@@ -199,6 +212,7 @@ func (self *AdaptiveRateLimiterConfig) SetDefaults() {
 }
 
 func LoadAdaptiveRateLimiterConfig(cfg *AdaptiveRateLimiterConfig, cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if value, found := cfgmap["enabled"]; found {
 		cfg.Enabled = strings.EqualFold("true", fmt.Sprintf("%v", value))
 	}
@@ -241,6 +255,7 @@ func LoadAdaptiveRateLimiterConfig(cfg *AdaptiveRateLimiterConfig, cfgmap map[in
 }
 
 func NewAdaptiveRateLimiter(config AdaptiveRateLimiterConfig, registry metrics.Registry, closeNotify <-chan struct{}) rate.AdaptiveRateLimiter {
+	logtrace.LogWithFunctionName()
 	if !config.Enabled {
 		return NoOpAdaptiveRateLimiter{}
 	}
@@ -296,6 +311,7 @@ type adaptiveRateLimiter struct {
 }
 
 func (self *adaptiveRateLimiter) success() {
+	logtrace.LogWithFunctionName()
 	if self.currentWindow.Load() >= self.maxWindow {
 		return
 	}
@@ -311,6 +327,7 @@ func (self *adaptiveRateLimiter) success() {
 }
 
 func (self *adaptiveRateLimiter) backoff(queuePosition int32) {
+	logtrace.LogWithFunctionName()
 	if self.currentWindow.Load() <= self.minWindow {
 		return
 	}
@@ -329,6 +346,7 @@ func (self *adaptiveRateLimiter) backoff(queuePosition int32) {
 }
 
 func (self *adaptiveRateLimiter) RunRateLimited(f func() error) (rate.RateLimitControl, error) {
+	logtrace.LogWithFunctionName()
 	work := &adaptiveRateLimitedWork{
 		wrapped: f,
 		result:  make(chan error, 1),
@@ -366,6 +384,7 @@ func (self *adaptiveRateLimiter) RunRateLimited(f func() error) (rate.RateLimitC
 }
 
 func (self *adaptiveRateLimiter) run() {
+	logtrace.LogWithFunctionName()
 	defer self.workRate.Dispose()
 
 	for {
@@ -399,18 +418,22 @@ type rateLimitControl struct {
 }
 
 func (r rateLimitControl) Success() {
+	logtrace.LogWithFunctionName()
 	r.limiter.success()
 }
 
 func (r rateLimitControl) Backoff() {
+	logtrace.LogWithFunctionName()
 	r.limiter.backoff(r.queuePosition)
 }
 
 func (r rateLimitControl) Failed() {
+	logtrace.LogWithFunctionName()
 	// no-op for this type
 }
 
 func WasRateLimited(err error) bool {
+	logtrace.LogWithFunctionName()
 	var apiErr *errorz.ApiError
 	if errors.As(err, &apiErr) {
 		return apiErr.Code == apierror.ServerTooManyRequestsCode
@@ -419,6 +442,7 @@ func WasRateLimited(err error) bool {
 }
 
 func NewAdaptiveRateLimitTracker(config AdaptiveRateLimiterConfig, registry metrics.Registry, closeNotify <-chan struct{}) rate.AdaptiveRateLimitTracker {
+	logtrace.LogWithFunctionName()
 	if !config.Enabled {
 		return NoOpAdaptiveRateLimitTracker{}
 	}
@@ -470,10 +494,12 @@ type adaptiveRateLimitTracker struct {
 }
 
 func (self *adaptiveRateLimitTracker) IsRateLimited() bool {
+	logtrace.LogWithFunctionName()
 	return self.currentSize.Load() >= self.currentWindow.Load()
 }
 
 func (self *adaptiveRateLimitTracker) success(work *adaptiveRateLimitTrackerWork) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -492,6 +518,7 @@ func (self *adaptiveRateLimitTracker) success(work *adaptiveRateLimitTrackerWork
 }
 
 func (self *adaptiveRateLimitTracker) backoff(work *adaptiveRateLimitTrackerWork) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -513,6 +540,7 @@ func (self *adaptiveRateLimitTracker) backoff(work *adaptiveRateLimitTrackerWork
 }
 
 func (self *adaptiveRateLimitTracker) complete(work *adaptiveRateLimitTrackerWork) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	self.currentSize.Add(-1)
@@ -520,6 +548,7 @@ func (self *adaptiveRateLimitTracker) complete(work *adaptiveRateLimitTrackerWor
 }
 
 func (self *adaptiveRateLimitTracker) RunRateLimited(label string) (rate.RateLimitControl, error) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	queuePosition := self.currentSize.Add(1)
@@ -542,6 +571,7 @@ func (self *adaptiveRateLimitTracker) RunRateLimited(label string) (rate.RateLim
 }
 
 func (self *adaptiveRateLimitTracker) RunRateLimitedF(label string, f func(control rate.RateLimitControl) error) error {
+	logtrace.LogWithFunctionName()
 	ctrl, err := self.RunRateLimited(label)
 	if err != nil {
 		return err
@@ -550,6 +580,7 @@ func (self *adaptiveRateLimitTracker) RunRateLimitedF(label string, f func(contr
 }
 
 func (self *adaptiveRateLimitTracker) run() {
+	logtrace.LogWithFunctionName()
 	defer self.workRate.Dispose()
 
 	ticker := time.NewTicker(30 * time.Second)
@@ -566,6 +597,7 @@ func (self *adaptiveRateLimitTracker) run() {
 }
 
 func (self *adaptiveRateLimitTracker) cleanExpired() {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 
 	var toRemove []*adaptiveRateLimitTrackerWork
@@ -596,6 +628,7 @@ type adaptiveRateLimitTrackerWork struct {
 }
 
 func (self *adaptiveRateLimitTrackerWork) Success() {
+	logtrace.LogWithFunctionName()
 	if self.completed.CompareAndSwap(false, true) {
 		pfxlog.Logger().WithField("label", self.label).
 			WithField("duration", time.Since(self.createTime)).
@@ -605,6 +638,7 @@ func (self *adaptiveRateLimitTrackerWork) Success() {
 }
 
 func (self *adaptiveRateLimitTrackerWork) Backoff() {
+	logtrace.LogWithFunctionName()
 	if self.completed.CompareAndSwap(false, true) {
 		pfxlog.Logger().WithField("label", self.label).
 			WithField("duration", time.Since(self.createTime)).
@@ -614,6 +648,7 @@ func (self *adaptiveRateLimitTrackerWork) Backoff() {
 }
 
 func (self *adaptiveRateLimitTrackerWork) Failed() {
+	logtrace.LogWithFunctionName()
 	if self.completed.CompareAndSwap(false, true) {
 		pfxlog.Logger().WithField("label", self.label).
 			WithField("duration", time.Since(self.createTime)).

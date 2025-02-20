@@ -17,21 +17,23 @@
 package sync_strats
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
+	"reflect"
+	"sync"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"reflect"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 // RouterSender represents a connection from an Edge Router to the controller. Used
@@ -57,6 +59,7 @@ type RouterSender struct {
 }
 
 func newRouterSender(edgeRouter *model.EdgeRouter, router *model.Router, sendBufferSize int, routerDataModel *common.RouterDataModel) *RouterSender {
+	logtrace.LogWithFunctionName()
 	rtx := &RouterSender{
 		Id:               eid.New(),
 		EdgeRouter:       edgeRouter,
@@ -76,6 +79,7 @@ func newRouterSender(edgeRouter *model.EdgeRouter, router *model.Router, sendBuf
 }
 
 func (rtx *RouterSender) GetState() env.RouterStateValues {
+	logtrace.LogWithFunctionName()
 	if rtx == nil {
 		return env.NewRouterStatusValues()
 	}
@@ -84,12 +88,14 @@ func (rtx *RouterSender) GetState() env.RouterStateValues {
 }
 
 func (rtx *RouterSender) Stop() {
+	logtrace.LogWithFunctionName()
 	if rtx.running.CompareAndSwap(true, false) {
 		close(rtx.closeNotify)
 	}
 }
 
 func (rtx *RouterSender) run() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(30 * time.Second)
 	defer ticker.Stop()
 
@@ -110,6 +116,7 @@ func (rtx *RouterSender) run() {
 }
 
 func (rtx *RouterSender) notifyOfModelChange() {
+	logtrace.LogWithFunctionName()
 	select {
 	case rtx.modelChange <- struct{}{}:
 	default:
@@ -117,6 +124,7 @@ func (rtx *RouterSender) notifyOfModelChange() {
 }
 
 func (rtx *RouterSender) sendRouterDataModelIndex() {
+	logtrace.LogWithFunctionName()
 	if rtx.routerDataModel == nil {
 		return
 	}
@@ -138,6 +146,7 @@ func (rtx *RouterSender) sendRouterDataModelIndex() {
 }
 
 func (rtx *RouterSender) subscribe(request *edge_ctrl_pb.SubscribeToDataModelRequest) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("routerId", rtx.Router.Id)
 	select {
 	case rtx.requestModelSync <- request:
@@ -161,6 +170,7 @@ func (rtx *RouterSender) subscribe(request *edge_ctrl_pb.SubscribeToDataModelReq
 }
 
 func (rtx *RouterSender) handleSyncRequest(req *edge_ctrl_pb.SubscribeToDataModelRequest) {
+	logtrace.LogWithFunctionName()
 	if !req.Renew {
 		rtx.currentIndex = req.CurrentIndex
 	}
@@ -186,6 +196,7 @@ func (rtx *RouterSender) handleSyncRequest(req *edge_ctrl_pb.SubscribeToDataMode
 }
 
 func (rtx *RouterSender) handleModelChange() {
+	logtrace.LogWithFunctionName()
 	if !rtx.syncRdmUntil.After(time.Now()) {
 		return
 	}
@@ -236,6 +247,7 @@ func (rtx *RouterSender) handleModelChange() {
 }
 
 func (rtx *RouterSender) logger() *logrus.Entry {
+	logtrace.LogWithFunctionName()
 	return pfxlog.Logger().
 		WithField("routerTxId", rtx.Id).
 		WithField("routerId", rtx.Router.Id).
@@ -245,6 +257,7 @@ func (rtx *RouterSender) logger() *logrus.Entry {
 }
 
 func (rtx *RouterSender) Send(msg *channel.Message) error {
+	logtrace.LogWithFunctionName()
 	if !rtx.running.Load() {
 		rtx.logger().Errorf("cannot send to router [%s], rtx'er is stopped", rtx.Router.Id)
 		return errors.Errorf("cannot send to router [%s], rtx'er is stopped", rtx.Router.Id)
@@ -270,10 +283,12 @@ type routerTxMap struct {
 }
 
 func (m *routerTxMap) Add(id string, routerMessageTxer *RouterSender) {
+	logtrace.LogWithFunctionName()
 	m.internalMap.Set(id, routerMessageTxer)
 }
 
 func (m *routerTxMap) Get(id string) *RouterSender {
+	logtrace.LogWithFunctionName()
 	val, found := m.internalMap.Get(id)
 	if !found {
 		return nil
@@ -282,11 +297,13 @@ func (m *routerTxMap) Get(id string) *RouterSender {
 }
 
 func (m *routerTxMap) GetState(id string) env.RouterStateValues {
+	logtrace.LogWithFunctionName()
 	rtx := m.Get(id)
 	return rtx.GetState()
 }
 
 func (m *routerTxMap) Remove(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	var rtx *RouterSender
 	m.internalMap.RemoveCb(r.Id, func(key string, v *RouterSender, exists bool) bool {
 		if !exists {
@@ -307,6 +324,7 @@ func (m *routerTxMap) Remove(r *model.Router) {
 // Range creates a snapshot of the rtx's to loop over and will execute callback
 // with each rtx.
 func (m *routerTxMap) Range(callback func(entries *RouterSender)) {
+	logtrace.LogWithFunctionName()
 	var routerSenders []*RouterSender
 	m.internalMap.IterCb(func(_ string, v *RouterSender) {
 		routerSenders = append(routerSenders, v)

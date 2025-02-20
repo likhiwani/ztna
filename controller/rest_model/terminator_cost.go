@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -44,6 +45,7 @@ type TerminatorCost int64
 
 // Validate validates this terminator cost
 func (m TerminatorCost) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := validate.MinimumInt("", "body", int64(m), 0, false); err != nil {
@@ -62,5 +64,6 @@ func (m TerminatorCost) Validate(formats strfmt.Registry) error {
 
 // ContextValidate validates this terminator cost based on context it is used
 func (m TerminatorCost) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }

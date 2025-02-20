@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"math"
@@ -46,6 +47,7 @@ type updateIdentityOptions struct {
 }
 
 func newUpdateIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateIdentityOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -83,6 +85,7 @@ func newUpdateIdentityCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateIdentity update a new identity on the Ziti Edge Controller
 func runUpdateIdentity(o *updateIdentityOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("identities", o.Args[0], o.Options)
 	if err != nil {
 		return err
@@ -186,6 +189,7 @@ func runUpdateIdentity(o *updateIdentityOptions) error {
 }
 
 func normalizeAndValidatePrecedence(val string) (string, error) {
+	logtrace.LogWithFunctionName()
 	normalized := strings.ToLower(val)
 	prec := ziti.GetPrecedenceForLabel(normalized)
 	if prec.String() != normalized {

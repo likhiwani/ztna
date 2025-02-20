@@ -20,13 +20,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
 	"os"
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
 )
 
 type Monitor struct {
@@ -50,6 +52,7 @@ type Memory struct {
 
 // NewGoroutineMonitor can be used to track down goroutine leaks
 func NewGoroutineMonitor(interval time.Duration) {
+	logtrace.LogWithFunctionName()
 	var m Monitor
 	var rtm runtime.MemStats
 	for {
@@ -92,15 +95,18 @@ func NewGoroutineMonitor(interval time.Duration) {
 }
 
 func NewMemory(path string, interval time.Duration) *Memory {
+	logtrace.LogWithFunctionName()
 	return NewMemoryWithShutdown(path, interval, nil)
 }
 
 func NewMemoryWithShutdown(path string, interval time.Duration, shutdownC <-chan struct{}) *Memory {
+	logtrace.LogWithFunctionName()
 	// go NewGoroutineMonitor(interval) // disable for now
 	return &Memory{path: path, interval: interval, ctr: 0, shutdownC: shutdownC}
 }
 
 func (memory *Memory) Run() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Infof("memory profiling to [%s]", memory.path)
 	tick := time.NewTicker(memory.interval)
@@ -121,6 +127,7 @@ func (memory *Memory) Run() {
 }
 
 func (memory *Memory) stats() {
+	logtrace.LogWithFunctionName()
 	memStats := &runtime.MemStats{}
 	runtime.ReadMemStats(memStats)
 	pfxlog.Logger().Infof("runtime.HeapSys=[%s], runtime.HeapAlloc=[%s], runtime.HeapIdle=[%s]",
@@ -130,6 +137,7 @@ func (memory *Memory) stats() {
 }
 
 func (memory *Memory) captureProfile() error {
+	logtrace.LogWithFunctionName()
 	var ndx string
 	if (memory.ctr % 2) == 0 {
 		ndx = "-0"

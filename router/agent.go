@@ -4,18 +4,20 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/handler_common"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"net"
 	"os"
 	"time"
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 )
 
 const (
@@ -23,10 +25,12 @@ const (
 )
 
 func (self *Router) RegisterAgentBindHandler(bindHandler channel.BindHandler) {
+	logtrace.LogWithFunctionName()
 	self.agentBindHandlers = append(self.agentBindHandlers, bindHandler)
 }
 
 func (self *Router) RegisterDefaultAgentOps(debugEnabled bool) {
+	logtrace.LogWithFunctionName()
 	self.agentBindHandlers = append(self.agentBindHandlers, channel.BindHandlerF(func(binding channel.Binding) error {
 		binding.AddReceiveHandlerF(int32(mgmt_pb.ContentType_RouterDebugDumpForwarderTablesRequestType), self.agentOpDumpForwarderTables)
 		binding.AddReceiveHandlerF(int32(mgmt_pb.ContentType_RouterDebugDumpLinksRequestType), self.agentOpsDumpLinks)
@@ -45,10 +49,12 @@ func (self *Router) RegisterDefaultAgentOps(debugEnabled bool) {
 }
 
 func (self *Router) RegisterAgentOp(opId byte, f func(c *bufio.ReadWriter) error) {
+	logtrace.LogWithFunctionName()
 	self.debugOperations[opId] = f
 }
 
 func (self *Router) bindAgentChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	for _, bh := range self.agentBindHandlers {
 		if err := binding.Bind(bh); err != nil {
 			return err
@@ -58,6 +64,7 @@ func (self *Router) bindAgentChannel(binding channel.Binding) error {
 }
 
 func (self *Router) HandleAgentAsyncOp(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	logrus.Debug("received agent operation request")
 
 	appIdBuf := []byte{0}
@@ -80,6 +87,7 @@ func (self *Router) HandleAgentAsyncOp(conn net.Conn) error {
 }
 
 func (self *Router) agentOpForgetLink(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	linkId := string(m.Body)
 	var found bool
@@ -95,6 +103,7 @@ func (self *Router) agentOpForgetLink(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Router) agentOpToggleCtrlChan(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctrlId := string(m.Body)
 
 	results := &bytes.Buffer{}
@@ -144,6 +153,7 @@ func (self *Router) agentOpToggleCtrlChan(m *channel.Message, ch channel.Channel
 }
 
 func (self *Router) agentOpQuiesceRouter(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.ctrls.AnyValidCtrlChannel()
 	if ctrlCh == nil {
 		handler_common.SendOpResult(m, ch, "quiesce", "unable to reach controller", false)
@@ -162,6 +172,7 @@ func (self *Router) agentOpQuiesceRouter(m *channel.Message, ch channel.Channel)
 }
 
 func (self *Router) agentOpDequiesceRouter(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.ctrls.AnyValidCtrlChannel()
 	if ctrlCh == nil {
 		handler_common.SendOpResult(m, ch, "dequiesce", "unable to reach controller", false)
@@ -180,6 +191,7 @@ func (self *Router) agentOpDequiesceRouter(m *channel.Message, ch channel.Channe
 }
 
 func (self *Router) agentOpDecommissionRouter(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.ctrls.AnyValidCtrlChannel()
 	if ctrlCh == nil {
 		handler_common.SendOpResult(m, ch, "decomission", "unable to reach controller", false)
@@ -214,11 +226,13 @@ func (self *Router) agentOpDecommissionRouter(m *channel.Message, ch channel.Cha
 }
 
 func (self *Router) agentOpDumpForwarderTables(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	tables := self.forwarder.Debug()
 	handler_common.SendOpResult(m, ch, "dump.forwarder_tables", tables, true)
 }
 
 func (self *Router) agentOpsDumpLinks(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	result := &bytes.Buffer{}
 	for link := range self.xlinkRegistry.Iter() {
 		line := fmt.Sprintf("id: %v dest: %v protocol: %v\n", link.Id(), link.DestinationId(), link.LinkProtocol())
@@ -237,6 +251,7 @@ func (self *Router) agentOpsDumpLinks(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Router) agentOpUpdateRoute(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logrus.Warn("received debug operation to update routes")
 	ctrlId, _ := m.GetStringHeader(int32(mgmt_pb.Header_ControllerId))
 	if ctrlId == "" {
@@ -266,6 +281,7 @@ func (self *Router) agentOpUpdateRoute(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Router) agentOpUnroute(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logrus.Warn("received debug operation to unroute a circuit")
 
 	unroute := &ctrl_pb.Unroute{}
@@ -280,6 +296,7 @@ func (self *Router) agentOpUnroute(m *channel.Message, ch channel.Channel) {
 }
 
 func (self *Router) HandleAgentOp(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	bconn := bufio.NewReadWriter(bufio.NewReader(conn), bufio.NewWriter(conn))
 	appId, err := bconn.ReadByte()
 	if err != nil {

@@ -3,6 +3,7 @@ package xgress
 import (
 	"io"
 	"sync"
+	"ztna-core/ztna/logtrace"
 )
 
 type CloseHelper struct {
@@ -11,6 +12,7 @@ type CloseHelper struct {
 }
 
 func (self *CloseHelper) Init(closer io.Closer) {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return
 	}
@@ -21,6 +23,7 @@ func (self *CloseHelper) Init(closer io.Closer) {
 }
 
 func (self *CloseHelper) Close() error {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return nil
 	}

@@ -16,7 +16,10 @@
 
 package event
 
-import "fmt"
+import (
+	"fmt"
+	"ztna-core/ztna/logtrace"
+)
 
 const (
 	ServiceEventsNs = "services"
@@ -35,6 +38,7 @@ type ServiceEvent struct {
 }
 
 func (event *ServiceEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v service=%v terminator=%v count=%v intervalStart=%v intervalLength=%v",
 		event.EventType, event.ServiceId, event.TerminatorId, event.Count, event.IntervalStartUTC, event.IntervalLength)
 }

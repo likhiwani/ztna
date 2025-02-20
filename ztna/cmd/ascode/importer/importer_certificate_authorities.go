@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/certificate_authority"
 	"ztna-core/edge-api/rest_model"
@@ -26,12 +27,14 @@ import (
 )
 
 func (importer *Importer) IsCertificateAuthorityImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "ca") ||
 		slices.Contains(args, "certificate-authority")
 }
 
 func (importer *Importer) ProcessCertificateAuthorities(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["certificateAuthorities"] {

@@ -1,13 +1,16 @@
 package api_impl
 
 import (
-	"github.com/openziti/foundation/v2/errorz"
+	"net/http"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/rest_model"
-	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 func RespondWithCreatedId(responder api.Responder, id string, link rest_model.Link) {
+	logtrace.LogWithFunctionName()
 	createEnvelope := &rest_model.CreateEnvelope{
 		Data: &rest_model.CreateLocation{
 			Links: rest_model.Links{
@@ -22,6 +25,7 @@ func RespondWithCreatedId(responder api.Responder, id string, link rest_model.Li
 }
 
 func RespondWithOk(responder api.Responder, data interface{}, meta *rest_model.Meta) {
+	logtrace.LogWithFunctionName()
 	responder.Respond(&rest_model.Empty{
 		Data: data,
 		Meta: meta,
@@ -31,6 +35,7 @@ func RespondWithOk(responder api.Responder, data interface{}, meta *rest_model.M
 type FabricResponseMapper struct{}
 
 func (self FabricResponseMapper) EmptyOkData() interface{} {
+	logtrace.LogWithFunctionName()
 	return &rest_model.Empty{
 		Data: map[string]interface{}{},
 		Meta: &rest_model.Meta{},
@@ -38,6 +43,7 @@ func (self FabricResponseMapper) EmptyOkData() interface{} {
 }
 
 func (self FabricResponseMapper) MapApiError(requestId string, apiError *errorz.ApiError) interface{} {
+	logtrace.LogWithFunctionName()
 	return &rest_model.APIErrorEnvelope{
 		Error: ToRestModel(apiError, requestId),
 		Meta: &rest_model.Meta{

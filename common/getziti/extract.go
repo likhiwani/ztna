@@ -5,14 +5,17 @@ import (
 	"archive/zip"
 	"compress/gzip"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func Unzip(src, dest string, filter func(path string) (string, bool)) error {
+	logtrace.LogWithFunctionName()
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return err
@@ -64,6 +67,7 @@ func Unzip(src, dest string, filter func(path string) (string, bool)) error {
 }
 
 func UnTarGz(src, dest string, f func(path string) (string, bool)) error {
+	logtrace.LogWithFunctionName()
 	fr, err := os.Open(src)
 	if err != nil {
 		return err
@@ -111,6 +115,7 @@ func UnTarGz(src, dest string, f func(path string) (string, bool)) error {
 }
 
 func CopyReaderToFile(in io.Reader, dst string, mode os.FileMode) error {
+	logtrace.LogWithFunctionName()
 	out, err := os.OpenFile(dst, os.O_CREATE|os.O_RDWR, mode)
 	if err != nil {
 		return err

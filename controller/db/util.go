@@ -18,11 +18,13 @@ package db
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 const (
@@ -32,6 +34,7 @@ const (
 )
 
 func validateRolesAndIds(field string, values []string) error {
+	logtrace.LogWithFunctionName()
 	if len(values) > 1 && stringz.Contains(values, AllRole) {
 		return errorz.NewFieldError(fmt.Sprintf("if using %v, it should be the only role specified", AllRole), field, values)
 	}
@@ -49,6 +52,7 @@ func validateRolesAndIds(field string, values []string) error {
 }
 
 func splitRolesAndIds(values []string) ([]string, []string, error) {
+	logtrace.LogWithFunctionName()
 	var roles []string
 	var ids []string
 	for _, entry := range values {
@@ -67,6 +71,7 @@ func splitRolesAndIds(values []string) ([]string, []string, error) {
 }
 
 func FieldValuesToIds(new []boltz.FieldTypeAndValue) []string {
+	logtrace.LogWithFunctionName()
 	var entityRoles []string
 	for _, fv := range new {
 		entityRoles = append(entityRoles, string(fv.Value))
@@ -75,9 +80,11 @@ func FieldValuesToIds(new []boltz.FieldTypeAndValue) []string {
 }
 
 func roleRef(val string) string {
+	logtrace.LogWithFunctionName()
 	return RolePrefix + val
 }
 
 func entityRef(val string) string {
+	logtrace.LogWithFunctionName()
 	return EntityPrefix + val
 }

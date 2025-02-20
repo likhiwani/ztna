@@ -2,6 +2,15 @@ package main
 
 import (
 	"embed"
+	"os"
+	"path"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/db-creation/actions"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
@@ -15,13 +24,6 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/models/db-creation/actions"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"os"
-	"path"
-	"time"
 )
 
 //go:embed configs
@@ -121,6 +123,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("stop", "bootstrap")
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)

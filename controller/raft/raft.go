@@ -20,6 +20,25 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"os"
+	"path"
+	"reflect"
+	"strconv"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/controller/peermsg"
+	"ztna-core/ztna/controller/raft/mesh"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/hashicorp/raft"
 	raftboltdb "github.com/hashicorp/raft-boltdb"
@@ -34,30 +53,14 @@ import (
 	"github.com/openziti/metrics"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/pb/cmd_pb"
-	"ztna-core/ztna/controller/apierror"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/model"
-	"ztna-core/ztna/controller/peermsg"
-	"ztna-core/ztna/controller/raft/mesh"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"os"
-	"path"
-	"reflect"
-	"strconv"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 type ClusterEvent uint32
 
 func (self ClusterEvent) String() string {
+	logtrace.LogWithFunctionName()
 	switch self {
 	case ClusterEventReadOnly:
 		return "ClusterEventReadOnly"
@@ -87,18 +90,22 @@ const (
 type ClusterState uint8
 
 func (c ClusterState) IsLeader() bool {
+	logtrace.LogWithFunctionName()
 	return uint8(c)&isLeaderMask == isLeaderMask
 }
 
 func (c ClusterState) IsReadWrite() bool {
+	logtrace.LogWithFunctionName()
 	return uint8(c)&isReadWriteMask == isReadWriteMask
 }
 
 func (c ClusterState) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("ClusterState[isLeader=%v, isReadWrite=%v]", c.IsLeader(), c.IsReadWrite())
 }
 
 func newClusterState(isLeader, isReadWrite bool) ClusterState {
+	logtrace.LogWithFunctionName()
 	var val uint8
 	if isLeader {
 		val = val | isLeaderMask
@@ -121,6 +128,7 @@ type Env interface {
 }
 
 func NewController(env Env, migrationMgr MigrationManager) *Controller {
+	logtrace.LogWithFunctionName()
 	result := &Controller{
 		env:                env,
 		Config:             env.GetRaftConfig(),
@@ -155,22 +163,27 @@ type Controller struct {
 }
 
 func (self *Controller) GetNodeId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.env.GetId()
 }
 
 func (self *Controller) GetClusterId() string {
+	logtrace.LogWithFunctionName()
 	return self.clusterId.Load()
 }
 
 func (self *Controller) GetVersionProvider() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return self.env.GetVersionProvider()
 }
 
 func (self *Controller) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return self.env.GetEventDispatcher()
 }
 
 func (self *Controller) GetListenerHeaders() map[int32][]byte {
+	logtrace.LogWithFunctionName()
 	return map[int32][]byte{
 		mesh.ClusterIdHeader: []byte(self.clusterId.Load()),
 		mesh.PeerAddrHeader:  []byte(self.Config.AdvertiseAddress.String()),
@@ -178,11 +191,13 @@ func (self *Controller) GetListenerHeaders() map[int32][]byte {
 }
 
 func (self *Controller) initErrorMappers() {
+	logtrace.LogWithFunctionName()
 	self.errorMappers[fmt.Sprintf("%T", &boltz.RecordNotFoundError{})] = self.parseBoltzNotFoundError
 	self.errorMappers[fmt.Sprintf("%T", &errorz.FieldError{})] = self.parseFieldError
 }
 
 func (self *Controller) RegisterClusterEventHandler(f func(event ClusterEvent, state ClusterState, leaderId string)) {
+	logtrace.LogWithFunctionName()
 	if self.isLeader.Load() {
 		f(ClusterEventLeadershipGained, newClusterState(true, !self.Mesh.IsReadOnly()), "")
 	}
@@ -190,6 +205,7 @@ func (self *Controller) RegisterClusterEventHandler(f func(event ClusterEvent, s
 }
 
 func (self *Controller) InitEnv(env model.Env) error {
+	logtrace.LogWithFunctionName()
 	model.RegisterCommand(env, &InitClusterIdCmd{}, &cmd_pb.InitClusterIdCommand{})
 	clusterId, err := db.LoadClusterId(env.GetDb())
 	if err != nil {
@@ -201,59 +217,72 @@ func (self *Controller) InitEnv(env model.Env) error {
 
 // GetRaft returns the managed raft instance
 func (self *Controller) GetRaft() *raft.Raft {
+	logtrace.LogWithFunctionName()
 	return self.Raft
 }
 
 // GetMesh returns the related Mesh instance
 func (self *Controller) GetMesh() mesh.Mesh {
+	logtrace.LogWithFunctionName()
 	return self.Mesh
 }
 
 func (self *Controller) GetRateLimiter() rate.RateLimiter {
+	logtrace.LogWithFunctionName()
 	return self.commandRateLimiter
 }
 
 func (self *Controller) ConfigureMeshHandlers(bindHandler channel.BindHandler) {
+	logtrace.LogWithFunctionName()
 	self.Mesh.Init(bindHandler)
 }
 
 // GetDb returns the DB instance
 func (self *Controller) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return self.Fsm.GetDb()
 }
 
 // IsLeader returns true if the current node is the RAFT leader
 func (self *Controller) IsLeader() bool {
+	logtrace.LogWithFunctionName()
 	return self.Raft.State() == raft.Leader
 }
 
 func (self *Controller) IsLeaderOrLeaderless() bool {
+	logtrace.LogWithFunctionName()
 	return self.IsLeader() || self.GetLeaderAddr() == ""
 }
 
 func (self *Controller) IsLeaderless() bool {
+	logtrace.LogWithFunctionName()
 	return self.GetLeaderAddr() == ""
 }
 
 func (self *Controller) IsBootstrapped() bool {
+	logtrace.LogWithFunctionName()
 	return self.bootstrapped.Load() || self.GetRaft().LastIndex() > 0
 }
 
 func (self *Controller) IsReadOnlyMode() bool {
+	logtrace.LogWithFunctionName()
 	return self.Mesh.IsReadOnly()
 }
 
 func (self *Controller) IsDistributed() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 // GetLeaderAddr returns the current leader address, which may be blank if there is no leader currently
 func (self *Controller) GetLeaderAddr() string {
+	logtrace.LogWithFunctionName()
 	addr, _ := self.Raft.LeaderWithID()
 	return string(addr)
 }
 
 func (self *Controller) GetPeers() map[string]channel.Channel {
+	logtrace.LogWithFunctionName()
 	result := map[string]channel.Channel{}
 	for k, v := range self.Mesh.GetPeers() {
 		result[k] = v.Channel
@@ -262,16 +291,19 @@ func (self *Controller) GetPeers() map[string]channel.Channel {
 }
 
 func (self *Controller) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.closeNotify
 }
 
 func (self *Controller) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return self.env.GetMetricsRegistry()
 }
 
 // Dispatch dispatches the given command to the current leader. If the current node is the leader, the command
 // will be applied and the result returned
 func (self *Controller) Dispatch(cmd command.Command) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	if validatable, ok := cmd.(command.Validatable); ok {
 		if err := validatable.Validate(); err != nil {
@@ -332,6 +364,7 @@ func (self *Controller) Dispatch(cmd command.Command) error {
 }
 
 func (self *Controller) decodeApiError(data []byte) error {
+	logtrace.LogWithFunctionName()
 	m := map[string]interface{}{}
 	if err := json.Unmarshal(data, &m); err != nil {
 		pfxlog.Logger().Warnf("invalid api error encoding, unable to decode: %v", string(data))
@@ -397,6 +430,7 @@ func (self *Controller) decodeApiError(data []byte) error {
 }
 
 func (self *Controller) parseFieldError(m map[string]any) error {
+	logtrace.LogWithFunctionName()
 	var fieldError *errorz.FieldError
 	field, ok := m["field"]
 	if !ok {
@@ -427,6 +461,7 @@ func (self *Controller) parseFieldError(m map[string]any) error {
 }
 
 func (self *Controller) parseBoltzNotFoundError(m map[string]any) error {
+	logtrace.LogWithFunctionName()
 	result := &boltz.RecordNotFoundError{}
 	err := mapstructure.Decode(m, result)
 	if err != nil {
@@ -439,6 +474,7 @@ func (self *Controller) parseBoltzNotFoundError(m map[string]any) error {
 }
 
 func (self *Controller) fallbackMarshallError(m map[string]any) error {
+	logtrace.LogWithFunctionName()
 	if b, err := json.Marshal(m); err == nil {
 		return errors.New(string(b))
 	}
@@ -446,6 +482,7 @@ func (self *Controller) fallbackMarshallError(m map[string]any) error {
 }
 
 func (self *Controller) getErrorParser(m map[string]any) func(map[string]any) error {
+	logtrace.LogWithFunctionName()
 	causeType, ok := m["causeType"]
 	if !ok {
 		pfxlog.Logger().Info("no causetype defined for error parser")
@@ -465,6 +502,7 @@ func (self *Controller) getErrorParser(m map[string]any) func(map[string]any) er
 
 // applyCommand encodes the command and passes it to ApplyEncodedCommand
 func (self *Controller) applyCommand(cmd command.Command) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	encoded, err := cmd.Encode()
 	if err != nil {
 		return 0, err
@@ -475,6 +513,7 @@ func (self *Controller) applyCommand(cmd command.Command) (uint64, error) {
 
 // ApplyEncodedCommand applies the command to the RAFT distributed log
 func (self *Controller) ApplyEncodedCommand(encoded []byte) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	val, idx, err := self.ApplyWithTimeout(encoded, 5*time.Second)
 	if err != nil {
 		return 0, err
@@ -495,6 +534,7 @@ func (self *Controller) ApplyEncodedCommand(encoded []byte) (uint64, error) {
 
 // ApplyWithTimeout applies the given command to the RAFT distributed log with the given timeout
 func (self *Controller) ApplyWithTimeout(log []byte, timeout time.Duration) (interface{}, uint64, error) {
+	logtrace.LogWithFunctionName()
 	returnValue := atomic.Value{}
 	index := atomic.Uint64{}
 	err := self.commandRateLimiter.RunRateLimited(func() error {
@@ -525,6 +565,7 @@ func (self *Controller) ApplyWithTimeout(log []byte, timeout time.Duration) (int
 
 // Init sets up the Mesh and Raft instances
 func (self *Controller) Init() error {
+	logtrace.LogWithFunctionName()
 	self.validateCert()
 
 	raftConfig := self.Config
@@ -616,11 +657,13 @@ func (self *Controller) Init() error {
 }
 
 func (self *Controller) StartEventGeneration() {
+	logtrace.LogWithFunctionName()
 	self.addEventsHandlers()
 	self.ObserveLeaderChanges()
 }
 
 func (self *Controller) Configure(ctrlConfig *config.RaftConfig, conf *raft.Config) {
+	logtrace.LogWithFunctionName()
 	if ctrlConfig.SnapshotThreshold != nil {
 		conf.SnapshotThreshold = uint64(*ctrlConfig.SnapshotThreshold)
 	}
@@ -653,6 +696,7 @@ func (self *Controller) Configure(ctrlConfig *config.RaftConfig, conf *raft.Conf
 }
 
 func (self *Controller) ConfigureReloadable(ctrlConfig *config.RaftConfig, conf *raft.ReloadableConfig) {
+	logtrace.LogWithFunctionName()
 	if ctrlConfig.SnapshotThreshold != nil {
 		conf.SnapshotThreshold = uint64(*ctrlConfig.SnapshotThreshold)
 	}
@@ -670,6 +714,7 @@ func (self *Controller) ConfigureReloadable(ctrlConfig *config.RaftConfig, conf 
 }
 
 func (self *Controller) validateCert() {
+	logtrace.LogWithFunctionName()
 	var certs []*x509.Certificate
 	for _, cert := range self.env.GetId().ServerCert() {
 		certs = append(certs, cert.Leaf)
@@ -688,6 +733,7 @@ type clusterEventState struct {
 }
 
 func (self *Controller) ObserveLeaderChanges() {
+	logtrace.LogWithFunctionName()
 	go func() {
 		leaderAddr, leaderId := self.Raft.LeaderWithID()
 
@@ -728,6 +774,7 @@ func (self *Controller) ObserveLeaderChanges() {
 }
 
 func (self *Controller) processRaftObservation(observation raft.Observation, eventState *clusterEventState) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Tracef("raft observation received: isLeader: %v, isReadWrite: %v", self.isLeader.Load(), eventState.isReadWrite)
 
 	if raftState, ok := observation.Data.(raft.RaftState); ok {
@@ -770,12 +817,14 @@ func (self *Controller) processRaftObservation(observation raft.Observation, eve
 }
 
 func (self *Controller) handleClusterStateChange(event ClusterEvent, eventState *clusterEventState) {
+	logtrace.LogWithFunctionName()
 	for _, handler := range self.clusterStateChangeHandlers.Value() {
 		handler(event, newClusterState(self.isLeader.Load(), eventState.isReadWrite), eventState.leaderId)
 	}
 }
 
 func (self *Controller) Bootstrap() error {
+	logtrace.LogWithFunctionName()
 	if self.Raft.LastIndex() > 0 {
 		logrus.Info("raft already bootstrapped")
 		self.bootstrapped.Store(true)
@@ -824,6 +873,7 @@ func (self *Controller) Bootstrap() error {
 }
 
 func (self *Controller) addConfiguredInitialMembers() {
+	logtrace.LogWithFunctionName()
 	for _, bootstrapMember := range self.Config.InitialMembers {
 		_, err := transport.ParseAddress(bootstrapMember)
 		if err != nil {
@@ -836,6 +886,7 @@ func (self *Controller) addConfiguredInitialMembers() {
 }
 
 func (self *Controller) retryBootstrapMember(bootstrapMember string) {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(6 * time.Second)
 	defer ticker.Stop()
 
@@ -860,6 +911,7 @@ func (self *Controller) retryBootstrapMember(bootstrapMember string) {
 
 // Join adds the given node to the raft cluster
 func (self *Controller) Join(req *cmd_pb.AddPeerRequest) error {
+	logtrace.LogWithFunctionName()
 	self.clusterLock.Lock()
 	defer self.clusterLock.Unlock()
 
@@ -888,6 +940,7 @@ func (self *Controller) Join(req *cmd_pb.AddPeerRequest) error {
 }
 
 func (self *Controller) tryBootstrap(servers ...raft.Server) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	log.Infof("bootstrapping cluster")
@@ -903,6 +956,7 @@ func (self *Controller) tryBootstrap(servers ...raft.Server) error {
 
 // RemoveServer removes the node specified by the given id from the raft cluster
 func (self *Controller) RemoveServer(id string) error {
+	logtrace.LogWithFunctionName()
 	req := &cmd_pb.RemovePeerRequest{
 		Id: id,
 	}
@@ -911,6 +965,7 @@ func (self *Controller) RemoveServer(id string) error {
 }
 
 func (self *Controller) CtrlAddresses() (uint64, []string) {
+	logtrace.LogWithFunctionName()
 	ret := make([]string, 0)
 	srvs := self.Fsm.GetCurrentState(self.Raft)
 	for _, srvr := range srvs.Servers {
@@ -920,12 +975,14 @@ func (self *Controller) CtrlAddresses() (uint64, []string) {
 }
 
 func (self *Controller) RenderJsonConfig() (string, error) {
+	logtrace.LogWithFunctionName()
 	cfg := self.Raft.ReloadableConfig()
 	b, err := json.Marshal(cfg)
 	return string(b), err
 }
 
 func (self *Controller) getClusterPeersForEvent() []*event.ClusterPeer {
+	logtrace.LogWithFunctionName()
 	var peers []*event.ClusterPeer
 
 	srvs := self.Fsm.GetCurrentState(self.Raft)
@@ -940,6 +997,7 @@ func (self *Controller) getClusterPeersForEvent() []*event.ClusterPeer {
 }
 
 func (self *Controller) addEventsHandlers() {
+	logtrace.LogWithFunctionName()
 	self.RegisterClusterEventHandler(func(evt ClusterEvent, state ClusterState, leaderId string) {
 		switch evt {
 		case ClusterEventLeadershipGained:
@@ -980,11 +1038,13 @@ type InitClusterIdCmd struct {
 }
 
 func (self *InitClusterIdCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	self.raftController.clusterId.Store(self.ClusterId)
 	return db.InitClusterId(self.raftController.Fsm.GetDb(), ctx, self.ClusterId)
 }
 
 func (self *InitClusterIdCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	cmd := &cmd_pb.InitClusterIdCommand{
 		ClusterId: self.ClusterId,
 	}
@@ -992,11 +1052,13 @@ func (self *InitClusterIdCmd) Encode() ([]byte, error) {
 }
 
 func (self *InitClusterIdCmd) Decode(env model.Env, msg *cmd_pb.InitClusterIdCommand) error {
+	logtrace.LogWithFunctionName()
 	self.ClusterId = msg.ClusterId
 	self.raftController = env.GetManagers().Dispatcher.(*Controller)
 	return nil
 }
 
 func (self *InitClusterIdCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return change.New().SetChangeAuthorType(change.AuthorTypeController)
 }

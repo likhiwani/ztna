@@ -1,11 +1,14 @@
 package db
 
 import (
-	"github.com/openziti/storage/boltz"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) addProcessMultiPostureCheck(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	windows := OperatingSystem{
 		OsType:     "Windows",
 		OsVersions: []string{},

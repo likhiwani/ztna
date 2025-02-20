@@ -17,17 +17,21 @@
 package zitilib_actions
 
 import (
-	"github.com/openziti/fablab/kernel/model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/cli"
+
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func Edge(args ...string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &edge{
 		args: args,
 	}
 }
 
 func (a *edge) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	return EdgeExec(run.GetModel(), a.args...)
 }
 
@@ -36,10 +40,12 @@ type edge struct {
 }
 
 func EdgeExec(m *model.Model, args ...string) error {
+	logtrace.LogWithFunctionName()
 	_, err := EdgeExecWithOutput(m, args...)
 	return err
 }
 
 func EdgeExecWithOutput(m *model.Model, args ...string) (string, error) {
+	logtrace.LogWithFunctionName()
 	return cli.Exec(m, append([]string{"edge", "-i", model.ActiveInstanceId()}, args...)...)
 }

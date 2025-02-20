@@ -24,6 +24,7 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/foundation/v2/errorz"
@@ -31,6 +32,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewAuthenticatorRouter()
 	env.AddRouter(r)
 }
@@ -40,12 +42,14 @@ type AuthenticatorRouter struct {
 }
 
 func NewAuthenticatorRouter() *AuthenticatorRouter {
+	logtrace.LogWithFunctionName()
 	return &AuthenticatorRouter{
 		BasePath: "/" + EntityNameAuthenticator,
 	}
 }
 
 func (r *AuthenticatorRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.AuthenticatorDeleteAuthenticatorHandler = authenticator.DeleteAuthenticatorHandlerFunc(func(params authenticator.DeleteAuthenticatorParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -78,14 +82,17 @@ func (r *AuthenticatorRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *AuthenticatorRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Authenticator](ae, rc, ae.Managers.Authenticator, MapAuthenticatorToRestEntity)
 }
 
 func (r *AuthenticatorRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Authenticator](ae, rc, ae.Managers.Authenticator, MapAuthenticatorToRestEntity)
 }
 
 func (r *AuthenticatorRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params authenticator.CreateAuthenticatorParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, AuthenticatorLinkFactory, func() (string, error) {
 		authenticator, err := MapCreateToAuthenticatorModel(params.Authenticator)
 
@@ -98,16 +105,19 @@ func (r *AuthenticatorRouter) Create(ae *env.AppEnv, rc *response.RequestContext
 }
 
 func (r *AuthenticatorRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Authenticator)
 }
 
 func (r *AuthenticatorRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params authenticator.UpdateAuthenticatorParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.Authenticator.Update(MapUpdateAuthenticatorToModel(params.ID, params.Authenticator), false, nil, rc.NewChangeContext())
 	})
 }
 
 func (r *AuthenticatorRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params authenticator.PatchAuthenticatorParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		model := MapPatchAuthenticatorToModel(params.ID, params.Authenticator)
 
@@ -120,6 +130,7 @@ func (r *AuthenticatorRouter) Patch(ae *env.AppEnv, rc *response.RequestContext,
 }
 
 func (r *AuthenticatorRouter) ReEnroll(ae *env.AppEnv, rc *response.RequestContext, params authenticator.ReEnrollAuthenticatorParams) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {

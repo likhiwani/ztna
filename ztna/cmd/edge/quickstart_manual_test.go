@@ -4,6 +4,7 @@ package edge
 
 import (
 	"testing"
+	"ztna-core/ztna/logtrace"
 )
 
 /*
@@ -12,5 +13,6 @@ ziti network is running as expected. The values can be edited to confirm other z
 server on the back end.
 */
 func TestEdgeQuickstartManual(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	performQuickstartTest(t)
 }

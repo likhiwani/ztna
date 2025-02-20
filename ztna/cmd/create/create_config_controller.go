@@ -25,9 +25,11 @@ import (
 	"time"
 
 	edge "ztna-core/ztna/controller/config"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/templates"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -85,6 +87,7 @@ type CreateControllerConfigCmd struct {
 
 // NewCmdCreateConfigController creates a command object for the "create" command
 func NewCmdCreateConfigController() *CreateControllerConfigCmd {
+	logtrace.LogWithFunctionName()
 	controllerOptions := &CreateConfigControllerOptions{}
 	data := &ConfigTemplateValues{}
 	cmd := &CreateControllerConfigCmd{
@@ -151,6 +154,7 @@ func NewCmdCreateConfigController() *CreateControllerConfigCmd {
 }
 
 func (options *CreateConfigControllerOptions) addFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVar(&options.CtrlPort, optionCtrlPort, constants.DefaultCtrlAdvertisedPort, "port used for the router to controller communication")
 	cmd.Flags().DurationVar(&options.EdgeIdentityEnrollmentDuration, optionEdgeIdentityEnrollmentDuration, edge.DefaultEdgeEnrollmentDuration, "the edge identity enrollment duration, use 0h0m0s format")
 	cmd.Flags().DurationVar(&options.EdgeRouterEnrollmentDuration, optionEdgeRouterEnrollmentDuration, edge.DefaultEdgeEnrollmentDuration, "the edge router enrollment duration, use 0h0m0s format")
@@ -159,6 +163,7 @@ func (options *CreateConfigControllerOptions) addFlags(cmd *cobra.Command) {
 
 // run implements the command
 func (options *CreateConfigControllerOptions) run(data *ConfigTemplateValues) error {
+	logtrace.LogWithFunctionName()
 
 	tmpl, err := template.New("controller-config").Parse(controllerConfigTemplate)
 	if err != nil {
@@ -195,6 +200,7 @@ func (options *CreateConfigControllerOptions) run(data *ConfigTemplateValues) er
 }
 
 func SetControllerIdentity(data *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	SetControllerIdentityCert(data)
 	SetControllerIdentityServerCert(data)
 	SetControllerIdentityKey(data)
@@ -202,6 +208,7 @@ func SetControllerIdentity(data *ControllerTemplateValues) {
 }
 
 func SetControllerIdentityCert(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiCtrlCertVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".cert" // default
@@ -210,6 +217,7 @@ func SetControllerIdentityCert(c *ControllerTemplateValues) {
 }
 
 func SetControllerIdentityServerCert(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiCtrlServerCertVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".server.chain.cert" // default
@@ -218,6 +226,7 @@ func SetControllerIdentityServerCert(c *ControllerTemplateValues) {
 }
 
 func SetControllerIdentityKey(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiCtrlKeyVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".key" // default
@@ -226,6 +235,7 @@ func SetControllerIdentityKey(c *ControllerTemplateValues) {
 }
 
 func SetControllerIdentityCA(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiCtrlCAVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".ca" // default
@@ -234,11 +244,13 @@ func SetControllerIdentityCA(c *ControllerTemplateValues) {
 }
 
 func SetEdgeConfig(data *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	SetEdgeSigningCert(data)
 	SetEdgeSigningKey(data)
 }
 
 func SetEdgeSigningCert(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiSignerCertVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".signing.cert" // default
@@ -248,6 +260,7 @@ func SetEdgeSigningCert(c *ControllerTemplateValues) {
 }
 
 func SetEdgeSigningKey(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.PkiSignerKeyVarName)
 	if val == "" {
 		val = helpers.GetZitiHome() + "/" + helpers.HostnameOrNetworkName() + ".signing.key" // default
@@ -256,6 +269,7 @@ func SetEdgeSigningKey(c *ControllerTemplateValues) {
 }
 
 func SetWebConfig(data *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	SetWebIdentityCert(data)
 	SetWebIdentityServerCert(data)
 	SetWebIdentityKey(data)
@@ -264,6 +278,7 @@ func SetWebConfig(data *ControllerTemplateValues) {
 }
 
 func SetConsoleConfig(v *ConsoleValues) {
+	logtrace.LogWithFunctionName()
 	location := strings.TrimSpace(os.Getenv(constants.CtrlConsoleLocationVarName))
 	if location == "" {
 		v.Enabled = false
@@ -275,6 +290,7 @@ func SetConsoleConfig(v *ConsoleValues) {
 }
 
 func SetWebIdentityCert(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.CtrlPkiEdgeCertVarName)
 	if val == "" {
 		val = c.Identity.Cert //default
@@ -283,6 +299,7 @@ func SetWebIdentityCert(c *ControllerTemplateValues) {
 }
 
 func SetWebIdentityServerCert(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.CtrlPkiEdgeServerCertVarName)
 	if val == "" {
 		val = c.Identity.ServerCert //default
@@ -291,6 +308,7 @@ func SetWebIdentityServerCert(c *ControllerTemplateValues) {
 }
 
 func SetWebIdentityKey(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.CtrlPkiEdgeKeyVarName)
 	if val == "" {
 		val = c.Identity.Key //default
@@ -299,6 +317,7 @@ func SetWebIdentityKey(c *ControllerTemplateValues) {
 }
 
 func SetWebIdentityCA(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	val := os.Getenv(constants.CtrlPkiEdgeCAVarName)
 	if val == "" {
 		val = c.Identity.Ca //default
@@ -307,6 +326,7 @@ func SetWebIdentityCA(c *ControllerTemplateValues) {
 }
 
 func SetCtrlAltServerCerts(c *ControllerTemplateValues) {
+	logtrace.LogWithFunctionName()
 	c.Web.Identity.AltCertsEnabled = false
 	altServerCert := os.Getenv(constants.PkiAltServerCertVarName)
 	if altServerCert == "" {

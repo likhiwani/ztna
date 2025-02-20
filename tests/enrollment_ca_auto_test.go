@@ -36,9 +36,11 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_EnrollmetnCaAuto(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -225,6 +227,7 @@ func Test_EnrollmetnCaAuto(t *testing.T) {
 }
 
 func generateCaSignedClientCert(caCert *x509.Certificate, caSigner crypto.Signer, commonName string) (*x509.Certificate, crypto.Signer, error) {
+	logtrace.LogWithFunctionName()
 	id, _ := rand.Int(rand.Reader, big.NewInt(100000000000000000))
 	verificationCert := &x509.Certificate{
 		SerialNumber: id,

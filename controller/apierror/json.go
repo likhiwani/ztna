@@ -18,9 +18,11 @@ package apierror
 
 import (
 	"encoding/json"
+	"ztna-core/ztna/logtrace"
 )
 
 func GetJsonParseError(e error, body []byte) error {
+	logtrace.LogWithFunctionName()
 	if ute, ok := e.(*json.UnmarshalTypeError); ok {
 		e = NewBodyParseTypeError(ute, string(body))
 	} else if se, ok := e.(*json.SyntaxError); ok {

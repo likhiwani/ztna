@@ -3,6 +3,7 @@
 package edge
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -34,6 +35,7 @@ import (
 )
 
 func enrollIdentity(client *rest_management_api_client.ZitiEdgeManagement, identityID string) *ziti.Config {
+    logtrace.LogWithFunctionName()
 	// Get the identity object
 	params := &identity.DetailIdentityParams{
 		Context: context.Background(),
@@ -68,11 +70,13 @@ func enrollIdentity(client *rest_management_api_client.ZitiEdgeManagement, ident
 var zitiContext ziti.Context
 
 func Dial(_ context.Context, _ string, addr string) (net.Conn, error) {
+    logtrace.LogWithFunctionName()
 	service := strings.Split(addr, ":")[0] // will always get passed host:port
 	return zitiContext.Dial(service)
 }
 
 func createZitifiedHttpClient(idFile string) http.Client {
+    logtrace.LogWithFunctionName()
 	cfg, err := ziti.NewConfigFromFile(idFile)
 	if err != nil {
 		panic(err)
@@ -90,6 +94,7 @@ func createZitifiedHttpClient(idFile string) http.Client {
 // #################### Test Utils #############################
 
 func createIdentity(client *rest_management_api_client.ZitiEdgeManagement, name string,
+    logtrace.LogWithFunctionName()
 	identType rest_model.IdentityType, isAdmin bool) *identity.CreateIdentityCreated {
 	i := &rest_model.IdentityCreate{
 		Enrollment: &rest_model.IdentityCreateEnrollment{
@@ -117,6 +122,7 @@ func createIdentity(client *rest_management_api_client.ZitiEdgeManagement, name 
 }
 
 func deleteIdentityByID(client *rest_management_api_client.ZitiEdgeManagement, id string) *identity.DeleteIdentityOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &identity.DeleteIdentityParams{
 		ID: id,
 	}
@@ -129,6 +135,7 @@ func deleteIdentityByID(client *rest_management_api_client.ZitiEdgeManagement, i
 }
 
 func getConfigTypeByName(client *rest_management_api_client.ZitiEdgeManagement, name string) *rest_model.ConfigTypeDetail {
+    logtrace.LogWithFunctionName()
 	interceptFilter := "name=\"" + name + "\""
 	configTypeParams := &api_client_config.ListConfigTypesParams{
 		Filter:  &interceptFilter,
@@ -143,6 +150,7 @@ func getConfigTypeByName(client *rest_management_api_client.ZitiEdgeManagement, 
 }
 
 func getIdentityByName(client *rest_management_api_client.ZitiEdgeManagement, name string) *rest_model.IdentityDetail {
+    logtrace.LogWithFunctionName()
 	filter := "name=\"" + name + "\""
 	params := &identity.ListIdentitiesParams{
 		Filter:  &filter,
@@ -169,6 +177,7 @@ func getIdentityByName(client *rest_management_api_client.ZitiEdgeManagement, na
 }
 
 func getServiceByName(client *rest_management_api_client.ZitiEdgeManagement, name string) *rest_model.ServiceDetail {
+    logtrace.LogWithFunctionName()
 	filter := "name=\"" + name + "\""
 	params := &service.ListServicesParams{
 		Filter:  &filter,
@@ -184,6 +193,7 @@ func getServiceByName(client *rest_management_api_client.ZitiEdgeManagement, nam
 }
 
 func createInterceptV1ServiceConfig(client *rest_management_api_client.ZitiEdgeManagement, name string, protocols []string, addresses []string, portRangeLow int, portRangeHigh int) rest_model.CreateLocation {
+    logtrace.LogWithFunctionName()
 	configTypeID := *getConfigTypeByName(client, "intercept.v1").ID
 	interceptData := map[string]interface{}{
 		"protocols": protocols,
@@ -214,6 +224,7 @@ func createInterceptV1ServiceConfig(client *rest_management_api_client.ZitiEdgeM
 }
 
 func createHostV1ServiceConfig(client *rest_management_api_client.ZitiEdgeManagement, name string, protocol string, address string, port int) rest_model.CreateLocation {
+    logtrace.LogWithFunctionName()
 	hostID := getConfigTypeByName(client, "host.v1").ID
 	hostData := map[string]interface{}{
 		"protocol": protocol,
@@ -239,6 +250,7 @@ func createHostV1ServiceConfig(client *rest_management_api_client.ZitiEdgeManage
 }
 
 func createService(client *rest_management_api_client.ZitiEdgeManagement, name string, serviceConfigs []string) rest_model.CreateLocation {
+    logtrace.LogWithFunctionName()
 	encryptOn := true // Default
 	serviceCreate := &rest_model.ServiceCreate{
 		Configs:            serviceConfigs,
@@ -259,6 +271,7 @@ func createService(client *rest_management_api_client.ZitiEdgeManagement, name s
 }
 
 func createServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, name string, servType rest_model.DialBind, identityRoles rest_model.Roles, serviceRoles rest_model.Roles) rest_model.CreateLocation {
+    logtrace.LogWithFunctionName()
 
 	defaultSemantic := rest_model.SemanticAllOf
 	servicePolicy := &rest_model.ServicePolicyCreate{
@@ -283,6 +296,7 @@ func createServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, 
 }
 
 func getTerminatorCountByRouterName(client *rest_management_api_client.ZitiEdgeManagement, routerName string) int {
+    logtrace.LogWithFunctionName()
 	filter := "router.name=\"" + routerName + "\""
 	params := &terminator.ListTerminatorsParams{
 		Filter:  &filter,
@@ -299,6 +313,7 @@ func getTerminatorCountByRouterName(client *rest_management_api_client.ZitiEdgeM
 }
 
 func waitForTerminatorCountByRouterName(client *rest_management_api_client.ZitiEdgeManagement, routerName string, count int, timeout time.Duration) bool {
+    logtrace.LogWithFunctionName()
 	startTime := time.Now()
 	for {
 		if getTerminatorCountByRouterName(client, routerName) == count {
@@ -313,6 +328,7 @@ func waitForTerminatorCountByRouterName(client *rest_management_api_client.ZitiE
 }
 
 func deleteServiceConfigByID(client *rest_management_api_client.ZitiEdgeManagement, id string) *api_client_config.DeleteConfigOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &api_client_config.DeleteConfigParams{
 		ID: id,
 	}
@@ -325,6 +341,7 @@ func deleteServiceConfigByID(client *rest_management_api_client.ZitiEdgeManageme
 }
 
 func deleteServiceEdgeRouterPolicyById(client *rest_management_api_client.ZitiEdgeManagement, id string) *service_edge_router_policy.DeleteServiceEdgeRouterPolicyOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &service_edge_router_policy.DeleteServiceEdgeRouterPolicyParams{
 		ID: id,
 	}
@@ -337,6 +354,7 @@ func deleteServiceEdgeRouterPolicyById(client *rest_management_api_client.ZitiEd
 }
 
 func deleteEdgeRouterPolicyById(client *rest_management_api_client.ZitiEdgeManagement, id string) *edge_router_policy.DeleteEdgeRouterPolicyOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &edge_router_policy.DeleteEdgeRouterPolicyParams{
 		ID: id,
 	}
@@ -349,6 +367,7 @@ func deleteEdgeRouterPolicyById(client *rest_management_api_client.ZitiEdgeManag
 }
 
 func deleteServiceByID(client *rest_management_api_client.ZitiEdgeManagement, id string) *service.DeleteServiceOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &service.DeleteServiceParams{
 		ID: id,
 	}
@@ -362,6 +381,7 @@ func deleteServiceByID(client *rest_management_api_client.ZitiEdgeManagement, id
 }
 
 func deleteServicePolicyByID(client *rest_management_api_client.ZitiEdgeManagement, id string) *service_policy.DeleteServicePolicyOK {
+    logtrace.LogWithFunctionName()
 	deleteParams := &service_policy.DeleteServicePolicyParams{
 		ID: id,
 	}
@@ -377,6 +397,7 @@ func deleteServicePolicyByID(client *rest_management_api_client.ZitiEdgeManageme
 // in order to share test code between quickstart_test.go and quickstart_test_manual.go, this function had to be
 // created. I couldn't find a way to share the code any other way. Happy to learn a better way!
 func performQuickstartTest(t *testing.T) {
+    logtrace.LogWithFunctionName()
 	// Wait for the controller to become available
 	zitiAdminUsername := os.Getenv("ZITI_USER")
 	if zitiAdminUsername == "" {
@@ -538,5 +559,6 @@ func performQuickstartTest(t *testing.T) {
 }
 
 func toPtr[T any](in T) *T {
+    logtrace.LogWithFunctionName()
 	return &in
 }

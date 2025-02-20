@@ -21,10 +21,12 @@ import (
 	"net"
 	"net/http"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 // NewHttpClientWithTlsConfig provides a default HTTP client with generous default timeouts.
 func NewHttpClientWithTlsConfig(tlsClientConfig *tls.Config) (*http.Client, error) {
+	logtrace.LogWithFunctionName()
 	httpClientTransport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
 		DialContext: (&net.Dialer{
@@ -50,6 +52,7 @@ func NewHttpClientWithTlsConfig(tlsClientConfig *tls.Config) (*http.Client, erro
 
 // NewTlsConfig creates a tls.Config with default min/max TSL versions.
 func NewTlsConfig() (*tls.Config, error) {
+	logtrace.LogWithFunctionName()
 	return &tls.Config{
 		MinVersion: tls.VersionTLS12,
 		MaxVersion: tls.VersionTLS13,

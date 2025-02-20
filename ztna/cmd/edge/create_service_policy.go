@@ -20,6 +20,7 @@ import (
 	"io"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -39,6 +40,7 @@ type createServicePolicyOptions struct {
 
 // newCreateServicePolicyCmd creates the 'edge controller create service-policy' command
 func newCreateServicePolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createServicePolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -71,6 +73,7 @@ func newCreateServicePolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateServicePolicy create a new servicePolicy on the Ziti Edge Controller
 func runCreateServicePolicy(o *createServicePolicyOptions) error {
+	logtrace.LogWithFunctionName()
 	policyType := o.Args[1]
 	if policyType != "Bind" && policyType != "Dial" {
 		return errors.Errorf("Invalid policy type '%v'. Valid values: [Bind, Dial]", policyType)
@@ -107,6 +110,7 @@ func runCreateServicePolicy(o *createServicePolicyOptions) error {
 }
 
 func convertNamesToIds(roles []string, entityType string, o api.Options) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	var result []string
 	for _, val := range roles {
 		if strings.HasPrefix(val, "@") {

@@ -19,6 +19,7 @@ package cmd
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
@@ -33,6 +34,7 @@ type ArtOptions struct {
 }
 
 func NewCmdArt(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &ArtOptions{
 		CommonOptions: common.CommonOptions{
 			Out: out,
@@ -58,6 +60,7 @@ func NewCmdArt(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // Run ...
 func (o *ArtOptions) Run() error {
+	logtrace.LogWithFunctionName()
 
 	log.Info(
 		`

@@ -17,6 +17,7 @@
 package helpers
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
@@ -33,6 +34,7 @@ var fatalErrHandler = fatal
 
 // fatal prints the message (if provided) and then exits.
 func fatal(msg string, code int) {
+	logtrace.LogWithFunctionName()
 	if len(msg) > 0 {
 		// add newline if needed
 		if !strings.HasSuffix(msg, "\n") {
@@ -53,12 +55,14 @@ var ErrExit = fmt.Errorf("exit")
 // This method is generic to the command in use and may be used by non-Kubectl
 // commands.
 func CheckErr(err error) {
+	logtrace.LogWithFunctionName()
 	checkErr("", err, fatalErrHandler)
 }
 
 // checkErr formats a given error as a string and calls the passed handleErr
 // func with that string and an kubectl exit code.
 func checkErr(prefix string, err error, handleErr func(string, int)) {
+	logtrace.LogWithFunctionName()
 	// unwrap aggregates of 1
 	/*
 		if agg, ok := err.(utilerrors.Aggregate); ok && len(agg.Errors()) == 1 {
@@ -125,6 +129,7 @@ func checkErr(prefix string, err error, handleErr func(string, int)) {
 // This method is generic to the command in use and may be used by non-Kubectl
 // commands.
 func StandardErrorMessage(err error) (string, bool) {
+	logtrace.LogWithFunctionName()
 	switch t := err.(type) {
 	case *url.Error:
 		pfxlog.Logger().Infof("Connection error: %s %s: %v", t.Op, t.URL, t.Err)
@@ -142,6 +147,7 @@ func StandardErrorMessage(err error) (string, bool) {
 }
 
 func JFrogAPIKey() string {
+	logtrace.LogWithFunctionName()
 	if h := os.Getenv("JFROG_API_KEY"); h != "" {
 		return h
 	}

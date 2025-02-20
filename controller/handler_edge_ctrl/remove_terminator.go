@@ -17,11 +17,13 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -31,6 +33,7 @@ type removeTerminatorHandler struct {
 }
 
 func NewRemoveTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &removeTerminatorHandler{
 		baseRequestHandler{
 			ch:     ch,
@@ -40,14 +43,17 @@ func NewRemoveTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.
 }
 
 func (self *removeTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_RemoveTerminatorRequestType)
 }
 
 func (self *removeTerminatorHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "remove.terminator"
 }
 
 func (self *removeTerminatorHandler) sendResponse(ctx *RemoveTerminatorRequestContext) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.ch.Label())
 
 	responseMsg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_RemoveTerminatorResponseType), nil)
@@ -58,6 +64,7 @@ func (self *removeTerminatorHandler) sendResponse(ctx *RemoveTerminatorRequestCo
 }
 
 func (self *removeTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.RemoveTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal RemoveTerminator")
@@ -73,6 +80,7 @@ func (self *removeTerminatorHandler) HandleReceive(msg *channel.Message, ch chan
 }
 
 func (self *removeTerminatorHandler) RemoveTerminator(ctx *RemoveTerminatorRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}
@@ -110,5 +118,6 @@ type RemoveTerminatorRequestContext struct {
 }
 
 func (self *RemoveTerminatorRequestContext) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.req.SessionToken
 }

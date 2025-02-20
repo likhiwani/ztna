@@ -30,6 +30,7 @@ package rest_server
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"encoding/json"
 )
 
@@ -41,6 +42,7 @@ var (
 )
 
 func init() {
+    logtrace.LogWithFunctionName()
 	SwaggerJSON = json.RawMessage([]byte(`{
   "consumes": [
     "application/json"

@@ -21,11 +21,13 @@ import (
 	"strings"
 	"time"
 
+	"ztna-core/ztna/common/pb/edge_cmd_pb"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/blang/semver"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/ztna/common/pb/edge_cmd_pb"
-	"ztna-core/ztna/controller/db"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
@@ -37,10 +39,12 @@ type PostureCheckOperatingSystem struct {
 }
 
 func (p *PostureCheckOperatingSystem) TypeId() string {
+	logtrace.LogWithFunctionName()
 	return db.PostureCheckTypeOs
 }
 
 func (p *PostureCheckOperatingSystem) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	osList := &edge_cmd_pb.PostureCheck_OsList{}
 	for _, os := range p.OperatingSystems {
 		osList.OsList = append(osList.OsList, &edge_cmd_pb.PostureCheck_Os{
@@ -55,6 +59,7 @@ func (p *PostureCheckOperatingSystem) fillProtobuf(msg *edge_cmd_pb.PostureCheck
 }
 
 func (p *PostureCheckOperatingSystem) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	if osList_, ok := msg.Subtype.(*edge_cmd_pb.PostureCheck_OsList_); ok {
 		if osList := osList_.OsList; osList != nil {
 			for _, os := range osList.OsList {
@@ -71,18 +76,22 @@ func (p *PostureCheckOperatingSystem) fillFromProtobuf(msg *edge_cmd_pb.PostureC
 }
 
 func (p *PostureCheckOperatingSystem) LastUpdatedAt(id string, pd *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (p *PostureCheckOperatingSystem) GetTimeoutRemainingSeconds(_ string, _ *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckOperatingSystem) GetTimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckOperatingSystem) FailureValues(_ string, pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckFailureValuesOperatingSystem{
 		ActualValue:   pd.Os,
 		ExpectedValue: p.OperatingSystems,
@@ -90,6 +99,7 @@ func (p *PostureCheckOperatingSystem) FailureValues(_ string, pd *PostureData) P
 }
 
 func (p *PostureCheckOperatingSystem) Evaluate(_ string, pd *PostureData) bool {
+	logtrace.LogWithFunctionName()
 	if pd.Os.TimedOut {
 		return false
 	}
@@ -121,6 +131,7 @@ func (p *PostureCheckOperatingSystem) Evaluate(_ string, pd *PostureData) bool {
 }
 
 func getValidOses(oses []OperatingSystem) map[string][]*semver.Range {
+	logtrace.LogWithFunctionName()
 	validOses := map[string][]*semver.Range{}
 
 	for _, os := range oses {
@@ -146,10 +157,12 @@ type OperatingSystem struct {
 }
 
 func newPostureCheckOperatingSystem() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckOperatingSystem{}
 }
 
 func (p *PostureCheckOperatingSystem) fillFrom(_ Env, tx *bbolt.Tx, check *db.PostureCheck, subType db.PostureCheckSubType) error {
+	logtrace.LogWithFunctionName()
 	subCheck := subType.(*db.PostureCheckOperatingSystem)
 
 	if subCheck == nil {
@@ -167,6 +180,7 @@ func (p *PostureCheckOperatingSystem) fillFrom(_ Env, tx *bbolt.Tx, check *db.Po
 }
 
 func (p *PostureCheckOperatingSystem) validateOsVersions() error {
+	logtrace.LogWithFunctionName()
 	for _, os := range p.OperatingSystems {
 		for versionIdx, version := range os.OsVersions {
 			if _, err := semver.ParseRange(version); err != nil {
@@ -180,6 +194,7 @@ func (p *PostureCheckOperatingSystem) validateOsVersions() error {
 }
 
 func (p *PostureCheckOperatingSystem) toBoltEntityForCreate(*bbolt.Tx, Env) (db.PostureCheckSubType, error) {
+	logtrace.LogWithFunctionName()
 	ret := &db.PostureCheckOperatingSystem{
 		OperatingSystems: []db.OperatingSystem{},
 	}
@@ -204,9 +219,11 @@ type PostureCheckFailureValuesOperatingSystem struct {
 }
 
 func (p PostureCheckFailureValuesOperatingSystem) Expected() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ExpectedValue
 }
 
 func (p PostureCheckFailureValuesOperatingSystem) Actual() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ActualValue
 }

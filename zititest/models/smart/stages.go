@@ -18,6 +18,11 @@ package main
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/models"
+	zitilab_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
+
 	aws_ssh_keys0 "github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
 	semaphore0 "github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/semaphore"
 	terraform0 "github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/terraform"
@@ -28,18 +33,17 @@ import (
 	aws_ssh_keys6 "github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/aws_ssh_key"
 	terraform6 "github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/models"
-	zitilab_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
-	"time"
 )
 
 func newStageFactory() model.Factory {
+	logtrace.LogWithFunctionName()
 	return &stageFactory{}
 }
 
 // stageFactory is a model.Factory that is responsible for building and connecting the stages that
 // represent the various phases of the model.
 func (self *stageFactory) Build(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	// set up ssh keys (if configured), create the cloud infrastructure and restart all instances after they've been updated
 	m.Infrastructure = model.Stages{
 		aws_ssh_keys0.Express(),
@@ -98,6 +102,7 @@ func (self *stageFactory) Build(m *model.Model) error {
 }
 
 func (self *stageFactory) addOperationStages(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	phase := fablib_5_operation.NewPhase()
 
 	m.AddOperatingStage(zitilab_5_operation.Mesh(phase.GetCloser()))
@@ -120,6 +125,7 @@ func (self *stageFactory) addOperationStages(m *model.Model) error {
 }
 
 func (_ *stageFactory) addListenerStages(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	hosts := m.SelectHosts(models.LoopListenerTag)
 	if len(hosts) < 1 {
 		return fmt.Errorf("no '%v' hosts in model", models.LoopListenerTag)
@@ -133,6 +139,7 @@ func (_ *stageFactory) addListenerStages(m *model.Model) error {
 }
 
 func (_ *stageFactory) dialers(m *model.Model, phase fablib_5_operation.Phase) error {
+	logtrace.LogWithFunctionName()
 	initiator, err := m.SelectHost("component.initiator.router")
 	if err != nil {
 		return err

@@ -17,8 +17,10 @@
 package db
 
 import (
-	"github.com/openziti/storage/boltz"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 const (
@@ -62,6 +64,7 @@ const (
 var validSemantics = []string{SemanticAllOf, SemanticAnyOf}
 
 func isSemanticValid(semantic string) bool {
+	logtrace.LogWithFunctionName()
 	for _, validSemantic := range validSemantics {
 		if strings.EqualFold(validSemantic, semantic) {
 			return true

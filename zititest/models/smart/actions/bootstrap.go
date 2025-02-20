@@ -18,24 +18,28 @@ package actions
 
 import (
 	"fmt"
+	"path/filepath"
+	"time"
+	"ztna-core/ztna/logtrace"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/models"
 	"github.com/sirupsen/logrus"
-	"path/filepath"
-	"time"
 )
 
 func NewBootstrapAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := &bootstrapAction{}
 	return action.bind
 }
 
 func (self *bootstrapAction) bind(m *model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	workflow := actions.Workflow()
 
 	workflow.AddAction(component.Stop(models.ControllerTag))
@@ -69,6 +73,7 @@ func (self *bootstrapAction) bind(m *model.Model) model.Action {
 }
 
 func (_ *bootstrapAction) createServiceActions(m *model.Model) ([]model.Action, error) {
+	logtrace.LogWithFunctionName()
 	var serviceActions []model.Action
 	hosts, err := m.MustSelectHosts(models.LoopListenerTag, 1)
 	if err != nil {

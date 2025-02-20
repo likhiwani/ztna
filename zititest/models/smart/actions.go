@@ -17,17 +17,21 @@
 package main
 
 import (
-	"github.com/openziti/fablab/kernel/model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/models/smart/actions"
 	zitilab_actions "ztna-core/ztna/zititest/zitilab/actions"
 	"ztna-core/ztna/zititest/zitilab/console"
+
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func newActionsFactory() model.Factory {
+	logtrace.LogWithFunctionName()
 	return &actionsFactory{}
 }
 
 func (_ *actionsFactory) Build(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	m.Actions = model.ActionBinders{
 		"bootstrap": actions.NewBootstrapAction(),
 		"start":     actions.NewStartAction(),

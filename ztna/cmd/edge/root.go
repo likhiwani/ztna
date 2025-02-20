@@ -20,11 +20,13 @@ import (
 	"context"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
 
 	"ztna-core/ztna/common/enrollment"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +34,7 @@ var ExtraEdgeCommands []func(p common.OptionsProvider) *cobra.Command
 
 // NewCmdEdge creates a command object for the "controller" command
 func NewCmdEdge(out io.Writer, errOut io.Writer, p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := util.NewEmptyParentCmd("edge", "Manage the Edge components of a Ziti network using the Ziti Edge REST API")
 
 	cmd.AddCommand(newCreateCmd(out, errOut))
@@ -61,6 +64,7 @@ func NewCmdEdge(out io.Writer, errOut io.Writer, p common.OptionsProvider) *cobr
 }
 
 func newValidateCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	validateCmd := &cobra.Command{
 		Use:   "validate",
 		Short: "validate model data",

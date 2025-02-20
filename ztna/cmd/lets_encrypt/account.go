@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto"
 
 	"github.com/go-acme/lego/v4/registration"
@@ -33,15 +34,18 @@ type Account struct {
 
 // GetEmail returns the email address for the account.
 func (a *Account) GetEmail() string {
+	logtrace.LogWithFunctionName()
 	return a.Email
 }
 
 // GetPrivateKey returns the private RSA account key.
 func (a *Account) GetPrivateKey() crypto.PrivateKey {
+	logtrace.LogWithFunctionName()
 	return a.key
 }
 
 // GetRegistration returns the server registration.
 func (a *Account) GetRegistration() *registration.Resource {
+	logtrace.LogWithFunctionName()
 	return a.Registration
 }

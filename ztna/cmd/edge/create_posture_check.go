@@ -24,6 +24,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/posture_checks"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -34,6 +35,7 @@ import (
 
 // newCreatePostureCheckCmd creates the 'edge controller create posture-check' command
 func newCreatePostureCheckCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use: "posture-check",
 	}
@@ -99,12 +101,14 @@ type createPostureCheckProcessMultiOptions struct {
 }
 
 func (options *createPostureCheckOptions) addPostureFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	// allow interspersing positional args and flags
 	cmd.Flags().SetInterspersed(true)
 	cmd.Flags().StringSliceVarP(&options.roleAttributes, "role-attributes", "a", nil, "comma-separated role attributes for the new service")
 }
 
 func newCreatePostureCheckMacCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createPostureCheckMacOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -138,6 +142,7 @@ func newCreatePostureCheckMacCmd(out io.Writer, errOut io.Writer) *cobra.Command
 }
 
 func newCreatePostureCheckDomainCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createPostureCheckDomainOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -171,6 +176,7 @@ func newCreatePostureCheckDomainCmd(out io.Writer, errOut io.Writer) *cobra.Comm
 }
 
 func newCreatePostureCheckProcessCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createPostureCheckProcessOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -218,6 +224,7 @@ func newCreatePostureCheckProcessCmd(out io.Writer, errOut io.Writer) *cobra.Com
 }
 
 func newCreatePostureCheckProcessMultiCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createPostureCheckProcessMultiOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -318,6 +325,7 @@ const (
 
 // Returns the normalized Edge API value or empty string
 func normalizeOsType(os string) string {
+	logtrace.LogWithFunctionName()
 	os = strings.ToLower(os)
 	switch os {
 	case "android":
@@ -338,11 +346,13 @@ func normalizeOsType(os string) string {
 }
 
 func cleanHexString(in string) string {
+	logtrace.LogWithFunctionName()
 	hexClean := regexp.MustCompile("[^a-f0-9]+")
 	return hexClean.ReplaceAllString(strings.ToLower(in), "")
 }
 
 func cleanSha512s(in []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	const sha512HexLength = 128
 
 	hashMap := map[string]struct{}{}
@@ -370,6 +380,7 @@ func cleanSha512s(in []string) ([]string, error) {
 }
 
 func cleanSha1(in string) (string, error) {
+	logtrace.LogWithFunctionName()
 	cleanSig := cleanHexString(in)
 
 	if len(cleanSig) != 40 {
@@ -380,6 +391,7 @@ func cleanSha1(in string) (string, error) {
 }
 
 func cleanSha1s(in []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	hashMap := map[string]struct{}{}
 	for _, hash := range in {
 		hash = strings.TrimSpace(hash)
@@ -405,6 +417,7 @@ func cleanSha1s(in []string) ([]string, error) {
 }
 
 func runCreatePostureCheckProcess(o *createPostureCheckProcessOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	setPostureCheckEntityValues(entityData, &o.createPostureCheckOptions, PostureCheckTypeProcess)
 
@@ -436,6 +449,7 @@ func runCreatePostureCheckProcess(o *createPostureCheckProcessOptions) error {
 }
 
 func runCreatePostureCheckProcessMulti(options *createPostureCheckProcessMultiOptions) error {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {
@@ -489,6 +503,7 @@ func runCreatePostureCheckProcessMulti(options *createPostureCheckProcessMultiOp
 }
 
 func setPostureCheckEntityValues(entity *gabs.Container, options *createPostureCheckOptions, typeId string) {
+	logtrace.LogWithFunctionName()
 	api.SetJSONValue(entity, options.Args[0], "name")
 	api.SetJSONValue(entity, options.roleAttributes, "roleAttributes")
 	api.SetJSONValue(entity, typeId, "typeId")
@@ -496,6 +511,7 @@ func setPostureCheckEntityValues(entity *gabs.Container, options *createPostureC
 }
 
 func cleanMacAddresses(inAddresses []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	macClean := regexp.MustCompile("[^a-f0-9]+")
 
 	addressMap := map[string]struct{}{}
@@ -519,6 +535,7 @@ func cleanMacAddresses(inAddresses []string) ([]string, error) {
 
 // runCreatePostureCheckMac implements the command to create a mac address posture check
 func runCreatePostureCheckMac(o *createPostureCheckMacOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	setPostureCheckEntityValues(entityData, &o.createPostureCheckOptions, PostureCheckTypeMAC)
 
@@ -550,6 +567,7 @@ func runCreatePostureCheckMac(o *createPostureCheckMacOptions) (err error) {
 }
 
 func cleanDomains(inDomains []string) []string {
+	logtrace.LogWithFunctionName()
 	domainMap := map[string]struct{}{}
 	for _, domain := range inDomains {
 		cleanDomain := strings.TrimSpace(strings.ToLower(domain))
@@ -569,6 +587,7 @@ func cleanDomains(inDomains []string) []string {
 
 // runCreatePostureCheckDomain implements the command to create a windows domain posture check
 func runCreatePostureCheckDomain(o *createPostureCheckDomainOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	setPostureCheckEntityValues(entityData, &o.createPostureCheckOptions, PostureCheckTypeDomain)
 
@@ -596,6 +615,7 @@ func runCreatePostureCheckDomain(o *createPostureCheckDomainOptions) (err error)
 }
 
 func newCreatePostureCheckOsCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createPostureCheckOsOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -634,6 +654,7 @@ func newCreatePostureCheckOsCmd(out io.Writer, errOut io.Writer) *cobra.Command 
 }
 
 func runCreatePostureCheckOs(o *createPostureCheckOsOptions) error {
+	logtrace.LogWithFunctionName()
 	var osSpecs []*osSpec
 	for i, osStr := range o.os {
 		if osSpec, err := parseOsSpec(osStr); err != nil {
@@ -668,6 +689,7 @@ type osSpec struct {
 }
 
 func parseOsSpec(osSpecStr string) (*osSpec, error) {
+	logtrace.LogWithFunctionName()
 	splits := strings.Split(osSpecStr, ":")
 
 	osType := normalizeOsType(splits[0])
@@ -694,6 +716,7 @@ func parseOsSpec(osSpecStr string) (*osSpec, error) {
 }
 
 func newCreatePostureCheckMfaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := createPostureCheckMfaOptions{
 		createPostureCheckOptions: createPostureCheckOptions{
 			EntityOptions: api.NewEntityOptions(out, errOut),
@@ -736,6 +759,7 @@ func newCreatePostureCheckMfaCmd(out io.Writer, errOut io.Writer) *cobra.Command
 	return cmd
 }
 func runCreatePostureCheckMfa(o *createPostureCheckMfaOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	_, _ = entityData.Set(o.promptOnUnlock, "promptOnUnlock")
 	_, _ = entityData.Set(o.promptOnWake, "promptOnWake")

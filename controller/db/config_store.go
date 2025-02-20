@@ -18,12 +18,14 @@ package db
 
 import (
 	"fmt"
+	"slices"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
 	"go.etcd.io/bbolt"
-	"slices"
 )
 
 const (
@@ -33,6 +35,7 @@ const (
 )
 
 func newConfig(name string, configType string, data map[string]interface{}) *Config {
+	logtrace.LogWithFunctionName()
 	return &Config{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Name:          name,
@@ -49,10 +52,12 @@ type Config struct {
 }
 
 func (entity *Config) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *Config) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeConfigs
 }
 
@@ -64,6 +69,7 @@ type ConfigStore interface {
 }
 
 func newConfigsStore(stores *stores) *configStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &configStoreImpl{}
 	store.baseStore = newBaseStore[*Config](stores, store)
 	store.InitImpl(store)
@@ -81,10 +87,12 @@ type configStoreImpl struct {
 }
 
 func (store *configStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *configStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 	store.symbolType = store.AddFkSymbol(FieldConfigType, store.stores.configType)
@@ -95,15 +103,18 @@ func (store *configStoreImpl) initializeLocal() {
 }
 
 func (store *configStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddFkIndex(store.symbolType, store.stores.configType.symbolConfigs)
 	store.AddLinkCollection(store.symbolServices, store.stores.edgeService.symbolConfigs)
 }
 
 func (store *configStoreImpl) NewEntity() *Config {
+	logtrace.LogWithFunctionName()
 	return &Config{}
 }
 
 func (store *configStoreImpl) FillEntity(entity *Config, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.Type = bucket.GetStringOrError(FieldConfigType)
@@ -111,6 +122,7 @@ func (store *configStoreImpl) FillEntity(entity *Config, bucket *boltz.TypedBuck
 }
 
 func (store *configStoreImpl) PersistEntity(entity *Config, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetString(FieldConfigType, entity.Type)
@@ -122,6 +134,7 @@ func (store *configStoreImpl) PersistEntity(entity *Config, ctx *boltz.PersistCo
 }
 
 func (store *configStoreImpl) Update(ctx boltz.MutateContext, entity *Config, checker boltz.FieldChecker) error {
+	logtrace.LogWithFunctionName()
 	if err := store.createServiceChangeEvents(ctx.Tx(), entity.GetId()); err != nil {
 		return err
 	}
@@ -129,6 +142,7 @@ func (store *configStoreImpl) Update(ctx boltz.MutateContext, entity *Config, ch
 }
 
 func (store *configStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	if err := store.createServiceChangeEvents(ctx.Tx(), id); err != nil {
 		return err
 	}
@@ -166,6 +180,7 @@ func (store *configStoreImpl) DeleteById(ctx boltz.MutateContext, id string) err
 }
 
 func (store *configStoreImpl) createServiceChangeEvents(tx *bbolt.Tx, configId string) error {
+	logtrace.LogWithFunctionName()
 	eh := &serviceEventHandler{}
 
 	id := []byte(configId)

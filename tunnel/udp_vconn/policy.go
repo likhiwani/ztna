@@ -18,23 +18,28 @@ package udp_vconn
 
 import (
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 func NewUnlimitedConnectionPolicy() NewConnPolicy {
+	logtrace.LogWithFunctionName()
 	return unlimitedConnections{}
 }
 
 type unlimitedConnections struct{}
 
 func (policy unlimitedConnections) NewConnection(count uint32) NewConnAcceptResult {
+	logtrace.LogWithFunctionName()
 	return Allow
 }
 
 func NewLimitedConnectionPolicyDropNew(limit uint32) NewConnPolicy {
+	logtrace.LogWithFunctionName()
 	return &limitedConnections{result: Deny, limit: limit}
 }
 
 func NewLimitedConnectionPolicyDropLRU(limit uint32) NewConnPolicy {
+	logtrace.LogWithFunctionName()
 	return &limitedConnections{result: AllowDropLRU, limit: limit}
 }
 
@@ -44,6 +49,7 @@ type limitedConnections struct {
 }
 
 func (policy *limitedConnections) NewConnection(count uint32) NewConnAcceptResult {
+	logtrace.LogWithFunctionName()
 	if count >= policy.limit {
 		return policy.result
 	}
@@ -51,6 +57,7 @@ func (policy *limitedConnections) NewConnection(count uint32) NewConnAcceptResul
 }
 
 func NewDefaultExpirationPolicy() ConnExpirationPolicy {
+	logtrace.LogWithFunctionName()
 	return defaultExpirationPolicy{}
 }
 
@@ -58,14 +65,17 @@ type defaultExpirationPolicy struct {
 }
 
 func (policy defaultExpirationPolicy) IsExpired(now, lastUsed time.Time) bool {
+	logtrace.LogWithFunctionName()
 	return now.Sub(lastUsed) > time.Minute*5
 }
 
 func (policy defaultExpirationPolicy) PollFrequency() time.Duration {
+	logtrace.LogWithFunctionName()
 	return time.Second * 30
 }
 
 func NewTimeoutExpirationPolicy(timeout time.Duration, checkInterval time.Duration) ConnExpirationPolicy {
+	logtrace.LogWithFunctionName()
 	return &timeoutExpirationPolicy{
 		timeout:       timeout,
 		checkInterval: checkInterval,
@@ -78,9 +88,11 @@ type timeoutExpirationPolicy struct {
 }
 
 func (policy *timeoutExpirationPolicy) IsExpired(now, lastUsed time.Time) bool {
+	logtrace.LogWithFunctionName()
 	return now.Sub(lastUsed) > policy.timeout
 }
 
 func (policy *timeoutExpirationPolicy) PollFrequency() time.Duration {
+	logtrace.LogWithFunctionName()
 	return policy.checkInterval
 }

@@ -16,7 +16,10 @@
 
 package xt
 
+import "ztna-core/ztna/logtrace"
+
 func NewStrategyChangeEvent(serviceId string, current, added, changed, removed []Terminator) StrategyChangeEvent {
+	logtrace.LogWithFunctionName()
 	return &strategyChangeEvent{
 		serviceId: serviceId,
 		current:   current,
@@ -27,6 +30,7 @@ func NewStrategyChangeEvent(serviceId string, current, added, changed, removed [
 }
 
 func TList(terminators ...Terminator) []Terminator {
+	logtrace.LogWithFunctionName()
 	return terminators
 }
 
@@ -39,26 +43,32 @@ type strategyChangeEvent struct {
 }
 
 func (event *strategyChangeEvent) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return event.serviceId
 }
 
 func (event *strategyChangeEvent) GetCurrent() []Terminator {
+	logtrace.LogWithFunctionName()
 	return event.current
 }
 
 func (event *strategyChangeEvent) GetAdded() []Terminator {
+	logtrace.LogWithFunctionName()
 	return event.added
 }
 
 func (event *strategyChangeEvent) GetChanged() []Terminator {
+	logtrace.LogWithFunctionName()
 	return event.changed
 }
 
 func (event *strategyChangeEvent) GetRemoved() []Terminator {
+	logtrace.LogWithFunctionName()
 	return event.removed
 }
 
 func NewDialFailedEvent(terminator Terminator) TerminatorEvent {
+	logtrace.LogWithFunctionName()
 	return &defaultEvent{
 		terminator: terminator,
 		eventType:  eventTypeFailed,
@@ -66,6 +76,7 @@ func NewDialFailedEvent(terminator Terminator) TerminatorEvent {
 }
 
 func NewDialSucceeded(terminator Terminator) TerminatorEvent {
+	logtrace.LogWithFunctionName()
 	return &defaultEvent{
 		terminator: terminator,
 		eventType:  eventTypeSucceeded,
@@ -73,6 +84,7 @@ func NewDialSucceeded(terminator Terminator) TerminatorEvent {
 }
 
 func NewCircuitRemoved(terminator Terminator) TerminatorEvent {
+	logtrace.LogWithFunctionName()
 	return &defaultEvent{
 		terminator: terminator,
 		eventType:  eventTypeCircuitRemoved,
@@ -93,10 +105,12 @@ type defaultEvent struct {
 }
 
 func (event *defaultEvent) GetTerminator() Terminator {
+	logtrace.LogWithFunctionName()
 	return event.terminator
 }
 
 func (event *defaultEvent) Accept(visitor EventVisitor) {
+	logtrace.LogWithFunctionName()
 	if event.eventType == eventTypeFailed {
 		visitor.VisitDialFailed(event)
 	} else if event.eventType == eventTypeSucceeded {
@@ -110,6 +124,12 @@ var _ EventVisitor = DefaultEventVisitor{}
 
 type DefaultEventVisitor struct{}
 
-func (visitor DefaultEventVisitor) VisitDialFailed(TerminatorEvent)     {}
-func (visitor DefaultEventVisitor) VisitDialSucceeded(TerminatorEvent)  {}
-func (visitor DefaultEventVisitor) VisitCircuitRemoved(TerminatorEvent) {}
+func (visitor DefaultEventVisitor) VisitDialFailed(TerminatorEvent) {
+	logtrace.LogWithFunctionName()
+}
+func (visitor DefaultEventVisitor) VisitDialSucceeded(TerminatorEvent) {
+	logtrace.LogWithFunctionName()
+}
+func (visitor DefaultEventVisitor) VisitCircuitRemoved(TerminatorEvent) {
+	logtrace.LogWithFunctionName()
+}

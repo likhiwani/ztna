@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
@@ -37,18 +38,21 @@ type SessionLinkFactoryImpl struct {
 }
 
 func NewSessionLinkFactory() *SessionLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &SessionLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameSession),
 	}
 }
 
 func (factory *SessionLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameRoutePath] = factory.NewNestedLink(entity, EntityNameRoutePath)
 	return links
 }
 
 func MapCreateSessionToModel(identityId, apiSessionId string, session *rest_model.SessionCreate) *model.Session {
+	logtrace.LogWithFunctionName()
 	ret := &model.Session{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(session.Tags),
@@ -65,10 +69,12 @@ func MapCreateSessionToModel(identityId, apiSessionId string, session *rest_mode
 }
 
 func MapSessionToRestEntity(ae *env.AppEnv, _ *response.RequestContext, session *model.Session) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapSessionToRestModel(ae, session)
 }
 
 func MapSessionToRestModel(ae *env.AppEnv, sessionModel *model.Session) (*rest_model.SessionManagementDetail, error) {
+	logtrace.LogWithFunctionName()
 	service, err := ae.Managers.EdgeService.Read(sessionModel.ServiceId)
 	if err != nil {
 		pfxlog.Logger().Errorf("could not render service [%s] for Session [%s] - should not be possible", sessionModel.ServiceId, sessionModel.Id)
@@ -131,6 +137,7 @@ func MapSessionToRestModel(ae *env.AppEnv, sessionModel *model.Session) (*rest_m
 }
 
 func MapSessionsToRestEntities(ae *env.AppEnv, rc *response.RequestContext, sessions []*model.Session) ([]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	var ret []interface{}
 	for _, session := range sessions {
 		restEntity, err := MapSessionToRestEntity(ae, rc, session)
@@ -146,6 +153,7 @@ func MapSessionsToRestEntities(ae *env.AppEnv, rc *response.RequestContext, sess
 }
 
 func getSessionEdgeRouters(ae *env.AppEnv, ns *model.Session) ([]*rest_model.SessionEdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	var edgeRouters []*rest_model.SessionEdgeRouter
 
 	edgeRoutersForSession, err := ae.Managers.EdgeRouter.ListForIdentityAndService(ns.IdentityId, ns.ServiceId)

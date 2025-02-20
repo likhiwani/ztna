@@ -20,12 +20,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/metrics"
+	"sync"
+	"time"
 	"ztna-core/sdk-golang/ziti"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/cmd_pb"
@@ -38,11 +35,16 @@ import (
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/metrics"
+	"github.com/openziti/storage/boltz"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"sync"
-	"time"
 )
 
 const (
@@ -65,6 +67,7 @@ type IdentityManager struct {
 }
 
 func NewIdentityManager(env Env) *IdentityManager {
+	logtrace.LogWithFunctionName()
 	manager := &IdentityManager{
 		baseEntityManager:  newBaseEntityManager[*Identity, *db.Identity](env, env.GetStores().Identity),
 		updateSdkInfoTimer: env.GetMetricsRegistry().Timer("identity.update-sdk-info"),
@@ -82,19 +85,23 @@ func NewIdentityManager(env Env) *IdentityManager {
 }
 
 func (self *IdentityManager) newModelEntity() *Identity {
+	logtrace.LogWithFunctionName()
 	return &Identity{}
 }
 
 func (self *IdentityManager) Create(entity *Identity, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Identity](self, entity, ctx)
 }
 
 func (self *IdentityManager) ApplyCreate(cmd *command.CreateEntityCommand[*Identity], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *IdentityManager) CreateWithEnrollments(identityModel *Identity, enrollmentsModels []*Enrollment, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if identityModel.Id == "" {
 		identityModel.Id = eid.New()
 	}
@@ -117,6 +124,7 @@ func (self *IdentityManager) CreateWithEnrollments(identityModel *Identity, enro
 }
 
 func (self *IdentityManager) ApplyCreateWithEnrollments(cmd *CreateIdentityWithEnrollmentsCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	identityModel := cmd.identity
 	enrollmentsModels := cmd.enrollments
 
@@ -146,10 +154,12 @@ func (self *IdentityManager) ApplyCreateWithEnrollments(cmd *CreateIdentityWithE
 }
 
 func (self *IdentityManager) Update(entity *Identity, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Identity](self, entity, checker, ctx)
 }
 
 func (self *IdentityManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Identity], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker
 
 	if cmd.UpdatedFields == nil {
@@ -166,10 +176,12 @@ func (self *IdentityManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Ident
 }
 
 func (self *IdentityManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return field != db.FieldIdentityAuthenticators && field != db.FieldIdentityEnrollments && field != db.FieldIdentityIsDefaultAdmin
 }
 
 func (self *IdentityManager) ReadByName(name string) (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	entity := &Identity{}
 	nameIndex := self.env.GetStores().Identity.GetNameIndex()
 	if err := self.readEntityWithIndex("name", []byte(name), nameIndex, entity); err != nil {
@@ -179,10 +191,12 @@ func (self *IdentityManager) ReadByName(name string) (*Identity, error) {
 }
 
 func (self *IdentityManager) ReadDefaultAdmin() (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	return self.ReadOneByQuery("isDefaultAdmin = true")
 }
 
 func (self *IdentityManager) ReadOneByQuery(query string) (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	result, err := self.readEntityByQuery(query)
 	if err != nil {
 		return nil, err
@@ -194,6 +208,7 @@ func (self *IdentityManager) ReadOneByQuery(query string) (*Identity, error) {
 }
 
 func (self *IdentityManager) InitializeDefaultAdmin(username, password, name string) error {
+	logtrace.LogWithFunctionName()
 	if len(username) < minDefaultAdminUsernameLength {
 		return errorz.NewFieldError(fmt.Sprintf("username must be at least %v characters", minDefaultAdminUsernameLength), "username", username)
 	}
@@ -272,6 +287,7 @@ func (self *IdentityManager) InitializeDefaultAdmin(username, password, name str
 }
 
 func (self *IdentityManager) CollectAuthenticators(id string, collector func(entity *Authenticator) error) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().View(func(tx *bbolt.Tx) error {
 		_, err := self.readInTx(tx, id)
 		if err != nil {
@@ -293,6 +309,7 @@ func (self *IdentityManager) CollectAuthenticators(id string, collector func(ent
 }
 
 func (self *IdentityManager) visitAuthenticators(tx *bbolt.Tx, id string, visitor func(entity *Authenticator) bool) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.readInTx(tx, id)
 	if err != nil {
 		return err
@@ -312,12 +329,14 @@ func (self *IdentityManager) visitAuthenticators(tx *bbolt.Tx, id string, visito
 }
 
 func (self *IdentityManager) CollectEnrollments(id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().View(func(tx *bbolt.Tx) error {
 		return self.collectEnrollmentsInTx(tx, id, collector)
 	})
 }
 
 func (self *IdentityManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.readInTx(tx, id)
 	if err != nil {
 		return err
@@ -339,6 +358,7 @@ func (self *IdentityManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string, col
 }
 
 func (self *IdentityManager) CreateWithAuthenticator(identity *Identity, authenticator *Authenticator, ctx *change.Context) (string, string, error) {
+	logtrace.LogWithFunctionName()
 	if identity.Id == "" {
 		identity.Id = eid.New()
 	}
@@ -396,6 +416,7 @@ func (self *IdentityManager) CreateWithAuthenticator(identity *Identity, authent
 }
 
 func (self *IdentityManager) AssignServiceConfigs(id string, serviceConfigs []ServiceConfig, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &UpdateServiceConfigsCmd{
 		manager:        self,
 		identityId:     id,
@@ -407,6 +428,7 @@ func (self *IdentityManager) AssignServiceConfigs(id string, serviceConfigs []Se
 }
 
 func (self *IdentityManager) RemoveServiceConfigs(id string, serviceConfigs []ServiceConfig, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &UpdateServiceConfigsCmd{
 		manager:        self,
 		identityId:     id,
@@ -418,6 +440,7 @@ func (self *IdentityManager) RemoveServiceConfigs(id string, serviceConfigs []Se
 }
 
 func (self *IdentityManager) ApplyUpdateServiceConfigs(cmd *UpdateServiceConfigsCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	identityStore := self.env.GetStores().Identity
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		identity, err := identityStore.LoadById(ctx.Tx(), cmd.identityId)
@@ -454,11 +477,13 @@ func (self *IdentityManager) ApplyUpdateServiceConfigs(cmd *UpdateServiceConfigs
 }
 
 func (self *IdentityManager) QueryRoleAttributes(queryString string) ([]string, *models.QueryMetaData, error) {
+	logtrace.LogWithFunctionName()
 	index := self.env.GetStores().Identity.GetRoleAttributesIndex()
 	return self.queryRoleAttributes(index, queryString)
 }
 
 func (self *IdentityManager) PatchInfo(identity *Identity, changeCtx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	checker := boltz.MapFieldChecker{
 		db.FieldIdentityEnvInfoArch:       struct{}{},
@@ -483,17 +508,20 @@ func (self *IdentityManager) PatchInfo(identity *Identity, changeCtx *change.Con
 }
 
 func (self *IdentityManager) GetConnectionTracker() *ConnectionTracker {
+	logtrace.LogWithFunctionName()
 	return self.connections
 }
 
 // SetHasErConnection will register an identity as having an ER connection. The registration has a TTL depending on
 // how the status map was configured.
 func (self *IdentityManager) SetHasErConnection(identityId string) {
+	logtrace.LogWithFunctionName()
 	self.identityStatusMap.SetHasEdgeRouterConnection(identityId)
 }
 
 // HasErConnection will return true if the supplied identity id has a current an active ER connection registered.
 func (self *IdentityManager) HasErConnection(id string) bool {
+	logtrace.LogWithFunctionName()
 	if self.statusSource == config.IdentityStatusSourceConnectEvents {
 		return self.connections.GetIdentityOnlineState(id) == IdentityStateOnline
 	}
@@ -504,6 +532,7 @@ func (self *IdentityManager) HasErConnection(id string) bool {
 }
 
 func (self *IdentityManager) VisitIdentityAuthenticatorFingerprints(tx *bbolt.Tx, identityId string, visitor func(string) bool) (bool, error) {
+	logtrace.LogWithFunctionName()
 	stopVisit := false
 	err := self.visitAuthenticators(tx, identityId, func(authenticator *Authenticator) bool {
 		for _, authPrint := range authenticator.Fingerprints() {
@@ -518,6 +547,7 @@ func (self *IdentityManager) VisitIdentityAuthenticatorFingerprints(tx *bbolt.Tx
 }
 
 func (self *IdentityManager) ReadByExternalId(externalId string) (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	query := fmt.Sprintf("%s = \"%v\"", db.FieldIdentityExternalId, externalId)
 
 	entity, err := self.readEntityByQuery(query)
@@ -540,6 +570,7 @@ func (self *IdentityManager) ReadByExternalId(externalId string) (*Identity, err
 }
 
 func (self *IdentityManager) Disable(identityId string, duration time.Duration, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if duration < 0 {
 		duration = 0
 	}
@@ -573,6 +604,7 @@ func (self *IdentityManager) Disable(identityId string, duration time.Duration, 
 }
 
 func (self *IdentityManager) Enable(identityId string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	fieldMap := fields.UpdatedFieldsMap{
 		db.FieldIdentityDisabledAt:    struct{}{},
 		db.FieldIdentityDisabledUntil: struct{}{},
@@ -588,6 +620,7 @@ func (self *IdentityManager) Enable(identityId string, ctx *change.Context) erro
 }
 
 func (self *IdentityManager) GetIdentityStatusMapCopy() map[string]map[string]channel.Channel {
+	logtrace.LogWithFunctionName()
 	result := map[string]map[string]channel.Channel{}
 	for entry := range self.connections.connections.IterBuffered() {
 		routerMap := map[string]channel.Channel{}
@@ -602,6 +635,7 @@ func (self *IdentityManager) GetIdentityStatusMapCopy() map[string]map[string]ch
 }
 
 func (self *IdentityManager) IdentityToProtobuf(entity *Identity) (*edge_cmd_pb.Identity, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -682,6 +716,7 @@ func (self *IdentityManager) IdentityToProtobuf(entity *Identity) (*edge_cmd_pb.
 }
 
 func (self *IdentityManager) Marshall(entity *Identity) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg, err := self.IdentityToProtobuf(entity)
 	if err != nil {
 		return nil, err
@@ -690,6 +725,7 @@ func (self *IdentityManager) Marshall(entity *Identity) ([]byte, error) {
 }
 
 func (self *IdentityManager) ProtobufToIdentity(msg *edge_cmd_pb.Identity) (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	var envInfo *EnvInfo
 	if msg.EnvInfo != nil {
 		envInfo = &EnvInfo{
@@ -771,6 +807,7 @@ func (self *IdentityManager) ProtobufToIdentity(msg *edge_cmd_pb.Identity) (*Ide
 }
 
 func (self *IdentityManager) Unmarshall(bytes []byte) (*Identity, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Identity{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -786,10 +823,12 @@ type CreateIdentityWithEnrollmentsCmd struct {
 }
 
 func (self *CreateIdentityWithEnrollmentsCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.manager.ApplyCreateWithEnrollments(self, ctx)
 }
 
 func (self *CreateIdentityWithEnrollmentsCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	identityMsg, err := self.manager.IdentityToProtobuf(self.identity)
 	if err != nil {
 		return nil, err
@@ -812,6 +851,7 @@ func (self *CreateIdentityWithEnrollmentsCmd) Encode() ([]byte, error) {
 }
 
 func (self *CreateIdentityWithEnrollmentsCmd) Decode(env Env, msg *edge_cmd_pb.CreateIdentityWithEnrollmentsCmd) error {
+	logtrace.LogWithFunctionName()
 	self.manager = env.GetManagers().Identity
 
 	identity, err := self.manager.ProtobufToIdentity(msg.Identity)
@@ -832,6 +872,7 @@ func (self *CreateIdentityWithEnrollmentsCmd) Decode(env Env, msg *edge_cmd_pb.C
 }
 
 func (self *CreateIdentityWithEnrollmentsCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }
 
@@ -846,6 +887,7 @@ type status struct {
 }
 
 func newIdentityStatusMap(activeDuration time.Duration) *identityStatusMap {
+	logtrace.LogWithFunctionName()
 	return &identityStatusMap{
 		identityIdToErConStatus: cmap.New[*status](),
 		activeDuration:          activeDuration,
@@ -853,6 +895,7 @@ func newIdentityStatusMap(activeDuration time.Duration) *identityStatusMap {
 }
 
 func (statusMap *identityStatusMap) SetHasEdgeRouterConnection(identityId string) {
+	logtrace.LogWithFunctionName()
 	statusMap.initOnce.Do(statusMap.start)
 
 	statusMap.identityIdToErConStatus.Set(identityId, &status{
@@ -861,6 +904,7 @@ func (statusMap *identityStatusMap) SetHasEdgeRouterConnection(identityId string
 }
 
 func (statusMap *identityStatusMap) HasEdgeRouterConnection(identityId string) bool {
+	logtrace.LogWithFunctionName()
 	if stat, ok := statusMap.identityIdToErConStatus.Get(identityId); ok {
 		now := time.Now()
 		ret := stat.expiresAt.After(now)
@@ -879,6 +923,7 @@ func (statusMap *identityStatusMap) HasEdgeRouterConnection(identityId string) b
 }
 
 func (statusMap *identityStatusMap) start() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(30 * time.Second)
 	go func() {
 		for range ticker.C {
@@ -906,6 +951,7 @@ func (statusMap *identityStatusMap) start() {
 type IdentityOnlineState uint32
 
 func (self IdentityOnlineState) String() string {
+	logtrace.LogWithFunctionName()
 	if self == IdentityStateOffline {
 		return "offline"
 	}
@@ -928,6 +974,7 @@ type identityConnections struct {
 }
 
 func (self *identityConnections) calculateState() IdentityOnlineState {
+	logtrace.LogWithFunctionName()
 	// if any router is connected, the identity is online
 	for _, router := range self.routers {
 		if !router.IsClosed() {
@@ -946,6 +993,7 @@ func (self *identityConnections) calculateState() IdentityOnlineState {
 }
 
 func newConnectionTracker(env Env) *ConnectionTracker {
+	logtrace.LogWithFunctionName()
 	result := &ConnectionTracker{
 		connections:     cmap.New[*identityConnections](),
 		eventDispatcher: env.GetEventDispatcher(),
@@ -969,6 +1017,7 @@ type ConnectionTracker struct {
 }
 
 func (self *ConnectionTracker) runScanLoop() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(self.scanInterval)
 	defer ticker.Stop()
 
@@ -983,6 +1032,7 @@ func (self *ConnectionTracker) runScanLoop() {
 }
 
 func (self *ConnectionTracker) ScanForDisconnectedRouters() {
+	logtrace.LogWithFunctionName()
 	for entry := range self.connections.IterBuffered() {
 		var toRemove []channel.Channel
 		entry.Val.RLock()
@@ -1027,6 +1077,7 @@ func (self *ConnectionTracker) ScanForDisconnectedRouters() {
 }
 
 func (self *ConnectionTracker) MarkConnected(identityId string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("identityId", identityId).WithField("routerId", ch.Id()).Trace("marking identity connected to router")
 	var postUpsertCallback func()
 	self.connections.Upsert(identityId, nil, func(exist bool, valueInMap *identityConnections, newValue *identityConnections) *identityConnections {
@@ -1062,6 +1113,7 @@ func (self *ConnectionTracker) MarkConnected(identityId string, ch channel.Chann
 }
 
 func (self *ConnectionTracker) MarkDisconnected(identityId string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("identityId", identityId).WithField("routerId", ch.Id()).Trace("marking identity disconnected from router")
 	var postUpsertCallback func()
 	self.connections.Upsert(identityId, nil, func(exist bool, valueInMap *identityConnections, newValue *identityConnections) *identityConnections {
@@ -1098,6 +1150,7 @@ func (self *ConnectionTracker) MarkDisconnected(identityId string, ch channel.Ch
 }
 
 func (self *ConnectionTracker) SendSdkOnlineStatusChangeEvent(identityId string, state IdentityOnlineState) {
+	logtrace.LogWithFunctionName()
 	var eventType event.SdkEventType
 	if state == IdentityStateOffline {
 		eventType = event.SdkOffline
@@ -1116,6 +1169,7 @@ func (self *ConnectionTracker) SendSdkOnlineStatusChangeEvent(identityId string,
 }
 
 func (self *ConnectionTracker) GetIdentityOnlineState(identityId string) IdentityOnlineState {
+	logtrace.LogWithFunctionName()
 	val, _ := self.connections.Get(identityId)
 	if val == nil {
 		return IdentityStateOffline
@@ -1126,6 +1180,7 @@ func (self *ConnectionTracker) GetIdentityOnlineState(identityId string) Identit
 }
 
 func (self *ConnectionTracker) SyncAllFromRouter(state *edge_ctrl_pb.ConnectEvents, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	m := map[string]bool{}
 	for _, identityState := range state.Events {
 		m[identityState.IdentityId] = identityState.IsConnected
@@ -1142,6 +1197,7 @@ func (self *ConnectionTracker) SyncAllFromRouter(state *edge_ctrl_pb.ConnectEven
 }
 
 func (self *ConnectionTracker) Inspect() *inspect.CtrlIdentityConnections {
+	logtrace.LogWithFunctionName()
 	result := &inspect.CtrlIdentityConnections{
 		Connections:  map[string]*inspect.CtrlIdentityConnectionDetail{},
 		ScanInterval: self.scanInterval.String(),
@@ -1176,10 +1232,12 @@ type UpdateServiceConfigsCmd struct {
 }
 
 func (self *UpdateServiceConfigsCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.manager.ApplyUpdateServiceConfigs(self, ctx)
 }
 
 func (self *UpdateServiceConfigsCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	cmd := &edge_cmd_pb.UpdateServiceConfigsCmd{
 		IdentityId: self.identityId,
 		Add:        self.add,
@@ -1197,6 +1255,7 @@ func (self *UpdateServiceConfigsCmd) Encode() ([]byte, error) {
 }
 
 func (self *UpdateServiceConfigsCmd) Decode(env Env, msg *edge_cmd_pb.UpdateServiceConfigsCmd) error {
+	logtrace.LogWithFunctionName()
 	self.manager = env.GetManagers().Identity
 
 	self.identityId = msg.IdentityId
@@ -1214,5 +1273,6 @@ func (self *UpdateServiceConfigsCmd) Decode(env Env, msg *edge_cmd_pb.UpdateServ
 }
 
 func (self *UpdateServiceConfigsCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }

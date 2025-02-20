@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateServiceParams() *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewCreateServiceParams() *CreateServiceParams {
 // NewCreateServiceParamsWithTimeout creates a new CreateServiceParams object
 // with the ability to set a timeout on a request.
 func NewCreateServiceParamsWithTimeout(timeout time.Duration) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewCreateServiceParamsWithTimeout(timeout time.Duration) *CreateServicePara
 // NewCreateServiceParamsWithContext creates a new CreateServiceParams object
 // with the ability to set a context for a request.
 func NewCreateServiceParamsWithContext(ctx context.Context) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewCreateServiceParamsWithContext(ctx context.Context) *CreateServiceParams
 // NewCreateServiceParamsWithHTTPClient creates a new CreateServiceParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateServiceParamsWithHTTPClient(client *http.Client) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type CreateServiceParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateServiceParams) WithDefaults() *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *CreateServiceParams) WithDefaults() *CreateServiceParams {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateServiceParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create service params
 func (o *CreateServiceParams) WithTimeout(timeout time.Duration) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the create service params
 func (o *CreateServiceParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the create service params
 func (o *CreateServiceParams) WithContext(ctx context.Context) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the create service params
 func (o *CreateServiceParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the create service params
 func (o *CreateServiceParams) WithHTTPClient(client *http.Client) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the create service params
 func (o *CreateServiceParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithService adds the service to the create service params
 func (o *CreateServiceParams) WithService(service *rest_model.ServiceCreate) *CreateServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetService(service)
 	return o
 }
 
 // SetService adds the service to the create service params
 func (o *CreateServiceParams) SetService(service *rest_model.ServiceCreate) {
+    logtrace.LogWithFunctionName()
 	o.Service = service
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *CreateServiceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

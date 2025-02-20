@@ -17,15 +17,18 @@
 package events
 
 import (
-	"github.com/openziti/metrics/metrics_pb"
+	"strings"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/network"
-	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics/metrics_pb"
 )
 
 type ctrlChannelMetricsMapper struct{}
 
 func (ctrlChannelMetricsMapper) mapMetrics(_ *metrics_pb.MetricsMessage, event *event.MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(event.Metric, "ctrl.") {
 		if parts := strings.Split(event.Metric, ":"); len(parts) > 1 {
 			event.Metric = parts[0]
@@ -39,6 +42,7 @@ type linkMetricsMapper struct {
 }
 
 func (self *linkMetricsMapper) mapMetrics(_ *metrics_pb.MetricsMessage, event *event.MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(event.Metric, "link.") {
 		var name, linkId string
 		if parts := strings.Split(event.Metric, ":"); len(parts) == 2 {
@@ -65,6 +69,7 @@ func (self *linkMetricsMapper) mapMetrics(_ *metrics_pb.MetricsMessage, event *e
 }
 
 func ExtractId(name string, prefix string, suffixLen int) (string, string) {
+	logtrace.LogWithFunctionName()
 	rest := strings.TrimPrefix(name, prefix)
 	vals := strings.Split(rest, ".")
 	idVals := vals[:len(vals)-suffixLen]

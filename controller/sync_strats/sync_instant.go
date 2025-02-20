@@ -23,6 +23,20 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/build"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/controller/handler_edge_ctrl"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/lucsky/cuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
@@ -32,23 +46,11 @@ import (
 	"github.com/openziti/identity"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/common/build"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/env"
-	"ztna-core/ztna/controller/handler_edge_ctrl"
-	"ztna-core/ztna/controller/model"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"reflect"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 const (
@@ -114,6 +116,7 @@ type InstantStrategy struct {
 }
 
 func (strategy *InstantStrategy) AddPublicKey(cert *tls.Certificate) {
+	logtrace.LogWithFunctionName()
 	publicKey := newPublicKey(cert.Certificate[0], edge_ctrl_pb.DataState_PublicKey_X509CertDer, []edge_ctrl_pb.DataState_PublicKey_Usage{edge_ctrl_pb.DataState_PublicKey_ClientX509CertValidation, edge_ctrl_pb.DataState_PublicKey_JWTValidation})
 	newModel := &edge_ctrl_pb.DataState_Event_PublicKey{PublicKey: publicKey}
 	newEvent := &edge_ctrl_pb.DataState_Event{
@@ -127,6 +130,7 @@ func (strategy *InstantStrategy) AddPublicKey(cert *tls.Certificate) {
 
 // Initialize implements RouterDataModelCache
 func (strategy *InstantStrategy) Initialize(logSize uint64, bufferSize uint) error {
+	logtrace.LogWithFunctionName()
 	strategy.RouterDataModel = common.NewSenderRouterDataModel(logSize, bufferSize)
 	pfxlog.Logger().WithField("logSize", logSize).WithField("listenerBufferSizes", bufferSize).
 		Info("initialized controller router data model")
@@ -233,6 +237,7 @@ func (strategy *InstantStrategy) Initialize(logSize uint64, bufferSize uint) err
 }
 
 func NewInstantStrategy(ae *env.AppEnv, options InstantStrategyOptions) *InstantStrategy {
+	logtrace.LogWithFunctionName()
 	if options.MaxQueuedRouterConnects <= 0 {
 		pfxlog.Logger().Panicf("MaxQueuedRouterConnects for InstantStrategy cannot be less than 1, got %d", options.MaxQueuedRouterConnects)
 	}
@@ -292,20 +297,24 @@ func NewInstantStrategy(ae *env.AppEnv, options InstantStrategyOptions) *Instant
 }
 
 func (strategy *InstantStrategy) GetEdgeRouterState(id string) env.RouterStateValues {
+	logtrace.LogWithFunctionName()
 	return strategy.rtxMap.GetState(id)
 }
 
 func (strategy *InstantStrategy) Type() env.RouterSyncStrategyType {
+	logtrace.LogWithFunctionName()
 	return RouterSyncStrategyInstant
 }
 
 func (strategy *InstantStrategy) Stop() {
+	logtrace.LogWithFunctionName()
 	if strategy.stopped.CompareAndSwap(false, true) {
 		close(strategy.stopNotify)
 	}
 }
 
 func (strategy *InstantStrategy) RouterConnected(edgeRouter *model.EdgeRouter, router *model.Router) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("sync_strategy", strategy.Type()).
 		WithField("routerId", router.Id).
 		WithField("routerName", router.Name).
@@ -339,6 +348,7 @@ func (strategy *InstantStrategy) RouterConnected(edgeRouter *model.EdgeRouter, r
 }
 
 func (strategy *InstantStrategy) RouterDisconnected(router *model.Router) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("sync_strategy", strategy.Type()).
 		WithField("routerId", router.Id).
 		WithField("routerName", router.Name).
@@ -362,6 +372,7 @@ func (strategy *InstantStrategy) RouterDisconnected(router *model.Router) {
 }
 
 func (strategy *InstantStrategy) GetReceiveHandlers() []channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	var result []channel.TypedReceiveHandler
 	if strategy.helloHandler != nil {
 		result = append(result, strategy.helloHandler)
@@ -377,6 +388,7 @@ func (strategy *InstantStrategy) GetReceiveHandlers() []channel.TypedReceiveHand
 }
 
 func (strategy *InstantStrategy) ApiSessionAdded(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("strategy", strategy.Type())
 
 	apiSessionProto, err := apiSessionToProto(strategy.ae, apiSession.Token, apiSession.IdentityId, apiSession.Id)
@@ -401,6 +413,7 @@ func (strategy *InstantStrategy) ApiSessionAdded(apiSession *db.ApiSession) {
 }
 
 func (strategy *InstantStrategy) ApiSessionUpdated(apiSession *db.ApiSession, _ *db.ApiSessionCertificate) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("strategy", strategy.Type())
 
 	apiSessionProto, err := apiSessionToProto(strategy.ae, apiSession.Token, apiSession.IdentityId, apiSession.Id)
@@ -427,6 +440,7 @@ func (strategy *InstantStrategy) ApiSessionUpdated(apiSession *db.ApiSession, _ 
 }
 
 func (strategy *InstantStrategy) ApiSessionDeleted(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	sessionRemoved := &edge_ctrl_pb.ApiSessionRemoved{
 		Tokens: []string{apiSession.Token},
 	}
@@ -439,6 +453,7 @@ func (strategy *InstantStrategy) ApiSessionDeleted(apiSession *db.ApiSession) {
 }
 
 func (strategy *InstantStrategy) SessionDeleted(session *db.Session) {
+	logtrace.LogWithFunctionName()
 	sessionRemoved := &edge_ctrl_pb.SessionRemoved{
 		Tokens: []string{session.Token},
 	}
@@ -451,6 +466,7 @@ func (strategy *InstantStrategy) SessionDeleted(session *db.Session) {
 }
 
 func (strategy *InstantStrategy) startHandleRouterConnectWorker() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-strategy.stopNotify:
@@ -471,6 +487,7 @@ func (strategy *InstantStrategy) startHandleRouterConnectWorker() {
 }
 
 func (strategy *InstantStrategy) startSynchronizeWorker() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-strategy.stopNotify:
@@ -491,6 +508,7 @@ func (strategy *InstantStrategy) startSynchronizeWorker() {
 }
 
 func (strategy *InstantStrategy) hello(rtx *RouterSender) {
+	logtrace.LogWithFunctionName()
 	logger := rtx.logger().WithField("strategy", strategy.Type())
 
 	logger.Info("edge router sync starting")
@@ -507,6 +525,7 @@ func (strategy *InstantStrategy) hello(rtx *RouterSender) {
 }
 
 func (strategy *InstantStrategy) sendHello(rtx *RouterSender) {
+	logtrace.LogWithFunctionName()
 	logger := rtx.logger().WithField("strategy", strategy.Type())
 	serverVersion := build.GetBuildInfo().Version()
 	serverHello := &edge_ctrl_pb.ServerHello{
@@ -542,6 +561,7 @@ func (strategy *InstantStrategy) sendHello(rtx *RouterSender) {
 }
 
 func (strategy *InstantStrategy) ReceiveResync(routerId string, _ *edge_ctrl_pb.RequestClientReSync) {
+	logtrace.LogWithFunctionName()
 	rtx := strategy.rtxMap.Get(routerId)
 
 	if rtx == nil {
@@ -565,6 +585,7 @@ func (strategy *InstantStrategy) ReceiveResync(routerId string, _ *edge_ctrl_pb.
 }
 
 func (strategy *InstantStrategy) receiveSubscribeRequest(routerId string, request *edge_ctrl_pb.SubscribeToDataModelRequest) {
+	logtrace.LogWithFunctionName()
 	rtx := strategy.rtxMap.Get(routerId)
 
 	if rtx == nil {
@@ -584,6 +605,7 @@ func (strategy *InstantStrategy) receiveSubscribeRequest(routerId string, reques
 }
 
 func (strategy *InstantStrategy) queueClientHello(rtx *RouterSender) {
+	logtrace.LogWithFunctionName()
 	select {
 	case strategy.receivedClientHelloQueue <- rtx:
 		return
@@ -611,6 +633,7 @@ func (strategy *InstantStrategy) queueClientHello(rtx *RouterSender) {
 }
 
 func (strategy *InstantStrategy) ReceiveClientHello(routerId string, msg *channel.Message, respHello *edge_ctrl_pb.ClientHello) {
+	logtrace.LogWithFunctionName()
 	rtx := strategy.rtxMap.Get(routerId)
 
 	if rtx == nil {
@@ -679,6 +702,7 @@ func (strategy *InstantStrategy) ReceiveClientHello(routerId string, msg *channe
 }
 
 func (strategy *InstantStrategy) synchronize(rtx *RouterSender) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		rtx.logger().WithField("strategy", strategy.Type()).WithField("SupportsRouterModel", rtx.SupportsRouterModel).Infof("exiting synchronization, final status: %s", rtx.SyncStatus())
 	}()
@@ -782,6 +806,7 @@ func (strategy *InstantStrategy) synchronize(rtx *RouterSender) {
 }
 
 func (strategy *InstantStrategy) sendApiSessionAdded(rtx *RouterSender, isFullState bool, state *InstantSyncState, apiSessions []*edge_ctrl_pb.ApiSession) error {
+	logtrace.LogWithFunctionName()
 	stateBytes, _ := json.Marshal(state)
 
 	msgContent := &edge_ctrl_pb.ApiSessionAdded{
@@ -800,6 +825,7 @@ func (strategy *InstantStrategy) sendApiSessionAdded(rtx *RouterSender, isFullSt
 }
 
 func (strategy *InstantStrategy) handleRouterModelEvents(eventChannel <-chan *edge_ctrl_pb.DataState_ChangeSet) {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case newEvent := <-eventChannel:
@@ -828,6 +854,7 @@ type InstantSyncState struct {
 }
 
 func (strategy *InstantStrategy) BuildServicePolicies(tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().ServicePolicy.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -879,6 +906,7 @@ func (strategy *InstantStrategy) BuildServicePolicies(tx *bbolt.Tx, rdm *common.
 }
 
 func (strategy *InstantStrategy) BuildPublicKeys(tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	serverTls := strategy.ae.HostController.Identity().ServerCert()
 
 	newModel := &edge_ctrl_pb.DataState_Event_PublicKey{PublicKey: newPublicKey(serverTls[0].Certificate[0], edge_ctrl_pb.DataState_PublicKey_X509CertDer, []edge_ctrl_pb.DataState_PublicKey_Usage{edge_ctrl_pb.DataState_PublicKey_JWTValidation, edge_ctrl_pb.DataState_PublicKey_ClientX509CertValidation})}
@@ -954,6 +982,7 @@ func (strategy *InstantStrategy) BuildPublicKeys(tx *bbolt.Tx, rdm *common.Route
 }
 
 func (strategy *InstantStrategy) BuildAll(rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	err := strategy.ae.GetDb().View(func(tx *bbolt.Tx) error {
 		index := db.LoadCurrentRaftIndex(tx)
 		if err := strategy.BuildConfigTypes(index, tx, rdm); err != nil {
@@ -993,6 +1022,7 @@ func (strategy *InstantStrategy) BuildAll(rdm *common.RouterDataModel) error {
 }
 
 func (strategy *InstantStrategy) BuildConfigTypes(index uint64, tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().ConfigType.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -1015,6 +1045,7 @@ func (strategy *InstantStrategy) BuildConfigTypes(index uint64, tx *bbolt.Tx, rd
 }
 
 func (strategy *InstantStrategy) ValidateConfigTypes(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().ConfigType, rdm.ConfigTypes, func(t *db.ConfigType, v *common.ConfigType) []error {
 		var result []error
 		result = diffVals("config type", t.Id, "name", t.Name, v.Name, result)
@@ -1023,6 +1054,7 @@ func (strategy *InstantStrategy) ValidateConfigTypes(tx *bbolt.Tx, rdm *common.R
 }
 
 func (strategy *InstantStrategy) ValidateConfigs(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().Config, rdm.Configs, func(t *db.Config, v *common.Config) []error {
 		var result []error
 		result = diffVals("config", t.Id, "name", t.Name, v.Name, result)
@@ -1038,6 +1070,7 @@ func (strategy *InstantStrategy) ValidateConfigs(tx *bbolt.Tx, rdm *common.Route
 }
 
 func (strategy *InstantStrategy) ValidateIdentities(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().Identity, rdm.Identities, func(t *db.Identity, v *common.Identity) []error {
 		var result []error
 
@@ -1066,6 +1099,7 @@ func (strategy *InstantStrategy) ValidateIdentities(tx *bbolt.Tx, rdm *common.Ro
 }
 
 func (strategy *InstantStrategy) ValidateServices(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().EdgeService, rdm.Services, func(t *db.EdgeService, v *common.Service) []error {
 		var result []error
 		result = diffVals("service", t.Id, "name", t.Name, v.Name, result)
@@ -1076,6 +1110,7 @@ func (strategy *InstantStrategy) ValidateServices(tx *bbolt.Tx, rdm *common.Rout
 }
 
 func (strategy *InstantStrategy) ValidatePostureChecks(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().PostureCheck, rdm.PostureChecks, func(t *db.PostureCheck, v *common.PostureCheck) []error {
 		var result []error
 		result = diffVals("posture check", t.Id, "name", t.Name, v.Name, result)
@@ -1151,6 +1186,7 @@ func (strategy *InstantStrategy) ValidatePostureChecks(tx *bbolt.Tx, rdm *common
 }
 
 func (strategy *InstantStrategy) ValidateServicePolicies(tx *bbolt.Tx, rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	return ValidateType(tx, strategy.ae.GetStores().ServicePolicy, rdm.ServicePolicies, func(t *db.ServicePolicy, v *common.ServicePolicy) []error {
 		var result []error
 
@@ -1171,6 +1207,7 @@ func (strategy *InstantStrategy) ValidateServicePolicies(tx *bbolt.Tx, rdm *comm
 }
 
 func diffVals[T comparable](entityType, id, field string, a, b T, errors []error) []error {
+	logtrace.LogWithFunctionName()
 	if a != b {
 		return append(errors, fmt.Errorf("for %s %s: %s %v do not match rdm value: %v", entityType, id, field, a, b))
 	}
@@ -1178,6 +1215,7 @@ func diffVals[T comparable](entityType, id, field string, a, b T, errors []error
 }
 
 func diffJson(entityType, id, field string, a interface{}, b interface{}, errors []error) []error {
+	logtrace.LogWithFunctionName()
 	orig := ""
 	rdm := ""
 
@@ -1208,6 +1246,7 @@ func diffJson(entityType, id, field string, a interface{}, b interface{}, errors
 }
 
 func diffSets(entityType, id, field string, a, b map[string]struct{}, result []error) []error {
+	logtrace.LogWithFunctionName()
 	result = diffVals(entityType, id, field+" count", len(a), len(b), result)
 
 	for entityId := range a {
@@ -1224,6 +1263,7 @@ func diffSets(entityType, id, field string, a, b map[string]struct{}, result []e
 }
 
 func ValidateType[T boltz.ExtEntity, V any](tx *bbolt.Tx, store db.Store[T], m cmap.ConcurrentMap[string, V], checkF func(T, V) []error) []error {
+	logtrace.LogWithFunctionName()
 	var result []error
 	entities := common.CloneMap(m)
 	for cursor := store.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
@@ -1250,6 +1290,7 @@ func ValidateType[T boltz.ExtEntity, V any](tx *bbolt.Tx, store db.Store[T], m c
 }
 
 func (strategy *InstantStrategy) BuildConfigs(index uint64, tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().Config.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -1272,6 +1313,7 @@ func (strategy *InstantStrategy) BuildConfigs(index uint64, tx *bbolt.Tx, rdm *c
 }
 
 func (strategy *InstantStrategy) BuildIdentities(index uint64, tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().Identity.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -1295,6 +1337,7 @@ func (strategy *InstantStrategy) BuildIdentities(index uint64, tx *bbolt.Tx, rdm
 }
 
 func (strategy *InstantStrategy) BuildServices(index uint64, tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().EdgeService.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -1317,6 +1360,7 @@ func (strategy *InstantStrategy) BuildServices(index uint64, tx *bbolt.Tx, rdm *
 }
 
 func (strategy *InstantStrategy) BuildPostureChecks(index uint64, tx *bbolt.Tx, rdm *common.RouterDataModel) error {
+	logtrace.LogWithFunctionName()
 	for cursor := strategy.ae.GetStores().PostureCheck.IterateIds(tx, ast.BoolNodeTrue); cursor.IsValid(); cursor.Next() {
 		currentBytes := cursor.Current()
 		currentId := string(currentBytes)
@@ -1338,14 +1382,17 @@ func (strategy *InstantStrategy) BuildPostureChecks(index uint64, tx *bbolt.Tx, 
 }
 
 func (strategy *InstantStrategy) GetRouterDataModel() *common.RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return strategy.RouterDataModel
 }
 
 func (strategy *InstantStrategy) Validate() []error {
+	logtrace.LogWithFunctionName()
 	return strategy.ValidateAll(strategy.RouterDataModel)
 }
 
 func (strategy *InstantStrategy) ValidateAll(rdm *common.RouterDataModel) []error {
+	logtrace.LogWithFunctionName()
 	var result []error
 	err := strategy.ae.GetDb().View(func(tx *bbolt.Tx) error {
 		if errs := strategy.ValidateConfigTypes(tx, rdm); len(errs) > 0 {
@@ -1385,6 +1432,7 @@ func (strategy *InstantStrategy) ValidateAll(rdm *common.RouterDataModel) []erro
 }
 
 func newIdentityById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataState_Identity, error) {
+	logtrace.LogWithFunctionName()
 	identityModel, err := ae.GetStores().Identity.LoadById(tx, id)
 
 	if err != nil {
@@ -1395,6 +1443,7 @@ func newIdentityById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.Dat
 }
 
 func newIdentity(identityModel *db.Identity) *edge_ctrl_pb.DataState_Identity {
+	logtrace.LogWithFunctionName()
 	var hostingPrecedences map[string]edge_ctrl_pb.TerminatorPrecedence
 	if identityModel.ServiceHostingPrecedences != nil {
 		hostingPrecedences = map[string]edge_ctrl_pb.TerminatorPrecedence{}
@@ -1446,6 +1495,7 @@ func newIdentity(identityModel *db.Identity) *edge_ctrl_pb.DataState_Identity {
 }
 
 func newServicePolicy(storeModel *db.ServicePolicy) *edge_ctrl_pb.DataState_ServicePolicy {
+	logtrace.LogWithFunctionName()
 	servicePolicy := &edge_ctrl_pb.DataState_ServicePolicy{
 		Id:         storeModel.Id,
 		Name:       storeModel.Name,
@@ -1456,6 +1506,7 @@ func newServicePolicy(storeModel *db.ServicePolicy) *edge_ctrl_pb.DataState_Serv
 }
 
 func newConfigTypeById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataState_ConfigType, error) {
+	logtrace.LogWithFunctionName()
 	storeModel, err := ae.GetStores().ConfigType.LoadById(tx, id)
 
 	if err != nil {
@@ -1466,6 +1517,7 @@ func newConfigTypeById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.D
 }
 
 func newConfigType(storeModel *db.ConfigType) *edge_ctrl_pb.DataState_ConfigType {
+	logtrace.LogWithFunctionName()
 	return &edge_ctrl_pb.DataState_ConfigType{
 		Id:   storeModel.Id,
 		Name: storeModel.Name,
@@ -1473,6 +1525,7 @@ func newConfigType(storeModel *db.ConfigType) *edge_ctrl_pb.DataState_ConfigType
 }
 
 func newConfigById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataState_Config, error) {
+	logtrace.LogWithFunctionName()
 	storeModel, err := ae.GetStores().Config.LoadById(tx, id)
 
 	if err != nil {
@@ -1483,6 +1536,7 @@ func newConfigById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataS
 }
 
 func newConfig(entity *db.Config) (*edge_ctrl_pb.DataState_Config, error) {
+	logtrace.LogWithFunctionName()
 	jsonData, err := json.Marshal(entity.Data)
 	if err != nil {
 		return nil, err
@@ -1497,6 +1551,7 @@ func newConfig(entity *db.Config) (*edge_ctrl_pb.DataState_Config, error) {
 }
 
 func newServiceById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataState_Service, error) {
+	logtrace.LogWithFunctionName()
 	storeModel, err := ae.GetStores().EdgeService.LoadById(tx, id)
 
 	if err != nil {
@@ -1507,6 +1562,7 @@ func newServiceById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.Data
 }
 
 func newService(storeModel *db.EdgeService) *edge_ctrl_pb.DataState_Service {
+	logtrace.LogWithFunctionName()
 	return &edge_ctrl_pb.DataState_Service{
 		Id:                 storeModel.Id,
 		Name:               storeModel.Name,
@@ -1516,6 +1572,7 @@ func newService(storeModel *db.EdgeService) *edge_ctrl_pb.DataState_Service {
 }
 
 func newPublicKey(data []byte, format edge_ctrl_pb.DataState_PublicKey_Format, usages []edge_ctrl_pb.DataState_PublicKey_Usage) *edge_ctrl_pb.DataState_PublicKey {
+	logtrace.LogWithFunctionName()
 	return &edge_ctrl_pb.DataState_PublicKey{
 		Data:   data,
 		Kid:    fmt.Sprintf("%x", sha1.Sum(data)),
@@ -1525,6 +1582,7 @@ func newPublicKey(data []byte, format edge_ctrl_pb.DataState_PublicKey_Format, u
 }
 
 func newPostureCheckById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb.DataState_PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	postureModel, err := ae.GetStores().PostureCheck.LoadById(tx, id)
 
 	if err != nil {
@@ -1534,6 +1592,7 @@ func newPostureCheckById(tx *bbolt.Tx, ae *env.AppEnv, id string) (*edge_ctrl_pb
 }
 
 func newPostureCheck(postureModel *db.PostureCheck) *edge_ctrl_pb.DataState_PostureCheck {
+	logtrace.LogWithFunctionName()
 	newVal := &edge_ctrl_pb.DataState_PostureCheck{
 		Id:     postureModel.Id,
 		Name:   postureModel.Name,
@@ -1613,18 +1672,22 @@ func newPostureCheck(postureModel *db.PostureCheck) *edge_ctrl_pb.DataState_Post
 }
 
 func (strategy *InstantStrategy) ServicePolicyCreate(index uint64, servicePolicy *db.ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	strategy.handleServicePolicy(index, edge_ctrl_pb.DataState_Create, servicePolicy)
 }
 
 func (strategy *InstantStrategy) ServicePolicyUpdate(index uint64, servicePolicy *db.ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	strategy.handleServicePolicy(index, edge_ctrl_pb.DataState_Update, servicePolicy)
 }
 
 func (strategy *InstantStrategy) ServicePolicyDelete(index uint64, servicePolicy *db.ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	strategy.handleServicePolicy(index, edge_ctrl_pb.DataState_Delete, servicePolicy)
 }
 
 func (strategy *InstantStrategy) handleServicePolicy(index uint64, action edge_ctrl_pb.DataState_Action, servicePolicy *db.ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	sp := newServicePolicy(servicePolicy)
 
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
@@ -1636,18 +1699,22 @@ func (strategy *InstantStrategy) handleServicePolicy(index uint64, action edge_c
 }
 
 func (strategy *InstantStrategy) IdentityCreate(index uint64, identity *db.Identity) {
+	logtrace.LogWithFunctionName()
 	strategy.handleIdentity(index, edge_ctrl_pb.DataState_Create, identity)
 }
 
 func (strategy *InstantStrategy) IdentityUpdate(index uint64, identity *db.Identity) {
+	logtrace.LogWithFunctionName()
 	strategy.handleIdentity(index, edge_ctrl_pb.DataState_Update, identity)
 }
 
 func (strategy *InstantStrategy) IdentityDelete(index uint64, identity *db.Identity) {
+	logtrace.LogWithFunctionName()
 	strategy.handleIdentity(index, edge_ctrl_pb.DataState_Delete, identity)
 }
 
 func (strategy *InstantStrategy) handleIdentity(index uint64, action edge_ctrl_pb.DataState_Action, identity *db.Identity) {
+	logtrace.LogWithFunctionName()
 	id := newIdentity(identity)
 
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
@@ -1659,42 +1726,52 @@ func (strategy *InstantStrategy) handleIdentity(index uint64, action edge_ctrl_p
 }
 
 func (strategy *InstantStrategy) ConfigTypeCreate(index uint64, entity *db.ConfigType) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfigType(index, edge_ctrl_pb.DataState_Create, entity)
 }
 
 func (strategy *InstantStrategy) ConfigTypeUpdate(index uint64, entity *db.ConfigType) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfigType(index, edge_ctrl_pb.DataState_Update, entity)
 }
 
 func (strategy *InstantStrategy) ConfigTypeDelete(index uint64, entity *db.ConfigType) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfigType(index, edge_ctrl_pb.DataState_Delete, entity)
 }
 
 func (strategy *InstantStrategy) ConfigCreate(index uint64, entity *db.Config) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfig(index, edge_ctrl_pb.DataState_Create, entity)
 }
 
 func (strategy *InstantStrategy) ConfigUpdate(index uint64, entity *db.Config) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfig(index, edge_ctrl_pb.DataState_Update, entity)
 }
 
 func (strategy *InstantStrategy) ConfigDelete(index uint64, entity *db.Config) {
+	logtrace.LogWithFunctionName()
 	strategy.handleConfig(index, edge_ctrl_pb.DataState_Delete, entity)
 }
 
 func (strategy *InstantStrategy) ServiceCreate(index uint64, service *db.EdgeService) {
+	logtrace.LogWithFunctionName()
 	strategy.handleService(index, edge_ctrl_pb.DataState_Create, service)
 }
 
 func (strategy *InstantStrategy) ServiceUpdate(index uint64, service *db.EdgeService) {
+	logtrace.LogWithFunctionName()
 	strategy.handleService(index, edge_ctrl_pb.DataState_Update, service)
 }
 
 func (strategy *InstantStrategy) ServiceDelete(index uint64, service *db.EdgeService) {
+	logtrace.LogWithFunctionName()
 	strategy.handleService(index, edge_ctrl_pb.DataState_Delete, service)
 }
 
 func (strategy *InstantStrategy) handleConfigType(index uint64, action edge_ctrl_pb.DataState_Action, entity *db.ConfigType) {
+	logtrace.LogWithFunctionName()
 	configType := newConfigType(entity)
 
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
@@ -1706,6 +1783,7 @@ func (strategy *InstantStrategy) handleConfigType(index uint64, action edge_ctrl
 }
 
 func (strategy *InstantStrategy) handleConfig(index uint64, action edge_ctrl_pb.DataState_Action, entity *db.Config) {
+	logtrace.LogWithFunctionName()
 	config, err := newConfig(entity)
 
 	if err != nil {
@@ -1722,6 +1800,7 @@ func (strategy *InstantStrategy) handleConfig(index uint64, action edge_ctrl_pb.
 }
 
 func (strategy *InstantStrategy) handleService(index uint64, action edge_ctrl_pb.DataState_Action, service *db.EdgeService) {
+	logtrace.LogWithFunctionName()
 	svc := newService(service)
 
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
@@ -1733,6 +1812,7 @@ func (strategy *InstantStrategy) handleService(index uint64, action edge_ctrl_pb
 }
 
 func (strategy *InstantStrategy) handlePostureCheck(index uint64, action edge_ctrl_pb.DataState_Action, postureCheck *db.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	pc := newPostureCheck(postureCheck)
 
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
@@ -1744,30 +1824,36 @@ func (strategy *InstantStrategy) handlePostureCheck(index uint64, action edge_ct
 }
 
 func (strategy *InstantStrategy) PostureCheckCreate(index uint64, postureCheck *db.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	strategy.handlePostureCheck(index, edge_ctrl_pb.DataState_Create, postureCheck)
 }
 
 func (strategy *InstantStrategy) PostureCheckUpdate(index uint64, postureCheck *db.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	strategy.handlePostureCheck(index, edge_ctrl_pb.DataState_Update, postureCheck)
 }
 
 func (strategy *InstantStrategy) PostureCheckDelete(index uint64, postureCheck *db.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	strategy.handlePostureCheck(index, edge_ctrl_pb.DataState_Delete, postureCheck)
 }
 
 func (strategy *InstantStrategy) ControllerCreate(index uint64, controller *db.Controller) {
+	logtrace.LogWithFunctionName()
 	certs := nfPem.PemStringToCertificates(controller.CertPem)
 	cert := certs[0]
 	strategy.handlePublicKey(index, edge_ctrl_pb.DataState_Create, newPublicKey(cert.Raw, edge_ctrl_pb.DataState_PublicKey_X509CertDer, []edge_ctrl_pb.DataState_PublicKey_Usage{edge_ctrl_pb.DataState_PublicKey_ClientX509CertValidation, edge_ctrl_pb.DataState_PublicKey_JWTValidation}))
 }
 
 func (strategy *InstantStrategy) ControllerUpdate(index uint64, controller *db.Controller) {
+	logtrace.LogWithFunctionName()
 	certs := nfPem.PemStringToCertificates(controller.CertPem)
 	cert := certs[0]
 	strategy.handlePublicKey(index, edge_ctrl_pb.DataState_Create, newPublicKey(cert.Raw, edge_ctrl_pb.DataState_PublicKey_X509CertDer, []edge_ctrl_pb.DataState_PublicKey_Usage{edge_ctrl_pb.DataState_PublicKey_ClientX509CertValidation, edge_ctrl_pb.DataState_PublicKey_JWTValidation}))
 }
 
 func (strategy *InstantStrategy) CaCreate(index uint64, ca *db.Ca) {
+	logtrace.LogWithFunctionName()
 	certs := nfPem.PemBytesToCertificates([]byte(ca.CertPem))
 
 	if len(certs) > 0 {
@@ -1776,6 +1862,7 @@ func (strategy *InstantStrategy) CaCreate(index uint64, ca *db.Ca) {
 }
 
 func (strategy *InstantStrategy) CaUpdate(index uint64, ca *db.Ca) {
+	logtrace.LogWithFunctionName()
 	certs := nfPem.PemBytesToCertificates([]byte(ca.CertPem))
 
 	if len(certs) > 0 {
@@ -1784,6 +1871,7 @@ func (strategy *InstantStrategy) CaUpdate(index uint64, ca *db.Ca) {
 }
 
 func (strategy *InstantStrategy) CaDelete(index uint64, ca *db.Ca) {
+	logtrace.LogWithFunctionName()
 	certs := nfPem.PemBytesToCertificates([]byte(ca.CertPem))
 
 	if len(certs) > 0 {
@@ -1792,18 +1880,22 @@ func (strategy *InstantStrategy) CaDelete(index uint64, ca *db.Ca) {
 }
 
 func (strategy *InstantStrategy) RevocationCreate(index uint64, revocation *db.Revocation) {
+	logtrace.LogWithFunctionName()
 	strategy.handleRevocation(index, edge_ctrl_pb.DataState_Create, revocation)
 }
 
 func (strategy *InstantStrategy) RevocationUpdate(index uint64, revocation *db.Revocation) {
+	logtrace.LogWithFunctionName()
 	strategy.handleRevocation(index, edge_ctrl_pb.DataState_Create, revocation)
 }
 
 func (strategy *InstantStrategy) RevocationDelete(index uint64, revocation *db.Revocation) {
+	logtrace.LogWithFunctionName()
 	strategy.handleRevocation(index, edge_ctrl_pb.DataState_Create, revocation)
 }
 
 func (strategy *InstantStrategy) handlePublicKey(index uint64, action edge_ctrl_pb.DataState_Action, publicKey *edge_ctrl_pb.DataState_PublicKey) {
+	logtrace.LogWithFunctionName()
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
 		Action:      action,
 		IsSynthetic: true,
@@ -1814,6 +1906,7 @@ func (strategy *InstantStrategy) handlePublicKey(index uint64, action edge_ctrl_
 }
 
 func (strategy *InstantStrategy) sendDataStateChangeSet(rtx *RouterSender, stateEvent *edge_ctrl_pb.DataState_ChangeSet) error {
+	logtrace.LogWithFunctionName()
 	content, err := proto.Marshal(stateEvent)
 
 	if err != nil {
@@ -1827,6 +1920,7 @@ func (strategy *InstantStrategy) sendDataStateChangeSet(rtx *RouterSender, state
 }
 
 func (strategy *InstantStrategy) handleRevocation(index uint64, action edge_ctrl_pb.DataState_Action, revocation *db.Revocation) {
+	logtrace.LogWithFunctionName()
 	strategy.addToChangeSet(index, &edge_ctrl_pb.DataState_Event{
 		Action: action,
 		Model: &edge_ctrl_pb.DataState_Event_Revocation{
@@ -1839,6 +1933,7 @@ func (strategy *InstantStrategy) handleRevocation(index uint64, action edge_ctrl
 }
 
 func (strategy *InstantStrategy) addToChangeSet(index uint64, event *edge_ctrl_pb.DataState_Event) {
+	logtrace.LogWithFunctionName()
 	strategy.changeSetLock.Lock()
 	defer strategy.changeSetLock.Unlock()
 
@@ -1853,6 +1948,7 @@ func (strategy *InstantStrategy) addToChangeSet(index uint64, event *edge_ctrl_p
 }
 
 func (strategy *InstantStrategy) completeChangeSet(ctx boltz.MutateContext) {
+	logtrace.LogWithFunctionName()
 	strategy.changeSetLock.Lock()
 	defer strategy.changeSetLock.Unlock()
 
@@ -1895,6 +1991,7 @@ func (strategy *InstantStrategy) completeChangeSet(ctx boltz.MutateContext) {
 }
 
 func (strategy *InstantStrategy) inspect(val string) (bool, *string, error) {
+	logtrace.LogWithFunctionName()
 	if val == "router-data-model" {
 		rdm := strategy.RouterDataModel
 		js, err := json.Marshal(rdm)
@@ -1940,6 +2037,7 @@ type NonHaIndexProvider struct {
 }
 
 func (p *NonHaIndexProvider) load() {
+	logtrace.LogWithFunctionName()
 	p.lock.Lock()
 	defer p.lock.Unlock()
 
@@ -1971,6 +2069,7 @@ func (p *NonHaIndexProvider) load() {
 }
 
 func (p *NonHaIndexProvider) NextIndex(ctx boltz.MutateContext) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	p.initialLoad.Do(p.load)
 
 	p.lock.Lock()
@@ -2010,6 +2109,7 @@ func (p *NonHaIndexProvider) NextIndex(ctx boltz.MutateContext) (uint64, error) 
 }
 
 func (p *NonHaIndexProvider) CurrentIndex() uint64 {
+	logtrace.LogWithFunctionName()
 	p.initialLoad.Do(p.load)
 
 	p.lock.Lock()
@@ -2019,6 +2119,7 @@ func (p *NonHaIndexProvider) CurrentIndex() uint64 {
 }
 
 func (p *NonHaIndexProvider) ContextIndex(ctx boltz.MutateContext) *uint64 {
+	logtrace.LogWithFunctionName()
 	if val := ctx.Context().Value(nonHaIndexKey); val != nil {
 		result, ok := val.(uint64)
 		if ok {
@@ -2034,6 +2135,7 @@ type RaftIndexProvider struct {
 }
 
 func (p *RaftIndexProvider) NextIndex(ctx boltz.MutateContext) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	p.lock.Lock()
 	defer p.lock.Unlock()
 
@@ -2047,6 +2149,7 @@ func (p *RaftIndexProvider) NextIndex(ctx boltz.MutateContext) (uint64, error) {
 }
 
 func (p *RaftIndexProvider) CurrentIndex() uint64 {
+	logtrace.LogWithFunctionName()
 	p.lock.Lock()
 	defer p.lock.Unlock()
 
@@ -2054,6 +2157,7 @@ func (p *RaftIndexProvider) CurrentIndex() uint64 {
 }
 
 func (p *RaftIndexProvider) ContextIndex(ctx boltz.MutateContext) *uint64 {
+	logtrace.LogWithFunctionName()
 	changeCtx := change.FromContext(ctx.Context())
 	if changeCtx != nil {
 		return &changeCtx.RaftIndex
@@ -2075,10 +2179,12 @@ type constraintToIndexedEvents[E boltz.Entity] struct {
 
 // ProcessPreCommit is a pass through to satisfy interface requirements.
 func (h *constraintToIndexedEvents[E]) ProcessPreCommit(_ *boltz.EntityChangeState[E]) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (h *constraintToIndexedEvents[E]) ProcessPostCommit(state *boltz.EntityChangeState[E]) {
+	logtrace.LogWithFunctionName()
 	switch state.ChangeType {
 	case boltz.EntityCreated:
 		if h.createHandler != nil {

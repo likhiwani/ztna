@@ -19,18 +19,21 @@
 package tests
 
 import (
-	"github.com/michaelquigley/pfxlog"
+	"sync/atomic"
+	"testing"
+	"time"
 	"ztna-core/sdk-golang/ziti"
 	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
-	"sync/atomic"
-	"testing"
-	"time"
 )
 
 func Test_ManualStart(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -173,10 +176,12 @@ type testFailoverStrategyFactory struct {
 }
 
 func (self *testFailoverStrategyFactory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return "test-failover"
 }
 
 func (self *testFailoverStrategyFactory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	return &testFailoverStrategy{
 		ctx: self.ctx,
 	}
@@ -189,6 +194,7 @@ type testFailoverStrategy struct {
 }
 
 func (self *testFailoverStrategy) VisitDialFailed(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	failCount := atomic.AddInt32(&self.failCount, 1)
 	if failCount >= 3 {
 		mgr := self.ctx.EdgeController.AppEnv.Managers.Terminator
@@ -201,17 +207,21 @@ func (self *testFailoverStrategy) VisitDialFailed(event xt.TerminatorEvent) {
 }
 
 func (self *testFailoverStrategy) VisitDialSucceeded(xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	atomic.StoreInt32(&self.failCount, 0)
 }
 
 func (self *testFailoverStrategy) Select(_ xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	return terminators[0], nil, nil
 }
 
 func (self *testFailoverStrategy) NotifyEvent(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	event.Accept(self)
 }
 
 func (self *testFailoverStrategy) HandleTerminatorChange(xt.StrategyChangeEvent) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }

@@ -23,12 +23,15 @@ import (
 	"testing"
 	enrollment_client "ztna-core/edge-api/rest_client_api_client/enrollment"
 	enrollment_management "ztna-core/edge-api/rest_management_api_client/enrollment"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/golang-jwt/jwt/v5"
-	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_EnrollmentNetwork(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

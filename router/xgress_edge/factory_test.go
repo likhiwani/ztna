@@ -1,12 +1,14 @@
 package xgress_edge
 
 import (
-	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/router/xgress"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
+	"github.com/openziti/channel/v3"
+	"github.com/stretchr/testify/require"
 )
 
 /*
@@ -26,6 +28,7 @@ import (
 */
 
 func Test_load(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("config with connect options", func(t *testing.T) {
 		options := &Options{}
@@ -112,6 +115,7 @@ const (
 )
 
 func newTestConfigWithConnectOptions() xgress.OptionsData {
+	logtrace.LogWithFunctionName()
 	return xgress.OptionsData{
 		"binding": common.EdgeBinding,
 		"address": "tls:0.0.0.0:3022",
@@ -125,6 +129,7 @@ func newTestConfigWithConnectOptions() xgress.OptionsData {
 }
 
 func newTestConfigWithoutConnectOptions() xgress.OptionsData {
+	logtrace.LogWithFunctionName()
 	return xgress.OptionsData{
 		"binding": common.EdgeBinding,
 		"address": "tls:0.0.0.0:3022",

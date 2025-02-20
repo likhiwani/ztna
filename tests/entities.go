@@ -30,6 +30,7 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 
 	"ztna-core/sdk-golang/ziti"
 
@@ -58,18 +59,22 @@ type postureCheck struct {
 }
 
 func (p *postureCheck) getId() string {
+	logtrace.LogWithFunctionName()
 	return p.id
 }
 
 func (p *postureCheck) setId(id string) {
+	logtrace.LogWithFunctionName()
 	p.id = id
 }
 
 func (p *postureCheck) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "posture-checks"
 }
 
 func (p *postureCheck) toJson(create bool, ctx *TestContext, fields ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, p.name, "name")
 	ctx.setJsonValue(entityData, p.roleAttributes, "roleAttributes")
@@ -82,7 +87,9 @@ func (p *postureCheck) toJson(create bool, ctx *TestContext, fields ...string) s
 	return entityData.String()
 }
 
-func (p postureCheck) validate(ctx *TestContext, c *gabs.Container) {}
+func (p postureCheck) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
+}
 
 type postureCheckDomain struct {
 	postureCheck
@@ -90,18 +97,22 @@ type postureCheckDomain struct {
 }
 
 func (entity *postureCheckDomain) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *postureCheckDomain) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *postureCheckDomain) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "posture-checks"
 }
 
 func (entity *postureCheckDomain) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.domains, "domains")
@@ -116,6 +127,7 @@ func (entity *postureCheckDomain) toJson(_ bool, ctx *TestContext, _ ...string) 
 }
 
 func (entity *postureCheckDomain) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -141,18 +153,22 @@ type service struct {
 }
 
 func (entity *service) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Id
 }
 
 func (entity *service) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.Id = id
 }
 
 func (entity *service) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "services"
 }
 
 func (entity *service) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.Name, "name")
 	ctx.setJsonValue(entityData, entity.terminatorStrategy, "terminatorStrategy")
@@ -168,6 +184,7 @@ func (entity *service) toJson(_ bool, ctx *TestContext, _ ...string) string {
 }
 
 func (entity *service) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -194,18 +211,22 @@ type terminator struct {
 }
 
 func (entity *terminator) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *terminator) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *terminator) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "terminators"
 }
 
 func (entity *terminator) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.serviceId, "service")
 	ctx.setJsonValue(entityData, entity.routerId, "router")
@@ -220,6 +241,7 @@ func (entity *terminator) toJson(_ bool, ctx *TestContext, _ ...string) string {
 }
 
 func (entity *terminator) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -233,6 +255,7 @@ func (entity *terminator) validate(ctx *TestContext, c *gabs.Container) {
 }
 
 func (entity *terminator) fromJson(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	entity.id = ctx.requireString(c, "id")
 	entity.serviceId = ctx.requireString(c, "serviceId")
 	entity.routerId = ctx.requireString(c, "routerId")
@@ -243,6 +266,7 @@ func (entity *terminator) fromJson(ctx *TestContext, c *gabs.Container) {
 }
 
 func newTestIdentity(isAdmin bool, roleAttributes ...string) *identity {
+	logtrace.LogWithFunctionName()
 	return &identity{
 		name:           eid.New(),
 		identityType:   string(rest_model.IdentityTypeDefault),
@@ -268,18 +292,22 @@ type identity struct {
 }
 
 func (entity *identity) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Id
 }
 
 func (entity *identity) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.Id = id
 }
 
 func (entity *identity) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "identities"
 }
 
 func (entity *identity) toJson(isCreate bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.identityType, "type")
@@ -311,6 +339,7 @@ func (entity *identity) toJson(isCreate bool, ctx *TestContext, _ ...string) str
 }
 
 func (entity *identity) getCompareServiceHostingsCosts() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if entity.serviceHostingCosts == nil {
 		return nil
 	}
@@ -322,6 +351,7 @@ func (entity *identity) getCompareServiceHostingsCosts() map[string]interface{} 
 }
 
 func (entity *identity) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -348,6 +378,7 @@ func (entity *identity) validate(ctx *TestContext, c *gabs.Container) {
 }
 
 func (entity *identity) fromJson(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	entity.Id = ctx.requireString(c, "id")
 	entity.identityType = ctx.requireString(c, "type", "id")
 	entity.isAdmin = ctx.requireBool(c, "isAdmin")
@@ -356,6 +387,7 @@ func (entity *identity) fromJson(ctx *TestContext, c *gabs.Container) {
 }
 
 func newTestEdgeRouter(roleAttributes ...string) *edgeRouter {
+	logtrace.LogWithFunctionName()
 	return &edgeRouter{
 		name:           eid.New(),
 		roleAttributes: roleAttributes,
@@ -371,18 +403,22 @@ type edgeRouter struct {
 }
 
 func (entity *edgeRouter) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *edgeRouter) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *edgeRouter) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "edge-routers"
 }
 
 func (entity *edgeRouter) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.roleAttributes, "roleAttributes")
@@ -393,6 +429,7 @@ func (entity *edgeRouter) toJson(_ bool, ctx *TestContext, _ ...string) string {
 }
 
 func (entity *edgeRouter) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -404,6 +441,7 @@ func (entity *edgeRouter) validate(ctx *TestContext, c *gabs.Container) {
 }
 
 func newEdgeRouterPolicy(semantic string, edgeRouterRoles, identityRoles []string) *edgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	return &edgeRouterPolicy{
 		name:            eid.New(),
 		semantic:        semantic,
@@ -422,18 +460,22 @@ type edgeRouterPolicy struct {
 }
 
 func (entity *edgeRouterPolicy) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *edgeRouterPolicy) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *edgeRouterPolicy) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "edge-router-policies"
 }
 
 func (entity *edgeRouterPolicy) toJson(_ bool, ctx *TestContext, fields ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setValue(entityData, entity.name, fields, "name")
 	ctx.setValue(entityData, entity.semantic, fields, "semantic")
@@ -445,6 +487,7 @@ func (entity *edgeRouterPolicy) toJson(_ bool, ctx *TestContext, fields ...strin
 }
 
 func (entity *edgeRouterPolicy) fromJson(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	entity.id = ctx.requireString(c, "id")
 	entity.name = ctx.requireString(c, "name")
 	entity.semantic = ctx.requireString(c, "semantic")
@@ -453,6 +496,7 @@ func (entity *edgeRouterPolicy) fromJson(ctx *TestContext, c *gabs.Container) {
 }
 
 func (entity *edgeRouterPolicy) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -466,6 +510,7 @@ func (entity *edgeRouterPolicy) validate(ctx *TestContext, c *gabs.Container) {
 }
 
 func newServiceEdgeRouterPolicy(semantic string, edgeRouterRoles, serviceRoles []string) *serviceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	return &serviceEdgeRouterPolicy{
 		name:            eid.New(),
 		semantic:        semantic,
@@ -484,18 +529,22 @@ type serviceEdgeRouterPolicy struct {
 }
 
 func (entity *serviceEdgeRouterPolicy) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *serviceEdgeRouterPolicy) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *serviceEdgeRouterPolicy) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "service-edge-router-policies"
 }
 
 func (entity *serviceEdgeRouterPolicy) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.semantic, "semantic")
@@ -509,6 +558,7 @@ func (entity *serviceEdgeRouterPolicy) toJson(_ bool, ctx *TestContext, _ ...str
 }
 
 func (entity *serviceEdgeRouterPolicy) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -522,6 +572,7 @@ func (entity *serviceEdgeRouterPolicy) validate(ctx *TestContext, c *gabs.Contai
 }
 
 func newServicePolicy(policyType string, semantic string, serviceRoles, identityRoles, postureCheckRoles []string) *servicePolicy {
+	logtrace.LogWithFunctionName()
 	return &servicePolicy{
 		name:              eid.New(),
 		policyType:        policyType,
@@ -544,18 +595,22 @@ type servicePolicy struct {
 }
 
 func (entity *servicePolicy) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *servicePolicy) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *servicePolicy) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "service-policies"
 }
 
 func (entity *servicePolicy) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.policyType, "type")
@@ -571,6 +626,7 @@ func (entity *servicePolicy) toJson(_ bool, ctx *TestContext, _ ...string) strin
 }
 
 func (entity *servicePolicy) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -596,18 +652,22 @@ type Config struct {
 }
 
 func (entity *Config) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Id
 }
 
 func (entity *Config) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.Id = id
 }
 
 func (entity *Config) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "configs"
 }
 
 func (entity *Config) toJson(isCreate bool, ctx *TestContext, fields ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setValue(entityData, entity.Name, fields, "name")
 	if isCreate || entity.sendType {
@@ -619,6 +679,7 @@ func (entity *Config) toJson(isCreate bool, ctx *TestContext, fields ...string) 
 }
 
 func (entity *Config) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.Tags == nil {
 		entity.Tags = map[string]interface{}{}
 	}
@@ -636,18 +697,22 @@ type configType struct {
 }
 
 func (entity *configType) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Id
 }
 
 func (entity *configType) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.Id = id
 }
 
 func (entity *configType) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "config-types"
 }
 
 func (entity *configType) toJson(_ bool, ctx *TestContext, fields ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setValue(entityData, entity.Name, fields, "name")
 	ctx.setValue(entityData, entity.Schema, fields, "schema")
@@ -656,6 +721,7 @@ func (entity *configType) toJson(_ bool, ctx *TestContext, fields ...string) str
 }
 
 func (entity *configType) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.Tags == nil {
 		entity.Tags = map[string]interface{}{}
 	}
@@ -670,6 +736,7 @@ type configValidatingService struct {
 }
 
 func (entity *configValidatingService) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	configs := c.Path("config")
 	if len(entity.configs) == 0 && configs == nil {
 		return
@@ -684,6 +751,7 @@ func (entity *configValidatingService) validate(ctx *TestContext, c *gabs.Contai
 }
 
 func newTestTransitRouter() *transitRouter {
+	logtrace.LogWithFunctionName()
 	return &transitRouter{
 		name: eid.New(),
 	}
@@ -696,18 +764,22 @@ type transitRouter struct {
 }
 
 func (entity *transitRouter) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *transitRouter) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *transitRouter) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "transit-routers"
 }
 
 func (entity *transitRouter) toJson(_ bool, ctx *TestContext, _ ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setJsonValue(entityData, entity.name, "name")
 	ctx.setJsonValue(entityData, entity.tags, "tags")
@@ -716,6 +788,7 @@ func (entity *transitRouter) toJson(_ bool, ctx *TestContext, _ ...string) strin
 }
 
 func (entity *transitRouter) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -749,6 +822,7 @@ type externalIdClaim struct {
 }
 
 func newTestCaCert() (*x509.Certificate, *ecdsa.PrivateKey, *bytes.Buffer) {
+	logtrace.LogWithFunctionName()
 	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		panic(err)
@@ -790,6 +864,7 @@ func newTestCaCert() (*x509.Certificate, *ecdsa.PrivateKey, *bytes.Buffer) {
 }
 
 func newTestCa(identityRoles ...string) *ca {
+	logtrace.LogWithFunctionName()
 	caCert, key, caPEM := newTestCaCert()
 
 	if identityRoles == nil {
@@ -811,18 +886,22 @@ func newTestCa(identityRoles ...string) *ca {
 }
 
 func (entity *ca) getId() string {
+	logtrace.LogWithFunctionName()
 	return entity.id
 }
 
 func (entity *ca) setId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.id = id
 }
 
 func (entity *ca) getEntityType() string {
+	logtrace.LogWithFunctionName()
 	return "cas"
 }
 
 func (entity *ca) toJson(create bool, ctx *TestContext, fields ...string) string {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	ctx.setValue(entityData, entity.name, fields, "name")
 	ctx.setValue(entityData, entity.isOttCaEnrollmentEnabled, fields, "isOttCaEnrollmentEnabled")
@@ -849,6 +928,7 @@ func (entity *ca) toJson(create bool, ctx *TestContext, fields ...string) string
 }
 
 func (entity *ca) validate(ctx *TestContext, c *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	if entity.tags == nil {
 		entity.tags = map[string]interface{}{}
 	}
@@ -864,6 +944,7 @@ func (entity *ca) validate(ctx *TestContext, c *gabs.Container) {
 }
 
 func (entity *ca) CreateSignedCert(name string) *certAuthenticator {
+	logtrace.LogWithFunctionName()
 	clientKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
 		panic(err)

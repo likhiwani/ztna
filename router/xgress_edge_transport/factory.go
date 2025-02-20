@@ -17,7 +17,9 @@
 package xgress_edge_transport
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
 	"github.com/pkg/errors"
 )
 
@@ -27,14 +29,17 @@ type factory struct{}
 
 // NewFactory returns a new Transport Xgress factory
 func NewFactory() xgress.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{}
 }
 
 func (factory *factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	return nil, errors.New("listening not supported")
 }
 
 func (factory *factory) CreateDialer(optionsData xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	options, err := xgress.LoadOptions(optionsData)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading options")

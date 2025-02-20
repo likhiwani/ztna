@@ -17,6 +17,7 @@
 package api
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -36,22 +37,27 @@ type Options struct {
 }
 
 func (options *Options) OutputResponseJson() bool {
+	logtrace.LogWithFunctionName()
 	return options.OutputJSONResponse
 }
 
 func (options *Options) OutputRequestJson() bool {
+	logtrace.LogWithFunctionName()
 	return options.OutputJSONRequest
 }
 
 func (options *Options) OutputWriter() io.Writer {
+	logtrace.LogWithFunctionName()
 	return options.CommonOptions.Out
 }
 
 func (options *Options) ErrOutputWriter() io.Writer {
+	logtrace.LogWithFunctionName()
 	return options.CommonOptions.Err
 }
 
 func (options *Options) AddCommonFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&common.CliIdentity, "cli-identity", "i", "", "Specify the saved identity you want the CLI to use when connect to the controller with")
 	cmd.Flags().BoolVarP(&options.OutputJSONResponse, "output-json", "j", false, "Output the full JSON response from the Ziti Edge Controller")
 	cmd.Flags().BoolVar(&options.OutputJSONRequest, "output-request-json", false, "Output the full JSON request to the Ziti Edge Controller")
@@ -60,6 +66,7 @@ func (options *Options) AddCommonFlags(cmd *cobra.Command) {
 }
 
 func (options *Options) LogCreateResult(entityType string, result *gabs.Container, err error) error {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		return err
 	}
@@ -79,6 +86,7 @@ type EntityOptions struct {
 }
 
 func (self *EntityOptions) AddCommonFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	self.Options.AddCommonFlags(cmd)
 	if cmd.Flags().ShorthandLookup("t") == nil {
 		cmd.Flags().StringToStringVarP(&self.Tags, "tags", "t", nil, "Add tags to entity definition")
@@ -89,6 +97,7 @@ func (self *EntityOptions) AddCommonFlags(cmd *cobra.Command) {
 }
 
 func (self *EntityOptions) GetTags() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	result := map[string]interface{}{}
 	if len(self.TagsJson) > 0 {
 		if err := json.Unmarshal([]byte(self.TagsJson), &result); err != nil {
@@ -102,15 +111,18 @@ func (self *EntityOptions) GetTags() map[string]interface{} {
 }
 
 func (self *EntityOptions) TagsProvided() bool {
+	logtrace.LogWithFunctionName()
 	return self.Cmd.Flags().Changed("tags") || self.Cmd.Flags().Changed("tags-json")
 }
 
 func (self *EntityOptions) SetTags(container *gabs.Container) {
+	logtrace.LogWithFunctionName()
 	tags := self.GetTags()
 	SetJSONValue(container, tags, "tags")
 }
 
 func NewEntityOptions(out, errOut io.Writer) EntityOptions {
+	logtrace.LogWithFunctionName()
 	return EntityOptions{
 		Options: Options{
 			CommonOptions: common.CommonOptions{

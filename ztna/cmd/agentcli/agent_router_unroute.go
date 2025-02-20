@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/ctrl_pb"
@@ -33,6 +34,7 @@ type AgentUnrouteAction struct {
 }
 
 func NewUnrouteCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentUnrouteAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -55,6 +57,7 @@ func NewUnrouteCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentUnrouteAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	route := &ctrl_pb.Unroute{
 		CircuitId: self.Args[0],
 		Now:       true,

@@ -17,8 +17,10 @@
 package xgress_proxy
 
 import (
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/openziti/channel/v3"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
 )
@@ -28,20 +30,24 @@ type proxyXgressConnection struct {
 }
 
 func (c *proxyXgressConnection) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return c.Detail().String()
 }
 
 func (c *proxyXgressConnection) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	buffer := make([]byte, 10240)
 	n, err := c.Read(buffer)
 	return buffer[:n], nil, err
 }
 
 func (c *proxyXgressConnection) WritePayload(p []byte, headers map[uint8][]byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	return c.Write(p)
 }
 
 func (self *proxyXgressConnection) HandleControlMsg(controlType xgress.ControlType, headers channel.Headers, responder xgress.ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	if controlType == xgress.ControlTypeTraceRoute {
 		xgress.RespondToTraceRequest(headers, "xgress/proxy", "", responder)
 		return nil

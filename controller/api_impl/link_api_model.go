@@ -21,6 +21,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityNameLink = "links"
@@ -32,17 +33,20 @@ type LinkLinkFactoryIml struct {
 }
 
 func NewLinkLinkFactory() *LinkLinkFactoryIml {
+	logtrace.LogWithFunctionName()
 	return &LinkLinkFactoryIml{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameLink),
 	}
 }
 
 func (factory *LinkLinkFactoryIml) Links(entity LinkEntity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	return links
 }
 
 func MapLinkToRestModel(n *network.Network, _ api.RequestContext, link *model.Link) (*rest_model.LinkDetail, error) {
+	logtrace.LogWithFunctionName()
 	iteration := int64(link.Iteration)
 	staticCost := int64(link.StaticCost)
 	linkStateStr := link.CurrentState().Mode.String()

@@ -22,11 +22,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewPostureCheckTypeRouter()
 	env.AddRouter(r)
 }
@@ -36,12 +38,14 @@ type PostureCheckTypeRouter struct {
 }
 
 func NewPostureCheckTypeRouter() *PostureCheckTypeRouter {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckTypeRouter{
 		BasePath: "/" + EntityNamePostureCheckType,
 	}
 }
 
 func (r *PostureCheckTypeRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 
 	ae.ManagementApi.PostureChecksDetailPostureCheckTypeHandler = posture_checks.DetailPostureCheckTypeHandlerFunc(func(params posture_checks.DetailPostureCheckTypeParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Detail, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
@@ -54,9 +58,11 @@ func (r *PostureCheckTypeRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *PostureCheckTypeRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.PostureCheckType](ae, rc, ae.Managers.PostureCheckType, MapPostureCheckTypeToRestEntity)
 }
 
 func (r *PostureCheckTypeRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.PostureCheckType](ae, rc, ae.Managers.PostureCheckType, MapPostureCheckTypeToRestEntity)
 }

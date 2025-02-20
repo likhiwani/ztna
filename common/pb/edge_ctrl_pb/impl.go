@@ -18,9 +18,11 @@ package edge_ctrl_pb
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 )
 
 func (x *DataState_Identity) GetServiceConfigsAsMap() map[string]map[string]string {
+	logtrace.LogWithFunctionName()
 	if x.ServiceConfigs == nil {
 		return nil
 	}
@@ -38,18 +40,22 @@ func (x *DataState_Identity) GetServiceConfigsAsMap() map[string]map[string]stri
 }
 
 func (request *RouterDataModelValidateRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_ValidateDataStateRequestType)
 }
 
 func (request *RouterDataModelValidateResponse) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_ValidateDataStateResponseType)
 }
 
 func (diff *RouterDataModelDiff) ToDetail() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%s id: %s %s: %s", diff.EntityType, diff.EntityId, diff.DiffType, diff.Detail)
 }
 
 func (x *DataState_Event) Summarize() string {
+	logtrace.LogWithFunctionName()
 	switch v := x.Model.(type) {
 	case *DataState_Event_Config:
 		return fmt.Sprintf("%s config %s", x.Action.String(), v.Config.Id)

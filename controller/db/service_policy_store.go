@@ -2,21 +2,25 @@ package db
 
 import (
 	"fmt"
+	"sort"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"sort"
 )
 
 type PolicyType string
 
 func (self PolicyType) String() string {
+	logtrace.LogWithFunctionName()
 	return string(self)
 }
 
 func (self PolicyType) Id() int32 {
+	logtrace.LogWithFunctionName()
 	if self == PolicyTypeDial {
 		return 1
 	}
@@ -27,14 +31,17 @@ func (self PolicyType) Id() int32 {
 }
 
 func (self PolicyType) IsDial() bool {
+	logtrace.LogWithFunctionName()
 	return self == PolicyTypeDial
 }
 
 func (self PolicyType) IsBind() bool {
+	logtrace.LogWithFunctionName()
 	return self == PolicyTypeBind
 }
 
 func GetPolicyTypeForId(policyTypeId int32) PolicyType {
+	logtrace.LogWithFunctionName()
 	policyType := PolicyTypeInvalid
 	if policyTypeId == PolicyTypeDial.Id() {
 		policyType = PolicyTypeDial
@@ -67,14 +74,17 @@ type ServicePolicy struct {
 }
 
 func (entity *ServicePolicy) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *ServicePolicy) GetSemantic() string {
+	logtrace.LogWithFunctionName()
 	return entity.Semantic
 }
 
 func (entity *ServicePolicy) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeServicePolicies
 }
 
@@ -88,6 +98,7 @@ type ServicePolicyStore interface {
 }
 
 func newServicePolicyStore(stores *stores) *servicePolicyStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &servicePolicyStoreImpl{}
 	store.baseStore = newBaseStore[*ServicePolicy](stores, store)
 	store.InitImpl(store)
@@ -115,14 +126,17 @@ type servicePolicyStoreImpl struct {
 }
 
 func (store *servicePolicyStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *servicePolicyStoreImpl) NewEntity() *ServicePolicy {
+	logtrace.LogWithFunctionName()
 	return &ServicePolicy{}
 }
 
 func (store *servicePolicyStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	store.indexName = store.addUniqueNameField()
@@ -142,12 +156,14 @@ func (store *servicePolicyStoreImpl) initializeLocal() {
 }
 
 func (store *servicePolicyStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.serviceCollection = store.AddLinkCollection(store.symbolServices, store.stores.edgeService.symbolServicePolicies)
 	store.identityCollection = store.AddLinkCollection(store.symbolIdentities, store.stores.identity.symbolServicePolicies)
 	store.postureCheckCollection = store.AddLinkCollection(store.symbolPostureChecks, store.stores.postureCheck.symbolServicePolicies)
 }
 
 func (store *servicePolicyStoreImpl) FillEntity(entity *ServicePolicy, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.PolicyType = GetPolicyTypeForId(bucket.GetInt32WithDefault(FieldServicePolicyType, PolicyTypeDial.Id()))
@@ -158,6 +174,7 @@ func (store *servicePolicyStoreImpl) FillEntity(entity *ServicePolicy, bucket *b
 }
 
 func (store *servicePolicyStoreImpl) PersistEntity(entity *ServicePolicy, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	policyTypeChanged := false
 
 	currentPolicyType := GetPolicyTypeForId(ctx.Bucket.GetInt32WithDefault(FieldServicePolicyType, PolicyTypeDial.Id()))
@@ -283,6 +300,7 @@ Optimizations
  3. Related entity deletes should be handled automatically by FK Indexes on those entities (need to verify the reverse as well/deleting policy)
 */
 func (store *servicePolicyStoreImpl) serviceRolesUpdated(persistCtx *boltz.PersistContext, policy *ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             persistCtx.MutateContext,
 		rolesSymbol:           store.symbolServiceRoles,
@@ -310,6 +328,7 @@ func (store *servicePolicyStoreImpl) serviceRolesUpdated(persistCtx *boltz.Persi
 }
 
 func (store *servicePolicyStoreImpl) identityRolesUpdated(persistCtx *boltz.PersistContext, policy *ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             persistCtx.MutateContext,
 		rolesSymbol:           store.symbolIdentityRoles,
@@ -338,6 +357,7 @@ func (store *servicePolicyStoreImpl) identityRolesUpdated(persistCtx *boltz.Pers
 }
 
 func (store *servicePolicyStoreImpl) postureCheckRolesUpdated(persistCtx *boltz.PersistContext, policy *ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             persistCtx.MutateContext,
 		rolesSymbol:           store.symbolPostureCheckRoles,
@@ -364,6 +384,7 @@ func (store *servicePolicyStoreImpl) postureCheckRolesUpdated(persistCtx *boltz.
 }
 
 func (store *servicePolicyStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	policy, err := store.LoadById(ctx.Tx(), id)
 	if err != nil {
 		return err
@@ -380,6 +401,7 @@ func (store *servicePolicyStoreImpl) DeleteById(ctx boltz.MutateContext, id stri
 }
 
 func (store *servicePolicyStoreImpl) CheckIntegrity(mutateCtx boltz.MutateContext, fix bool, errorSink func(err error, fixed bool)) error {
+	logtrace.LogWithFunctionName()
 	ctx := &denormCheckCtx{
 		name:                   "service-policies/bind",
 		mutateCtx:              mutateCtx,
@@ -433,5 +455,6 @@ func (store *servicePolicyStoreImpl) CheckIntegrity(mutateCtx boltz.MutateContex
 type FieldCheckerF func(string) bool
 
 func (f FieldCheckerF) IsUpdated(s string) bool {
+	logtrace.LogWithFunctionName()
 	return f(s)
 }

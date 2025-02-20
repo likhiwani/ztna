@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/edge_router_policy"
 	"ztna-core/edge-api/rest_model"
@@ -26,11 +27,13 @@ import (
 )
 
 func (importer *Importer) IsEdgeRouterPolicyImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "edge-router-policy")
 }
 
 func (importer *Importer) ProcessEdgeRouterPolicies(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["edgeRouterPolicies"] {

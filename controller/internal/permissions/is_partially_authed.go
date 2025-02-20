@@ -16,15 +16,19 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequirePartiallyAuthenticated struct{}
 
 var isPartiallyAuthenticated = &RequirePartiallyAuthenticated{}
 
 func IsPartiallyAuthenticated() *RequirePartiallyAuthenticated {
+	logtrace.LogWithFunctionName()
 	return isPartiallyAuthenticated
 }
 
 func (ir *RequirePartiallyAuthenticated) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	for _, p := range identityPerms {
 		if p == PartiallyAuthenticatePermission {
 			return true

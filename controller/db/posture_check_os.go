@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
 )
@@ -36,12 +38,14 @@ type OperatingSystem struct {
 }
 
 func newPostureCheckOperatingSystem() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckOperatingSystem{
 		OperatingSystems: []OperatingSystem{},
 	}
 }
 
 func (entity *PostureCheckOperatingSystem) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 
 	cursor := bucket.Cursor()
 
@@ -58,6 +62,7 @@ func (entity *PostureCheckOperatingSystem) LoadValues(bucket *boltz.TypedBucket)
 }
 
 func (entity *PostureCheckOperatingSystem) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	if bucket.ProceedWithSet(FieldPostureCheckOsType, ctx.FieldChecker) && bucket.ProceedWithSet(FieldPostureCheckOsVersions, ctx.FieldChecker) {
 
 		osMap := map[string]OperatingSystem{}

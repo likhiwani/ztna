@@ -27,6 +27,8 @@ import (
 	"strings"
 
 	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -41,6 +43,7 @@ type Service interface {
 }
 
 func DialAndRun(service Service, instanceId string, clientConn net.Conn, appInfo map[string]string, halfClose bool) {
+	logtrace.LogWithFunctionName()
 	appInfoJson, err := json.Marshal(appInfo)
 	if err != nil {
 		log.WithError(err).WithField("service", service.GetName()).Error("unable to marshal appInfo")
@@ -55,6 +58,7 @@ func DialAndRun(service Service, instanceId string, clientConn net.Conn, appInfo
 }
 
 func GetIpAndPort(addr net.Addr) (string, string) {
+	logtrace.LogWithFunctionName()
 	if tcpAddr, ok := addr.(*net.TCPAddr); ok {
 		return tcpAddr.IP.String(), strconv.Itoa(tcpAddr.Port)
 	}
@@ -71,6 +75,7 @@ func GetIpAndPort(addr net.Addr) (string, string) {
 }
 
 func GetAppInfo(protocol, dstHostname, dstIp, dstPort, sourceAddr string) map[string]string {
+	logtrace.LogWithFunctionName()
 	result := map[string]string{}
 	result[DestinationProtocolKey] = protocol
 	if dstHostname != "" {
@@ -85,6 +90,7 @@ func GetAppInfo(protocol, dstHostname, dstIp, dstPort, sourceAddr string) map[st
 }
 
 func Run(zitiConn net.Conn, clientConn net.Conn, halfClose bool) {
+	logtrace.LogWithFunctionName()
 	loggerFields := logrus.Fields{
 		"src-remote": clientConn.RemoteAddr(), "src-local": clientConn.LocalAddr(),
 		"dst-local": zitiConn.LocalAddr(), "dst-remote": zitiConn.RemoteAddr()}
@@ -117,6 +123,7 @@ func Run(zitiConn net.Conn, clientConn net.Conn, halfClose bool) {
 }
 
 func myCopy(dst net.Conn, src net.Conn, done chan int64, halfClose bool) {
+	logtrace.LogWithFunctionName()
 	loggerFields := logrus.Fields{
 		"src-remote": src.RemoteAddr(), "src-local": src.LocalAddr(),
 		"dst-local": dst.LocalAddr(), "dst-remote": dst.RemoteAddr()}

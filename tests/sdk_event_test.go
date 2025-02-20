@@ -13,14 +13,17 @@ import (
 	management_service_policy "ztna-core/edge-api/rest_management_api_client/service_policy"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/edge-api/rest_util"
+	"ztna-core/ztna/logtrace"
+
+	edge_apis "ztna-core/sdk-golang/edge-apis"
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/dgryski/dgoogauth"
 	"github.com/google/uuid"
-	edge_apis "ztna-core/sdk-golang/edge-apis"
-	"ztna-core/sdk-golang/ziti"
 )
 
 func Test_SDK_Events(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

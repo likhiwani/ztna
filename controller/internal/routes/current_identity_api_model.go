@@ -24,6 +24,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 )
@@ -39,25 +40,30 @@ type CurrentIdentityLinkFactoryImpl struct {
 }
 
 func NewCurrentIdentityLinkFactory() *CurrentIdentityLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &CurrentIdentityLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameCurrentIdentity),
 	}
 }
 
 func (factory *CurrentIdentityLinkFactoryImpl) SelfUrlString(_ string) string {
+	logtrace.LogWithFunctionName()
 	return "./" + factory.entityName
 }
 
 func (factory CurrentIdentityLinkFactoryImpl) NewNestedLink(_ models.Entity, elem ...string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	elem = append([]string{factory.SelfUrlString("")}, elem...)
 	return NewLink("./" + path.Join(elem...))
 }
 
 func (factory *CurrentIdentityLinkFactoryImpl) SelfLink(_ models.Entity) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	return NewLink("./" + factory.entityName)
 }
 
 func (factory *CurrentIdentityLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	return rest_model.Links{
 		EntityNameSelf: factory.SelfLink(entity),
 		EntityNameMfa:  factory.NewNestedLink(nil, "mfa"),
@@ -69,25 +75,30 @@ type CurrentIdentityMfaLinkFactoryImpl struct {
 }
 
 func NewCurrentIdentityMfaLinkFactory() *CurrentIdentityMfaLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &CurrentIdentityMfaLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameCurrentIdentity + "/" + EntityNameMfa),
 	}
 }
 
 func (factory *CurrentIdentityMfaLinkFactoryImpl) SelfUrlString(_ string) string {
+	logtrace.LogWithFunctionName()
 	return "./" + factory.entityName
 }
 
 func (factory CurrentIdentityMfaLinkFactoryImpl) NewNestedLink(_ models.Entity, elem ...string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	elem = append([]string{factory.SelfUrlString("")}, elem...)
 	return NewLink("./" + path.Join(elem...))
 }
 
 func (factory *CurrentIdentityMfaLinkFactoryImpl) SelfLink(_ models.Entity) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	return NewLink("./" + factory.entityName)
 }
 
 func (factory *CurrentIdentityMfaLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := rest_model.Links{
 		EntityNameSelf:            factory.SelfLink(entity),
 		EntityNameCurrentIdentity: CurrentIdentityLinkFactory.SelfLink(entity),
@@ -106,6 +117,7 @@ func (factory *CurrentIdentityMfaLinkFactoryImpl) Links(entity models.Entity) re
 }
 
 func MapMfaToRestEntity(ae *env.AppEnv, _ *response.RequestContext, e models.Entity) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	mfa, ok := e.(*model.Mfa)
 
 	if !ok {
@@ -127,6 +139,7 @@ func MapMfaToRestEntity(ae *env.AppEnv, _ *response.RequestContext, e models.Ent
 }
 
 func MapMfaToRestModel(ae *env.AppEnv, mfa *model.Mfa) (*rest_model.DetailMfa, error) {
+	logtrace.LogWithFunctionName()
 	result := &rest_model.DetailMfa{
 		BaseEntity: BaseEntityToRestModel(mfa, CurrentIdentityMfaLinkFactory),
 		IsVerified: &mfa.IsVerified,
@@ -141,10 +154,12 @@ func MapMfaToRestModel(ae *env.AppEnv, mfa *model.Mfa) (*rest_model.DetailMfa, e
 }
 
 func MapCurrentIdentityEdgeRouterToRestEntity(ae *env.AppEnv, _ *response.RequestContext, router *model.EdgeRouter) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapCurrentIdentityEdgeRouterToRestModel(ae, router)
 }
 
 func MapCurrentIdentityEdgeRouterToRestModel(ae *env.AppEnv, router *model.EdgeRouter) (*rest_model.CurrentIdentityEdgeRouterDetail, error) {
+	logtrace.LogWithFunctionName()
 	hostname := ""
 
 	routerState := ae.Broker.GetEdgeRouterState(router.Id)

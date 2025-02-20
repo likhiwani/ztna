@@ -2,65 +2,80 @@ package xt_common
 
 import (
 	"fmt"
-	"ztna-core/ztna/controller/xt"
-	cmap "github.com/orcaman/concurrent-map/v2"
 	"math/rand"
 	"sync"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/xt"
+	logtrace "ztna-core/ztna/logtrace"
+
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 type mockTerminator struct{}
 
 func (m mockTerminator) GetId() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (m mockTerminator) GetPrecedence() xt.Precedence {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetCost() uint16 {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetInstanceId() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetRouterId() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetBinding() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetAddress() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetPeerData() xt.PeerData {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetCreatedAt() time.Time {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetHostId() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (m mockTerminator) GetSourceCtrl() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func TestFailures(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	//t.SkipNow()
 	costVisitor := &CostVisitor{
 		Costs:         cmap.New[*TerminatorCosts](),

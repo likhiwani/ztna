@@ -18,13 +18,15 @@ package handler_mgmt
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/network"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type validateTerminatorsHandler struct {
@@ -32,14 +34,17 @@ type validateTerminatorsHandler struct {
 }
 
 func newValidateTerminatorsHandler(network *network.Network) *validateTerminatorsHandler {
+	logtrace.LogWithFunctionName()
 	return &validateTerminatorsHandler{network: network}
 }
 
 func (*validateTerminatorsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_ValidateTerminatorsRequestType)
 }
 
 func (handler *validateTerminatorsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &mgmt_pb.ValidateTerminatorsRequest{}
 

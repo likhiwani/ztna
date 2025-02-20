@@ -20,9 +20,11 @@ import (
 	"fmt"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/agentcli"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/openziti/agent"
 	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
@@ -36,6 +38,7 @@ type AgentEchoServerUpdateTerminatorAction struct {
 }
 
 func NewAgentEchoServerUpdateTerminatorCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentEchoServerUpdateTerminatorAction{
 		AgentOptions: agentcli.AgentOptions{
 			CommonOptions: p(),
@@ -61,6 +64,7 @@ func NewAgentEchoServerUpdateTerminatorCmd(p common.OptionsProvider) *cobra.Comm
 
 // Run implements the command
 func (self *AgentEchoServerUpdateTerminatorAction) Run() error {
+	logtrace.LogWithFunctionName()
 	var addr string
 	var err error
 
@@ -75,6 +79,7 @@ func (self *AgentEchoServerUpdateTerminatorAction) Run() error {
 }
 
 func (self *AgentEchoServerUpdateTerminatorAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(EchoServerUpdateTerminator, nil)
 
 	if self.Cmd.Flag("precedence").Changed {

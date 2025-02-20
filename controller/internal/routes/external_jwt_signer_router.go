@@ -25,12 +25,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewExternalJwtSignerRouter()
 	env.AddRouter(r)
 }
@@ -40,12 +42,14 @@ type ExternalJwtSignerRouter struct {
 }
 
 func NewExternalJwtSignerRouter() *ExternalJwtSignerRouter {
+	logtrace.LogWithFunctionName()
 	return &ExternalJwtSignerRouter{
 		BasePath: "/" + EntityNameExternalJwtSigner,
 	}
 }
 
 func (r *ExternalJwtSignerRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	// client
 	ae.ClientApi.ExternalJWTSignerListExternalJWTSignersHandler = external_jwt_signer_client.ListExternalJWTSignersHandlerFunc(func(params external_jwt_signer_client.ListExternalJWTSignersParams) middleware.Responder {
 		return ae.IsAllowed(r.ListClient, params.HTTPRequest, "", "", permissions.Always())
@@ -78,30 +82,36 @@ func (r *ExternalJwtSignerRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ExternalJwtSignerRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.ExternalJwtSigner](ae, rc, ae.Managers.ExternalJwtSigner, MapExternalJwtSignerToRestEntity)
 }
 
 func (r *ExternalJwtSignerRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.ExternalJwtSigner](ae, rc, ae.Managers.ExternalJwtSigner, MapExternalJwtSignerToRestEntity)
 }
 
 func (r *ExternalJwtSignerRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params external_jwt_signer.CreateExternalJWTSignerParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, ExternalJwtSignerLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.ExternalJwtSigner.Create, MapCreateExternalJwtSignerToModel(params.ExternalJWTSigner), rc)
 	})
 }
 
 func (r *ExternalJwtSignerRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.ExternalJwtSigner)
 }
 
 func (r *ExternalJwtSignerRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params external_jwt_signer.UpdateExternalJWTSignerParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.ExternalJwtSigner.Update(MapUpdateExternalJwtSignerToModel(params.ID, params.ExternalJWTSigner), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *ExternalJwtSignerRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params external_jwt_signer.PatchExternalJWTSignerParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 
 		if fields.IsUpdated(db.FieldExternalJwtSignerCertPem) {
@@ -117,6 +127,7 @@ func (r *ExternalJwtSignerRouter) Patch(ae *env.AppEnv, rc *response.RequestCont
 }
 
 func (r *ExternalJwtSignerRouter) ListClient(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	List(rc, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(ae.Managers.EdgeService.GetStore())
 		if err != nil {

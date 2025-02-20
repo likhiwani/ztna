@@ -21,15 +21,18 @@ import (
 	"net"
 	"syscall"
 
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/xgress"
 )
 
 type listener struct{}
 
 func (self *listener) Listen(string, xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	go func() {
 		log := pfxlog.Logger()
 		// Open UDP socket to listen for Geneve Packets
@@ -102,6 +105,7 @@ func (self *listener) Listen(string, xgress.BindHandler) error {
 }
 
 func (self *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Warn("closing geneve interface")
 	return nil

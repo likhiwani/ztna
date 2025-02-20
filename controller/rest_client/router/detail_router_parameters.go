@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDetailRouterParams() *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDetailRouterParams() *DetailRouterParams {
 // NewDetailRouterParamsWithTimeout creates a new DetailRouterParams object
 // with the ability to set a timeout on a request.
 func NewDetailRouterParamsWithTimeout(timeout time.Duration) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDetailRouterParamsWithTimeout(timeout time.Duration) *DetailRouterParams
 // NewDetailRouterParamsWithContext creates a new DetailRouterParams object
 // with the ability to set a context for a request.
 func NewDetailRouterParamsWithContext(ctx context.Context) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDetailRouterParamsWithContext(ctx context.Context) *DetailRouterParams {
 // NewDetailRouterParamsWithHTTPClient creates a new DetailRouterParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDetailRouterParamsWithHTTPClient(client *http.Client) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	return &DetailRouterParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DetailRouterParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailRouterParams) WithDefaults() *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DetailRouterParams) WithDefaults() *DetailRouterParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailRouterParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the detail router params
 func (o *DetailRouterParams) WithTimeout(timeout time.Duration) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the detail router params
 func (o *DetailRouterParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the detail router params
 func (o *DetailRouterParams) WithContext(ctx context.Context) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the detail router params
 func (o *DetailRouterParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the detail router params
 func (o *DetailRouterParams) WithHTTPClient(client *http.Client) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the detail router params
 func (o *DetailRouterParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the detail router params
 func (o *DetailRouterParams) WithID(id string) *DetailRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the detail router params
 func (o *DetailRouterParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DetailRouterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

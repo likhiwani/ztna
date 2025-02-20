@@ -18,14 +18,18 @@ package xgress
 
 import (
 	"errors"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/transport/v2"
 )
 
 func ReadUntilNewline(peer transport.Conn) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return ReadUntil(peer, '\n')
 }
 
 func ReadUntil(peer transport.Conn, stop byte) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	buffer := make([]byte, 0)
 	done := false
 	for !done {

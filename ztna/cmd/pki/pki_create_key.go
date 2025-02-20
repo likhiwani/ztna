@@ -20,12 +20,14 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
 	"ztna-core/ztna/ztna/pki/certificate"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/spf13/cobra"
 )
 
@@ -36,6 +38,7 @@ type PKICreateKeyOptions struct {
 
 // NewCmdPKICreateKey creates a command object for the "create" command
 func NewCmdPKICreateKey(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateKeyOptions{
 		PKICreateOptions: PKICreateOptions{
 			PKIOptions: PKIOptions{
@@ -64,6 +67,7 @@ func NewCmdPKICreateKey(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (o *PKICreateKeyOptions) addPKICreateKeyFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&o.Flags.PKIRoot, "pki-root", "", "", "Directory in which PKI resides")
 	cmd.Flags().StringVarP(&o.Flags.CAName, "ca-name", "", "intermediate", "Name of Intermediate CA (within PKI_ROOT) to use to sign the new Client certificate")
 	cmd.Flags().StringVarP(&o.Flags.KeyFile, "key-file", "", "key", "Name of file (under chosen CA) in which to store new private key")
@@ -73,6 +77,7 @@ func (o *PKICreateKeyOptions) addPKICreateKeyFlags(cmd *cobra.Command) {
 
 // Run implements this command
 func (o *PKICreateKeyOptions) Run() error {
+	logtrace.LogWithFunctionName()
 
 	pkiRoot, err := o.ObtainPKIRoot()
 	if err != nil {

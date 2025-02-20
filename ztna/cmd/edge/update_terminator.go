@@ -22,9 +22,11 @@ import (
 	"io"
 	"math"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
+	"github.com/Jeffail/gabs"
 	"github.com/openziti/foundation/v2/stringz"
 	errors2 "github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -40,6 +42,7 @@ type updateTerminatorOptions struct {
 }
 
 func newUpdateTerminatorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateTerminatorOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -72,6 +75,7 @@ func newUpdateTerminatorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateTerminator implements the command to update a Terminator
 func runUpdateTerminator(o *updateTerminatorOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 
 	router, err := mapNameToID("edge-routers", o.router, o.Options)

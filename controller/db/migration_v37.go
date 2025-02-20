@@ -18,12 +18,15 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) setAuthenticatorIsIssuedByNetwork(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	cursor := m.stores.Authenticator.IterateIds(step.Ctx.Tx(), ast.BoolNodeTrue)
 
 	if m.signingCert == nil {

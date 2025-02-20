@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DeleteLinkReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DeleteLinkReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDeleteLinkOK()
@@ -78,6 +80,7 @@ func (o *DeleteLinkReader) ReadResponse(response runtime.ClientResponse, consume
 
 // NewDeleteLinkOK creates a DeleteLinkOK with default headers values
 func NewDeleteLinkOK() *DeleteLinkOK {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkOK{}
 }
 
@@ -90,13 +93,16 @@ type DeleteLinkOK struct {
 }
 
 func (o *DeleteLinkOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /links/{id}][%d] deleteLinkOK  %+v", 200, o.Payload)
 }
 func (o *DeleteLinkOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteLinkOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -110,6 +116,7 @@ func (o *DeleteLinkOK) readResponse(response runtime.ClientResponse, consumer ru
 
 // NewDeleteLinkBadRequest creates a DeleteLinkBadRequest with default headers values
 func NewDeleteLinkBadRequest() *DeleteLinkBadRequest {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkBadRequest{}
 }
 
@@ -122,13 +129,16 @@ type DeleteLinkBadRequest struct {
 }
 
 func (o *DeleteLinkBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /links/{id}][%d] deleteLinkBadRequest  %+v", 400, o.Payload)
 }
 func (o *DeleteLinkBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteLinkBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *DeleteLinkBadRequest) readResponse(response runtime.ClientResponse, con
 
 // NewDeleteLinkUnauthorized creates a DeleteLinkUnauthorized with default headers values
 func NewDeleteLinkUnauthorized() *DeleteLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkUnauthorized{}
 }
 
@@ -154,13 +165,16 @@ type DeleteLinkUnauthorized struct {
 }
 
 func (o *DeleteLinkUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /links/{id}][%d] deleteLinkUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DeleteLinkUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteLinkUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *DeleteLinkUnauthorized) readResponse(response runtime.ClientResponse, c
 
 // NewDeleteLinkTooManyRequests creates a DeleteLinkTooManyRequests with default headers values
 func NewDeleteLinkTooManyRequests() *DeleteLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type DeleteLinkTooManyRequests struct {
 }
 
 func (o *DeleteLinkTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /links/{id}][%d] deleteLinkTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DeleteLinkTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteLinkTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

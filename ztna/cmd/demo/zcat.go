@@ -17,17 +17,19 @@
 package demo
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"io"
 	"net"
 	"os"
 	"strings"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 type zcatAction struct {
@@ -38,6 +40,7 @@ type zcatAction struct {
 }
 
 func newZcatCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &zcatAction{}
 
 	cmd := &cobra.Command{
@@ -60,6 +63,7 @@ func newZcatCmd() *cobra.Command {
 }
 
 func (self *zcatAction) initLogging() {
+	logtrace.LogWithFunctionName()
 	logLevel := logrus.InfoLevel
 	if self.verbose {
 		logLevel = logrus.DebugLevel
@@ -81,6 +85,7 @@ func (self *zcatAction) initLogging() {
 }
 
 func (self *zcatAction) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	self.initLogging()
 
 	log := pfxlog.Logger()
@@ -140,6 +145,7 @@ func (self *zcatAction) run(_ *cobra.Command, args []string) {
 }
 
 func (self *zcatAction) copy(writer io.Writer, reader io.Reader) {
+	logtrace.LogWithFunctionName()
 	buf := make([]byte, info.MaxUdpPacketSize)
 	bytesCopied, err := io.CopyBuffer(writer, reader, buf)
 	pfxlog.Logger().Debugf("Copied %v bytes", bytesCopied)

@@ -28,12 +28,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
 	"ztna-core/ztna/controller/webapis"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/xweb/v2"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewVersionRouter()
 	env.AddRouter(r)
 }
@@ -45,12 +47,14 @@ type VersionRouter struct {
 }
 
 func NewVersionRouter() *VersionRouter {
+	logtrace.LogWithFunctionName()
 	return &VersionRouter{
 		BasePath: "/version",
 	}
 }
 
 func (ir *VersionRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ClientApi.InformationalListVersionHandler = clientInformational.ListVersionHandlerFunc(func(params clientInformational.ListVersionParams) middleware.Responder {
 		return ae.IsAllowed(ir.List, params.HTTPRequest, "", "", permissions.Always())
 	})
@@ -77,6 +81,7 @@ func (ir *VersionRouter) Register(ae *env.AppEnv) {
 }
 
 func (ir *VersionRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ir.cachedVersionsOnce.Do(func() {
 
 		buildInfo := build.GetBuildInfo()
@@ -156,6 +161,7 @@ func (ir *VersionRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (ir *VersionRouter) ListCapabilities(_ *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	capabilities := []rest_model.Capabilities{
 		rest_model.CapabilitiesOIDCAUTH,
 		rest_model.CapabilitiesHACONTROLLER,
@@ -165,6 +171,7 @@ func (ir *VersionRouter) ListCapabilities(_ *env.AppEnv, rc *response.RequestCon
 }
 
 func apiBindingToPath(binding string) string {
+	logtrace.LogWithFunctionName()
 	switch binding {
 	case "edge":
 		return webapis.ClientRestApiBaseUrlV1
@@ -177,6 +184,7 @@ func apiBindingToPath(binding string) string {
 }
 
 func mapApiVersionToRestModel(path string) rest_model.APIVersion {
+	logtrace.LogWithFunctionName()
 	return rest_model.APIVersion{
 		Path:        &path,
 		APIBaseUrls: []string{},

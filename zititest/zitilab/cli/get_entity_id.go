@@ -2,12 +2,15 @@ package cli
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/Jeffail/gabs"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/pkg/errors"
 )
 
 func GetEntityId(m *model.Model, entityType string, name string) (string, error) {
+	logtrace.LogWithFunctionName()
 	output, err := Exec(m, "edge", "list", entityType, "--output-json",
 		fmt.Sprintf(`name="%v" limit none`, name))
 	if err != nil {

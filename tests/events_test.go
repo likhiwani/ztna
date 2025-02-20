@@ -20,13 +20,15 @@ package tests
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/xt_smartrouting"
 	"reflect"
 	"sync"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 type eventsCollector struct {
@@ -35,23 +37,28 @@ type eventsCollector struct {
 }
 
 func (self *eventsCollector) acceptEvent(event interface{}) {
+	logtrace.LogWithFunctionName()
 	self.events <- event
 	fmt.Printf("\nNEXT EVENT: %v: %v %+v\n", reflect.TypeOf(event), event, event)
 }
 
 func (self *eventsCollector) AcceptUsageEvent(event *event.UsageEvent) {
+	logtrace.LogWithFunctionName()
 	self.acceptEvent(event)
 }
 
 func (self *eventsCollector) AcceptSessionEvent(event *event.SessionEvent) {
+	logtrace.LogWithFunctionName()
 	self.acceptEvent(event)
 }
 
 func (self *eventsCollector) AcceptCircuitEvent(event *event.CircuitEvent) {
+	logtrace.LogWithFunctionName()
 	self.acceptEvent(event)
 }
 
 func (self *eventsCollector) PopNextEvent(ctx *TestContext, desc string, timeout time.Duration) interface{} {
+	logtrace.LogWithFunctionName()
 	select {
 	case evt := <-self.events:
 		return evt
@@ -62,6 +69,7 @@ func (self *eventsCollector) PopNextEvent(ctx *TestContext, desc string, timeout
 }
 
 func Test_EventsTest(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 

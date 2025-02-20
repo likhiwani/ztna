@@ -19,12 +19,14 @@ package xgress
 import (
 	"encoding/binary"
 	"fmt"
+	"math"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/foundation/v2/uuidz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"math"
 )
 
 const (
@@ -57,6 +59,7 @@ const (
 )
 
 func (o Originator) String() string {
+	logtrace.LogWithFunctionName()
 	if o == Initiator {
 		return "Initiator"
 	}
@@ -73,6 +76,7 @@ const (
 )
 
 func NewAcknowledgement(circuitId string, originator Originator) *Acknowledgement {
+	logtrace.LogWithFunctionName()
 	return &Acknowledgement{
 		CircuitId: circuitId,
 		Flags:     SetOriginatorFlag(0, originator),
@@ -88,14 +92,17 @@ type Acknowledgement struct {
 }
 
 func (ack *Acknowledgement) GetCircuitId() string {
+	logtrace.LogWithFunctionName()
 	return ack.CircuitId
 }
 
 func (ack *Acknowledgement) GetFlags() uint32 {
+	logtrace.LogWithFunctionName()
 	return ack.Flags
 }
 
 func (ack *Acknowledgement) GetOriginator() Originator {
+	logtrace.LogWithFunctionName()
 	if isFlagSet(ack.Flags, PayloadFlagOriginator) {
 		return Terminator
 	}
@@ -103,10 +110,12 @@ func (ack *Acknowledgement) GetOriginator() Originator {
 }
 
 func (ack *Acknowledgement) GetSequence() []int32 {
+	logtrace.LogWithFunctionName()
 	return ack.Sequence
 }
 
 func (ack *Acknowledgement) marshallSequence() []byte {
+	logtrace.LogWithFunctionName()
 	if len(ack.Sequence) == 0 {
 		return nil
 	}
@@ -120,6 +129,7 @@ func (ack *Acknowledgement) marshallSequence() []byte {
 }
 
 func (ack *Acknowledgement) unmarshallSequence(data []byte) error {
+	logtrace.LogWithFunctionName()
 	if len(data) == 0 {
 		return nil
 	}
@@ -138,6 +148,7 @@ func (ack *Acknowledgement) unmarshallSequence(data []byte) error {
 }
 
 func (ack *Acknowledgement) Marshall() *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(ContentTypeAcknowledgementType, ack.marshallSequence())
 	msg.PutUint16Header(HeaderKeyRTT, ack.RTT)
 	msg.Headers[HeaderKeyCircuitId] = []byte(ack.CircuitId)
@@ -149,6 +160,7 @@ func (ack *Acknowledgement) Marshall() *channel.Message {
 }
 
 func UnmarshallAcknowledgement(msg *channel.Message) (*Acknowledgement, error) {
+	logtrace.LogWithFunctionName()
 	ack := &Acknowledgement{}
 
 	circuitId, ok := msg.Headers[HeaderKeyCircuitId]
@@ -175,6 +187,7 @@ func UnmarshallAcknowledgement(msg *channel.Message) (*Acknowledgement, error) {
 }
 
 func (ack *Acknowledgement) GetLoggerFields() logrus.Fields {
+	logtrace.LogWithFunctionName()
 	return logrus.Fields{
 		"circuitId":          ack.CircuitId,
 		"linkRecvBufferSize": ack.RecvBufferSize,
@@ -202,10 +215,12 @@ type Payload struct {
 }
 
 func (payload *Payload) GetSequence() int32 {
+	logtrace.LogWithFunctionName()
 	return payload.Sequence
 }
 
 func (payload *Payload) Marshall() *channel.Message {
+	logtrace.LogWithFunctionName()
 	if payload.raw != nil {
 		if payload.raw[0]&RttFlagMask != 0 {
 			rtt := uint16(info.NowInMilliseconds())
@@ -231,6 +246,7 @@ func (payload *Payload) Marshall() *channel.Message {
 }
 
 func addPayloadHeadersToMsg(msg *channel.Message, headers map[uint8][]byte) {
+	logtrace.LogWithFunctionName()
 	for key, value := range headers {
 		msgHeaderKey := MinHeaderKey + int32(key)
 		msg.Headers[msgHeaderKey] = value
@@ -238,6 +254,7 @@ func addPayloadHeadersToMsg(msg *channel.Message, headers map[uint8][]byte) {
 }
 
 func UnmarshallPayload(msg *channel.Message) (*Payload, error) {
+	logtrace.LogWithFunctionName()
 	var headers map[uint8][]byte
 	for key, val := range msg.Headers {
 		if key >= MinHeaderKey && key <= MaxHeaderKey {
@@ -281,30 +298,37 @@ func UnmarshallPayload(msg *channel.Message) (*Payload, error) {
 }
 
 func isFlagSet(flags uint32, flag Flag) bool {
+	logtrace.LogWithFunctionName()
 	return Flag(flags)&flag == flag
 }
 
 func setPayloadFlag(flags uint32, flag Flag) uint32 {
+	logtrace.LogWithFunctionName()
 	return uint32(Flag(flags) | flag)
 }
 
 func (payload *Payload) GetCircuitId() string {
+	logtrace.LogWithFunctionName()
 	return payload.CircuitId
 }
 
 func (payload *Payload) GetFlags() uint32 {
+	logtrace.LogWithFunctionName()
 	return payload.Flags
 }
 
 func (payload *Payload) IsCircuitEndFlagSet() bool {
+	logtrace.LogWithFunctionName()
 	return isFlagSet(payload.Flags, PayloadFlagCircuitEnd)
 }
 
 func (payload *Payload) IsCircuitStartFlagSet() bool {
+	logtrace.LogWithFunctionName()
 	return isFlagSet(payload.Flags, PayloadFlagCircuitStart)
 }
 
 func (payload *Payload) GetOriginator() Originator {
+	logtrace.LogWithFunctionName()
 	if isFlagSet(payload.Flags, PayloadFlagOriginator) {
 		return Terminator
 	}
@@ -312,6 +336,7 @@ func (payload *Payload) GetOriginator() Originator {
 }
 
 func SetOriginatorFlag(flags uint32, originator Originator) uint32 {
+	logtrace.LogWithFunctionName()
 	if originator == Initiator {
 		return ^uint32(PayloadFlagOriginator) & flags
 	}
@@ -319,6 +344,7 @@ func SetOriginatorFlag(flags uint32, originator Originator) uint32 {
 }
 
 func (payload *Payload) GetLoggerFields() logrus.Fields {
+	logtrace.LogWithFunctionName()
 	result := logrus.Fields{
 		"circuitId": payload.CircuitId,
 		"seq":       payload.Sequence,
@@ -335,6 +361,7 @@ func (payload *Payload) GetLoggerFields() logrus.Fields {
 type ControlType byte
 
 func (self ControlType) String() string {
+	logtrace.LogWithFunctionName()
 	switch self {
 	case ControlTypeTraceRoute:
 		return "traceroute"
@@ -366,12 +393,14 @@ type Control struct {
 }
 
 func (self *Control) Marshall() *channel.Message {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(ContentTypeControlType, append([]byte{byte(self.Type)}, self.CircuitId...))
 	msg.Headers = self.Headers
 	return msg
 }
 
 func UnmarshallControl(msg *channel.Message) (*Control, error) {
+	logtrace.LogWithFunctionName()
 	if len(msg.Body) < 2 {
 		return nil, errors.New("control message body too short")
 	}
@@ -383,14 +412,17 @@ func UnmarshallControl(msg *channel.Message) (*Control, error) {
 }
 
 func (self *Control) IsTypeTraceRoute() bool {
+	logtrace.LogWithFunctionName()
 	return self.Type == ControlTypeTraceRoute
 }
 
 func (self *Control) IsTypeTraceRouteResponse() bool {
+	logtrace.LogWithFunctionName()
 	return self.Type == ControlTypeTraceRouteResponse
 }
 
 func (self *Control) DecrementAndGetHop() uint32 {
+	logtrace.LogWithFunctionName()
 	hop, _ := self.Headers.GetUint32Header(ControlHopCount)
 	if hop == 0 {
 		return 0
@@ -401,6 +433,7 @@ func (self *Control) DecrementAndGetHop() uint32 {
 }
 
 func (self *Control) CreateTraceResponse(hopType, hopId string) *Control {
+	logtrace.LogWithFunctionName()
 	resp := &Control{
 		Type:      ControlTypeTraceRouteResponse,
 		CircuitId: self.CircuitId,
@@ -412,6 +445,7 @@ func (self *Control) CreateTraceResponse(hopType, hopId string) *Control {
 }
 
 func (self *Control) GetLoggerFields() logrus.Fields {
+	logtrace.LogWithFunctionName()
 	result := logrus.Fields{
 		"circuitId": self.CircuitId,
 		"type":      self.Type,
@@ -425,6 +459,7 @@ func (self *Control) GetLoggerFields() logrus.Fields {
 }
 
 func RespondToTraceRequest(headers channel.Headers, hopType, hopId string, response ControlReceiver) {
+	logtrace.LogWithFunctionName()
 	resp := &Control{Headers: headers}
 	resp.DecrementAndGetHop()
 	resp.Headers.PutStringHeader(ControlHopType, hopType)
@@ -437,10 +472,12 @@ type InvalidTerminatorError struct {
 }
 
 func (e InvalidTerminatorError) Error() string {
+	logtrace.LogWithFunctionName()
 	return e.InnerError.Error()
 }
 
 func (e InvalidTerminatorError) Unwrap() error {
+	logtrace.LogWithFunctionName()
 	return e.InnerError
 }
 
@@ -449,9 +486,11 @@ type MisconfiguredTerminatorError struct {
 }
 
 func (e MisconfiguredTerminatorError) Error() string {
+	logtrace.LogWithFunctionName()
 	return e.InnerError.Error()
 }
 
 func (e MisconfiguredTerminatorError) Unwrap() error {
+	logtrace.LogWithFunctionName()
 	return e.InnerError
 }

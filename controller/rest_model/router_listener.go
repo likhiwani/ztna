@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type RouterListener struct {
 
 // Validate validates this router listener
 func (m *RouterListener) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateAddress(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *RouterListener) Validate(formats strfmt.Registry) error {
 }
 
 func (m *RouterListener) validateAddress(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("address", "body", m.Address); err != nil {
 		return err
@@ -80,6 +83,7 @@ func (m *RouterListener) validateAddress(formats strfmt.Registry) error {
 }
 
 func (m *RouterListener) validateProtocol(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("protocol", "body", m.Protocol); err != nil {
 		return err
@@ -90,11 +94,13 @@ func (m *RouterListener) validateProtocol(formats strfmt.Registry) error {
 
 // ContextValidate validates this router listener based on context it is used
 func (m *RouterListener) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *RouterListener) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -103,6 +109,7 @@ func (m *RouterListener) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *RouterListener) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res RouterListener
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

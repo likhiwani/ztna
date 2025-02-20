@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type CreateDatabaseSnapshotWithPathOK struct {
 
 // NewCreateDatabaseSnapshotWithPathOK creates CreateDatabaseSnapshotWithPathOK with default headers values
 func NewCreateDatabaseSnapshotWithPathOK() *CreateDatabaseSnapshotWithPathOK {
+    logtrace.LogWithFunctionName()
 
 	return &CreateDatabaseSnapshotWithPathOK{}
 }
 
 // WithPayload adds the payload to the create database snapshot with path o k response
 func (o *CreateDatabaseSnapshotWithPathOK) WithPayload(payload *rest_model.DatabaseSnapshotCreateResultEnvelope) *CreateDatabaseSnapshotWithPathOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create database snapshot with path o k response
 func (o *CreateDatabaseSnapshotWithPathOK) SetPayload(payload *rest_model.DatabaseSnapshotCreateResultEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateDatabaseSnapshotWithPathOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type CreateDatabaseSnapshotWithPathUnauthorized struct {
 
 // NewCreateDatabaseSnapshotWithPathUnauthorized creates CreateDatabaseSnapshotWithPathUnauthorized with default headers values
 func NewCreateDatabaseSnapshotWithPathUnauthorized() *CreateDatabaseSnapshotWithPathUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &CreateDatabaseSnapshotWithPathUnauthorized{}
 }
 
 // WithPayload adds the payload to the create database snapshot with path unauthorized response
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *CreateDatabaseSnapshotWithPathUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create database snapshot with path unauthorized response
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type CreateDatabaseSnapshotWithPathTooManyRequests struct {
 
 // NewCreateDatabaseSnapshotWithPathTooManyRequests creates CreateDatabaseSnapshotWithPathTooManyRequests with default headers values
 func NewCreateDatabaseSnapshotWithPathTooManyRequests() *CreateDatabaseSnapshotWithPathTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &CreateDatabaseSnapshotWithPathTooManyRequests{}
 }
 
 // WithPayload adds the payload to the create database snapshot with path too many requests response
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *CreateDatabaseSnapshotWithPathTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create database snapshot with path too many requests response
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

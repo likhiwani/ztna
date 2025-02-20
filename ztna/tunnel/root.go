@@ -22,19 +22,21 @@ import (
 	"strings"
 	"time"
 
+	"ztna-core/sdk-golang/ziti/sdkinfo"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/constants"
 	"ztna-core/ztna/ztna/util"
-	"ztna-core/sdk-golang/ziti/sdkinfo"
 
+	"ztna-core/sdk-golang/ziti"
 	"ztna-core/ztna/common/version"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"
 	"ztna-core/ztna/tunnel/intercept"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/agent"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -48,6 +50,7 @@ const (
 var hostSpecificCmds []*cobra.Command
 
 func NewTunnelCmd(standalone bool) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	use := "tunnel "
 	if standalone {
 		use = filepath.Base(os.Args[0])
@@ -91,6 +94,7 @@ var cliAgentAlias string
 var ha bool
 
 func rootPreRun(cmd *cobra.Command, _ []string) {
+	logtrace.LogWithFunctionName()
 	verbose, err := cmd.Flags().GetBool("verbose")
 	if err != nil {
 		println("err")
@@ -113,6 +117,7 @@ func rootPreRun(cmd *cobra.Command, _ []string) {
 }
 
 func rootPostRun(cmd *cobra.Command, _ []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	if cliAgentEnabled {
@@ -173,6 +178,7 @@ func rootPostRun(cmd *cobra.Command, _ []string) {
 }
 
 func startIdentity(cmd *cobra.Command, serviceListenerGroup *intercept.ServiceListenerGroup, identityJson string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	log.Infof("loading identity: %v", identityJson)

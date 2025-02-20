@@ -19,15 +19,17 @@ package demo
 import (
 	"bufio"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/debugz"
-	"ztna-core/sdk-golang/ziti"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"net"
 	"os"
 	"strings"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/debugz"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 type zcatCloseTestAction struct {
@@ -37,6 +39,7 @@ type zcatCloseTestAction struct {
 }
 
 func newZcatCloseTestCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &zcatCloseTestAction{}
 
 	cmd := &cobra.Command{
@@ -58,6 +61,7 @@ func newZcatCloseTestCmd() *cobra.Command {
 }
 
 func (self *zcatCloseTestAction) initLogging() {
+	logtrace.LogWithFunctionName()
 	logLevel := logrus.InfoLevel
 	if self.verbose {
 		logLevel = logrus.DebugLevel
@@ -79,6 +83,7 @@ func (self *zcatCloseTestAction) initLogging() {
 }
 
 func (self *zcatCloseTestAction) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	self.initLogging()
 
 	log := pfxlog.Logger()
@@ -105,6 +110,7 @@ func (self *zcatCloseTestAction) run(_ *cobra.Command, args []string) {
 }
 
 func (self *zcatCloseTestAction) sendRecv(network, addr, line string) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	var conn net.Conn

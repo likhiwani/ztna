@@ -22,14 +22,15 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
-	"github.com/pkg/errors"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"math/rand"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/pkg/errors"
+	"google.golang.org/protobuf/proto"
 )
 
 type protocol struct {
@@ -46,6 +47,7 @@ type protocol struct {
 var MagicHeader = []byte{0xCA, 0xFE, 0xF0, 0x0D}
 
 func newProtocol(peer io.ReadWriteCloser) (*protocol, error) {
+	logtrace.LogWithFunctionName()
 	p := &protocol{
 		rxSequence: 0,
 		peer:       peer,
@@ -58,6 +60,7 @@ func newProtocol(peer io.ReadWriteCloser) (*protocol, error) {
 }
 
 func (p *protocol) run(test *loop2_pb.Test) error {
+	logtrace.LogWithFunctionName()
 	p.test = test
 	p.txGenerator = newGenerator(int(test.TxRequests), int(test.PayloadMinBytes), int(test.PayloadMaxBytes))
 	go p.txGenerator.run()
@@ -83,6 +86,7 @@ func (p *protocol) run(test *loop2_pb.Test) error {
 }
 
 func (p *protocol) txer(done chan bool) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(p.test.Name)
 	log.Debug("started")
 	defer func() { done <- true }()
@@ -117,6 +121,7 @@ func (p *protocol) txer(done chan bool) {
 }
 
 func (p *protocol) rxer(done chan bool) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(p.test.Name)
 	log.Debug("started")
 	defer func() { done <- true }()
@@ -138,6 +143,7 @@ func (p *protocol) rxer(done chan bool) {
 }
 
 func (p *protocol) verifier() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(p.test.Name)
 	log.Debug("started")
 	defer log.Debug("complete")
@@ -186,6 +192,7 @@ func (p *protocol) verifier() {
 }
 
 func (p *protocol) txTest(test *loop2_pb.Test) error {
+	logtrace.LogWithFunctionName()
 	if err := p.txPb(test); err != nil {
 		return err
 	}
@@ -194,6 +201,7 @@ func (p *protocol) txTest(test *loop2_pb.Test) error {
 }
 
 func (p *protocol) rxTest() (*loop2_pb.Test, error) {
+	logtrace.LogWithFunctionName()
 	test := &loop2_pb.Test{}
 	if err := p.rxPb(test); err != nil {
 		return nil, err
@@ -203,6 +211,7 @@ func (p *protocol) rxTest() (*loop2_pb.Test, error) {
 }
 
 func (p *protocol) txBlock(block *loop2_pb.Block) error {
+	logtrace.LogWithFunctionName()
 	if err := p.txPb(block); err != nil {
 		return err
 	}
@@ -211,6 +220,7 @@ func (p *protocol) txBlock(block *loop2_pb.Block) error {
 }
 
 func (p *protocol) rxBlock() (*loop2_pb.Block, error) {
+	logtrace.LogWithFunctionName()
 	block := &loop2_pb.Block{}
 	if err := p.rxPb(block); err != nil {
 		return nil, err
@@ -220,6 +230,7 @@ func (p *protocol) rxBlock() (*loop2_pb.Block, error) {
 }
 
 func (p *protocol) txResult(result *loop2_pb.Result) error {
+	logtrace.LogWithFunctionName()
 	if err := p.txPb(result); err != nil {
 		return err
 	}
@@ -232,6 +243,7 @@ func (p *protocol) txResult(result *loop2_pb.Result) error {
 }
 
 func (p *protocol) rxResult() (*loop2_pb.Result, error) {
+	logtrace.LogWithFunctionName()
 	result := &loop2_pb.Result{}
 	if err := p.rxPb(result); err != nil {
 		return nil, err
@@ -245,6 +257,7 @@ func (p *protocol) rxResult() (*loop2_pb.Result, error) {
 }
 
 func (p *protocol) txPb(pb proto.Message) error {
+	logtrace.LogWithFunctionName()
 	data, err := proto.Marshal(pb)
 
 	if err != nil {
@@ -267,6 +280,7 @@ func (p *protocol) txPb(pb proto.Message) error {
 }
 
 func (p *protocol) rxPb(pb proto.Message) error {
+	logtrace.LogWithFunctionName()
 	if err := p.rxMagicHeader(); err != nil {
 		return err
 	}
@@ -297,6 +311,7 @@ func (p *protocol) rxPb(pb proto.Message) error {
 }
 
 func (p *protocol) txMagicHeader() error {
+	logtrace.LogWithFunctionName()
 	n, err := p.peer.Write(MagicHeader)
 	if err != nil {
 		return err
@@ -308,6 +323,7 @@ func (p *protocol) txMagicHeader() error {
 }
 
 func (p *protocol) txLength(len int) error {
+	logtrace.LogWithFunctionName()
 	out := new(bytes.Buffer)
 	if err := binary.Write(out, binary.LittleEndian, int32(len)); err != nil {
 		return err
@@ -323,6 +339,7 @@ func (p *protocol) txLength(len int) error {
 }
 
 func (p *protocol) rxLength() (int, error) {
+	logtrace.LogWithFunctionName()
 	data := make([]byte, 4)
 	n, err := io.ReadFull(p.peer, data)
 	if err != nil {
@@ -341,6 +358,7 @@ func (p *protocol) rxLength() (int, error) {
 }
 
 func (p *protocol) rxMagicHeader() error {
+	logtrace.LogWithFunctionName()
 	data := make([]byte, len(MagicHeader))
 	n, err := io.ReadFull(p.peer, data)
 	if err != nil {

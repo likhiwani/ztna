@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type DataIntegrityCheckDetail struct {
 
 // Validate validates this data integrity check detail
 func (m *DataIntegrityCheckDetail) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateDescription(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *DataIntegrityCheckDetail) Validate(formats strfmt.Registry) error {
 }
 
 func (m *DataIntegrityCheckDetail) validateDescription(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("description", "body", m.Description); err != nil {
 		return err
@@ -80,6 +83,7 @@ func (m *DataIntegrityCheckDetail) validateDescription(formats strfmt.Registry) 
 }
 
 func (m *DataIntegrityCheckDetail) validateFixed(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("fixed", "body", m.Fixed); err != nil {
 		return err
@@ -90,11 +94,13 @@ func (m *DataIntegrityCheckDetail) validateFixed(formats strfmt.Registry) error 
 
 // ContextValidate validates this data integrity check detail based on context it is used
 func (m *DataIntegrityCheckDetail) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *DataIntegrityCheckDetail) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -103,6 +109,7 @@ func (m *DataIntegrityCheckDetail) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *DataIntegrityCheckDetail) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res DataIntegrityCheckDetail
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

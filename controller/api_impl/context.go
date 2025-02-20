@@ -18,13 +18,15 @@ package api_impl
 
 import (
 	"bytes"
-	"ztna-core/ztna/controller/api"
-	"ztna-core/ztna/controller/idgen"
 	"io"
 	"net/http"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 )
 
 func NewRequestContext(rw http.ResponseWriter, r *http.Request) api.RequestContext {
+	logtrace.LogWithFunctionName()
 	rid := idgen.New()
 
 	body, _ := io.ReadAll(r.Body)

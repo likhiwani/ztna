@@ -18,19 +18,21 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"math"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"math"
-	"time"
 )
 
 type createTunnelTerminatorHandler struct {
@@ -39,6 +41,7 @@ type createTunnelTerminatorHandler struct {
 }
 
 func NewCreateTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel, tunnelState *TunnelState) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createTunnelTerminatorHandler{
 		baseRequestHandler: baseRequestHandler{ch: ch, appEnv: appEnv},
 		TunnelState:        tunnelState,
@@ -46,18 +49,22 @@ func NewCreateTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel, tu
 }
 
 func (self *createTunnelTerminatorHandler) getTunnelState() *TunnelState {
+	logtrace.LogWithFunctionName()
 	return self.TunnelState
 }
 
 func (self *createTunnelTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateTunnelTerminatorRequestType)
 }
 
 func (self *createTunnelTerminatorHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.create.terminator"
 }
 
 func (self *createTunnelTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	startTime := time.Now()
 	req := &edge_ctrl_pb.CreateTunnelTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
@@ -76,6 +83,7 @@ func (self *createTunnelTerminatorHandler) HandleReceive(msg *channel.Message, c
 }
 
 func (self *createTunnelTerminatorHandler) CreateTerminator(ctx *CreateTunnelTerminatorRequestContext, startTime time.Time) {
+	logtrace.LogWithFunctionName()
 	logger := logrus.
 		WithField("routerId", self.ch.Id()).
 		WithField("terminatorId", ctx.req.Address)
@@ -178,6 +186,7 @@ type CreateTunnelTerminatorRequestContext struct {
 }
 
 func (self *CreateTunnelTerminatorRequestContext) validateExistingTerminator(terminator *model.Terminator, log *logrus.Entry) controllerError {
+	logtrace.LogWithFunctionName()
 	if terminator.Binding != common.TunnelBinding {
 		log.WithField("binding", common.TunnelBinding).
 			WithField("conflictingBinding", terminator.Binding).

@@ -17,11 +17,14 @@
 package loop3
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
+
 	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	subcmd.Root.AddCommand(loop3Cmd)
 }
 

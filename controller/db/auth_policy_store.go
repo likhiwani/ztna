@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
@@ -87,10 +89,12 @@ type AuthPolicyUpdb struct {
 }
 
 func (entity *AuthPolicy) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *AuthPolicy) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeAuthPolicies
 }
 
@@ -102,6 +106,7 @@ type AuthPolicyStore interface {
 }
 
 func newAuthPolicyStore(stores *stores) *AuthPolicyStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &AuthPolicyStoreImpl{}
 	store.baseStore = newBaseStore[*AuthPolicy](stores, store)
 	store.InitImpl(store)
@@ -116,6 +121,7 @@ type AuthPolicyStoreImpl struct {
 }
 
 func (store *AuthPolicyStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 
@@ -141,18 +147,22 @@ func (store *AuthPolicyStoreImpl) initializeLocal() {
 }
 
 func (store *AuthPolicyStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddNullableFkIndex(store.symbolPrimaryAllowedExtJwtSigners, store.stores.externalJwtSigner.symbolAuthPolicies)
 }
 
 func (store *AuthPolicyStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *AuthPolicyStoreImpl) NewEntity() *AuthPolicy {
+	logtrace.LogWithFunctionName()
 	return &AuthPolicy{}
 }
 
 func (store *AuthPolicyStoreImpl) FillEntity(entity *AuthPolicy, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 
 	entity.Name = bucket.GetStringOrError(FieldName)
@@ -175,6 +185,7 @@ func (store *AuthPolicyStoreImpl) FillEntity(entity *AuthPolicy, bucket *boltz.T
 }
 
 func (store *AuthPolicyStoreImpl) PersistEntity(entity *AuthPolicy, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 
 	if entity.Primary.Updb.LockoutDurationMinutes < 0 {

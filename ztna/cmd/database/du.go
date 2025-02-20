@@ -18,6 +18,8 @@ package database
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 	"github.com/spf13/cobra"
 	"go.etcd.io/bbolt"
@@ -27,6 +29,7 @@ type DiskUsageAction struct {
 }
 
 func NewDiskUsageAction() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &DiskUsageAction{}
 
 	cmd := &cobra.Command{
@@ -41,6 +44,7 @@ func NewDiskUsageAction() *cobra.Command {
 
 // Run implements this command
 func (o *DiskUsageAction) Run(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	srcOptions := *bbolt.DefaultOptions
 	srcOptions.ReadOnly = true
 
@@ -81,6 +85,7 @@ type sizeNode struct {
 }
 
 func (self *sizeNode) calcSize() {
+	logtrace.LogWithFunctionName()
 	for _, child := range self.children {
 		child.calcSize()
 		self.size += child.size
@@ -88,6 +93,7 @@ func (self *sizeNode) calcSize() {
 }
 
 func (self *sizeNode) dump() {
+	logtrace.LogWithFunctionName()
 	for _, child := range self.children {
 		child.dump()
 	}
@@ -100,6 +106,7 @@ type sizeVisitor struct {
 }
 
 func (self *sizeVisitor) VisitBucket(path string, key []byte, _ *bbolt.Bucket) bool {
+	logtrace.LogWithFunctionName()
 	parent := self.getNode(path)
 	selfNode := self.getNode(path + "/" + string(key))
 	parent.children = append(parent.children, selfNode)
@@ -108,12 +115,14 @@ func (self *sizeVisitor) VisitBucket(path string, key []byte, _ *bbolt.Bucket) b
 }
 
 func (self *sizeVisitor) VisitKeyValue(path string, key, value []byte) bool {
+	logtrace.LogWithFunctionName()
 	parent := self.getNode(path)
 	parent.size += uint64(len(key)) + uint64(len(value))
 	return true
 }
 
 func (self *sizeVisitor) getNode(path string) *sizeNode {
+	logtrace.LogWithFunctionName()
 	if path == "" {
 		return self.getNode("/")
 	}

@@ -17,12 +17,14 @@
 package router
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/enroll"
-	"ztna-core/ztna/router"
-	"ztna-core/sdk-golang/ziti"
-	"github.com/spf13/cobra"
 	"os"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router"
+	"ztna-core/ztna/router/enroll"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/spf13/cobra"
 )
 
 var jwtPath *string
@@ -30,6 +32,7 @@ var engine *string
 var keyAlg ziti.KeyAlgVar
 
 func NewEnrollGwCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	var enrollEdgeRouterCmd = &cobra.Command{
 		Use:   "enroll <config>",
 		Short: "Enroll a router as an edge router",
@@ -48,6 +51,7 @@ func NewEnrollGwCmd() *cobra.Command {
 }
 
 func enrollGw(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	if cfgmap, err := router.LoadConfigMap(args[0]); err == nil {
 		router.SetConfigMapFlags(cfgmap, getFlags(cmd))

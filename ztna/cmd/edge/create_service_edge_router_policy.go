@@ -19,6 +19,7 @@ package edge
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -35,6 +36,7 @@ type createServiceEdgeRouterPolicyOptions struct {
 
 // NewCreateServiceEdgeRouterPolicyCmd creates the 'edge controller create service-edge-router-policy' command
 func NewCreateServiceEdgeRouterPolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createServiceEdgeRouterPolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -66,6 +68,7 @@ func NewCreateServiceEdgeRouterPolicyCmd(out io.Writer, errOut io.Writer) *cobra
 
 // runCreateServiceEdgeRouterPolicy create a new edgeRouterPolicy on the Ziti Edge Controller
 func runCreateServiceEdgeRouterPolicy(o *createServiceEdgeRouterPolicyOptions) error {
+	logtrace.LogWithFunctionName()
 	edgeRouterRoles, err := convertNamesToIds(o.edgeRouterRoles, "edge-routers", o.Options)
 	if err != nil {
 		return err

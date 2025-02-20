@@ -20,22 +20,24 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
+	"strings"
+	"sync"
+	"time"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/michaelquigley/pfxlog"
 	nfPem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/jwks"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/apierror"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
-	"strings"
-	"sync"
-	"time"
 )
 
 var _ AuthProcessor = &AuthModuleExtJwt{}
@@ -65,6 +67,7 @@ type candidateResult struct {
 }
 
 func (r *candidateResult) LogResult(logger *logrus.Entry, index int) {
+	logtrace.LogWithFunctionName()
 	if r.AuthPolicy != nil {
 		logger = logger.WithField("authPolicyId", r.AuthPolicy.Id)
 	}
@@ -95,6 +98,7 @@ type AuthModuleExtJwt struct {
 }
 
 func NewAuthModuleExtJwt(env Env) *AuthModuleExtJwt {
+	logtrace.LogWithFunctionName()
 	ret := &AuthModuleExtJwt{
 		env:     env,
 		method:  AuthMethodExtJwt,
@@ -127,6 +131,7 @@ type signerRecord struct {
 }
 
 func (r *signerRecord) PubKeyByKid(kid string) (pubKey, bool) {
+	logtrace.LogWithFunctionName()
 	r.Mutex.Lock()
 	defer r.Mutex.Unlock()
 
@@ -136,6 +141,7 @@ func (r *signerRecord) PubKeyByKid(kid string) (pubKey, bool) {
 }
 
 func (r *signerRecord) Resolve(force bool) error {
+	logtrace.LogWithFunctionName()
 	r.Mutex.Lock()
 	defer r.Mutex.Unlock()
 
@@ -231,10 +237,12 @@ func (r *signerRecord) Resolve(force bool) error {
 }
 
 func (a *AuthModuleExtJwt) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == a.method
 }
 
 func (a *AuthModuleExtJwt) pubKeyLookup(token *jwt.Token) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("method", a.method)
 
 	kidVal, ok := token.Header["kid"]
@@ -310,10 +318,12 @@ func (a *AuthModuleExtJwt) pubKeyLookup(token *jwt.Token) (interface{}, error) {
 }
 
 func (a *AuthModuleExtJwt) Process(context AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	return a.process(context)
 }
 
 func (a *AuthModuleExtJwt) ProcessSecondary(context AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	return a.process(context)
 }
 
@@ -323,10 +333,12 @@ type AuthResultJwt struct {
 }
 
 func (a *AuthResultJwt) IsSuccessful() bool {
+	logtrace.LogWithFunctionName()
 	return a.externalJwtSigner != nil && a.Identity() != nil
 }
 
 func (a *AuthResultJwt) AuthenticatorId() string {
+	logtrace.LogWithFunctionName()
 	if a.externalJwtSigner == nil {
 		return ""
 	}
@@ -335,6 +347,7 @@ func (a *AuthResultJwt) AuthenticatorId() string {
 }
 
 func (a *AuthResultJwt) Authenticator() *Authenticator {
+	logtrace.LogWithFunctionName()
 	authenticator := &Authenticator{
 		BaseEntity: models.BaseEntity{
 			Id:        AuthMethodExtJwt,
@@ -355,6 +368,7 @@ func (a *AuthResultJwt) Authenticator() *Authenticator {
 // process attempts to locate a JWT and ExtJwtSigner that  verifies it. If context.GetPrimaryIdentity()==nil, this will be
 // processed as a secondary authentication factor.
 func (a *AuthModuleExtJwt) process(context AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("authMethod", AuthMethodExtJwt)
 
 	isPrimary := context.GetPrimaryIdentity() == nil
@@ -404,6 +418,7 @@ func (a *AuthModuleExtJwt) process(context AuthContext) (AuthResult, error) {
 }
 
 func (a *AuthModuleExtJwt) onExternalSignerCreate(args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	signer, ok := args[0].(*db.ExternalJwtSigner)
 
 	if !ok {
@@ -415,6 +430,7 @@ func (a *AuthModuleExtJwt) onExternalSignerCreate(args ...interface{}) {
 }
 
 func (a *AuthModuleExtJwt) onExternalSignerUpdate(signer *db.ExternalJwtSigner) {
+	logtrace.LogWithFunctionName()
 	//read on update because patches can pass partial data
 	err := a.env.GetDb().View(func(tx *bbolt.Tx) error {
 		var err error
@@ -430,6 +446,7 @@ func (a *AuthModuleExtJwt) onExternalSignerUpdate(signer *db.ExternalJwtSigner) 
 }
 
 func (a *AuthModuleExtJwt) addSigner(signer *db.ExternalJwtSigner) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithFields(map[string]interface{}{
 		"id":           signer.Id,
 		"name":         signer.Name,
@@ -457,6 +474,7 @@ func (a *AuthModuleExtJwt) addSigner(signer *db.ExternalJwtSigner) {
 }
 
 func (a *AuthModuleExtJwt) onExternalSignerDelete(signer *db.ExternalJwtSigner) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithFields(map[string]interface{}{
 		"id":           signer.Id,
 		"name":         signer.Name,
@@ -473,6 +491,7 @@ func (a *AuthModuleExtJwt) onExternalSignerDelete(signer *db.ExternalJwtSigner) 
 }
 
 func (a *AuthModuleExtJwt) loadExistingSigners() {
+	logtrace.LogWithFunctionName()
 	err := a.env.GetDb().View(func(tx *bbolt.Tx) error {
 		ids, _, err := a.env.GetStores().ExternalJwtSigner.QueryIds(tx, "")
 
@@ -498,6 +517,7 @@ func (a *AuthModuleExtJwt) loadExistingSigners() {
 }
 
 func (a *AuthModuleExtJwt) verifyAudience(expectedAudience *string, mapClaims jwt.MapClaims) error {
+	logtrace.LogWithFunctionName()
 
 	if expectedAudience == nil {
 		return errors.New("audience on ext-jwt signer is nil, audience is required")
@@ -540,6 +560,7 @@ func (a *AuthModuleExtJwt) verifyAudience(expectedAudience *string, mapClaims jw
 }
 
 func (a *AuthModuleExtJwt) verifyIssuer(expectedIssuer *string, mapClaims jwt.MapClaims) error {
+	logtrace.LogWithFunctionName()
 
 	if expectedIssuer == nil {
 		return errors.New("no issuer found for external jwt signer, issuer is required")
@@ -561,6 +582,7 @@ func (a *AuthModuleExtJwt) verifyIssuer(expectedIssuer *string, mapClaims jwt.Ma
 }
 
 func (a *AuthModuleExtJwt) getJwtsFromAuthHeader(context AuthContext) []string {
+	logtrace.LogWithFunctionName()
 	headers := map[string]interface{}{}
 
 	for key, value := range context.GetHeaders() {
@@ -593,6 +615,7 @@ func (a *AuthModuleExtJwt) getJwtsFromAuthHeader(context AuthContext) []string {
 }
 
 func (a *AuthModuleExtJwt) verifyAsPrimary(authPolicy *AuthPolicy, extJwt *db.ExternalJwtSigner) error {
+	logtrace.LogWithFunctionName()
 	if !authPolicy.Primary.ExtJwt.Allowed {
 		return errors.New("primary external jwt authentication on auth policy is disabled")
 	}
@@ -612,6 +635,7 @@ func (a *AuthModuleExtJwt) verifyAsPrimary(authPolicy *AuthPolicy, extJwt *db.Ex
 }
 
 func (a *AuthModuleExtJwt) verifyCandidate(context AuthContext, isPrimary bool, jwtStr string) *candidateResult {
+	logtrace.LogWithFunctionName()
 	result := &candidateResult{}
 
 	targetIdentity := context.GetPrimaryIdentity()

@@ -19,13 +19,15 @@ package events
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"io"
 	"reflect"
 	"strings"
 	"sync/atomic"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/pkg/errors"
 )
 
 type LoggingHandlerFactory interface {
@@ -33,6 +35,7 @@ type LoggingHandlerFactory interface {
 }
 
 func NewWriterEventSink(out io.Writer) event.FormattedEventSink {
+	logtrace.LogWithFunctionName()
 	return WriterEventSink{out: out}
 }
 
@@ -41,6 +44,7 @@ type WriterEventSink struct {
 }
 
 func (self WriterEventSink) AcceptFormattedEvent(_ string, formattedEvent []byte) {
+	logtrace.LogWithFunctionName()
 	if _, err := self.out.Write(formattedEvent); err != nil {
 		pfxlog.Logger().WithError(err).Error("failed to output event")
 	}
@@ -59,6 +63,7 @@ type BaseFormatter struct {
 }
 
 func (f *BaseFormatter) Run() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case evt := <-f.events:
@@ -74,6 +79,7 @@ func (f *BaseFormatter) Run() {
 }
 
 func (f *BaseFormatter) Close() error {
+	logtrace.LogWithFunctionName()
 	if f.closed.CompareAndSwap(false, true) {
 		close(f.closeNotify)
 	}
@@ -81,6 +87,7 @@ func (f *BaseFormatter) Close() error {
 }
 
 func (f *BaseFormatter) AcceptLoggingEvent(event FormatterEvent) {
+	logtrace.LogWithFunctionName()
 	select {
 	case f.events <- event:
 	case <-f.closeNotify:
@@ -88,6 +95,7 @@ func (f *BaseFormatter) AcceptLoggingEvent(event FormatterEvent) {
 }
 
 func MarshalJson(v interface{}) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	buf, err := json.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -98,154 +106,185 @@ func MarshalJson(v interface{}) ([]byte, error) {
 type JsonCircuitEvent event.CircuitEvent
 
 func (event *JsonCircuitEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "circuit"
 }
 
 func (event *JsonCircuitEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonLinkEvent event.LinkEvent
 
 func (event *JsonLinkEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "link"
 }
 
 func (event *JsonLinkEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonMetricsEvent event.MetricsEvent
 
 func (event *JsonMetricsEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "metrics"
 }
 
 func (event *JsonMetricsEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonRouterEvent event.RouterEvent
 
 func (event *JsonRouterEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "router"
 }
 
 func (event *JsonRouterEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonServiceEvent event.ServiceEvent
 
 func (event *JsonServiceEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "service"
 }
 
 func (event *JsonServiceEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonTerminatorEvent event.TerminatorEvent
 
 func (event *JsonTerminatorEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "terminator"
 }
 
 func (event *JsonTerminatorEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonUsageEvent event.UsageEvent
 
 func (event *JsonUsageEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "usage"
 }
 
 func (event *JsonUsageEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 func (event *JsonUsageEventV3) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "usage.v3"
 }
 
 type JsonUsageEventV3 event.UsageEventV3
 
 func (event *JsonUsageEventV3) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonClusterEvent event.ClusterEvent
 
 func (event *JsonClusterEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "cluster"
 }
 
 func (event *JsonClusterEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonConnectEvent event.ConnectEvent
 
 func (event *JsonConnectEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "connect"
 }
 
 func (event *JsonConnectEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonSdkEvent event.SdkEvent
 
 func (event *JsonSdkEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "sdk"
 }
 
 func (event *JsonSdkEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonEntityChangeEvent event.EntityChangeEvent
 
 func (event *JsonEntityChangeEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "entity.change"
 }
 
 func (event *JsonEntityChangeEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonSessionEvent event.SessionEvent
 
 func (event *JsonSessionEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "session"
 }
 
 func (event *JsonSessionEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonApiSessionEvent event.ApiSessionEvent
 
 func (event *JsonApiSessionEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "apiSession"
 }
 
 func (event *JsonApiSessionEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 type JsonEntityCountEvent event.EntityCountEvent
 
 func (event *JsonEntityCountEvent) GetEventType() string {
+	logtrace.LogWithFunctionName()
 	return "entityCount"
 }
 
 func (event *JsonEntityCountEvent) Format() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return MarshalJson(event)
 }
 
 func NewJsonFormatter(queueDepth int, sink event.FormattedEventSink) *JsonFormatter {
+	logtrace.LogWithFunctionName()
 	result := &JsonFormatter{
 		BaseFormatter: BaseFormatter{
 			events:      make(chan FormatterEvent, queueDepth),
@@ -262,62 +301,77 @@ type JsonFormatter struct {
 }
 
 func (formatter *JsonFormatter) AcceptCircuitEvent(evt *event.CircuitEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonCircuitEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptLinkEvent(evt *event.LinkEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonLinkEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptMetricsEvent(evt *event.MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonMetricsEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptServiceEvent(evt *event.ServiceEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonServiceEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptTerminatorEvent(evt *event.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonTerminatorEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptRouterEvent(evt *event.RouterEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonRouterEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptUsageEvent(evt *event.UsageEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonUsageEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptUsageEventV3(evt *event.UsageEventV3) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonUsageEventV3)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptClusterEvent(evt *event.ClusterEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonClusterEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptConnectEvent(evt *event.ConnectEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonConnectEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptSdkEvent(evt *event.SdkEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonSdkEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptEntityChangeEvent(evt *event.EntityChangeEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonEntityChangeEvent)(evt))
 }
 
 func (formatter *JsonFormatter) AcceptApiSessionEvent(event *event.ApiSessionEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonApiSessionEvent)(event))
 }
 
 func (formatter *JsonFormatter) AcceptSessionEvent(event *event.SessionEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonSessionEvent)(event))
 }
 
 func (formatter *JsonFormatter) AcceptEntityCountEvent(event *event.EntityCountEvent) {
+	logtrace.LogWithFunctionName()
 	formatter.AcceptLoggingEvent((*JsonEntityCountEvent)(event))
 }
 
@@ -326,6 +380,7 @@ var histogramBuckets = map[string]string{"p50": "0.50", "p75": "0.75", "p95": "0
 type PrometheusMetricsEvent event.MetricsEvent
 
 func (event *PrometheusMetricsEvent) WriteTo(output io.WriteCloser, includeTimestamps bool) error {
+	logtrace.LogWithFunctionName()
 	buf, err := event.Marshal(includeTimestamps)
 	if err != nil {
 		return err
@@ -335,6 +390,7 @@ func (event *PrometheusMetricsEvent) WriteTo(output io.WriteCloser, includeTimes
 }
 
 func (event *PrometheusMetricsEvent) getMetricName() string {
+	logtrace.LogWithFunctionName()
 	key := strings.Replace(event.Metric, " ", "_", -1)
 	key = strings.Replace(key, ".", "_", -1)
 	key = strings.Replace(key, "-", "_", -1)
@@ -351,10 +407,12 @@ func (event *PrometheusMetricsEvent) getMetricName() string {
 }
 
 func (event *PrometheusMetricsEvent) newTag(name, value string) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%s=\"%s\"", name, value)
 }
 
 func (event *PrometheusMetricsEvent) getTags() *[]string {
+	logtrace.LogWithFunctionName()
 	tags := make([]string, 0)
 	if event.Tags != nil {
 		for name, val := range event.Tags {
@@ -367,10 +425,12 @@ func (event *PrometheusMetricsEvent) getTags() *[]string {
 }
 
 func (event *PrometheusMetricsEvent) getTagsAsString(tags *[]string) string {
+	logtrace.LogWithFunctionName()
 	return "{" + strings.Join(*tags, ",") + "}"
 }
 
 func (event *PrometheusMetricsEvent) getTimestampString(includeTimestamps bool) string {
+	logtrace.LogWithFunctionName()
 	var ts string
 
 	if includeTimestamps {
@@ -382,6 +442,7 @@ func (event *PrometheusMetricsEvent) getTimestampString(includeTimestamps bool) 
 }
 
 func (event *PrometheusMetricsEvent) toGauge(metricKey string, includeTimestamps bool) string {
+	logtrace.LogWithFunctionName()
 	format := "# HELP %[1]s %[1]s\n" +
 		"# TYPE %[1]s gauge\n" +
 		"%[1]s%[3]s %[2]v"
@@ -394,6 +455,7 @@ func (event *PrometheusMetricsEvent) toGauge(metricKey string, includeTimestamps
 }
 
 func (event *PrometheusMetricsEvent) toHistogram(includeTimestamps bool) string {
+	logtrace.LogWithFunctionName()
 	key := event.getMetricName()
 	tags := event.getTags()
 
@@ -415,6 +477,7 @@ func (event *PrometheusMetricsEvent) toHistogram(includeTimestamps bool) string 
 }
 
 func (event *PrometheusMetricsEvent) Marshal(includeTimestamps bool) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	// Prometheus can be a little picky about metric/label naming and formats.
 	// Run the output of any changes through  https://o11y.tools/metricslint/ to make sure they are OK
 

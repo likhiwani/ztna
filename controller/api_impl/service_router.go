@@ -17,16 +17,19 @@
 package api_impl
 
 import (
-	"github.com/go-openapi/runtime/middleware"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/service"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewServiceRouter()
 	AddRouter(r)
 }
@@ -36,12 +39,14 @@ type ServiceRouter struct {
 }
 
 func NewServiceRouter() *ServiceRouter {
+	logtrace.LogWithFunctionName()
 	return &ServiceRouter{
 		BasePath: "/" + EntityNameService,
 	}
 }
 
 func (r *ServiceRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.ServiceDeleteServiceHandler = service.DeleteServiceHandlerFunc(func(params service.DeleteServiceParams) middleware.Responder {
 		return wrapper.WrapRequest(r.Delete, params.HTTPRequest, params.ID, "")
 	})
@@ -72,14 +77,17 @@ func (r *ServiceRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper Re
 }
 
 func (r *ServiceRouter) ListServices(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Service](n, rc, n.Managers.Service, ServiceModelMapper{})
 }
 
 func (r *ServiceRouter) Detail(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Service](n, rc, n.Managers.Service, ServiceModelMapper{})
 }
 
 func (r *ServiceRouter) Create(n *network.Network, rc api.RequestContext, params service.CreateServiceParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, ServiceLinkFactory, func() (string, error) {
 		svc := MapCreateServiceToModel(params.Service)
 		err := n.Service.Create(svc, rc.NewChangeContext())
@@ -91,21 +99,25 @@ func (r *ServiceRouter) Create(n *network.Network, rc api.RequestContext, params
 }
 
 func (r *ServiceRouter) Delete(network *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, network.Managers.Service)
 }
 
 func (r *ServiceRouter) Update(n *network.Network, rc api.RequestContext, params service.UpdateServiceParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return n.Managers.Service.Update(MapUpdateServiceToModel(params.ID, params.Service), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *ServiceRouter) Patch(n *network.Network, rc api.RequestContext, params service.PatchServiceParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return n.Managers.Service.Update(MapPatchServiceToModel(params.ID, params.Service), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})
 }
 
 func (r *ServiceRouter) listManagementTerminators(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.Service, *model.Terminator](n, rc, n.Managers.Service, n.Managers.Terminator, TerminatorModelMapper{})
 }

@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type DatabaseSnapshotCreateResultEnvelope struct {
 
 // Validate validates this database snapshot create result envelope
 func (m *DatabaseSnapshotCreateResultEnvelope) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateData(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) Validate(formats strfmt.Registry)
 }
 
 func (m *DatabaseSnapshotCreateResultEnvelope) validateData(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("data", "body", m.Data); err != nil {
 		return err
@@ -91,6 +94,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) validateData(formats strfmt.Regis
 }
 
 func (m *DatabaseSnapshotCreateResultEnvelope) validateMeta(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("meta", "body", m.Meta); err != nil {
 		return err
@@ -112,6 +116,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) validateMeta(formats strfmt.Regis
 
 // ContextValidate validate this database snapshot create result envelope based on the context it is used
 func (m *DatabaseSnapshotCreateResultEnvelope) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateData(ctx, formats); err != nil {
@@ -129,6 +134,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) ContextValidate(ctx context.Conte
 }
 
 func (m *DatabaseSnapshotCreateResultEnvelope) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Data != nil {
 		if err := m.Data.ContextValidate(ctx, formats); err != nil {
@@ -145,6 +151,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) contextValidateData(ctx context.C
 }
 
 func (m *DatabaseSnapshotCreateResultEnvelope) contextValidateMeta(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Meta != nil {
 		if err := m.Meta.ContextValidate(ctx, formats); err != nil {
@@ -162,6 +169,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) contextValidateMeta(ctx context.C
 
 // MarshalBinary interface implementation
 func (m *DatabaseSnapshotCreateResultEnvelope) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -170,6 +178,7 @@ func (m *DatabaseSnapshotCreateResultEnvelope) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *DatabaseSnapshotCreateResultEnvelope) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res DatabaseSnapshotCreateResultEnvelope
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

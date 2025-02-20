@@ -20,9 +20,11 @@ import (
 	"encoding/json"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/logtrace"
 )
 
 func GetFields(body []byte) (fields.UpdatedFields, error) {
+	logtrace.LogWithFunctionName()
 	jsonMap := map[string]interface{}{}
 	err := json.Unmarshal(body, &jsonMap)
 
@@ -36,6 +38,7 @@ func GetFields(body []byte) (fields.UpdatedFields, error) {
 }
 
 func GetJsonFields(prefix string, m map[string]interface{}, result fields.UpdatedFieldsMap) {
+	logtrace.LogWithFunctionName()
 	for k, v := range m {
 		name := k
 		if subMap, ok := v.(map[string]interface{}); ok {

@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDataIntegrityResultsParams() *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	return &DataIntegrityResultsParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDataIntegrityResultsParams() *DataIntegrityResultsParams {
 // NewDataIntegrityResultsParamsWithTimeout creates a new DataIntegrityResultsParams object
 // with the ability to set a timeout on a request.
 func NewDataIntegrityResultsParamsWithTimeout(timeout time.Duration) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	return &DataIntegrityResultsParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDataIntegrityResultsParamsWithTimeout(timeout time.Duration) *DataIntegr
 // NewDataIntegrityResultsParamsWithContext creates a new DataIntegrityResultsParams object
 // with the ability to set a context for a request.
 func NewDataIntegrityResultsParamsWithContext(ctx context.Context) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	return &DataIntegrityResultsParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDataIntegrityResultsParamsWithContext(ctx context.Context) *DataIntegrit
 // NewDataIntegrityResultsParamsWithHTTPClient creates a new DataIntegrityResultsParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDataIntegrityResultsParamsWithHTTPClient(client *http.Client) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	return &DataIntegrityResultsParams{
 		HTTPClient: client,
 	}
@@ -91,6 +96,7 @@ type DataIntegrityResultsParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DataIntegrityResultsParams) WithDefaults() *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -99,44 +105,52 @@ func (o *DataIntegrityResultsParams) WithDefaults() *DataIntegrityResultsParams 
 //
 // All values with no default are reset to their zero value.
 func (o *DataIntegrityResultsParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the data integrity results params
 func (o *DataIntegrityResultsParams) WithTimeout(timeout time.Duration) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the data integrity results params
 func (o *DataIntegrityResultsParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the data integrity results params
 func (o *DataIntegrityResultsParams) WithContext(ctx context.Context) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the data integrity results params
 func (o *DataIntegrityResultsParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the data integrity results params
 func (o *DataIntegrityResultsParams) WithHTTPClient(client *http.Client) *DataIntegrityResultsParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the data integrity results params
 func (o *DataIntegrityResultsParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DataIntegrityResultsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

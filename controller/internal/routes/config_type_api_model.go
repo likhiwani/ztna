@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/stringz"
 )
@@ -31,6 +32,7 @@ const EntityNameConfigType = "config-types"
 var ConfigTypeLinkFactory = NewBasicLinkFactory(EntityNameConfigType)
 
 func MapCreateConfigTypeToModel(configType *rest_model.ConfigTypeCreate) *model.ConfigType {
+	logtrace.LogWithFunctionName()
 	ret := &model.ConfigType{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(configType.Tags),
@@ -46,6 +48,7 @@ func MapCreateConfigTypeToModel(configType *rest_model.ConfigTypeCreate) *model.
 }
 
 func MapUpdateConfigTypeToModel(id string, configType *rest_model.ConfigTypeUpdate) *model.ConfigType {
+	logtrace.LogWithFunctionName()
 	ret := &model.ConfigType{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(configType.Tags),
@@ -62,6 +65,7 @@ func MapUpdateConfigTypeToModel(id string, configType *rest_model.ConfigTypeUpda
 }
 
 func MapPatchConfigTypeToModel(id string, configType *rest_model.ConfigTypePatch) *model.ConfigType {
+	logtrace.LogWithFunctionName()
 	ret := &model.ConfigType{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(configType.Tags),
@@ -78,10 +82,12 @@ func MapPatchConfigTypeToModel(id string, configType *rest_model.ConfigTypePatch
 }
 
 func MapConfigTypeToRestEntity(_ *env.AppEnv, _ *response.RequestContext, configType *model.ConfigType) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapConfigTypeToRestModel(configType)
 }
 
 func MapConfigTypeToRestModel(configType *model.ConfigType) (*rest_model.ConfigTypeDetail, error) {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.ConfigTypeDetail{
 		BaseEntity: BaseEntityToRestModel(configType, ConfigTypeLinkFactory),
 		Name:       &configType.Name,

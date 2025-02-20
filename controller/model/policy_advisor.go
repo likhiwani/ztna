@@ -1,12 +1,15 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/stringz"
 	"go.etcd.io/bbolt"
 )
 
 func NewPolicyAdvisor(env Env) *PolicyAdvisor {
+	logtrace.LogWithFunctionName()
 	result := &PolicyAdvisor{
 		env: env,
 	}
@@ -33,6 +36,7 @@ type AdvisorServiceReachability struct {
 }
 
 func (advisor *PolicyAdvisor) AnalyzeServiceReachability(identityId, serviceId string) (*AdvisorServiceReachability, error) {
+	logtrace.LogWithFunctionName()
 	identity, err := advisor.env.GetManagers().Identity.Read(identityId)
 	if err != nil {
 		return nil, err
@@ -78,6 +82,7 @@ func (advisor *PolicyAdvisor) AnalyzeServiceReachability(identityId, serviceId s
 }
 
 func (advisor *PolicyAdvisor) getServicePermissions(identityId, serviceId string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	var permissions []string
 
 	servicePolicyStore := advisor.env.GetStores().ServicePolicy
@@ -102,6 +107,7 @@ func (advisor *PolicyAdvisor) getServicePermissions(identityId, serviceId string
 }
 
 func (advisor *PolicyAdvisor) getIdentityEdgeRouters(identityId string) (map[string]*AdvisorEdgeRouter, error) {
+	logtrace.LogWithFunctionName()
 	edgeRouters := map[string]*AdvisorEdgeRouter{}
 
 	edgeRouterPolicyIterator := func(tx *bbolt.Tx, edgeRouterPolicyId string) error {
@@ -132,6 +138,7 @@ func (advisor *PolicyAdvisor) getIdentityEdgeRouters(identityId string) (map[str
 }
 
 func (advisor *PolicyAdvisor) getServiceEdgeRouters(serviceId string) (map[string]struct{}, error) {
+	logtrace.LogWithFunctionName()
 	edgeRouters := map[string]struct{}{}
 
 	serviceEdgeRouterPolicyIterator := func(tx *bbolt.Tx, policyId string) error {
@@ -156,6 +163,7 @@ type AdvisorIdentityEdgeRouterLinks struct {
 }
 
 func (advisor *PolicyAdvisor) InspectIdentityEdgeRouterLinks(identityId, edgeRouterId string) (*AdvisorIdentityEdgeRouterLinks, error) {
+	logtrace.LogWithFunctionName()
 	identity, err := advisor.env.GetManagers().Identity.Read(identityId)
 	if err != nil {
 		return nil, err
@@ -181,6 +189,7 @@ func (advisor *PolicyAdvisor) InspectIdentityEdgeRouterLinks(identityId, edgeRou
 }
 
 func (advisor *PolicyAdvisor) getEdgeRouterPolicies(identityId, edgeRouterId string) ([]*EdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	var result []*EdgeRouterPolicy
 
 	policyStore := advisor.env.GetStores().EdgeRouterPolicy
@@ -209,6 +218,7 @@ type AdvisorIdentityServiceLinks struct {
 }
 
 func (advisor *PolicyAdvisor) InspectIdentityServiceLinks(identityId, serviceId string) (*AdvisorIdentityServiceLinks, error) {
+	logtrace.LogWithFunctionName()
 	identity, err := advisor.env.GetManagers().Identity.Read(identityId)
 	if err != nil {
 		return nil, err
@@ -234,6 +244,7 @@ func (advisor *PolicyAdvisor) InspectIdentityServiceLinks(identityId, serviceId 
 }
 
 func (advisor *PolicyAdvisor) getServicePolicies(identityId, serviceId string) ([]*ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	var result []*ServicePolicy
 
 	policyStore := advisor.env.GetStores().ServicePolicy
@@ -262,6 +273,7 @@ type AdvisorServiceEdgeRouterLinks struct {
 }
 
 func (advisor *PolicyAdvisor) InspectServiceEdgeRouterLinks(serviceId, edgeRouterId string) (*AdvisorServiceEdgeRouterLinks, error) {
+	logtrace.LogWithFunctionName()
 	service, err := advisor.env.GetManagers().EdgeService.Read(serviceId)
 	if err != nil {
 		return nil, err
@@ -287,6 +299,7 @@ func (advisor *PolicyAdvisor) InspectServiceEdgeRouterLinks(serviceId, edgeRoute
 }
 
 func (advisor *PolicyAdvisor) getServiceEdgeRouterPolicies(serviceId, edgeRouterId string) ([]*ServiceEdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	var result []*ServiceEdgeRouterPolicy
 
 	policyStore := advisor.env.GetStores().ServiceEdgeRouterPolicy

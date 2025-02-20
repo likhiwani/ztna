@@ -26,6 +26,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/storage/ast"
@@ -33,6 +34,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewEdgeRouterRouter()
 	env.AddRouter(r)
 }
@@ -42,12 +44,14 @@ type EdgeRouterRouter struct {
 }
 
 func NewEdgeRouterRouter() *EdgeRouterRouter {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouterRouter{
 		BasePath: "/" + EntityNameEdgeRouter,
 	}
 }
 
 func (r *EdgeRouterRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//CRUD
 	ae.ManagementApi.EdgeRouterDeleteEdgeRouterHandler = edge_router.DeleteEdgeRouterHandlerFunc(func(params edge_router.DeleteEdgeRouterParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
@@ -97,6 +101,7 @@ func (r *EdgeRouterRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *EdgeRouterRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	roleFilters := rc.Request.URL.Query()["roleFilter"]
 	roleSemantic := rc.Request.URL.Query().Get("roleSemantic")
 
@@ -114,26 +119,31 @@ func (r *EdgeRouterRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *EdgeRouterRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.EdgeRouter](ae, rc, ae.Managers.EdgeRouter, MapEdgeRouterToRestEntity)
 }
 
 func (r *EdgeRouterRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params edge_router.CreateEdgeRouterParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, EdgeRouterLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.EdgeRouter.Create, MapCreateEdgeRouterToModel(params.EdgeRouter), rc)
 	})
 }
 
 func (r *EdgeRouterRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.EdgeRouter)
 }
 
 func (r *EdgeRouterRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params edge_router.UpdateEdgeRouterParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.EdgeRouter.Update(MapUpdateEdgeRouterToModel(params.ID, params.EdgeRouter), false, nil, rc.NewChangeContext())
 	})
 }
 
 func (r *EdgeRouterRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params edge_router.PatchEdgeRouterParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		fieldChecker := fields.FilterMaps(boltz.FieldTags, db.FieldEdgeRouterAppData)
 		return ae.Managers.EdgeRouter.Update(MapPatchEdgeRouterToModel(params.ID, params.EdgeRouter), false, fieldChecker, rc.NewChangeContext())
@@ -141,24 +151,29 @@ func (r *EdgeRouterRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, pa
 }
 
 func (r *EdgeRouterRouter) listServiceEdgeRouterPolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeRouter, *model.ServiceEdgeRouterPolicy](ae, rc, ae.Managers.EdgeRouter, ae.Managers.ServiceEdgeRouterPolicy, MapServiceEdgeRouterPolicyToRestEntity)
 }
 
 func (r *EdgeRouterRouter) listEdgeRouterPolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.EdgeRouter, *model.EdgeRouterPolicy](ae, rc, ae.Managers.EdgeRouter, ae.Managers.EdgeRouterPolicy, MapEdgeRouterPolicyToRestEntity)
 }
 
 func (r *EdgeRouterRouter) listIdentities(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `not isEmpty(from edgeRouterPolicies where anyOf(routers) = "%v")`
 	ListAssociationsWithFilter[*model.Identity](ae, rc, filterTemplate, ae.Managers.Identity, MapIdentityToRestEntity)
 }
 
 func (r *EdgeRouterRouter) listServices(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `not isEmpty(from serviceEdgeRouterPolicies where anyOf(routers) = "%v")`
 	ListAssociationsWithFilter[*model.ServiceDetail](ae, rc, filterTemplate, ae.Managers.EdgeService.GetDetailLister(), MapServiceToRestEntity)
 }
 
 func (r *EdgeRouterRouter) ReEnroll(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, _ := rc.GetEntityId()
 
 	var router *model.EdgeRouter

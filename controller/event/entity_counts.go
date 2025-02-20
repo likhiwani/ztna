@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityCountEventNS = "edge.entityCounts"
@@ -32,6 +33,7 @@ type EntityCountEvent struct {
 }
 
 func (event *EntityCountEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v timestamp=%v counts=%+v err=%v",
 		event.Namespace, event.Timestamp, event.Counts, event.Error)
 }

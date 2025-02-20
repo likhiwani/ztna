@@ -20,14 +20,17 @@
 package tests
 
 import (
-	"ztna-core/ztna/common/eid"
-	"github.com/openziti/foundation/v2/stringz"
 	"net/url"
 	"sort"
 	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 func Test_EdgeRouter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

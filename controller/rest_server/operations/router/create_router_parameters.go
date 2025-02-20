@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"io"
 	"net/http"
@@ -46,6 +47,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewCreateRouterParams() CreateRouterParams {
+    logtrace.LogWithFunctionName()
 
 	return CreateRouterParams{}
 }
@@ -71,6 +73,7 @@ type CreateRouterParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewCreateRouterParams() beforehand.
 func (o *CreateRouterParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r

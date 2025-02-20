@@ -2,12 +2,15 @@ package health
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRound(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	interval := time.Millisecond * 100
 
 	for i := 0; i < 100; i++ {

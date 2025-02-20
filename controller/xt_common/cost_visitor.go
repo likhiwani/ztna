@@ -1,12 +1,14 @@
 package xt_common
 
 import (
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/controller/xt"
-	cmap "github.com/orcaman/concurrent-map/v2"
 	"math"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/controller/xt"
+	logtrace "ztna-core/ztna/logtrace"
+
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 type TerminatorCosts struct {
@@ -16,6 +18,7 @@ type TerminatorCosts struct {
 }
 
 func (self *TerminatorCosts) cache(circuitCost uint32) {
+	logtrace.LogWithFunctionName()
 	cost := uint64(self.CircuitCount)*uint64(circuitCost) + uint64(self.FailureCost)
 	if cost > math.MaxUint32 {
 		cost = math.MaxUint32
@@ -24,6 +27,7 @@ func (self *TerminatorCosts) cache(circuitCost uint32) {
 }
 
 func (self *TerminatorCosts) Get() uint16 {
+	logtrace.LogWithFunctionName()
 	val := atomic.LoadUint32(&self.CachedCost)
 	if val > math.MaxUint16 {
 		return math.MaxUint16
@@ -32,6 +36,7 @@ func (self *TerminatorCosts) Get() uint16 {
 }
 
 func (self *TerminatorCosts) Inspect(terminatorId string) *inspect.TerminatorCostDetail {
+	logtrace.LogWithFunctionName()
 	return &inspect.TerminatorCostDetail{
 		TerminatorId: terminatorId,
 		CircuitCount: self.CircuitCount,
@@ -41,6 +46,7 @@ func (self *TerminatorCosts) Inspect(terminatorId string) *inspect.TerminatorCos
 }
 
 func NewCostVisitor(circuitCost, failureCost, successCredit uint16) *CostVisitor {
+	logtrace.LogWithFunctionName()
 	return &CostVisitor{
 		Costs:         cmap.New[*TerminatorCosts](),
 		CircuitCost:   uint32(circuitCost),
@@ -57,6 +63,7 @@ type CostVisitor struct {
 }
 
 func (self *CostVisitor) GetFailureCost(terminatorId string) uint32 {
+	logtrace.LogWithFunctionName()
 	val, _ := self.Costs.Get(terminatorId)
 	if val == nil {
 		return 0
@@ -65,6 +72,7 @@ func (self *CostVisitor) GetFailureCost(terminatorId string) uint32 {
 }
 
 func (self *CostVisitor) GetCircuitCount(terminatorId string) uint32 {
+	logtrace.LogWithFunctionName()
 	val, _ := self.Costs.Get(terminatorId)
 	if val == nil {
 		return 0
@@ -73,6 +81,7 @@ func (self *CostVisitor) GetCircuitCount(terminatorId string) uint32 {
 }
 
 func (self *CostVisitor) GetCost(terminatorId string) uint32 {
+	logtrace.LogWithFunctionName()
 	val, _ := self.Costs.Get(terminatorId)
 	if val == nil {
 		return 0
@@ -81,6 +90,7 @@ func (self *CostVisitor) GetCost(terminatorId string) uint32 {
 }
 
 func (self *CostVisitor) VisitDialFailed(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	self.Costs.Upsert(event.GetTerminator().GetId(), nil, func(exist bool, valueInMap *TerminatorCosts, newValue *TerminatorCosts) *TerminatorCosts {
 		cost := valueInMap
 		if !exist {
@@ -99,6 +109,7 @@ func (self *CostVisitor) VisitDialFailed(event xt.TerminatorEvent) {
 }
 
 func (self *CostVisitor) VisitDialSucceeded(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	self.Costs.Upsert(event.GetTerminator().GetId(), nil, func(exist bool, valueInMap *TerminatorCosts, newValue *TerminatorCosts) *TerminatorCosts {
 		cost := valueInMap
 		if !exist {
@@ -121,6 +132,7 @@ func (self *CostVisitor) VisitDialSucceeded(event xt.TerminatorEvent) {
 }
 
 func (self *CostVisitor) VisitCircuitRemoved(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	self.Costs.Upsert(event.GetTerminator().GetId(), nil, func(exist bool, valueInMap *TerminatorCosts, newValue *TerminatorCosts) *TerminatorCosts {
 		cost := valueInMap
 		if !exist {
@@ -137,6 +149,7 @@ func (self *CostVisitor) VisitCircuitRemoved(event xt.TerminatorEvent) {
 }
 
 func (self *CostVisitor) CreditOverTime(credit uint8, period time.Duration) *time.Ticker {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(period)
 	go func() {
 		for range ticker.C {
@@ -147,6 +160,7 @@ func (self *CostVisitor) CreditOverTime(credit uint8, period time.Duration) *tim
 }
 
 func (self *CostVisitor) CreditAll(credit uint8) {
+	logtrace.LogWithFunctionName()
 	var keys []string
 	self.Costs.IterCb(func(key string, _ *TerminatorCosts) {
 		keys = append(keys, key)
@@ -170,10 +184,12 @@ func (self *CostVisitor) CreditAll(credit uint8) {
 }
 
 func (self *CostVisitor) NotifyEvent(event xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
 	event.Accept(self)
 }
 
 func (self *CostVisitor) HandleTerminatorChange(event xt.StrategyChangeEvent) error {
+	logtrace.LogWithFunctionName()
 	for _, t := range event.GetRemoved() {
 		self.Costs.Remove(t.GetId())
 	}

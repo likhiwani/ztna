@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/strfmt"
@@ -42,10 +43,12 @@ type SubTags map[string]interface{}
 
 // Validate validates this sub tags
 func (m SubTags) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // ContextValidate validates this sub tags based on context it is used
 func (m SubTags) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }

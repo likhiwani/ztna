@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"fmt"
 	"strings"
@@ -25,10 +26,12 @@ import (
 type encryptionVar string
 
 func (f *encryptionVar) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprint(string(*f))
 }
 
 func (f *encryptionVar) Set(value string) error {
+	logtrace.LogWithFunctionName()
 	value = strings.ToUpper(value)
 	if value != "ON" && value != "OFF" && value != "TRUE" && value != "FALSE" {
 		return errors.New("invalid option -- must specify either 'ON' or 'OFF'")
@@ -38,6 +41,7 @@ func (f *encryptionVar) Set(value string) error {
 }
 
 func (f *encryptionVar) Get() bool {
+	logtrace.LogWithFunctionName()
 	if string(*f) == "ON" || string(*f) == "TRUE" {
 		return true
 	}
@@ -45,5 +49,6 @@ func (f *encryptionVar) Get() bool {
 }
 
 func (f *encryptionVar) Type() string {
+	logtrace.LogWithFunctionName()
 	return "ON|OFF"
 }

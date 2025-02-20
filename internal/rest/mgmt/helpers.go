@@ -25,6 +25,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
 
 	"ztna-core/edge-api/rest_management_api_client"
 	"ztna-core/edge-api/rest_management_api_client/auth_policy"
@@ -51,6 +52,7 @@ const (
 )
 
 func IdentityFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.IdentityDetail {
+	logtrace.LogWithFunctionName()
 	params := &identity.ListIdentitiesParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -69,6 +71,7 @@ func IdentityFromFilter(client *rest_management_api_client.ZitiEdgeManagement, f
 }
 
 func ServiceFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ServiceDetail {
+	logtrace.LogWithFunctionName()
 	params := &service.ListServicesParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -86,6 +89,7 @@ func ServiceFromFilter(client *rest_management_api_client.ZitiEdgeManagement, fi
 }
 
 func ServicePolicyFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ServicePolicyDetail {
+	logtrace.LogWithFunctionName()
 	params := &service_policy.ListServicePoliciesParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -103,6 +107,7 @@ func ServicePolicyFromFilter(client *rest_management_api_client.ZitiEdgeManageme
 }
 
 func AuthPolicyFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.AuthPolicyDetail {
+	logtrace.LogWithFunctionName()
 	params := &auth_policy.ListAuthPoliciesParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -120,6 +125,7 @@ func AuthPolicyFromFilter(client *rest_management_api_client.ZitiEdgeManagement,
 }
 
 func CertificateAuthorityFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.CaDetail {
+	logtrace.LogWithFunctionName()
 	params := &certificate_authority.ListCasParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -137,6 +143,7 @@ func CertificateAuthorityFromFilter(client *rest_management_api_client.ZitiEdgeM
 }
 
 func ConfigTypeFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ConfigTypeDetail {
+	logtrace.LogWithFunctionName()
 	params := &config.ListConfigTypesParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -154,6 +161,7 @@ func ConfigTypeFromFilter(client *rest_management_api_client.ZitiEdgeManagement,
 }
 
 func ConfigFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ConfigDetail {
+	logtrace.LogWithFunctionName()
 	params := &config.ListConfigsParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -171,6 +179,7 @@ func ConfigFromFilter(client *rest_management_api_client.ZitiEdgeManagement, fil
 }
 
 func ExternalJWTSignerFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ExternalJWTSignerDetail {
+	logtrace.LogWithFunctionName()
 	params := &external_jwt_signer.ListExternalJWTSignersParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -188,6 +197,7 @@ func ExternalJWTSignerFromFilter(client *rest_management_api_client.ZitiEdgeMana
 }
 
 func PostureCheckFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.PostureCheckDetail {
+	logtrace.LogWithFunctionName()
 	params := &posture_checks.ListPostureChecksParams{
 		Filter:  &filter,
 		Context: context.Background(),
@@ -205,6 +215,7 @@ func PostureCheckFromFilter(client *rest_management_api_client.ZitiEdgeManagemen
 }
 
 func EdgeRouterPolicyFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.EdgeRouterPolicyDetail {
+	logtrace.LogWithFunctionName()
 	params := &edge_router_policy.ListEdgeRouterPoliciesParams{
 		Filter: &filter,
 	}
@@ -221,6 +232,7 @@ func EdgeRouterPolicyFromFilter(client *rest_management_api_client.ZitiEdgeManag
 }
 
 func EdgeRouterFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.EdgeRouterDetail {
+	logtrace.LogWithFunctionName()
 	params := &edge_router.ListEdgeRoutersParams{
 		Filter: &filter,
 	}
@@ -237,6 +249,7 @@ func EdgeRouterFromFilter(client *rest_management_api_client.ZitiEdgeManagement,
 }
 
 func ServiceEdgeRouterPolicyFromFilter(client *rest_management_api_client.ZitiEdgeManagement, filter string) *rest_model.ServiceEdgeRouterPolicyDetail {
+	logtrace.LogWithFunctionName()
 	params := &service_edge_router_policy.ListServiceEdgeRouterPoliciesParams{
 		Filter: &filter,
 	}
@@ -253,10 +266,12 @@ func ServiceEdgeRouterPolicyFromFilter(client *rest_management_api_client.ZitiEd
 }
 
 func NameFilter(name string) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("name = \"%s\"", name)
 }
 
 func NewClient() (*rest_management_api_client.ZitiEdgeManagement, error) {
+	logtrace.LogWithFunctionName()
 	cachedCreds, _, loadErr := util.LoadRestClientConfig()
 	if loadErr != nil {
 		return nil, loadErr

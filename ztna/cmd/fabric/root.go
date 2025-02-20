@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"github.com/Jeffail/gabs"
 	fabric_rest_client "ztna-core/ztna/controller/rest_client"
 	"ztna-core/ztna/ztna/cmd/api"
@@ -29,6 +30,7 @@ import (
 
 // NewFabricCmd creates a command object for the fabric command
 func NewFabricCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	fabricCmd := util.NewEmptyParentCmd("fabric", "Manage the Fabric components of a Ziti network using the Ziti Fabric REST and WebSocket APIs")
 
 	fabricCmd.AddCommand(newCreateCommand(p), newListCmd(p), newUpdateCommand(p), newDeleteCmd(p))
@@ -41,6 +43,7 @@ func NewFabricCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func newCreateCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	createCmd := &cobra.Command{
 		Use:   "create",
 		Short: "creates various entities managed by the Ziti Controller",
@@ -57,6 +60,7 @@ func newCreateCommand(p common.OptionsProvider) *cobra.Command {
 }
 
 func newUpdateCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	updateCmd := &cobra.Command{
 		Use:   "update",
 		Short: "update various entities managed by the Ziti Controller",
@@ -74,6 +78,7 @@ func newUpdateCommand(p common.OptionsProvider) *cobra.Command {
 }
 
 func newStreamCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	streamCmd := &cobra.Command{
 		Use:   "stream",
 		Short: "stream fabric operational data",
@@ -100,6 +105,7 @@ func newStreamCommand(p common.OptionsProvider) *cobra.Command {
 }
 
 func newValidateCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	validateCmd := &cobra.Command{
 		Use:   "validate",
 		Short: "validate model data",
@@ -118,19 +124,23 @@ func newValidateCommand(p common.OptionsProvider) *cobra.Command {
 
 // createEntityOfType create an entity of the given type on the Ziti Controller
 func createEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return util.ControllerCreate("fabric", entityType, body, options.Out, options.OutputJSONRequest, options.OutputJSONResponse, options.Timeout, options.Verbose)
 }
 
 func patchEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return updateEntityOfType(entityType, body, options, resty.MethodPatch)
 }
 
 // updateEntityOfType updates an entity of the given type on the Ziti Edge Controller
 func updateEntityOfType(entityType string, body string, options *api.Options, method string) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return util.ControllerUpdate(util.FabricAPI, entityType, body, options.Out, method, options.OutputJSONRequest, options.OutputJSONResponse, options.Timeout, options.Verbose)
 }
 
 func WithFabricClient(clientOpts util.ClientOpts, f func(client *fabric_rest_client.ZitiFabric) error) error {
+	logtrace.LogWithFunctionName()
 	client, err := util.NewFabricManagementClient(clientOpts)
 	if err != nil {
 		return err

@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -37,10 +39,12 @@ type TransitRouter struct {
 }
 
 func (self *TransitRouter) GetName() string {
+	logtrace.LogWithFunctionName()
 	return self.Name
 }
 
 func (entity *TransitRouter) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.TransitRouter{
 		Router: db.Router{
 			BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
@@ -57,6 +61,7 @@ func (entity *TransitRouter) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.TransitR
 }
 
 func (entity *TransitRouter) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	ret := &db.TransitRouter{
 		Router: db.Router{
 			BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
@@ -75,6 +80,7 @@ func (entity *TransitRouter) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldCh
 }
 
 func (entity *TransitRouter) fillFrom(_ Env, _ *bbolt.Tx, boltTransitRouter *db.TransitRouter) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltTransitRouter)
 	entity.Name = boltTransitRouter.Name
 	entity.IsVerified = boltTransitRouter.IsVerified

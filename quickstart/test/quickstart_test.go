@@ -5,9 +5,11 @@ package test
 import (
 	"fmt"
 	"testing"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 func TestSimpleWebService(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	fmt.Println()
 	fmt.Println("----------------------------------------------------------------")
 	fmt.Println("  test has moved to ./ziti/cmd/edge/quickstart_manual_test.go.  ")

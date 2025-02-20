@@ -17,11 +17,14 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 func NewIdentityTypeManager(env Env) *IdentityTypeManager {
+	logtrace.LogWithFunctionName()
 	manager := &IdentityTypeManager{
 		baseEntityManager: newBaseEntityManager[*IdentityType, *db.IdentityType](env, env.GetStores().IdentityType),
 	}
@@ -35,10 +38,12 @@ type IdentityTypeManager struct {
 }
 
 func (self *IdentityTypeManager) newModelEntity() *IdentityType {
+	logtrace.LogWithFunctionName()
 	return &IdentityType{}
 }
 
 func (self *IdentityTypeManager) ReadByIdOrName(idOrName string) (*IdentityType, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &IdentityType{}
 	err := self.readEntity(idOrName, modelEntity)
 
@@ -62,6 +67,7 @@ func (self *IdentityTypeManager) ReadByIdOrName(idOrName string) (*IdentityType,
 }
 
 func (self *IdentityTypeManager) ReadByName(name string) (*IdentityType, error) {
+	logtrace.LogWithFunctionName()
 	modelIdentityType := &IdentityType{}
 	nameIndex := self.env.GetStores().IdentityType.GetNameIndex()
 	if err := self.readEntityWithIndex("name", []byte(name), nameIndex, modelIdentityType); err != nil {

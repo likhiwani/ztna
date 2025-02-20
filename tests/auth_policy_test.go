@@ -25,6 +25,7 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -32,6 +33,7 @@ import (
 )
 
 func Test_AuthPolicies(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

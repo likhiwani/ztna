@@ -17,14 +17,16 @@
 package xlink_transport
 
 import (
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
 	"github.com/openziti/metrics"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xlink"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -40,22 +42,27 @@ type dialer struct {
 }
 
 func (self *dialer) GetHealthyBackoffConfig() xlink.BackoffConfig {
+	logtrace.LogWithFunctionName()
 	return self.config.healthyBackoffConfig
 }
 
 func (self *dialer) GetUnhealthyBackoffConfig() xlink.BackoffConfig {
+	logtrace.LogWithFunctionName()
 	return self.config.unhealthyBackoffConfig
 }
 
 func (self *dialer) GetGroups() []string {
+	logtrace.LogWithFunctionName()
 	return self.config.groups
 }
 
 func (self *dialer) AdoptBinding(l xlink.Listener) {
+	logtrace.LogWithFunctionName()
 	self.adoptedBinding = l.GetLocalBinding()
 }
 
 func (self *dialer) GetBinding() string {
+	logtrace.LogWithFunctionName()
 	if self.adoptedBinding != "" {
 		return self.adoptedBinding
 	}
@@ -63,6 +70,7 @@ func (self *dialer) GetBinding() string {
 }
 
 func (self *dialer) Dial(dial xlink.Dial) (xlink.Xlink, error) {
+	logtrace.LogWithFunctionName()
 	address, err := transport.ParseAddress(dial.GetAddress())
 	if err != nil {
 		return nil, errors.Wrapf(err, "error parsing link address [%s]", dial.GetAddress())
@@ -93,6 +101,7 @@ func (self *dialer) Dial(dial xlink.Dial) (xlink.Xlink, error) {
 }
 
 func (self *dialer) dialSplit(linkId *identity.TokenId, address transport.Address, connId string, dial xlink.Dial) (xlink.Xlink, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithFields(logrus.Fields{
 		"linkId": linkId.Token,
 		"connId": connId,
@@ -156,6 +165,7 @@ func (self *dialer) dialSplit(linkId *identity.TokenId, address transport.Addres
 }
 
 func (self *dialer) dialSingle(linkId *identity.TokenId, address transport.Address, connId string, dial xlink.Dial) (xlink.Xlink, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithFields(logrus.Fields{
 		"linkId": linkId.Token,
 		"connId": connId,
@@ -208,6 +218,7 @@ type dialBindHandler struct {
 }
 
 func (self *dialBindHandler) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	self.link.ch = binding.GetChannel()
 	bindHandler := self.dialer.bindHandlerFactory.NewBindHandler(self.link, true, false)
 	return bindHandler.BindChannel(binding)
@@ -219,6 +230,7 @@ type splitDialBindHandler struct {
 }
 
 func (self *splitDialBindHandler) bindPayloadChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	return self.link.syncInit(func() error {
 		self.link.payloadCh = binding.GetChannel()
 		bindHandler := self.dialer.bindHandlerFactory.NewBindHandler(self.link, true, false)
@@ -230,6 +242,7 @@ func (self *splitDialBindHandler) bindPayloadChannel(binding channel.Binding) er
 }
 
 func (self *splitDialBindHandler) bindAckChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	return self.link.syncInit(func() error {
 
 		self.link.ackCh = binding.GetChannel()

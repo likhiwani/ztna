@@ -18,13 +18,16 @@ package env
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"io"
+	"ztna-core/ztna/logtrace"
+
+	"gopkg.in/yaml.v3"
 )
 
 type PemProducer struct{}
 
 func (p PemProducer) Produce(writer io.Writer, i interface{}) error {
+	logtrace.LogWithFunctionName()
 	if buffer, ok := i.([]byte); ok {
 		_, err := writer.Write(buffer)
 		return err
@@ -45,6 +48,7 @@ func (p PemProducer) Produce(writer io.Writer, i interface{}) error {
 type YamlProducer struct{}
 
 func (p YamlProducer) Produce(writer io.Writer, i interface{}) error {
+	logtrace.LogWithFunctionName()
 	enc := yaml.NewEncoder(writer)
 	return enc.Encode(i)
 }

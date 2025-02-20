@@ -17,9 +17,11 @@
 package db
 
 import (
-	"github.com/openziti/storage/boltz"
 	"regexp"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 const (
@@ -27,6 +29,7 @@ const (
 )
 
 func newPostureCheckMacAddresses() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckMacAddresses{
 		MacAddresses: []string{},
 	}
@@ -37,6 +40,7 @@ type PostureCheckMacAddresses struct {
 }
 
 func (entity *PostureCheckMacAddresses) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	for _, macAddress := range bucket.GetStringList(FieldPostureCheckMacAddresses) {
 		macAddress = cleanMacAddress(macAddress)
 		entity.MacAddresses = append(entity.MacAddresses, macAddress)
@@ -44,6 +48,7 @@ func (entity *PostureCheckMacAddresses) LoadValues(bucket *boltz.TypedBucket) {
 }
 
 func (entity *PostureCheckMacAddresses) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	var macAddresses []string
 	for _, macAddress := range entity.MacAddresses {
 		macAddress = cleanMacAddress(macAddress)
@@ -54,6 +59,7 @@ func (entity *PostureCheckMacAddresses) SetValues(ctx *boltz.PersistContext, buc
 }
 
 func cleanMacAddress(macAddress string) string {
+	logtrace.LogWithFunctionName()
 	macAddress = strings.ToLower(macAddress)
 	nonHex := regexp.MustCompile("[^a-f0-9]")
 	return nonHex.ReplaceAllString(macAddress, "")

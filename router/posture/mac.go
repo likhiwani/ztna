@@ -2,6 +2,7 @@ package posture
 
 import (
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 )
 
 type MacCheck struct {
@@ -10,6 +11,7 @@ type MacCheck struct {
 }
 
 func (m MacCheck) Evaluate(state *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	if state == nil {
 		return &CheckError{
 			Id:    m.Id,

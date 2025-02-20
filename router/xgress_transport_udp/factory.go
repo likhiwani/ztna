@@ -17,17 +17,21 @@
 package xgress_transport_udp
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
 	"github.com/openziti/identity"
 	"github.com/pkg/errors"
 )
 
 func NewFactory(id *identity.TokenId, ctrl env.NetworkControllers) xgress.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{id: id, ctrl: ctrl}
 }
 
 func (factory *factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	options, err := xgress.LoadOptions(optionsData)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading options")
@@ -36,6 +40,7 @@ func (factory *factory) CreateListener(optionsData xgress.OptionsData) (xgress.L
 }
 
 func (factory *factory) CreateDialer(optionsData xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	options, err := xgress.LoadOptions(optionsData)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading options")

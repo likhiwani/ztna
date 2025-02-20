@@ -23,6 +23,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/foundation/v2/stringz"
@@ -39,17 +40,20 @@ type ApiSessionLinkFactoryImpl struct {
 }
 
 func NewApiSessionLinkFactory() *ApiSessionLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &ApiSessionLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameApiSession),
 	}
 }
 
 func (factory ApiSessionLinkFactoryImpl) NewNestedLink(entity models.Entity, elem ...string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	elem = append([]string{EntityNameApiSession, entity.GetId()}, elem...)
 	return NewLink("./" + path.Join(elem...))
 }
 
 func (factory *ApiSessionLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	return rest_model.Links{
 		EntityNameSelf:    factory.SelfLink(entity),
 		EntityNameSession: factory.NewNestedLink(entity, EntityNameSession),
@@ -57,10 +61,12 @@ func (factory *ApiSessionLinkFactoryImpl) Links(entity models.Entity) rest_model
 }
 
 func MapApiSessionToRestInterface(ae *env.AppEnv, _ *response.RequestContext, apiSession *model.ApiSession) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapApiSessionToRestModel(ae, apiSession)
 }
 
 func MapApiSessionToRestModel(ae *env.AppEnv, apiSession *model.ApiSession) (*rest_model.APISessionDetail, error) {
+	logtrace.LogWithFunctionName()
 
 	lastActivityAt := strfmt.DateTime(apiSession.LastActivityAt)
 

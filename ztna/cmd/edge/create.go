@@ -19,20 +19,24 @@ package edge
 import (
 	"io"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
+	"github.com/Jeffail/gabs"
 
 	"github.com/spf13/cobra"
 )
 
 func Ptr[T any](sub T) *T {
+	logtrace.LogWithFunctionName()
 	return &sub
 }
 
 // newCreateCmd creates a command object for the "create" command
 func newCreateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "creates various entities managed by the Ziti Edge Controller",
@@ -64,5 +68,6 @@ func newCreateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // CreateEntityOfType create an entity of the given type on the Ziti Controller
 func CreateEntityOfType(entityType string, body string, options *api.Options) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return util.ControllerCreate("edge", entityType, body, options.Out, options.OutputJSONRequest, options.OutputJSONResponse, options.Timeout, options.Verbose)
 }

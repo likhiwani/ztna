@@ -17,11 +17,14 @@
 package tunnel
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept/host"
+
 	"github.com/spf13/cobra"
 )
 
 func NewHostCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:     "host",
 		Short:   "Run in 'host' mode",
@@ -33,6 +36,7 @@ func NewHostCmd() *cobra.Command {
 }
 
 func runHost(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	if flag := cmd.Flag(resolverCfgFlag); !flag.Changed {
 		_ = flag.Value.Set("")
 	}

@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"ztna-core/ztna/logtrace"
 )
 
 type BodyParseTypeError struct {
@@ -31,10 +32,12 @@ type BodyParseTypeError struct {
 }
 
 func (e BodyParseTypeError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("Expected type %s, but encountered %s near %s", e.ExpectedType, e.ExpectedType, e.Near)
 }
 
 func NewBodyParseTypeError(e *json.UnmarshalTypeError, body string) *BodyParseTypeError {
+	logtrace.LogWithFunctionName()
 	nearStart := e.Offset - 10
 	nearEnd := e.Offset
 
@@ -64,10 +67,12 @@ type BodyParseSyntaxError struct {
 }
 
 func (e BodyParseSyntaxError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("Invalid syntax on line %d", e.Line)
 }
 
 func NewBodyParseSyntaxError(e *json.SyntaxError, body string) *BodyParseSyntaxError {
+	logtrace.LogWithFunctionName()
 	nearStart := e.Offset - 10
 	nearEnd := e.Offset
 

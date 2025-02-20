@@ -19,6 +19,7 @@ package util
 import (
 	"io"
 	"os"
+	"ztna-core/ztna/logtrace"
 )
 
 const (
@@ -27,6 +28,7 @@ const (
 
 // credit https://gist.github.com/r0l1/92462b38df26839a3ca324697c8cba04
 func CopyFile(src, dst string) (err error) {
+	logtrace.LogWithFunctionName()
 	in, err := os.Open(src)
 	if err != nil {
 		return

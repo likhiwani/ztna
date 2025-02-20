@@ -17,11 +17,14 @@
 package internal
 
 import (
-	"github.com/sirupsen/logrus"
 	"runtime"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/sirupsen/logrus"
 )
 
 func ConfigureLogFormat(level logrus.Level) {
+	logtrace.LogWithFunctionName()
 	logrus.SetLevel(level)
 	logrus.SetFormatter(&logrus.TextFormatter{
 		ForceColors:               true,

@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DeleteServiceReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DeleteServiceReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDeleteServiceOK()
@@ -84,6 +86,7 @@ func (o *DeleteServiceReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewDeleteServiceOK creates a DeleteServiceOK with default headers values
 func NewDeleteServiceOK() *DeleteServiceOK {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceOK{}
 }
 
@@ -96,13 +99,16 @@ type DeleteServiceOK struct {
 }
 
 func (o *DeleteServiceOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /services/{id}][%d] deleteServiceOK  %+v", 200, o.Payload)
 }
 func (o *DeleteServiceOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteServiceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *DeleteServiceOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewDeleteServiceBadRequest creates a DeleteServiceBadRequest with default headers values
 func NewDeleteServiceBadRequest() *DeleteServiceBadRequest {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type DeleteServiceBadRequest struct {
 }
 
 func (o *DeleteServiceBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /services/{id}][%d] deleteServiceBadRequest  %+v", 400, o.Payload)
 }
 func (o *DeleteServiceBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteServiceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *DeleteServiceBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewDeleteServiceUnauthorized creates a DeleteServiceUnauthorized with default headers values
 func NewDeleteServiceUnauthorized() *DeleteServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type DeleteServiceUnauthorized struct {
 }
 
 func (o *DeleteServiceUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /services/{id}][%d] deleteServiceUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DeleteServiceUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteServiceUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *DeleteServiceUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewDeleteServiceConflict creates a DeleteServiceConflict with default headers values
 func NewDeleteServiceConflict() *DeleteServiceConflict {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceConflict{}
 }
 
@@ -192,13 +207,16 @@ type DeleteServiceConflict struct {
 }
 
 func (o *DeleteServiceConflict) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /services/{id}][%d] deleteServiceConflict  %+v", 409, o.Payload)
 }
 func (o *DeleteServiceConflict) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteServiceConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *DeleteServiceConflict) readResponse(response runtime.ClientResponse, co
 
 // NewDeleteServiceTooManyRequests creates a DeleteServiceTooManyRequests with default headers values
 func NewDeleteServiceTooManyRequests() *DeleteServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DeleteServiceTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type DeleteServiceTooManyRequests struct {
 }
 
 func (o *DeleteServiceTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /services/{id}][%d] deleteServiceTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DeleteServiceTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteServiceTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

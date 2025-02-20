@@ -21,11 +21,13 @@ import (
 	"ztna-core/ztna/controller/idgen"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/controller/rest_model"
 
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/ztna/controller/models"
+
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 const EntityNameService = "services"
@@ -37,18 +39,21 @@ type ServiceLinkFactoryIml struct {
 }
 
 func NewServiceLinkFactory() *ServiceLinkFactoryIml {
+	logtrace.LogWithFunctionName()
 	return &ServiceLinkFactoryIml{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameService),
 	}
 }
 
 func (factory *ServiceLinkFactoryIml) Links(entity LinkEntity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameTerminator] = factory.NewNestedLink(entity, EntityNameTerminator)
 	return links
 }
 
 func MapCreateServiceToModel(service *rest_model.ServiceCreate) *model.Service {
+	logtrace.LogWithFunctionName()
 	ret := &model.Service{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -69,6 +74,7 @@ func MapCreateServiceToModel(service *rest_model.ServiceCreate) *model.Service {
 }
 
 func MapUpdateServiceToModel(id string, service *rest_model.ServiceUpdate) *model.Service {
+	logtrace.LogWithFunctionName()
 	ret := &model.Service{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -82,6 +88,7 @@ func MapUpdateServiceToModel(id string, service *rest_model.ServiceUpdate) *mode
 }
 
 func MapPatchServiceToModel(id string, service *rest_model.ServicePatch) *model.Service {
+	logtrace.LogWithFunctionName()
 	ret := &model.Service{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(service.Tags),
@@ -97,6 +104,7 @@ func MapPatchServiceToModel(id string, service *rest_model.ServicePatch) *model.
 type ServiceModelMapper struct{}
 
 func (ServiceModelMapper) ToApi(_ *network.Network, _ api.RequestContext, service *model.Service) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return &rest_model.ServiceDetail{
 		BaseEntity:         BaseEntityToRestModel(service, ServiceLinkFactory),
 		Name:               &service.Name,

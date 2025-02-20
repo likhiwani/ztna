@@ -17,6 +17,7 @@
 package api
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"net/url"
@@ -33,6 +34,7 @@ import (
 
 // ListEntitiesOfType queries the Ziti Controller for entities of the given type
 func ListEntitiesWithOptions(api util.API, entityType string, options *Options) ([]*gabs.Container, *Paging, error) {
+	logtrace.LogWithFunctionName()
 	params := url.Values{}
 	if len(options.Args) > 0 {
 		params.Add("filter", options.Args[0])
@@ -43,6 +45,7 @@ func ListEntitiesWithOptions(api util.API, entityType string, options *Options) 
 
 // ListEntitiesOfType queries the Ziti Controller for entities of the given type
 func ListEntitiesOfType(api util.API, entityType string, params url.Values, logJSON bool, out io.Writer, timeout int, verbose bool) ([]*gabs.Container, *Paging, error) {
+	logtrace.LogWithFunctionName()
 	jsonParsed, err := util.ControllerList(api, entityType, params, logJSON, out, timeout, verbose)
 
 	if err != nil {
@@ -54,6 +57,7 @@ func ListEntitiesOfType(api util.API, entityType string, params url.Values, logJ
 }
 
 func GetPaging(c *gabs.Container) *Paging {
+	logtrace.LogWithFunctionName()
 	pagingInfo := &Paging{}
 	pagination := c.S("meta", "pagination")
 	if pagination != nil {
@@ -74,6 +78,7 @@ type Paging struct {
 }
 
 func (p *Paging) Output(o *Options) {
+	logtrace.LogWithFunctionName()
 	if p.HasError() {
 		_, _ = fmt.Fprintf(o.Out, "unable to retrieve paging information: %v\n", p.Err)
 	} else if p.Count == 0 {
@@ -89,6 +94,7 @@ func (p *Paging) Output(o *Options) {
 }
 
 func toInt64(c *gabs.Container, path string, errorHolder errorz.ErrorHolder) int64 {
+	logtrace.LogWithFunctionName()
 	data := c.S(path).Data()
 	if data == nil {
 		errorHolder.SetError(errors.Errorf("%v not found", path))
@@ -103,12 +109,14 @@ func toInt64(c *gabs.Container, path string, errorHolder errorz.ErrorHolder) int
 }
 
 func FilterEntitiesOfType(api util.API, entityType string, filter string, logJSON bool, out io.Writer, timeout int, verbose bool) ([]*gabs.Container, *Paging, error) {
+	logtrace.LogWithFunctionName()
 	params := url.Values{}
 	params.Add("filter", filter)
 	return ListEntitiesOfType(api, entityType, params, logJSON, out, timeout, verbose)
 }
 
 func MapNameToID(api util.API, entityType string, o *Options, idOrName string) (string, error) {
+	logtrace.LogWithFunctionName()
 	result, err := MapNamesToIDs(api, entityType, o, idOrName)
 	if err != nil {
 		return "", err
@@ -120,6 +128,7 @@ func MapNameToID(api util.API, entityType string, o *Options, idOrName string) (
 }
 
 func MapNamesToIDs(api util.API, entityType string, o *Options, list ...string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	var result []string
 	for _, val := range list {
 		if strings.HasPrefix(val, "id") {
@@ -154,6 +163,7 @@ func MapNamesToIDs(api util.API, entityType string, o *Options, list ...string) 
 }
 
 func RenderTable(o *Options, t table.Writer, pagingInfo *Paging) {
+	logtrace.LogWithFunctionName()
 	if o.OutputCSV {
 		if _, err := fmt.Fprintln(o.Cmd.OutOrStdout(), t.RenderCSV()); err != nil {
 			panic(err)

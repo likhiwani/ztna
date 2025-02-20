@@ -16,15 +16,19 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequireAuthenticated struct{}
 
 var isAuthenticated = &RequireAuthenticated{}
 
 func IsAuthenticated() *RequireAuthenticated {
+	logtrace.LogWithFunctionName()
 	return isAuthenticated
 }
 
 func (ir *RequireAuthenticated) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	for _, p := range identityPerms {
 		if p == AuthenticatedPermission {
 			return true

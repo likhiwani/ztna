@@ -20,8 +20,10 @@ import (
 	"io"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/spf13/cobra"
 )
@@ -36,6 +38,7 @@ type LogFormatOptions struct {
 
 // NewCmdLogFormat a command object for the "log-format" command
 func NewCmdLogFormat(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &LogFormatOptions{
 		CommonOptions: common.CommonOptions{
 			Out: out,
@@ -63,6 +66,7 @@ func NewCmdLogFormat(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // Run implements this command
 func (o *LogFormatOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	options := pfxlog.DefaultOptions().SetTrimPrefix(o.trimPrefix)
 	if o.absoluteTime {
 		options.SetAbsoluteTime()

@@ -25,18 +25,20 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/coreos/go-iptables/iptables"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"github.com/openziti/foundation/v2/mempool"
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/sdk-golang/ziti/edge/network"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"
 	"ztna-core/ztna/tunnel/intercept"
 	"ztna-core/ztna/tunnel/router"
 	"ztna-core/ztna/tunnel/udp_vconn"
+
+	"github.com/coreos/go-iptables/iptables"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/openziti/foundation/v2/mempool"
+	"github.com/openziti/foundation/v2/stringz"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -78,6 +80,7 @@ var listenConfig = net.ListenConfig{
 }
 
 func New(config Config) (intercept.Interceptor, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	self := &interceptor{
@@ -149,9 +152,12 @@ func New(config Config) (intercept.Interceptor, error) {
 
 type alwaysRemoveAddressTracker struct{}
 
-func (a alwaysRemoveAddressTracker) AddAddress(string) {}
+func (a alwaysRemoveAddressTracker) AddAddress(string) {
+	logtrace.LogWithFunctionName()
+}
 
 func (a alwaysRemoveAddressTracker) RemoveAddress(string) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
@@ -166,6 +172,7 @@ type interceptor struct {
 }
 
 func (self *interceptor) Stop() {
+	logtrace.LogWithFunctionName()
 	self.serviceProxies.IterCb(func(key string, proxy *tProxy) {
 		proxy.Stop(alwaysRemoveAddressTracker{})
 	})
@@ -179,6 +186,7 @@ func (self *interceptor) Stop() {
 }
 
 func (self *interceptor) Intercept(service *entities.Service, resolver dns.Resolver, tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	tproxy, err := self.newTproxy(service, resolver, tracker)
 	if err != nil {
 		return err
@@ -188,6 +196,7 @@ func (self *interceptor) Intercept(service *entities.Service, resolver dns.Resol
 }
 
 func (self *interceptor) StopIntercepting(serviceName string, tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	if proxy, found := self.serviceProxies.Get(serviceName); found {
 		proxy.Stop(tracker)
 		self.serviceProxies.Remove(serviceName)
@@ -196,6 +205,7 @@ func (self *interceptor) StopIntercepting(serviceName string, tracker intercept.
 }
 
 func (self *interceptor) cleanupChains() {
+	logtrace.LogWithFunctionName()
 	if self.diverter != "" {
 		return
 	}
@@ -208,6 +218,7 @@ func (self *interceptor) cleanupChains() {
 }
 
 func (self *interceptor) newTproxy(service *entities.Service, resolver dns.Resolver, tracker intercept.AddressTracker) (*tProxy, error) {
+	logtrace.LogWithFunctionName()
 	t := &tProxy{
 		interceptor: self,
 		service:     service,
@@ -259,6 +270,7 @@ func (self *interceptor) newTproxy(service *entities.Service, resolver dns.Resol
 }
 
 func (self *interceptor) addIptablesChain(ipt *iptables.IPTables, table, srcChain, dstChain string) error {
+	logtrace.LogWithFunctionName()
 	chains, err := ipt.ListChains(table)
 	if err != nil {
 		return fmt.Errorf("failed to list iptables %s chains: %v", table, err)
@@ -298,6 +310,7 @@ const (
 )
 
 func (self *tProxy) acceptTCP() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	for {
 		client, err := self.tcpLn.Accept()
@@ -319,12 +332,14 @@ func (self *tProxy) acceptTCP() {
 }
 
 func (self *tProxy) acceptUDP() {
+	logtrace.LogWithFunctionName()
 	expirationPolicy := udp_vconn.NewTimeoutExpirationPolicy(self.interceptor.udpIdleTimeout, self.interceptor.udpCheckInterval)
 	vconnMgr := udp_vconn.NewManager(self.service.GetFabricProvider(), udp_vconn.NewUnlimitedConnectionPolicy(), expirationPolicy)
 	self.generateReadEvents(vconnMgr)
 }
 
 func (self *tProxy) generateReadEvents(manager udp_vconn.Manager) {
+	logtrace.LogWithFunctionName()
 	oobSize := 1600
 	bufPool := mempool.NewPool(16, info.MaxUdpPacketSize+oobSize)
 	log := pfxlog.Logger()
@@ -360,6 +375,7 @@ type udpReadEvent struct {
 }
 
 func (event *udpReadEvent) Handle(manager udp_vconn.Manager) error {
+	logtrace.LogWithFunctionName()
 	writeQueue := manager.GetWriteQueue(event.srcAddr)
 
 	if writeQueue == nil {
@@ -390,6 +406,7 @@ func (event *udpReadEvent) Handle(manager udp_vconn.Manager) error {
 }
 
 func getOriginalDest(oob []byte) (*net.UDPAddr, error) {
+	logtrace.LogWithFunctionName()
 	cmsgs, err := syscall.ParseSocketControlMessage(oob)
 	if err != nil {
 		return nil, err
@@ -405,6 +422,7 @@ func getOriginalDest(oob []byte) (*net.UDPAddr, error) {
 }
 
 func deleteIptablesChain(ipt *iptables.IPTables, table, srcChain, dstChain string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("chain", dstChain)
 	log.Infof("removing iptables '%v' link '%v' --> '%v'", table, srcChain, dstChain)
 
@@ -422,6 +440,7 @@ func deleteIptablesChain(ipt *iptables.IPTables, table, srcChain, dstChain strin
 }
 
 func (self *tProxy) Stop(tracker intercept.AddressTracker) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", *self.service.Name)
 	if self.tcpLn != nil {
 		if err := self.tcpLn.Close(); err != nil {
@@ -442,6 +461,7 @@ func (self *tProxy) Stop(tracker intercept.AddressTracker) {
 }
 
 func (self *tProxy) tcpPort() IPPortAddr {
+	logtrace.LogWithFunctionName()
 	if self.tcpLn != nil {
 		return (*TCPIPPortAddr)(self.tcpLn.Addr().(*net.TCPAddr))
 	}
@@ -450,6 +470,7 @@ func (self *tProxy) tcpPort() IPPortAddr {
 }
 
 func (self *tProxy) udpPort() IPPortAddr {
+	logtrace.LogWithFunctionName()
 	if self.udpLn != nil {
 		return (*UDPIPPortAddr)(self.udpLn.LocalAddr().(*net.UDPAddr))
 	}
@@ -459,6 +480,7 @@ func (self *tProxy) udpPort() IPPortAddr {
 }
 
 func (self *tProxy) Intercept(resolver dns.Resolver, tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	service := self.service
 	if service.InterceptV1Config == nil {
 		return errors.Errorf("no client configuration for service %v", *service.Name)
@@ -481,6 +503,7 @@ func (self *tProxy) Intercept(resolver dns.Resolver, tracker intercept.AddressTr
 }
 
 func (self *tProxy) Apply(addr *intercept.InterceptAddress) {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("for service %v, intercepting proto: %v, cidr: %v, ports: %v:%v", *self.service.Name, addr.Proto(), addr.IpNet(), addr.LowPort(), addr.HighPort())
 
 	var port IPPortAddr
@@ -502,6 +525,7 @@ func (self *tProxy) Apply(addr *intercept.InterceptAddress) {
 }
 
 func (self *tProxy) intercept(service *entities.Service, resolver dns.Resolver, ports []IPPortAddr, tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	var protocols []string
 	for _, p := range ports {
 		protocols = append(protocols, p.GetProtocol())
@@ -516,6 +540,7 @@ func (self *tProxy) intercept(service *entities.Service, resolver dns.Resolver, 
 }
 
 func (self *tProxy) addInterceptAddr(interceptAddr *intercept.InterceptAddress, service *entities.Service, port IPPortAddr, tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	ipNet := interceptAddr.IpNet()
 	if interceptAddr.RouteRequired() {
 		if err := router.AddLocalAddress(ipNet, "lo"); err != nil {
@@ -578,6 +603,7 @@ func (self *tProxy) addInterceptAddr(interceptAddr *intercept.InterceptAddress, 
 }
 
 func (self *tProxy) StopIntercepting(tracker intercept.AddressTracker) error {
+	logtrace.LogWithFunctionName()
 	var errorList []error
 
 	log := pfxlog.Logger().WithField("service", *self.service.Name)
@@ -650,27 +676,33 @@ type IPPortAddr interface {
 type UDPIPPortAddr net.UDPAddr
 
 func (addr *UDPIPPortAddr) GetIP() net.IP {
+	logtrace.LogWithFunctionName()
 	return addr.IP
 }
 
 func (addr *UDPIPPortAddr) GetPort() int {
+	logtrace.LogWithFunctionName()
 	return addr.Port
 }
 
 func (addr *UDPIPPortAddr) GetProtocol() string {
+	logtrace.LogWithFunctionName()
 	return "udp"
 }
 
 type TCPIPPortAddr net.TCPAddr
 
 func (addr *TCPIPPortAddr) GetIP() net.IP {
+	logtrace.LogWithFunctionName()
 	return addr.IP
 }
 
 func (addr *TCPIPPortAddr) GetPort() int {
+	logtrace.LogWithFunctionName()
 	return addr.Port
 }
 
 func (addr *TCPIPPortAddr) GetProtocol() string {
+	logtrace.LogWithFunctionName()
 	return "tcp"
 }

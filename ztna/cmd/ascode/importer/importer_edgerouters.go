@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"errors"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/edge_router"
@@ -28,12 +29,14 @@ import (
 )
 
 func (importer *Importer) IsEdgeRouterImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "edge-router") ||
 		slices.Contains(args, "er")
 }
 
 func (importer *Importer) ProcessEdgeRouters(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 	for _, data := range input["edgeRouters"] {
@@ -83,6 +86,7 @@ func (importer *Importer) ProcessEdgeRouters(input map[string][]interface{}) (ma
 }
 
 func (importer *Importer) lookupEdgeRouters(roles []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	edgeRouterRoles := []string{}
 	for _, role := range roles {
 		if role[0:1] == "@" {

@@ -21,10 +21,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/foundation/v2/rate"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/router/state"
 	"io/fs"
 	"os"
 	"path"
@@ -32,24 +28,21 @@ import (
 	"runtime/debug"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/state"
+
+	"github.com/openziti/foundation/v2/rate"
+
+	"ztna-core/ztna/common/config"
+	"ztna-core/ztna/router/link"
 
 	"github.com/openziti/foundation/v2/debugz"
 	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/openziti/xweb/v2"
-	"ztna-core/ztna/common/config"
-	"ztna-core/ztna/router/link"
 	metrics2 "github.com/rcrowley/go-metrics"
 
-	gosundheit "github.com/AppsFlyer/go-sundheit"
-	"github.com/AppsFlyer/go-sundheit/checks"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/identity"
-	"github.com/openziti/metrics"
-	"github.com/openziti/transport/v2"
 	"ztna-core/ztna/common/health"
 	fabricMetrics "ztna-core/ztna/common/metrics"
 	"ztna-core/ztna/common/pb/ctrl_pb"
@@ -66,6 +59,17 @@ import (
 	"ztna-core/ztna/router/xgress_transport_udp"
 	"ztna-core/ztna/router/xlink"
 	"ztna-core/ztna/router/xlink_transport"
+
+	gosundheit "github.com/AppsFlyer/go-sundheit"
+	"github.com/AppsFlyer/go-sundheit/checks"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/identity"
+	"github.com/openziti/metrics"
+	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
@@ -102,42 +106,52 @@ type Router struct {
 }
 
 func (self *Router) GetRouterId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.config.Id
 }
 
 func (self *Router) GetNetworkControllers() env.NetworkControllers {
+	logtrace.LogWithFunctionName()
 	return self.ctrls
 }
 
 func (self *Router) GetDialerCfg() map[string]xgress.OptionsData {
+	logtrace.LogWithFunctionName()
 	return self.config.Dialers
 }
 
 func (self *Router) GetXlinkDialers() []xlink.Dialer {
+	logtrace.LogWithFunctionName()
 	return self.xlinkDialers
 }
 
 func (self *Router) GetXrctrls() []env.Xrctrl {
+	logtrace.LogWithFunctionName()
 	return self.xrctrls
 }
 
 func (self *Router) GetTraceHandler() *channel.TraceHandler {
+	logtrace.LogWithFunctionName()
 	return self.config.Trace.Handler
 }
 
 func (self *Router) GetXlinkRegistry() xlink.Registry {
+	logtrace.LogWithFunctionName()
 	return self.xlinkRegistry
 }
 
 func (self *Router) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.shutdownC
 }
 
 func (self *Router) GetMetricsRegistry() metrics.UsageRegistry {
+	logtrace.LogWithFunctionName()
 	return self.metricsRegistry
 }
 
 func (self *Router) RenderJsonConfig() (string, error) {
+	logtrace.LogWithFunctionName()
 	jsonMap, err := config.ToJsonCompatibleMap(self.config.src)
 	delete(jsonMap, FlagsCfgMapKey)
 	if err != nil {
@@ -148,38 +162,47 @@ func (self *Router) RenderJsonConfig() (string, error) {
 }
 
 func (self *Router) GetChannel(controllerId string) channel.Channel {
+	logtrace.LogWithFunctionName()
 	return self.ctrls.GetCtrlChannel(controllerId)
 }
 
 func (self *Router) DefaultRequestTimeout() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.config.Ctrl.DefaultRequestTimeout
 }
 
 func (self *Router) GetHeartbeatOptions() env.HeartbeatOptions {
+	logtrace.LogWithFunctionName()
 	return self.config.Ctrl.Heartbeats
 }
 
 func (self *Router) GetStateManager() state.Manager {
+	logtrace.LogWithFunctionName()
 	return self.stateManager
 }
 
 func (self *Router) GetRouterDataModel() *common.RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return self.stateManager.RouterDataModel()
 }
 
 func (self *Router) IsRouterDataModelEnabled() bool {
+	logtrace.LogWithFunctionName()
 	return self.rdmEnabled.Load()
 }
 
 func (self *Router) GetRouterDataModelEnabledConfig() *config.Value[bool] {
+	logtrace.LogWithFunctionName()
 	return self.rdmEnabled
 }
 
 func (self *Router) GetConnectEventsConfig() *env.ConnectEventsConfig {
+	logtrace.LogWithFunctionName()
 	return &self.config.ConnectEvents
 }
 
 func Create(cfg *Config, versionProvider versions.VersionProvider) *Router {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 
 	if cfg.Metrics.IntervalAgeThreshold != 0 {
@@ -242,6 +265,7 @@ func Create(cfg *Config, versionProvider versions.VersionProvider) *Router {
 }
 
 func (self *Router) RegisterXrctrl(x env.Xrctrl) error {
+	logtrace.LogWithFunctionName()
 	if err := self.config.Configure(x); err != nil {
 		return err
 	}
@@ -252,14 +276,17 @@ func (self *Router) RegisterXrctrl(x env.Xrctrl) error {
 }
 
 func (self *Router) GetVersionInfo() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return self.versionProvider
 }
 
 func (self *Router) GetConfig() *Config {
+	logtrace.LogWithFunctionName()
 	return self.config
 }
 
 func (self *Router) Start() error {
+	logtrace.LogWithFunctionName()
 	if err := os.MkdirAll(self.config.Ctrl.DataDir, 0700); err != nil {
 		logrus.WithField("dir", self.config.Ctrl.DataDir).WithError(err).Error("failed to initialize data directory")
 		return err
@@ -304,6 +331,7 @@ func (self *Router) Start() error {
 }
 
 func (self *Router) Shutdown() error {
+	logtrace.LogWithFunctionName()
 	var errs []error
 	if self.isShutdown.CompareAndSwap(false, true) {
 		if err := self.ctrls.Close(); err != nil {
@@ -342,6 +370,7 @@ func (self *Router) Shutdown() error {
 }
 
 func (self *Router) Run() error {
+	logtrace.LogWithFunctionName()
 	if err := self.Start(); err != nil {
 		return err
 	}
@@ -351,6 +380,7 @@ func (self *Router) Run() error {
 }
 
 func (self *Router) showOptions() {
+	logtrace.LogWithFunctionName()
 	if output, err := json.Marshal(self.config.Ctrl.Options); err == nil {
 		pfxlog.Logger().Infof("ctrl = %s", string(output))
 	} else {
@@ -365,6 +395,7 @@ func (self *Router) showOptions() {
 }
 
 func (self *Router) startProfiling() {
+	logtrace.LogWithFunctionName()
 	if self.config.Profile.Memory.Path != "" {
 		go profiler.NewMemoryWithShutdown(self.config.Profile.Memory.Path, self.config.Profile.Memory.Interval, self.shutdownC).Run()
 	}
@@ -379,6 +410,7 @@ func (self *Router) startProfiling() {
 }
 
 func (self *Router) initRateLimiterPool() error {
+	logtrace.LogWithFunctionName()
 	rateLimiterPoolConfig := goroutines.PoolConfig{
 		QueueSize:   uint32(self.forwarder.Options.RateLimiter.QueueLength),
 		MinWorkers:  0,
@@ -402,18 +434,22 @@ func (self *Router) initRateLimiterPool() error {
 }
 
 func (self *Router) GetLinkDialerPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	return self.linkDialerPool
 }
 
 func (self *Router) GetRateLimiterPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	return self.rateLimiterPool
 }
 
 func (self *Router) GetCtrlRateLimiter() rate.AdaptiveRateLimitTracker {
+	logtrace.LogWithFunctionName()
 	return self.ctrlRateLimiter
 }
 
 func (self *Router) registerComponents() error {
+	logtrace.LogWithFunctionName()
 	self.xlinkFactories = make(map[string]xlink.Factory)
 	xlinkAccepter := newXlinkAccepter(self.forwarder)
 	xlinkChAccepter := handler_link.NewBindHandlerFactory(
@@ -451,6 +487,7 @@ func (self *Router) registerComponents() error {
 }
 
 func (self *Router) registerPlugins() error {
+	logtrace.LogWithFunctionName()
 	for _, pluginPath := range self.config.Plugins {
 		goPlugin, err := plugin.Open(pluginPath)
 		if err != nil {
@@ -472,6 +509,7 @@ func (self *Router) registerPlugins() error {
 }
 
 func (self *Router) startXlinkDialers() {
+	logtrace.LogWithFunctionName()
 	for _, lmap := range self.config.Link.Dialers {
 		binding := "transport"
 		if bindingVal, ok := lmap["binding"]; ok {
@@ -493,6 +531,7 @@ func (self *Router) startXlinkDialers() {
 }
 
 func (self *Router) startXlinkListeners() {
+	logtrace.LogWithFunctionName()
 	for _, lmap := range self.config.Link.Listeners {
 		binding := "transport"
 		if bindingVal, ok := lmap["binding"]; ok {
@@ -518,12 +557,14 @@ func (self *Router) startXlinkListeners() {
 }
 
 func (self *Router) setDefaultDialerBindings() {
+	logtrace.LogWithFunctionName()
 	if len(self.xlinkDialers) == 1 && len(self.xlinkListeners) == 1 && self.xlinkDialers[0].GetBinding() == "" {
 		self.xlinkDialers[0].AdoptBinding(self.xlinkListeners[0])
 	}
 }
 
 func (self *Router) startXgressListeners() {
+	logtrace.LogWithFunctionName()
 	for _, binding := range self.config.Listeners {
 		factory, err := xgress.GlobalRegistry().Factory(binding.name)
 		if err != nil {
@@ -555,6 +596,7 @@ func (self *Router) startXgressListeners() {
 }
 
 func (self *Router) startControlPlane() error {
+	logtrace.LogWithFunctionName()
 	endpoints, err := self.getInitialCtrlEndpoints()
 	if err != nil {
 		return err
@@ -590,6 +632,7 @@ func (self *Router) startControlPlane() error {
 }
 
 func (self *Router) connectToController(addr transport.Address, bindHandler channel.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	attributes := map[int32][]byte{}
 
 	version, err := self.versionProvider.EncoderDecoder().Encode(self.versionProvider.AsVersionInfo())
@@ -672,6 +715,7 @@ func (self *Router) connectToController(addr transport.Address, bindHandler chan
 }
 
 func (self *Router) initializeHealthChecks() (gosundheit.Health, error) {
+	logtrace.LogWithFunctionName()
 	checkConfig := self.config.HealthChecks
 	logrus.Infof("starting health check with ctrl ping initially after %v, then every %v, timing out after %v",
 		checkConfig.CtrlPingCheck.InitialDelay, checkConfig.CtrlPingCheck.Interval, checkConfig.CtrlPingCheck.Timeout)
@@ -711,6 +755,7 @@ func (self *Router) initializeHealthChecks() (gosundheit.Health, error) {
 }
 
 func (self *Router) RegisterXweb(x xweb.Instance) error {
+	logtrace.LogWithFunctionName()
 	if err := self.config.Configure(x); err != nil {
 		return err
 	}
@@ -721,10 +766,12 @@ func (self *Router) RegisterXweb(x xweb.Instance) error {
 }
 
 func (self *Router) RegisterXWebHandlerFactory(x xweb.ApiHandlerFactory) error {
+	logtrace.LogWithFunctionName()
 	return self.xwebFactoryRegistry.Add(x)
 }
 
 func (self *Router) getInitialCtrlEndpoints() ([]string, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	if self.config.Ctrl.DataDir == "" {
 		return nil, errors.New("ctrl DataDir not configured")
@@ -765,6 +812,7 @@ func (self *Router) getInitialCtrlEndpoints() ([]string, error) {
 }
 
 func (self *Router) UpdateCtrlEndpoints(endpoints []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("endpoints", endpoints).WithField("filepath", self.config.Ctrl.DataDir)
 	if changed := self.ctrls.UpdateControllerEndpoints(endpoints); changed {
 		log.Info("Attempting to save file")
@@ -783,6 +831,7 @@ func (self *Router) UpdateCtrlEndpoints(endpoints []string) {
 }
 
 func (self *Router) UpdateLeader(leaderId string) {
+	logtrace.LogWithFunctionName()
 	self.ctrls.UpdateLeader(leaderId)
 }
 
@@ -796,6 +845,7 @@ type controllerPinger struct {
 }
 
 func (self *controllerPinger) PingContext(context.Context) error {
+	logtrace.LogWithFunctionName()
 	ctrls := self.router.ctrls.GetAll()
 
 	if len(ctrls) == 0 {
@@ -838,10 +888,12 @@ type linkHealthCheck struct {
 }
 
 func (self *linkHealthCheck) Name() string {
+	logtrace.LogWithFunctionName()
 	return "link.health"
 }
 
 func (self *linkHealthCheck) Execute(ctx context.Context) (details interface{}, err error) {
+	logtrace.LogWithFunctionName()
 	var links []*linkDetail
 
 	iter := self.router.xlinkRegistry.Iter()

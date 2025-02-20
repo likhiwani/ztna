@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -51,6 +52,7 @@ type CreateLocation struct {
 
 // Validate validates this create location
 func (m *CreateLocation) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateLinks(formats); err != nil {
@@ -64,6 +66,7 @@ func (m *CreateLocation) Validate(formats strfmt.Registry) error {
 }
 
 func (m *CreateLocation) validateLinks(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Links) { // not required
 		return nil
 	}
@@ -84,6 +87,7 @@ func (m *CreateLocation) validateLinks(formats strfmt.Registry) error {
 
 // ContextValidate validate this create location based on the context it is used
 func (m *CreateLocation) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateLinks(ctx, formats); err != nil {
@@ -97,6 +101,7 @@ func (m *CreateLocation) ContextValidate(ctx context.Context, formats strfmt.Reg
 }
 
 func (m *CreateLocation) contextValidateLinks(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := m.Links.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
@@ -112,6 +117,7 @@ func (m *CreateLocation) contextValidateLinks(ctx context.Context, formats strfm
 
 // MarshalBinary interface implementation
 func (m *CreateLocation) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -120,6 +126,7 @@ func (m *CreateLocation) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *CreateLocation) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res CreateLocation
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

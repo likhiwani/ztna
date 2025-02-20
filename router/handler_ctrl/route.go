@@ -17,15 +17,12 @@
 package handler_ctrl
 
 import (
-	"ztna-core/ztna/router/env"
 	"net"
 	"syscall"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/openziti/identity"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/common/pb/ctrl_pb"
@@ -33,6 +30,11 @@ import (
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/handler_xgress"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/goroutines"
+	"github.com/openziti/identity"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
@@ -48,6 +50,7 @@ type routeHandler struct {
 }
 
 func newRouteHandler(ch channel.Channel, env env.RouterEnv, forwarder *forwarder.Forwarder, pool goroutines.Pool) *routeHandler {
+	logtrace.LogWithFunctionName()
 	handler := &routeHandler{
 		id:        env.GetRouterId(),
 		ch:        ch,
@@ -61,10 +64,12 @@ func newRouteHandler(ch channel.Channel, env env.RouterEnv, forwarder *forwarder
 }
 
 func (rh *routeHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_RouteType)
 }
 
 func (rh *routeHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	route := &ctrl_pb.Route{}
 
 	if err := proto.Unmarshal(msg.Body, route); err != nil {
@@ -114,6 +119,7 @@ func (rh *routeHandler) HandleReceive(msg *channel.Message, ch channel.Channel) 
 }
 
 func (rh *routeHandler) completeRoute(msg *channel.Message, attempt int, route *ctrl_pb.Route, peerData xt.PeerData, log *logrus.Entry) {
+	logtrace.LogWithFunctionName()
 	if err := rh.forwarder.Route(rh.ch.Id(), route); err != nil {
 		rh.fail(msg, attempt, route, err, ctrl_msg.ErrorTypeGeneric, log)
 		return
@@ -137,6 +143,7 @@ func (rh *routeHandler) completeRoute(msg *channel.Message, attempt int, route *
 }
 
 func (rh *routeHandler) fail(msg *channel.Message, attempt int, route *ctrl_pb.Route, err error, errorHeader byte, log *logrus.Entry) {
+	logtrace.LogWithFunctionName()
 	log.WithError(err).Error("failure while handling route update")
 
 	response := ctrl_msg.NewRouteResultFailedMessage(route.CircuitId, attempt, err.Error())
@@ -149,6 +156,7 @@ func (rh *routeHandler) fail(msg *channel.Message, attempt int, route *ctrl_pb.R
 }
 
 func (rh *routeHandler) connectEgress(msg *channel.Message, attempt int, ch channel.Channel, route *ctrl_pb.Route, ctx logcontext.Context, deadline time.Time) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ChannelLogger(logcontext.EstablishPath).Wire(ctx).
 		WithField("context", ch.Label()).
 		WithField("circuitId", route.CircuitId).
@@ -202,11 +210,13 @@ func (rh *routeHandler) connectEgress(msg *channel.Message, attempt int, ch chan
 }
 
 func isNetworkTimeout(err error) bool {
+	logtrace.LogWithFunctionName()
 	var netErr net.Error
 	return errors.As(err, &netErr)
 }
 
 func newDialParams(ctrlId string, route *ctrl_pb.Route, bindHandler xgress.BindHandler, logContext logcontext.Context, deadline time.Time) *dialParams {
+	logtrace.LogWithFunctionName()
 	return &dialParams{
 		ctrlId:      ctrlId,
 		Route:       route,
@@ -227,33 +237,41 @@ type dialParams struct {
 }
 
 func (self *dialParams) GetCtrlId() string {
+	logtrace.LogWithFunctionName()
 	return self.ctrlId
 }
 
 func (self *dialParams) GetDestination() string {
+	logtrace.LogWithFunctionName()
 	return self.Egress.Destination
 }
 
 func (self *dialParams) GetCircuitId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.circuitId
 }
 
 func (self *dialParams) GetAddress() xgress.Address {
+	logtrace.LogWithFunctionName()
 	return xgress.Address(self.Egress.Address)
 }
 
 func (self *dialParams) GetBindHandler() xgress.BindHandler {
+	logtrace.LogWithFunctionName()
 	return self.bindHandler
 }
 
 func (self *dialParams) GetLogContext() logcontext.Context {
+	logtrace.LogWithFunctionName()
 	return self.logContext
 }
 
 func (self *dialParams) GetDeadline() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.deadline
 }
 
 func (self *dialParams) GetCircuitTags() map[string]string {
+	logtrace.LogWithFunctionName()
 	return self.Tags
 }

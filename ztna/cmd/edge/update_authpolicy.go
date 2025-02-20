@@ -22,6 +22,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/auth_policy"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -38,6 +39,7 @@ type updateAuthPolicyOptions struct {
 }
 
 func newUpdateAuthPolicySignerCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := updateAuthPolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 		AuthPolicy: rest_model.AuthPolicyPatch{
@@ -119,6 +121,7 @@ func newUpdateAuthPolicySignerCmd(out io.Writer, errOut io.Writer) *cobra.Comman
 }
 
 func runUpdateAuthPolicySigner(options updateAuthPolicyOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("auth-policies", options.nameOrId, options.Options)
 
 	if err != nil {

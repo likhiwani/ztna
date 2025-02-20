@@ -20,14 +20,17 @@
 package tests
 
 import (
-	"ztna-core/sdk-golang/ziti"
-	"github.com/rcrowley/go-metrics"
 	"os"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/rcrowley/go-metrics"
 )
 
 func Test_AuthPerformance(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -65,6 +68,7 @@ func Test_AuthPerformance(t *testing.T) {
 }
 
 func Test_CombinedSessionCreatePerformance(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -126,6 +130,7 @@ func Test_CombinedSessionCreatePerformance(t *testing.T) {
 }
 
 func Test_SessionCreatePerformance(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

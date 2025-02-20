@@ -7,24 +7,27 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/tlz"
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/identity"
-	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/internal/edgerouter"
-	"github.com/pkg/errors"
-	"github.com/stretchr/testify/require"
 	"math/big"
 	"net"
 	"sync/atomic"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/internal/edgerouter"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/tlz"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/identity"
+	"github.com/openziti/transport/v2"
+	"github.com/pkg/errors"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_CertExpirationChecker(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.Run("getWaitTime", func(t *testing.T) {
 		t.Run("both 30d out is 23d", func(t *testing.T) {
 			req := require.New(t)
@@ -384,30 +387,37 @@ type SimpleTestIdentity struct {
 }
 
 func (s *SimpleTestIdentity) CaPool() *identity.CaPool {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (s *SimpleTestIdentity) WatchFiles() error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s *SimpleTestIdentity) StopWatchingFiles() {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s *SimpleTestIdentity) Cert() *tls.Certificate {
+	logtrace.LogWithFunctionName()
 	return s.TlsCert
 }
 
 func (s *SimpleTestIdentity) ServerCert() []*tls.Certificate {
+	logtrace.LogWithFunctionName()
 	return s.TlsServerCert
 }
 
 func (s *SimpleTestIdentity) CA() *x509.CertPool {
+	logtrace.LogWithFunctionName()
 	return s.CertPool
 }
 
 func (s *SimpleTestIdentity) ServerTLSConfig() *tls.Config {
+	logtrace.LogWithFunctionName()
 	var certs []tls.Certificate
 
 	for _, cert := range s.TlsServerCert {
@@ -424,6 +434,7 @@ func (s *SimpleTestIdentity) ServerTLSConfig() *tls.Config {
 }
 
 func (s *SimpleTestIdentity) ClientTLSConfig() *tls.Config {
+	logtrace.LogWithFunctionName()
 	return &tls.Config{
 		RootCAs:      s.CertPool,
 		Certificates: []tls.Certificate{*s.TlsCert},
@@ -431,25 +442,30 @@ func (s *SimpleTestIdentity) ClientTLSConfig() *tls.Config {
 }
 
 func (s *SimpleTestIdentity) Reload() error {
+	logtrace.LogWithFunctionName()
 	s.reloadCalled = true
 	return nil
 }
 
 func (s *SimpleTestIdentity) SetCert(string) error {
+	logtrace.LogWithFunctionName()
 	s.setCertCalled = true
 	return nil
 }
 
 func (s *SimpleTestIdentity) SetServerCert(string) error {
+	logtrace.LogWithFunctionName()
 	s.setServerCertCalled = true
 	return nil
 }
 
 func (s *SimpleTestIdentity) GetConfig() *identity.Config {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func newCertChecker() (*CertExpirationChecker, func()) {
+	logtrace.LogWithFunctionName()
 	privateKey, _ := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	var template = &x509.Certificate{
 		NotBefore:    time.Now(),
@@ -542,42 +558,52 @@ func newCertChecker() (*CertExpirationChecker, func()) {
 type simpleTestUnderlay struct{}
 
 func (s simpleTestUnderlay) Rx() (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) Tx(*channel.Message) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) Id() string {
+	logtrace.LogWithFunctionName()
 	return "id-test"
 }
 
 func (s simpleTestUnderlay) LogicalName() string {
+	logtrace.LogWithFunctionName()
 	return "logical-test"
 }
 
 func (s simpleTestUnderlay) ConnectionId() string {
+	logtrace.LogWithFunctionName()
 	return "conn-test"
 }
 
 func (s simpleTestUnderlay) Certificates() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) Label() string {
+	logtrace.LogWithFunctionName()
 	return "label-test"
 }
 
 func (s simpleTestUnderlay) Close() error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (s simpleTestUnderlay) Headers() map[int32][]byte {
+	logtrace.LogWithFunctionName()
 	v, err := versions.StdVersionEncDec.Encode(&versions.VersionInfo{
 		Version:   "0.0.0",
 		Revision:  "1",
@@ -594,18 +620,22 @@ func (s simpleTestUnderlay) Headers() map[int32][]byte {
 }
 
 func (s simpleTestUnderlay) SetWriteTimeout(time.Duration) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) SetWriteDeadline(time.Time) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) GetLocalAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (s simpleTestUnderlay) GetRemoteAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
@@ -614,89 +644,113 @@ type simpleTestChannel struct {
 }
 
 func (ch *simpleTestChannel) Bind(h channel.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	return h.BindChannel(ch)
 }
 
 func (ch *simpleTestChannel) AddPeekHandler(channel.PeekHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddTransformHandler(channel.TransformHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddReceiveHandler(int32, channel.ReceiveHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddReceiveHandlerF(int32, channel.ReceiveHandlerF) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddTypedReceiveHandler(channel.TypedReceiveHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddErrorHandler(channel.ErrorHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) AddCloseHandler(channel.CloseHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) SetUserData(interface{}) {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) GetUserData() interface{} {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (ch *simpleTestChannel) GetChannel() channel.Channel {
+	logtrace.LogWithFunctionName()
 	return ch
 }
 
 func (ch *simpleTestChannel) TrySend(channel.Sendable) (bool, error) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ch *simpleTestChannel) Send(channel.Sendable) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ch *simpleTestChannel) Underlay() channel.Underlay {
+	logtrace.LogWithFunctionName()
 	return simpleTestUnderlay{}
 }
 
 func (ch *simpleTestChannel) StartRx() {
+	logtrace.LogWithFunctionName()
 }
 
 func (ch *simpleTestChannel) Id() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (ch *simpleTestChannel) LogicalName() string {
+	logtrace.LogWithFunctionName()
 	panic("implement LogicalName()")
 }
 
 func (ch *simpleTestChannel) ConnectionId() string {
+	logtrace.LogWithFunctionName()
 	panic("implement ConnectionId()")
 }
 
 func (ch *simpleTestChannel) Certificates() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	panic("implement Certificates()")
 }
 
 func (ch *simpleTestChannel) Label() string {
+	logtrace.LogWithFunctionName()
 	return "testchannel"
 }
 
 func (ch *simpleTestChannel) SetLogicalName(string) {
+	logtrace.LogWithFunctionName()
 	panic("implement SetLogicalName")
 }
 
 func (ch *simpleTestChannel) Close() error {
+	logtrace.LogWithFunctionName()
 	panic("implement Close")
 }
 
 func (ch *simpleTestChannel) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	return ch.isClosed
 }
 
 func (ch *simpleTestChannel) GetTimeSinceLastRead() time.Duration {
+	logtrace.LogWithFunctionName()
 	return 0
 }
 
@@ -706,14 +760,17 @@ type stubExtender struct {
 }
 
 func (s *stubExtender) IsRequestingCompareAndSwap(expected bool, value bool) bool {
+	logtrace.LogWithFunctionName()
 	return s.isRequesting.CompareAndSwap(expected, value)
 }
 
 func (s *stubExtender) SetIsRequesting(value bool) {
+	logtrace.LogWithFunctionName()
 	s.isRequesting.Store(value)
 }
 
 func (s *stubExtender) ExtendEnrollment() error {
+	logtrace.LogWithFunctionName()
 	s.SetIsRequesting(true)
 
 	if s.done != nil {
@@ -724,5 +781,6 @@ func (s *stubExtender) ExtendEnrollment() error {
 }
 
 func (s *stubExtender) IsRequesting() bool {
+	logtrace.LogWithFunctionName()
 	return s.isRequesting.Load()
 }

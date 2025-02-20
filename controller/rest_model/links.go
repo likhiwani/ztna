@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -44,6 +45,7 @@ type Links map[string]Link
 
 // Validate validates this links
 func (m Links) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {
@@ -72,6 +74,7 @@ func (m Links) Validate(formats strfmt.Registry) error {
 
 // ContextValidate validate this links based on the context it is used
 func (m Links) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	for k := range m {

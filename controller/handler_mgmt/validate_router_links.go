@@ -18,13 +18,15 @@ package handler_mgmt
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/network"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type validateRouterLinksHandler struct {
@@ -32,14 +34,17 @@ type validateRouterLinksHandler struct {
 }
 
 func newValidateRouterLinksHandler(network *network.Network) *validateRouterLinksHandler {
+	logtrace.LogWithFunctionName()
 	return &validateRouterLinksHandler{network: network}
 }
 
 func (*validateRouterLinksHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_ValidateRouterLinksRequestType)
 }
 
 func (handler *validateRouterLinksHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &mgmt_pb.ValidateRouterLinksRequest{}
 

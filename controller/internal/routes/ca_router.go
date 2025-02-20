@@ -29,16 +29,19 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewCaRouter()
 	env.AddRouter(r)
 }
@@ -48,12 +51,14 @@ type CaRouter struct {
 }
 
 func NewCaRouter() *CaRouter {
+	logtrace.LogWithFunctionName()
 	return &CaRouter{
 		BasePath: "/" + EntityNameCa,
 	}
 }
 
 func (r *CaRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.CertificateAuthorityDeleteCaHandler = certificate_authority.DeleteCaHandlerFunc(func(params certificate_authority.DeleteCaParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -93,36 +98,43 @@ func (r *CaRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *CaRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Ca](ae, rc, ae.Managers.Ca, MapCaToRestEntity)
 }
 
 func (r *CaRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Ca](ae, rc, ae.Managers.Ca, MapCaToRestEntity)
 }
 
 func (r *CaRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params certificate_authority.CreateCaParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, CaLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.Ca.Create, MapCreateCaToModel(params.Ca), rc)
 	})
 }
 
 func (r *CaRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Ca)
 }
 
 func (r *CaRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params certificate_authority.UpdateCaParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.Ca.Update(MapUpdateCaToModel(params.ID, params.Ca), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *CaRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params certificate_authority.PatchCaParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.Ca.Update(MapPatchCaToModel(params.ID, params.Ca), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})
 }
 
 func (r *CaRouter) VerifyCert(ae *env.AppEnv, rc *response.RequestContext, params certificate_authority.VerifyCaParams) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -233,6 +245,7 @@ func (r *CaRouter) VerifyCert(ae *env.AppEnv, rc *response.RequestContext, param
 }
 
 func (r *CaRouter) generateJwt(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, getErr := rc.GetEntityId()
 
 	if getErr != nil {

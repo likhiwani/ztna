@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
 )
@@ -42,6 +44,7 @@ type ProcessMulti struct {
 }
 
 func newPostureCheckProcessMulti() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckProcessMulti{
 		Semantic:  "",
 		Processes: nil,
@@ -49,6 +52,7 @@ func newPostureCheckProcessMulti() PostureCheckSubType {
 }
 
 func (entity *PostureCheckProcessMulti) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.Semantic = bucket.GetStringOrError(FieldSemantic)
 
 	processesBucket := bucket.GetBucket(FieldPostureCheckProcessMultiProcesses)
@@ -69,6 +73,7 @@ func (entity *PostureCheckProcessMulti) LoadValues(bucket *boltz.TypedBucket) {
 }
 
 func (entity *PostureCheckProcessMulti) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	bucket.SetString(FieldSemantic, entity.Semantic, ctx.FieldChecker)
 
 	processesBucket := bucket.GetOrCreateBucket(FieldPostureCheckProcessMultiProcesses)

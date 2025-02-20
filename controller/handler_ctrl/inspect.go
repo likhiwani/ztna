@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/controller/network"
-	"ztna-core/ztna/common/pb/ctrl_pb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,14 +31,17 @@ type inspectHandler struct {
 }
 
 func newInspectHandler(network *network.Network) *inspectHandler {
+	logtrace.LogWithFunctionName()
 	return &inspectHandler{network: network}
 }
 
 func (h *inspectHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_InspectRequestType)
 }
 
 func (h *inspectHandler) HandleReceive(request *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	inspectRequest := &ctrl_pb.InspectRequest{}
@@ -49,6 +54,7 @@ func (h *inspectHandler) HandleReceive(request *channel.Message, ch channel.Chan
 }
 
 func (h *inspectHandler) handleInspect(request *channel.Message, ch channel.Channel, inspectRequest *ctrl_pb.InspectRequest) {
+	logtrace.LogWithFunctionName()
 	response := &ctrl_pb.InspectResponse{Success: true}
 	for _, value := range inspectRequest.RequestedValues {
 		if value == "capability" {
@@ -61,6 +67,7 @@ func (h *inspectHandler) handleInspect(request *channel.Message, ch channel.Chan
 }
 
 func (h *inspectHandler) respond(ch channel.Channel, request *channel.Message, response *ctrl_pb.InspectResponse) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	if body, err := proto.Marshal(response); err == nil {

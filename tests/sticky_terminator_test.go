@@ -20,15 +20,18 @@ package tests
 
 import (
 	"fmt"
-	"github.com/google/uuid"
+	"testing"
+	"time"
 	"ztna-core/sdk-golang/ziti"
 	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/controller/xt_sticky"
-	"testing"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 )
 
 func Test_StickyTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

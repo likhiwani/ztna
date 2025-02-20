@@ -18,16 +18,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/lib/parallel"
-	"github.com/openziti/fablab/kernel/model"
+	"os"
+	"path/filepath"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab"
 	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
 	"ztna-core/ztna/zititest/zitilab/cli"
-	"os"
-	"path/filepath"
+
+	"github.com/openziti/fablab/kernel/lib/parallel"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func provisionIdentities(identities []string, run model.Run) error {
+	logtrace.LogWithFunctionName()
 	var tasks []parallel.Task
 
 	identitiesDir := model.MakeBuildPath("identities")
@@ -58,6 +61,7 @@ func provisionIdentities(identities []string, run model.Run) error {
 }
 
 func provisionRouters(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	routerPkiDir := model.MakeBuildPath("router-jwts")
 	_ = os.MkdirAll(routerPkiDir, 0770)
 
@@ -69,6 +73,7 @@ func provisionRouters(run model.Run) error {
 }
 
 func enrollRouters(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	zitiVersion := ""
 	ctrls := run.GetModel().SelectComponents(".ctrl")
 	for _, ctrl := range ctrls {

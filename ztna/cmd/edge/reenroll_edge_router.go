@@ -20,8 +20,10 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +34,7 @@ type reEnrollEdgeRouterOptions struct {
 }
 
 func newReEnrollEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &reEnrollEdgeRouterOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -61,6 +64,7 @@ func newReEnrollEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runReEnrollEdgeRouter implements the command to create a gateway on the edge controller
 func runReEnrollEdgeRouter(o *reEnrollEdgeRouterOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("edge-routers", o.Args[0], o.Options)
 	if err != nil {
 		return err

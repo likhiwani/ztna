@@ -18,10 +18,12 @@ package intercept
 
 import (
 	"fmt"
+	"net"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"
+
 	"github.com/pkg/errors"
-	"net"
 )
 
 type Protocol int
@@ -53,30 +55,37 @@ type InterceptAddress struct {
 }
 
 func (addr *InterceptAddress) Proto() string {
+	logtrace.LogWithFunctionName()
 	return addr.protocol
 }
 
 func (addr *InterceptAddress) IpNet() *net.IPNet {
+	logtrace.LogWithFunctionName()
 	return addr.cidr
 }
 
 func (addr *InterceptAddress) RouteRequired() bool {
+	logtrace.LogWithFunctionName()
 	return addr.routeRequired
 }
 
 func (addr *InterceptAddress) LowPort() uint16 {
+	logtrace.LogWithFunctionName()
 	return addr.lowPort
 }
 
 func (addr *InterceptAddress) HighPort() uint16 {
+	logtrace.LogWithFunctionName()
 	return addr.highPort
 }
 
 func (addr *InterceptAddress) Contains(ip net.IP, port uint16) bool {
+	logtrace.LogWithFunctionName()
 	return addr.cidr.Contains(ip) && port >= addr.lowPort && port <= addr.highPort
 }
 
 func (addr *InterceptAddress) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("cidr: %v, cidrAddr: %p, lowPort: %v, highPort: %v, protocol: %v, tproxySpec: %v, acceptSpec: %v",
 		addr.cidr, addr.cidr, addr.lowPort, addr.highPort, addr.protocol, addr.TproxySpec, addr.AcceptSpec)
 }
@@ -86,6 +95,7 @@ type InterceptAddrCB interface {
 }
 
 func GetInterceptAddresses(service *entities.Service, protocols []string, resolver dns.Resolver, addressCB InterceptAddrCB) error {
+	logtrace.LogWithFunctionName()
 	for _, addr := range service.InterceptV1Config.Addresses {
 		err := getInterceptIP(service, addr, resolver, func(ipNet *net.IPNet, routeRequired bool) {
 			for _, protocol := range protocols {

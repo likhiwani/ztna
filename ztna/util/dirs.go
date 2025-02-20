@@ -20,9 +20,11 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"ztna-core/ztna/logtrace"
 )
 
 func HomeDir() string {
+	logtrace.LogWithFunctionName()
 	if h := os.Getenv("HOME"); h != "" {
 		return h
 	}
@@ -34,6 +36,7 @@ func HomeDir() string {
 }
 
 func ConfigDir() (string, error) {
+	logtrace.LogWithFunctionName()
 	path := os.Getenv("ZITI_CONFIG_DIR")
 	if path != "" {
 		return path, nil
@@ -53,6 +56,7 @@ func ConfigDir() (string, error) {
 }
 
 func EnvironmentsDir() (string, error) {
+	logtrace.LogWithFunctionName()
 	h, err := ConfigDir()
 	if err != nil {
 		return "", err
@@ -66,6 +70,7 @@ func EnvironmentsDir() (string, error) {
 }
 
 func PKIRootDir() (string, error) {
+	logtrace.LogWithFunctionName()
 	var path string
 	var err error
 	cwd, _ := os.Getwd()

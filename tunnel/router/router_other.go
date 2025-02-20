@@ -1,3 +1,4 @@
+//go:build !linux
 // +build !linux
 
 /*
@@ -21,20 +22,25 @@ package router
 import (
 	"errors"
 	"net"
+	"ztna-core/ztna/logtrace"
 )
 
 func AddLocalAddress(prefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("AddLocalAddress is not implemented on this operating system")
 }
 
 func RemoveLocalAddress(prefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("RemoveLocalAddress is not implemented on this operating system")
 }
 
 func AddPointToPointAddress(localIP net.IP, peerPrefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("AddPointToPointAddress is not implemented on this operating system")
 }
 
 func RemovePointToPointAddress(localIP net.IP, peerPrefix *net.IPNet, ifName string) error {
+	logtrace.LogWithFunctionName()
 	return errors.New("RemovePointToPointAddress is not implemented on this operating system")
 }

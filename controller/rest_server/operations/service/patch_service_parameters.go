@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"io"
 	"net/http"
@@ -47,6 +48,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewPatchServiceParams() PatchServiceParams {
+    logtrace.LogWithFunctionName()
 
 	return PatchServiceParams{}
 }
@@ -77,6 +79,7 @@ type PatchServiceParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewPatchServiceParams() beforehand.
 func (o *PatchServiceParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r
@@ -121,6 +124,7 @@ func (o *PatchServiceParams) BindRequest(r *http.Request, route *middleware.Matc
 
 // bindID binds and validates parameter ID from path.
 func (o *PatchServiceParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

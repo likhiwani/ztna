@@ -29,6 +29,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type SignFunc func([]byte, *SigningOpts) ([]byte, error)
@@ -58,6 +59,7 @@ type SigningOpts struct {
 }
 
 func (so *SigningOpts) Apply(c *x509.Certificate) {
+	logtrace.LogWithFunctionName()
 	c.DNSNames = so.DNSNames
 	c.EmailAddresses = so.EmailAddresses
 	c.IPAddresses = so.IPAddresses
@@ -79,6 +81,7 @@ type SerialGenerator interface {
 type DefaultSerialGenerator struct{}
 
 func (DefaultSerialGenerator) Generate() *big.Int {
+	logtrace.LogWithFunctionName()
 	//@todo this need to be better, this does not include negative numbers for 20bit values, nor is this managed
 	r, _ := rand.Int(rand.Reader, big.NewInt(524287))
 
@@ -94,14 +97,17 @@ type ServerSigner struct {
 }
 
 func (s *ServerSigner) Cert() *x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return s.caCert
 }
 
 func (s *ServerSigner) Signer() crypto.Signer {
+	logtrace.LogWithFunctionName()
 	return s.caKey.(crypto.Signer)
 }
 
 func NewServerSigner(caCert *x509.Certificate, caKey crypto.PrivateKey) *ServerSigner {
+	logtrace.LogWithFunctionName()
 	return &ServerSigner{
 		caCert:          caCert,
 		caKey:           caKey,
@@ -110,10 +116,12 @@ func NewServerSigner(caCert *x509.Certificate, caKey crypto.PrivateKey) *ServerS
 }
 
 func (s *ServerSigner) SigningCert() *x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return s.caCert
 }
 
 func (s *ServerSigner) SignCsr(csr *x509.CertificateRequest, opts *SigningOpts) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if err := csr.CheckSignature(); err != nil {
 		return nil, fmt.Errorf("CSR signature validation failed: %s", err)
 	}
@@ -156,14 +164,17 @@ type ClientSigner struct {
 }
 
 func (s *ClientSigner) Cert() *x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return s.caCert
 }
 
 func (s *ClientSigner) Signer() crypto.Signer {
+	logtrace.LogWithFunctionName()
 	return s.caKey.(crypto.Signer)
 }
 
 func NewClientSigner(caCert *x509.Certificate, caKey crypto.PrivateKey) *ClientSigner {
+	logtrace.LogWithFunctionName()
 	return &ClientSigner{
 		caCert:          caCert,
 		caKey:           caKey,
@@ -172,10 +183,12 @@ func NewClientSigner(caCert *x509.Certificate, caKey crypto.PrivateKey) *ClientS
 }
 
 func (s *ClientSigner) SigningCert() *x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (s *ClientSigner) SignCsr(csr *x509.CertificateRequest, opts *SigningOpts) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if err := csr.CheckSignature(); err != nil {
 		return nil, fmt.Errorf("CSR signature validation failed: %s", err)
 	}
@@ -211,6 +224,7 @@ func (s *ClientSigner) SignCsr(csr *x509.CertificateRequest, opts *SigningOpts) 
 }
 
 func RawToPem(raw []byte) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	cert := bytes.NewBuffer(make([]byte, 0))
 
 	err := pem.Encode(cert, &pem.Block{Type: "CERTIFICATE", Bytes: raw})
@@ -223,6 +237,7 @@ func RawToPem(raw []byte) ([]byte, error) {
 }
 
 func ParseCsrPem(csrPem []byte) (*x509.CertificateRequest, error) {
+	logtrace.LogWithFunctionName()
 	if len(csrPem) == 0 {
 		return nil, errors.New("csrPem must not be null or empty")
 	}
@@ -240,6 +255,7 @@ func ParseCsrPem(csrPem []byte) (*x509.CertificateRequest, error) {
 }
 
 func PemChain2Blocks(pemBuff string) ([]*pem.Block, error) {
+	logtrace.LogWithFunctionName()
 	remainder := []byte(strings.TrimSpace(pemBuff))
 
 	var b *pem.Block
@@ -265,6 +281,7 @@ func PemChain2Blocks(pemBuff string) ([]*pem.Block, error) {
 }
 
 func Blocks2Certs(blocks []*pem.Block) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	var certs []*x509.Certificate
 	numCert := 0
 	for _, b := range blocks {

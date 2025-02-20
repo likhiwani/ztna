@@ -16,6 +16,7 @@ limitations under the License.
 package verify
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"bufio"
 	"context"
 	"fmt"
@@ -63,6 +64,7 @@ type traffic struct {
 }
 
 func NewVerifyTraffic(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	t := &traffic{}
 	cmd := &cobra.Command{
 		Use:   "verify-traffic",
@@ -142,6 +144,7 @@ func NewVerifyTraffic(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (t *traffic) startServer(ctx context.Context, serviceName string, zitiCfg *ziti.Config) error {
+	logtrace.LogWithFunctionName()
 	zitiCfg.EnableHa = t.haEnabled
 	c, err := ziti.NewContext(zitiCfg)
 	if err != nil {
@@ -184,6 +187,7 @@ func (t *traffic) startServer(ctx context.Context, serviceName string, zitiCfg *
 }
 
 func handleConnection(conn net.Conn) {
+	logtrace.LogWithFunctionName()
 	log.Debug("new connection accepted")
 
 	writer := bufio.NewWriter(conn)
@@ -205,6 +209,7 @@ func handleConnection(conn net.Conn) {
 }
 
 func (t *traffic) startClient(client *rest_management_api_client.ZitiEdgeManagement, serviceName string, zitiCfg *ziti.Config) error {
+	logtrace.LogWithFunctionName()
 	waitForTerminator(client, serviceName, 10*time.Second)
 	zitiCfg.EnableHa = t.haEnabled
 	c, err := ziti.NewContext(zitiCfg)
@@ -246,6 +251,7 @@ func (t *traffic) startClient(client *rest_management_api_client.ZitiEdgeManagem
 }
 
 func terminatorExists(client *rest_management_api_client.ZitiEdgeManagement, serviceName string) bool {
+	logtrace.LogWithFunctionName()
 	filter := "service.name=\"" + serviceName + "\""
 	params := &terminator.ListTerminatorsParams{
 		Filter:  &filter,
@@ -261,6 +267,7 @@ func terminatorExists(client *rest_management_api_client.ZitiEdgeManagement, ser
 }
 
 func waitForTerminator(client *rest_management_api_client.ZitiEdgeManagement, serviceName string, timeout time.Duration) bool {
+	logtrace.LogWithFunctionName()
 	log.Infof("waiting %s for terminator for service: %s", timeout, serviceName)
 	startTime := time.Now()
 	for {
@@ -278,6 +285,7 @@ func waitForTerminator(client *rest_management_api_client.ZitiEdgeManagement, se
 }
 
 func createIdentity(client *rest_management_api_client.ZitiEdgeManagement, name string, roleAttributes rest_model.Attributes) *identity.CreateIdentityCreated {
+	logtrace.LogWithFunctionName()
 	falseVar := false
 	usrType := rest_model.IdentityTypeUser
 	i := &rest_model.IdentityCreate{
@@ -306,6 +314,7 @@ func createIdentity(client *rest_management_api_client.ZitiEdgeManagement, name 
 }
 
 func createServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, name string, servType rest_model.DialBind, identityRoles rest_model.Roles, serviceRoles rest_model.Roles) *rest_model.CreateLocation {
+	logtrace.LogWithFunctionName()
 	defaultSemantic := rest_model.SemanticAllOf
 	servicePolicy := &rest_model.ServicePolicyCreate{
 		IdentityRoles: identityRoles,
@@ -328,6 +337,7 @@ func createServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, 
 }
 
 func createService(client *rest_management_api_client.ZitiEdgeManagement, name string, serviceConfigs []string, roles rest_model.Attributes) *rest_model.CreateLocation {
+	logtrace.LogWithFunctionName()
 	encryptOn := true
 	serviceCreate := &rest_model.ServiceCreate{
 		Configs:            serviceConfigs,
@@ -352,6 +362,7 @@ func createService(client *rest_management_api_client.ZitiEdgeManagement, name s
 }
 
 func deleteIdentity(client *rest_management_api_client.ZitiEdgeManagement, toDelete *rest_model.IdentityDetail) {
+	logtrace.LogWithFunctionName()
 	if toDelete == nil {
 		return
 	}
@@ -367,6 +378,7 @@ func deleteIdentity(client *rest_management_api_client.ZitiEdgeManagement, toDel
 }
 
 func deleteService(client *rest_management_api_client.ZitiEdgeManagement, toDelete *rest_model.ServiceDetail) {
+	logtrace.LogWithFunctionName()
 	if toDelete == nil {
 		return
 	}
@@ -382,6 +394,7 @@ func deleteService(client *rest_management_api_client.ZitiEdgeManagement, toDele
 }
 
 func deleteServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, sp *rest_model.ServicePolicyDetail) {
+	logtrace.LogWithFunctionName()
 	if sp == nil {
 		return
 	}
@@ -397,6 +410,7 @@ func deleteServicePolicy(client *rest_management_api_client.ZitiEdgeManagement, 
 }
 
 func enrollIdentity(client *rest_management_api_client.ZitiEdgeManagement, id string) *ziti.Config {
+	logtrace.LogWithFunctionName()
 	// Get the identity object
 	params := &identity.DetailIdentityParams{
 		Context: context.Background(),
@@ -429,18 +443,22 @@ func enrollIdentity(client *rest_management_api_client.ZitiEdgeManagement, id st
 }
 
 func (t *traffic) bindAttr() string {
+	logtrace.LogWithFunctionName()
 	return t.svcName + ".binders"
 }
 
 func (t *traffic) dialAttr() string {
+	logtrace.LogWithFunctionName()
 	return t.svcName + ".dialers"
 }
 
 func (t *traffic) svcAttr() string {
+	logtrace.LogWithFunctionName()
 	return t.svcName
 }
 
 func (t *traffic) configureService() {
+	logtrace.LogWithFunctionName()
 	svc := mgmt.ServiceFromFilter(t.client, mgmt.NameFilter(t.svcName))
 	if svc != nil && t.allowMultipleServers {
 		log.Debugf("service already exists. not creating: %s", t.svcName)
@@ -464,16 +482,19 @@ func (t *traffic) configureService() {
 }
 
 func (t *traffic) configureServer() *ziti.Config {
+	logtrace.LogWithFunctionName()
 	serverIdent := createIdentity(t.client, t.serverIdName, []string{t.bindAttr()})
 	return enrollIdentity(t.client, serverIdent.Payload.Data.ID)
 }
 
 func (t *traffic) configureClient() *ziti.Config {
+	logtrace.LogWithFunctionName()
 	clientIdent := createIdentity(t.client, t.clientIdName, []string{t.dialAttr()})
 	return enrollIdentity(t.client, clientIdent.Payload.Data.ID)
 }
 
 func (t *traffic) cleanupServer() {
+	logtrace.LogWithFunctionName()
 	if t.allowMultipleServers {
 		if terminatorExists(t.client, t.svcName) {
 			log.Debugf("found terminator for service: %s. cleanup will be skipped.", t.svcName)
@@ -492,11 +513,13 @@ func (t *traffic) cleanupServer() {
 }
 
 func (t *traffic) cleanupClient() {
+	logtrace.LogWithFunctionName()
 	id := mgmt.IdentityFromFilter(t.client, mgmt.NameFilter(t.clientIdName))
 	deleteIdentity(t.client, id)
 }
 
 func (t *traffic) doBoth() {
+	logtrace.LogWithFunctionName()
 	t.configureService()
 	wg := &sync.WaitGroup{}
 	wg.Add(2)
@@ -513,6 +536,7 @@ func (t *traffic) doBoth() {
 }
 
 func (t *traffic) doServer(ctx context.Context, configureServices bool) {
+	logtrace.LogWithFunctionName()
 	if configureServices {
 		t.configureService()
 	}
@@ -524,6 +548,7 @@ func (t *traffic) doServer(ctx context.Context, configureServices bool) {
 }
 
 func (t *traffic) doClient(cancel context.CancelFunc) {
+	logtrace.LogWithFunctionName()
 	clientCfg := t.configureClient()
 	defer t.cleanupClient()
 	if err := t.startClient(t.client, t.svcName, clientCfg); err != nil {

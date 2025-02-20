@@ -24,11 +24,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewTransitRouterRouter()
 	env.AddRouter(r)
 }
@@ -38,12 +40,14 @@ type TransitRouterRouter struct {
 }
 
 func NewTransitRouterRouter() *TransitRouterRouter {
+	logtrace.LogWithFunctionName()
 	return &TransitRouterRouter{
 		BasePath: "/" + EntityNameTransitRouter,
 	}
 }
 
 func (r *TransitRouterRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//Router
 	ae.ManagementApi.RouterDeleteRouterHandler = router.DeleteRouterHandlerFunc(func(params router.DeleteRouterParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
@@ -96,30 +100,36 @@ func (r *TransitRouterRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *TransitRouterRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.TransitRouter](ae, rc, ae.Managers.TransitRouter, MapTransitRouterToRestEntity)
 }
 
 func (r *TransitRouterRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.TransitRouter](ae, rc, ae.Managers.TransitRouter, MapTransitRouterToRestEntity)
 }
 
 func (r *TransitRouterRouter) Create(ae *env.AppEnv, rc *response.RequestContext, router *rest_model.RouterCreate) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, TransitRouterLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.TransitRouter.Create, MapCreateRouterToModel(router), rc)
 	})
 }
 
 func (r *TransitRouterRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.TransitRouter)
 }
 
 func (r *TransitRouterRouter) Update(ae *env.AppEnv, rc *response.RequestContext, routerId string, router *rest_model.RouterUpdate) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.TransitRouter.Update(MapUpdateTransitRouterToModel(routerId, router), false, nil, rc.NewChangeContext())
 	})
 }
 
 func (r *TransitRouterRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, routerId string, router *rest_model.RouterPatch) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.TransitRouter.Update(MapPatchTransitRouterToModel(routerId, router), false, fields.FilterMaps("tags"), rc.NewChangeContext())
 	})

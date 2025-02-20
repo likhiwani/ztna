@@ -4,6 +4,17 @@ import (
 	"embed"
 	_ "embed"
 	"fmt"
+	"os"
+	"path"
+	"strings"
+	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
@@ -19,16 +30,7 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
 	"go.etcd.io/bbolt"
-	"os"
-	"path"
-	"strings"
-	"time"
 )
 
 // const TargetZitiVersion = "v0.31.0"
@@ -46,10 +48,12 @@ var configResource embed.FS
 type dbStrategy struct{}
 
 func (d dbStrategy) GetDbFile(m *model.Model) string {
+	logtrace.LogWithFunctionName()
 	return m.MustStringVariable("db_file")
 }
 
 func (d dbStrategy) GetSite(router *db.EdgeRouter) (string, bool) {
+	logtrace.LogWithFunctionName()
 	if strings.Contains(strings.ToLower(router.Name), "london") {
 		return "eu-west-2a", true // london region
 	}
@@ -64,6 +68,7 @@ func (d dbStrategy) GetSite(router *db.EdgeRouter) (string, bool) {
 }
 
 func (d dbStrategy) PostProcess(router *db.EdgeRouter, c *model.Component) {
+	logtrace.LogWithFunctionName()
 	if router.IsTunnelerEnabled {
 		c.Scope.Tags = append(c.Scope.Tags, "tunneler")
 	}
@@ -74,6 +79,7 @@ func (d dbStrategy) PostProcess(router *db.EdgeRouter, c *model.Component) {
 }
 
 func (d dbStrategy) ProcessDbModel(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	if err := builder.CreateEdgeRouterHosts(tx, m, d); err != nil {
 		return err
 	}
@@ -81,6 +87,7 @@ func (d dbStrategy) ProcessDbModel(tx *bbolt.Tx, m *model.Model, builder *models
 }
 
 func (d dbStrategy) CreateIdentityHosts(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	stores := builder.GetStores()
 	ids, _, err := stores.Identity.QueryIds(tx, "true limit none")
 	if err != nil {
@@ -314,6 +321,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("stop", "bootstrap")
 
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)

@@ -17,8 +17,10 @@
 package forwarder
 
 import (
-	"github.com/pkg/errors"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -70,6 +72,7 @@ type WorkerPoolOptions struct {
 }
 
 func DefaultOptions() *Options {
+	logtrace.LogWithFunctionName()
 	return &Options{
 		FaultTxInterval:    DefaultFaultTxInterval,
 		IdleCircuitTimeout: DefaultIdleCircuitTimeout,
@@ -93,6 +96,7 @@ func DefaultOptions() *Options {
 }
 
 func LoadOptions(src map[interface{}]interface{}) (*Options, error) {
+	logtrace.LogWithFunctionName()
 	options := DefaultOptions()
 
 	if value, found := src["faultTxInterval"]; found {

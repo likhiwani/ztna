@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -37,6 +38,7 @@ type updateEdgeRouterPolicyOptions struct {
 }
 
 func newUpdateEdgeRouterPolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateEdgeRouterPolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -68,6 +70,7 @@ func newUpdateEdgeRouterPolicyCmd(out io.Writer, errOut io.Writer) *cobra.Comman
 }
 
 func runUpdateEdgeRouterPolicy(o *updateEdgeRouterPolicyOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("edge-router-policies", o.Args[0], o.Options)
 	if err != nil {
 		return err

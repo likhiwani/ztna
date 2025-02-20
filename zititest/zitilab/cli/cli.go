@@ -22,12 +22,15 @@ import (
 	"os"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd"
+
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
 )
 
 func Exec(m *model.Model, args ...string) (string, error) {
+	logtrace.LogWithFunctionName()
 	if !m.IsBound() {
 		return "", errors.New("model not bound")
 	}
@@ -46,6 +49,7 @@ func Exec(m *model.Model, args ...string) (string, error) {
 }
 
 func NewSeq() *Seq {
+	logtrace.LogWithFunctionName()
 	return &Seq{}
 }
 
@@ -54,18 +58,22 @@ type Seq struct {
 }
 
 func (self *Seq) Error() error {
+	logtrace.LogWithFunctionName()
 	return self.err
 }
 
 func (self *Seq) Args(args ...string) []string {
+	logtrace.LogWithFunctionName()
 	return args
 }
 
 func (self *Seq) Exec(args ...string) {
+	logtrace.LogWithFunctionName()
 	self.ExecF(args, nil)
 }
 
 func (self *Seq) ExecF(args []string, f func(string) error) {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}

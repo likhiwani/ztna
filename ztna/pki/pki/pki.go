@@ -28,6 +28,7 @@ import (
 	"fmt"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/pki/certificate"
 	"ztna-core/ztna/ztna/pki/store"
 
@@ -55,6 +56,7 @@ type RsaPrivateKeyOptions struct {
 }
 
 func (r *RsaPrivateKeyOptions) GenerateKey() (crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	if r.Size == 0 {
 		r.Size = defaultPrivateKeySize
 	}
@@ -68,6 +70,7 @@ type EcPrivateKeyOptions struct {
 }
 
 func (e *EcPrivateKeyOptions) GenerateKey() (crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	return ecdsa.GenerateKey(e.Curve, rand.Reader)
 }
 
@@ -97,11 +100,13 @@ type ZitiPKI struct {
 // GetCA fetches and returns the named Certificate Authority bundle
 // from the store.
 func (e *ZitiPKI) GetCA(name string) (*certificate.Bundle, error) {
+	logtrace.LogWithFunctionName()
 	return e.GetBundle(name, name)
 }
 
 // GetBundle fetches and returns a certificate bundle from the store.
 func (e *ZitiPKI) GetBundle(caName, name string) (*certificate.Bundle, error) {
+	logtrace.LogWithFunctionName()
 	k, c, err := e.Store.Fetch(caName, name)
 	if err != nil {
 		return nil, fmt.Errorf("failed fetching bundle %v within CA %v: %v", name, caName, err)
@@ -112,6 +117,7 @@ func (e *ZitiPKI) GetBundle(caName, name string) (*certificate.Bundle, error) {
 
 // GetPrivateKey fetches and returns a private key from the store.
 func (e *ZitiPKI) GetPrivateKey(caname string, keyname string) (crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	k, err := e.Store.FetchKeyBytes(caname, keyname)
 	if err != nil {
 		return nil, fmt.Errorf("failed fetching bundle %v within CA %v: %v", caname, keyname, err)
@@ -122,6 +128,7 @@ func (e *ZitiPKI) GetPrivateKey(caname string, keyname string) (crypto.PrivateKe
 // Sign signs a generated certificate bundle based on the given request with
 // the given signer.
 func (e *ZitiPKI) Sign(signer *certificate.Bundle, req *Request) error {
+	logtrace.LogWithFunctionName()
 	if !req.Template.IsCA && signer == nil {
 		return ErrCannotSelfSignNonCA
 	}
@@ -192,6 +199,7 @@ func (e *ZitiPKI) Sign(signer *certificate.Bundle, req *Request) error {
 }
 
 func publicKeyFromPrivate(key crypto.PrivateKey) (crypto.PublicKey, error) {
+	logtrace.LogWithFunctionName()
 	switch pk := key.(type) {
 	case *rsa.PrivateKey:
 		return &pk.PublicKey, nil
@@ -204,6 +212,7 @@ func publicKeyFromPrivate(key crypto.PrivateKey) (crypto.PublicKey, error) {
 
 // Chain will...
 func (e *ZitiPKI) Chain(signer *certificate.Bundle, req *Request) error {
+	logtrace.LogWithFunctionName()
 	destCA := signer.Name
 	if req.Template.IsCA {
 		destCA = req.Name
@@ -216,6 +225,7 @@ func (e *ZitiPKI) Chain(signer *certificate.Bundle, req *Request) error {
 
 // GeneratePrivateKey generates and stores a private key
 func (e *ZitiPKI) GeneratePrivateKey(signer *certificate.Bundle, req *Request) error {
+	logtrace.LogWithFunctionName()
 
 	privateKey, err := req.PrivateKeyOptions.GenerateKey()
 
@@ -237,6 +247,7 @@ func (e *ZitiPKI) GeneratePrivateKey(signer *certificate.Bundle, req *Request) e
 
 // Revoke revokes the given certificate from the store.
 func (e *ZitiPKI) Revoke(caName string, cert *x509.Certificate) error {
+	logtrace.LogWithFunctionName()
 	if err := e.Store.Update(caName, cert.SerialNumber, certificate.Revoked); err != nil {
 		return fmt.Errorf("failed revoking certificate: %v", err)
 	}
@@ -245,6 +256,7 @@ func (e *ZitiPKI) Revoke(caName string, cert *x509.Certificate) error {
 
 // CRL builds a CRL for a given CA based on the revoked certs.
 func (e *ZitiPKI) CRL(caName string, expire time.Time) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	revoked, err := e.Store.Revoked(caName)
 	if err != nil {
 		return nil, fmt.Errorf("failed retrieving revoked certificates for %v: %v", caName, err)
@@ -276,6 +288,7 @@ func (e *ZitiPKI) CRL(caName string, expire time.Time) ([]byte, error) {
 
 // CSR generates a csr certificate
 func (e *ZitiPKI) CSR(caname string, bundleName string, csrTemplate x509.CertificateRequest, privateKey crypto.PrivateKey) error {
+	logtrace.LogWithFunctionName()
 	csrCertificate, err := x509.CreateCertificateRequest(rand.Reader, &csrTemplate, privateKey)
 	if err != nil {
 		return err

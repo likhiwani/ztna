@@ -16,10 +16,14 @@
 
 package response
 
+import "ztna-core/ztna/logtrace"
+
 func GetApiVersion() string {
+	logtrace.LogWithFunctionName()
 	return "0.0.1"
 }
 
 func GetApiEnrollmentVersion() string {
+	logtrace.LogWithFunctionName()
 	return "0.0.1"
 }

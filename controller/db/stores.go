@@ -20,20 +20,23 @@ import (
 	"context"
 	"crypto/x509"
 	"errors"
+	"reflect"
+	"sync"
+	"time"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/rate"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
 	"go.etcd.io/bbolt"
 	"go4.org/sort"
-	"reflect"
-	"sync"
-	"time"
 )
 
 func NewStoreDefinition[E boltz.ExtEntity](strategy boltz.EntityStrategy[E]) boltz.StoreDefinition[E] {
+	logtrace.LogWithFunctionName()
 	entityType := strategy.NewEntity().GetEntityType()
 	return boltz.StoreDefinition[E]{
 		EntityType:     entityType,
@@ -46,12 +49,14 @@ func NewStoreDefinition[E boltz.ExtEntity](strategy boltz.EntityStrategy[E]) bol
 }
 
 func (store *Stores) AddCheckable(checkable boltz.Checkable) {
+	logtrace.LogWithFunctionName()
 	store.lock.Lock()
 	defer store.lock.Unlock()
 	store.checkables = append(store.checkables, checkable)
 }
 
 func (stores *Stores) GetStoreList() []boltz.Store {
+	logtrace.LogWithFunctionName()
 	var result []boltz.Store
 	for _, store := range stores.storeMap {
 		result = append(result, store)
@@ -60,6 +65,7 @@ func (stores *Stores) GetStoreList() []boltz.Store {
 }
 
 func (stores *Stores) CheckIntegrity(db boltz.Db, ctx context.Context, fix bool, errorHandler func(error, bool)) error {
+	logtrace.LogWithFunctionName()
 	if fix {
 		changeCtx := boltz.NewMutateContext(ctx)
 		return db.Update(changeCtx, func(changeCtx boltz.MutateContext) error {
@@ -74,6 +80,7 @@ func (stores *Stores) CheckIntegrity(db boltz.Db, ctx context.Context, fix bool,
 }
 
 func (stores *Stores) CheckIntegrityInTx(db boltz.Db, ctx boltz.MutateContext, fix bool, errorHandler func(error, bool)) error {
+	logtrace.LogWithFunctionName()
 	if fix {
 		pfxlog.Logger().Info("creating database snapshot before attempting to fix data integrity issues")
 		if err := db.Snapshot(ctx.Tx()); err != nil {
@@ -129,6 +136,7 @@ type Stores struct {
 }
 
 func (stores *Stores) buildStoreMap() {
+	logtrace.LogWithFunctionName()
 	stores.storeMap = map[reflect.Type]boltz.Store{}
 	val := reflect.ValueOf(stores).Elem()
 	for i := 0; i < val.NumField(); i++ {
@@ -144,6 +152,7 @@ func (stores *Stores) buildStoreMap() {
 }
 
 func (stores *Stores) GetEntityCounts(db boltz.Db) (map[string]int64, error) {
+	logtrace.LogWithFunctionName()
 	result := map[string]int64{}
 	for _, store := range stores.storeMap {
 		err := db.View(func(tx *bbolt.Tx) error {
@@ -173,6 +182,7 @@ func (stores *Stores) GetEntityCounts(db boltz.Db) (map[string]int64, error) {
 }
 
 func (stores *Stores) getStoresForInit() []initializableStore {
+	logtrace.LogWithFunctionName()
 	var result []initializableStore
 	for _, crudStore := range stores.storeMap {
 		if store, ok := crudStore.(initializableStore); ok {
@@ -183,11 +193,13 @@ func (stores *Stores) getStoresForInit() []initializableStore {
 }
 
 func (stores *Stores) GetStoreForEntity(entity boltz.Entity) boltz.Store {
+	logtrace.LogWithFunctionName()
 	key := reflect.TypeOf(entity)
 	return stores.storeMap[key]
 }
 
 func (stores *Stores) GetStores() []boltz.Store {
+	logtrace.LogWithFunctionName()
 	var result []boltz.Store
 	for _, store := range stores.storeMap {
 		result = append(result, store)
@@ -236,10 +248,12 @@ type DbProvider interface {
 type DbProviderF func() boltz.Db
 
 func (f DbProviderF) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return f()
 }
 
 func InitStores(db boltz.Db, rateLimiter rate.RateLimiter, signingCert *x509.Certificate) (*Stores, error) {
+	logtrace.LogWithFunctionName()
 	dbProvider := DbProviderF(func() boltz.Db {
 		return db
 	})
@@ -369,6 +383,7 @@ func InitStores(db boltz.Db, rateLimiter rate.RateLimiter, signingCert *x509.Cer
 }
 
 func newBaseStore[E boltz.ExtEntity](stores *stores, strategy boltz.EntityStrategy[E]) *baseStore[E] {
+	logtrace.LogWithFunctionName()
 	return &baseStore[E]{
 		stores:    stores,
 		BaseStore: boltz.NewBaseStore(NewStoreDefinition[E](strategy)),
@@ -376,6 +391,7 @@ func newBaseStore[E boltz.ExtEntity](stores *stores, strategy boltz.EntityStrate
 }
 
 func newChildBaseStore[E boltz.ExtEntity](stores *stores, parentMapper func(entity boltz.Entity) boltz.Entity, strategy boltz.EntityStrategy[E], parent boltz.Store, path string) *baseStore[E] {
+	logtrace.LogWithFunctionName()
 	def := NewStoreDefinition[E](strategy)
 	def.BasePath = []string{path}
 	def.Parent = parent

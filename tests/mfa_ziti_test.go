@@ -28,6 +28,7 @@ import (
 	"testing"
 	"time"
 	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	"github.com/dgryski/dgoogauth"
@@ -36,6 +37,7 @@ import (
 )
 
 func Test_MFA(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -1078,6 +1080,7 @@ func Test_MFA(t *testing.T) {
 }
 
 func computeMFACode(secret string) string {
+	logtrace.LogWithFunctionName()
 	now := time.Now().UTC().Unix() / 30
 	code := dgoogauth.ComputeCode(secret, now)
 
@@ -1090,6 +1093,7 @@ type mfaCode struct {
 }
 
 func newMfaCodeBody(code string) []byte {
+	logtrace.LogWithFunctionName()
 	val := mfaCode{
 		Code: code,
 	}

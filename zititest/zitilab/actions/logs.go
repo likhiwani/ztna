@@ -18,9 +18,11 @@ package zitilib_actions
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/libssh"
 	"os"
 	"path/filepath"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/fablab/kernel/libssh"
 
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/foundation/v2/info"
@@ -28,10 +30,12 @@ import (
 )
 
 func Logs() model.Action {
+	logtrace.LogWithFunctionName()
 	return &logs{}
 }
 
 func (self *logs) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	if !run.GetModel().IsBound() {
 		return fmt.Errorf("model not bound")
 	}
@@ -49,6 +53,7 @@ func (self *logs) Execute(run model.Run) error {
 }
 
 func (self *logs) forHost(snapshot, rn, hn string, ssh libssh.SshConfigFactory) error {
+	logtrace.LogWithFunctionName()
 	path := filepath.Join(model.AllocateForensicScenario(snapshot, "logs"), rn, hn)
 	if err := os.MkdirAll(path, os.ModePerm); err != nil {
 		return fmt.Errorf("error creating logs path [%s] for host [%s/%s] (%w)", path, rn, hn, err)
@@ -77,6 +82,7 @@ func (self *logs) forHost(snapshot, rn, hn string, ssh libssh.SshConfigFactory) 
 }
 
 func (self *logs) forHostDir(localPath, remotePath string, ssh libssh.SshConfigFactory) error {
+	logtrace.LogWithFunctionName()
 	fis, err := libssh.RemoteFileList(ssh, remotePath)
 	if err != nil {
 		return err

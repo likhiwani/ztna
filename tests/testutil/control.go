@@ -1,14 +1,17 @@
 package testutil
 
 import (
-	"github.com/openziti/channel/v3"
+	"time"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 	"github.com/stretchr/testify/require"
-	"time"
 )
 
 func AcceptControl(id string, uf channel.UnderlayFactory, assertions *require.Assertions) (channel.Channel, *MessageCollector) {
+	logtrace.LogWithFunctionName()
 	msgc := NewMessageCollector(id)
 	bindHandler := func(binding channel.Binding) error {
 		binding.AddReceiveHandler(channel.AnyContentType, msgc)

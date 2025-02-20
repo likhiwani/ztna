@@ -17,20 +17,23 @@
 package model
 
 import (
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func NewExternalJwtSignerManager(env Env) *ExternalJwtSignerManager {
+	logtrace.LogWithFunctionName()
 	manager := &ExternalJwtSignerManager{
 		baseEntityManager: newBaseEntityManager[*ExternalJwtSigner, *db.ExternalJwtSigner](env, env.GetStores().ExternalJwtSigner),
 	}
@@ -46,27 +49,33 @@ type ExternalJwtSignerManager struct {
 }
 
 func (self *ExternalJwtSignerManager) newModelEntity() *ExternalJwtSigner {
+	logtrace.LogWithFunctionName()
 	return &ExternalJwtSigner{}
 }
 
 func (self *ExternalJwtSignerManager) Create(entity *ExternalJwtSigner, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*ExternalJwtSigner](self, entity, ctx)
 }
 
 func (self *ExternalJwtSignerManager) ApplyCreate(cmd *command.CreateEntityCommand[*ExternalJwtSigner], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ExternalJwtSignerManager) Update(entity *ExternalJwtSigner, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*ExternalJwtSigner](self, entity, checker, ctx)
 }
 
 func (self *ExternalJwtSignerManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*ExternalJwtSigner], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *ExternalJwtSignerManager) Marshall(entity *ExternalJwtSigner) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -97,6 +106,7 @@ func (self *ExternalJwtSignerManager) Marshall(entity *ExternalJwtSigner) ([]byt
 }
 
 func (self *ExternalJwtSignerManager) Unmarshall(bytes []byte) (*ExternalJwtSigner, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.ExternalJwtSigner{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -137,6 +147,7 @@ type ListExtJwtSignerResult struct {
 }
 
 func (self *ExternalJwtSignerManager) PublicQuery(query ast.Query) (*ListExtJwtSignerResult, error) {
+	logtrace.LogWithFunctionName()
 	queryStr := "enabled = true"
 	enabledQuery, err := ast.Parse(self.Store, queryStr)
 	if err != nil {

@@ -18,12 +18,15 @@ package db
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltz"
 	"math"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) initialize(step *boltz.MigrationStep) int {
+	logtrace.LogWithFunctionName()
 	versionBucket := boltz.GetOrCreatePath(step.Ctx.Tx(), RootBucket)
 	if step.SetError(versionBucket.GetError()) {
 		return 0
@@ -51,6 +54,7 @@ var IdentityTypesV1 = map[string]string{
 }
 
 func (m *Migrations) createIdentityTypesV1(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	for id, name := range IdentityTypesV1 {
 		step.SetError(m.stores.IdentityType.Create(step.Ctx, &IdentityType{
 			BaseExtEntity: *boltz.NewExtEntity(id, nil),
@@ -101,6 +105,7 @@ var serverConfigTypeV1 = &ConfigType{
 }
 
 func combine(maps ...map[string]interface{}) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	merged := make(map[string]interface{})
 	for _, m := range maps {
 		for k, v := range m {
@@ -544,6 +549,7 @@ var interceptV1ConfigType = &ConfigType{
 }
 
 func (m *Migrations) createInitialTunnelerConfigTypes(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	clientConfigTypeV1 := &ConfigType{
 		BaseExtEntity: boltz.BaseExtEntity{Id: clientConfigV1TypeId},
 		Name:          "ziti-tunneler-client.v1",
@@ -572,6 +578,7 @@ func (m *Migrations) createInitialTunnelerConfigTypes(step *boltz.MigrationStep)
 }
 
 func (m *Migrations) addPostureCheckTypes(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	_, count, err := m.stores.PostureCheckType.QueryIds(step.Ctx.Tx(), "true limit 500")
 
 	if err != nil {

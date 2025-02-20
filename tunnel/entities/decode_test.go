@@ -3,12 +3,15 @@ package entities
 import (
 	"bytes"
 	"encoding/json"
+	"testing"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/mitchellh/mapstructure"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func Test_LoadHttpCheck(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 
 	var test = `

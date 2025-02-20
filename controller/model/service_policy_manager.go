@@ -17,18 +17,21 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewServicePolicyManager(env Env) *ServicePolicyManager {
+	logtrace.LogWithFunctionName()
 	manager := &ServicePolicyManager{
 		baseEntityManager: newBaseEntityManager[*ServicePolicy, *db.ServicePolicy](env, env.GetStores().ServicePolicy),
 	}
@@ -44,27 +47,33 @@ type ServicePolicyManager struct {
 }
 
 func (self *ServicePolicyManager) newModelEntity() *ServicePolicy {
+	logtrace.LogWithFunctionName()
 	return &ServicePolicy{}
 }
 
 func (self *ServicePolicyManager) Create(entity *ServicePolicy, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*ServicePolicy](self, entity, ctx)
 }
 
 func (self *ServicePolicyManager) ApplyCreate(cmd *command.CreateEntityCommand[*ServicePolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ServicePolicyManager) Update(entity *ServicePolicy, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*ServicePolicy](self, entity, checker, ctx)
 }
 
 func (self *ServicePolicyManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*ServicePolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *ServicePolicyManager) Marshall(entity *ServicePolicy) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -85,6 +94,7 @@ func (self *ServicePolicyManager) Marshall(entity *ServicePolicy) ([]byte, error
 }
 
 func (self *ServicePolicyManager) Unmarshall(bytes []byte) (*ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.ServicePolicy{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -111,6 +121,7 @@ type AssociatedIdsResult struct {
 }
 
 func (self *ServicePolicyManager) ListAssociatedIds(tx *bbolt.Tx, id string) *AssociatedIdsResult {
+	logtrace.LogWithFunctionName()
 	return &AssociatedIdsResult{
 		IdentityIds:     self.env.GetStores().ServicePolicy.GetRelatedEntitiesIdList(tx, id, db.EntityTypeIdentities),
 		ServiceIds:      self.env.GetStores().ServicePolicy.GetRelatedEntitiesIdList(tx, id, db.EntityTypeServices),

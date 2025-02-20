@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"math"
 
@@ -40,6 +41,7 @@ type createTerminatorOptions struct {
 
 // newCreateTerminatorCmd creates the 'fabric create terminator' command
 func newCreateTerminatorCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createTerminatorOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -70,6 +72,7 @@ func newCreateTerminatorCmd(p common.OptionsProvider) *cobra.Command {
 
 // runCreateTerminator implements the command to create a Terminator
 func runCreateTerminator(o *createTerminatorOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	service, err := api.MapNameToID(util.FabricAPI, "services", &o.Options, o.Args[0])
 	if err != nil {

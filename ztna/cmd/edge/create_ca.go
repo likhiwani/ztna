@@ -23,6 +23,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/certificate_authority"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -38,6 +39,7 @@ type createCaOptions struct {
 
 // newCreateCaCmd creates the 'edge controller create ca local' command for the given entity type
 func newCreateCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createCaOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 		Ca: rest_model.CaCreate{
@@ -117,6 +119,7 @@ func newCreateCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreateCa(options *createCaOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {

@@ -18,16 +18,18 @@ package env
 
 import (
 	"fmt"
+	"sync"
+	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/cenkalti/backoff/v4"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/versions"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
-	"sync"
-	"time"
 
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/concurrenz"
@@ -41,6 +43,7 @@ type CtrlEventListener interface {
 type CtrlEventListenerFunc func(event CtrlEvent)
 
 func (self CtrlEventListenerFunc) NotifyOfCtrlEvent(event CtrlEvent) {
+	logtrace.LogWithFunctionName()
 	self(event)
 }
 
@@ -79,6 +82,7 @@ type NetworkControllers interface {
 type CtrlDialer func(address transport.Address, bindHandler channel.BindHandler) error
 
 func NewNetworkControllers(defaultRequestTimeout time.Duration, dialer CtrlDialer, heartbeatOptions *HeartbeatOptions) NetworkControllers {
+	logtrace.LogWithFunctionName()
 	return &networkControllers{
 		ctrlDialer:            dialer,
 		heartbeatOptions:      heartbeatOptions,
@@ -99,10 +103,12 @@ type networkControllers struct {
 }
 
 func (self *networkControllers) AddChangeListener(listener CtrlEventListener) {
+	logtrace.LogWithFunctionName()
 	self.ctrlChangeListeners.Append(listener)
 }
 
 func (self *networkControllers) UpdateControllerEndpoints(addresses []string) bool {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -136,10 +142,12 @@ func (self *networkControllers) UpdateControllerEndpoints(addresses []string) bo
 }
 
 func (self *networkControllers) UpdateLeader(leaderId string) {
+	logtrace.LogWithFunctionName()
 	self.leaderId.Store(leaderId)
 }
 
 func (self *networkControllers) connectToControllerWithBackoff(endpoint string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("endpoint", endpoint)
 
 	addr, err := transport.ParseAddress(endpoint)
@@ -191,6 +199,7 @@ func (self *networkControllers) connectToControllerWithBackoff(endpoint string) 
 }
 
 func (self *networkControllers) Add(address string, ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	ctrl := newNetworkCtrl(ch, address, self.heartbeatOptions)
 
 	if versionValue, found := ch.Underlay().Headers()[channel.HelloVersionHeader]; found {
@@ -216,12 +225,14 @@ func (self *networkControllers) Add(address string, ch channel.Channel) error {
 }
 
 func (self *networkControllers) NotifyOfReconnect(ctrlId string) {
+	logtrace.LogWithFunctionName()
 	if ctrl := self.GetNetworkController(ctrlId); ctrl != nil {
 		self.notifyOfChange(ctrl, ControllerReconnected)
 	}
 }
 
 func (self *networkControllers) notifyOfChange(controller NetworkController, eventType CtrlEventType) {
+	logtrace.LogWithFunctionName()
 	for _, l := range self.ctrlChangeListeners.Value() {
 		l.NotifyOfCtrlEvent(CtrlEvent{
 			Type:       eventType,
@@ -231,10 +242,12 @@ func (self *networkControllers) notifyOfChange(controller NetworkController, eve
 }
 
 func (self *networkControllers) GetAll() map[string]NetworkController {
+	logtrace.LogWithFunctionName()
 	return self.ctrls.AsMap()
 }
 
 func (self *networkControllers) AnyCtrlChannel() channel.Channel {
+	logtrace.LogWithFunctionName()
 	var current NetworkController
 	for _, ctrl := range self.ctrls.AsMap() {
 		if current == nil || ctrl.isMoreResponsive(current) {
@@ -248,10 +261,12 @@ func (self *networkControllers) AnyCtrlChannel() channel.Channel {
 }
 
 func (self *networkControllers) isLeader(controller NetworkController) bool {
+	logtrace.LogWithFunctionName()
 	return self.leaderId.Load() == controller.Channel().Id()
 }
 
 func (self *networkControllers) GetModelUpdateCtrlChannel() channel.Channel {
+	logtrace.LogWithFunctionName()
 	var current NetworkController
 	for _, ctrl := range self.ctrls.AsMap() {
 		if current == nil ||
@@ -267,6 +282,7 @@ func (self *networkControllers) GetModelUpdateCtrlChannel() channel.Channel {
 }
 
 func (self *networkControllers) AllResponsiveCtrlChannels() []channel.Channel {
+	logtrace.LogWithFunctionName()
 	var channels []channel.Channel
 	for _, ctrl := range self.ctrls.AsMap() {
 		if !ctrl.IsUnresponsive() {
@@ -277,6 +293,7 @@ func (self *networkControllers) AllResponsiveCtrlChannels() []channel.Channel {
 }
 
 func (self *networkControllers) GetIfResponsive(ctrlId string) (channel.Channel, bool) {
+	logtrace.LogWithFunctionName()
 	ch := self.ctrls.Get(ctrlId)
 	if ch == nil {
 		return nil, false
@@ -288,6 +305,7 @@ func (self *networkControllers) GetIfResponsive(ctrlId string) (channel.Channel,
 }
 
 func (self *networkControllers) AnyValidCtrlChannel() channel.Channel {
+	logtrace.LogWithFunctionName()
 	delay := 10 * time.Millisecond
 	for {
 		result := self.AnyCtrlChannel()
@@ -303,6 +321,7 @@ func (self *networkControllers) AnyValidCtrlChannel() channel.Channel {
 }
 
 func (self *networkControllers) GetCtrlChannel(controllerId string) channel.Channel {
+	logtrace.LogWithFunctionName()
 	if ctrl := self.ctrls.Get(controllerId); ctrl != nil {
 		return ctrl.Channel()
 	}
@@ -310,20 +329,24 @@ func (self *networkControllers) GetCtrlChannel(controllerId string) channel.Chan
 }
 
 func (self *networkControllers) GetNetworkController(controllerId string) NetworkController {
+	logtrace.LogWithFunctionName()
 	return self.ctrls.Get(controllerId)
 }
 
 func (self *networkControllers) DefaultRequestTimeout() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.defaultRequestTimeout
 }
 
 func (self *networkControllers) ForEach(f func(controllerId string, ch channel.Channel)) {
+	logtrace.LogWithFunctionName()
 	for controllerId, ctrl := range self.ctrls.AsMap() {
 		f(controllerId, ctrl.Channel())
 	}
 }
 
 func (self *networkControllers) Close() error {
+	logtrace.LogWithFunctionName()
 	var errList errorz.MultipleErrors
 	self.ForEach(func(_ string, ch channel.Channel) {
 		if err := ch.Close(); err != nil {
@@ -334,6 +357,7 @@ func (self *networkControllers) Close() error {
 }
 
 func (self *networkControllers) CloseAndRemoveByAddress(address string) {
+	logtrace.LogWithFunctionName()
 	self.ctrlEndpoints.Remove(address)
 
 	for id, ctrl := range self.ctrls.AsMap() {
@@ -348,6 +372,7 @@ func (self *networkControllers) CloseAndRemoveByAddress(address string) {
 }
 
 func (self *networkControllers) Inspect() *inspect.ControllerInspectDetails {
+	logtrace.LogWithFunctionName()
 	result := &inspect.ControllerInspectDetails{
 		Controllers: map[string]*inspect.ControllerInspectDetail{},
 	}

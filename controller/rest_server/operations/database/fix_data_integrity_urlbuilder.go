@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
@@ -44,6 +45,7 @@ type FixDataIntegrityURL struct {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *FixDataIntegrityURL) WithBasePath(bp string) *FixDataIntegrityURL {
+    logtrace.LogWithFunctionName()
 	o.SetBasePath(bp)
 	return o
 }
@@ -52,11 +54,13 @@ func (o *FixDataIntegrityURL) WithBasePath(bp string) *FixDataIntegrityURL {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *FixDataIntegrityURL) SetBasePath(bp string) {
+    logtrace.LogWithFunctionName()
 	o._basePath = bp
 }
 
 // Build a url path and query string
 func (o *FixDataIntegrityURL) Build() (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	var _result url.URL
 
 	var _path = "/database/fix-data-integrity"
@@ -72,6 +76,7 @@ func (o *FixDataIntegrityURL) Build() (*url.URL, error) {
 
 // Must is a helper function to panic when the url builder returns an error
 func (o *FixDataIntegrityURL) Must(u *url.URL, err error) *url.URL {
+    logtrace.LogWithFunctionName()
 	if err != nil {
 		panic(err)
 	}
@@ -83,11 +88,13 @@ func (o *FixDataIntegrityURL) Must(u *url.URL, err error) *url.URL {
 
 // String returns the string representation of the path with query string
 func (o *FixDataIntegrityURL) String() string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
 func (o *FixDataIntegrityURL) BuildFull(scheme, host string) (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	if scheme == "" {
 		return nil, errors.New("scheme is required for a full url on FixDataIntegrityURL")
 	}
@@ -107,5 +114,6 @@ func (o *FixDataIntegrityURL) BuildFull(scheme, host string) (*url.URL, error) {
 
 // StringFull returns the string representation of a complete url
 func (o *FixDataIntegrityURL) StringFull(scheme, host string) string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

@@ -2,18 +2,22 @@ package edge
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab"
 	"github.com/pkg/errors"
-	"time"
 )
 
 func RaftJoin(primaryId string, componentSpec string) model.Action {
+	logtrace.LogWithFunctionName()
 	return RaftJoinWithTimeout(primaryId, componentSpec, time.Minute)
 }
 
 func RaftJoinWithTimeout(primaryId string, componentSpec string, timeout time.Duration) model.Action {
+	logtrace.LogWithFunctionName()
 	return &raftJoin{
 		primaryId:     primaryId,
 		componentSpec: componentSpec,
@@ -28,6 +32,7 @@ type raftJoin struct {
 }
 
 func (self *raftJoin) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	primary, err := run.GetModel().SelectComponent(self.primaryId)
 	if err != nil {
 		return fmt.Errorf("could not find primary controller component with id '%s'", self.primaryId)

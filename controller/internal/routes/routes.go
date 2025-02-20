@@ -24,6 +24,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/foundation/v2/errorz"
@@ -32,6 +33,7 @@ import (
 type ModelToApiMapper func(*env.AppEnv, *response.RequestContext, models.Entity) (interface{}, error)
 
 func GetModelQueryOptionsFromRequest(r *http.Request) (*PublicQueryOptions, error) {
+	logtrace.LogWithFunctionName()
 	filter := r.URL.Query().Get("filter")
 	sort := r.URL.Query().Get("sort")
 
@@ -49,6 +51,7 @@ func GetModelQueryOptionsFromRequest(r *http.Request) (*PublicQueryOptions, erro
 }
 
 func GetRequestPaging(r *http.Request) (*Paging, error) {
+	logtrace.LogWithFunctionName()
 	l := r.URL.Query().Get("limit")
 	o := r.URL.Query().Get("offset")
 
@@ -88,6 +91,7 @@ type QueryResult struct {
 }
 
 func NewQueryResult(result interface{}, metadata *models.QueryMetaData) *QueryResult {
+	logtrace.LogWithFunctionName()
 	return &QueryResult{
 		Result:           result,
 		Count:            metadata.Count,
@@ -98,6 +102,7 @@ func NewQueryResult(result interface{}, metadata *models.QueryMetaData) *QueryRe
 }
 
 func TagsOrDefault(tags *rest_model.Tags) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if tags == nil || tags.SubTags == nil {
 		return map[string]interface{}{}
 	}
@@ -105,6 +110,7 @@ func TagsOrDefault(tags *rest_model.Tags) map[string]interface{} {
 }
 
 func AttributesOrDefault(attributes *rest_model.Attributes) rest_model.Attributes {
+	logtrace.LogWithFunctionName()
 	if attributes == nil {
 		return rest_model.Attributes{}
 	}
@@ -113,6 +119,7 @@ func AttributesOrDefault(attributes *rest_model.Attributes) rest_model.Attribute
 }
 
 func BoolOrDefault(val *bool) bool {
+	logtrace.LogWithFunctionName()
 	if val == nil {
 		return false
 	}
@@ -121,6 +128,7 @@ func BoolOrDefault(val *bool) bool {
 }
 
 func Int64OrDefault(val *int64) int64 {
+	logtrace.LogWithFunctionName()
 	if val == nil {
 		return 0
 	}
@@ -129,6 +137,7 @@ func Int64OrDefault(val *int64) int64 {
 }
 
 func DateTimePtrOrNil(time *time.Time) *strfmt.DateTime {
+	logtrace.LogWithFunctionName()
 	if time == nil {
 		return nil
 	}

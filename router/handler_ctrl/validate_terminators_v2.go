@@ -17,15 +17,17 @@
 package handler_ctrl
 
 import (
+	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/foundation/v2/goroutines"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/xgress"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type validateTerminatorsV2Handler struct {
@@ -34,6 +36,7 @@ type validateTerminatorsV2Handler struct {
 }
 
 func newValidateTerminatorsV2Handler(env env.RouterEnv, pool goroutines.Pool) *validateTerminatorsV2Handler {
+	logtrace.LogWithFunctionName()
 	return &validateTerminatorsV2Handler{
 		env:  env,
 		pool: pool,
@@ -41,10 +44,12 @@ func newValidateTerminatorsV2Handler(env env.RouterEnv, pool goroutines.Pool) *v
 }
 
 func (handler *validateTerminatorsV2Handler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_ValidateTerminatorsV2RequestType)
 }
 
 func (handler *validateTerminatorsV2Handler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	req := &ctrl_pb.ValidateTerminatorsV2Request{}
@@ -59,6 +64,7 @@ func (handler *validateTerminatorsV2Handler) HandleReceive(msg *channel.Message,
 }
 
 func (handler *validateTerminatorsV2Handler) validateTerminators(msg *channel.Message, ch channel.Channel, req *ctrl_pb.ValidateTerminatorsV2Request) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	log.Debugf("validate terminators route request received: %v terminators", len(req.Terminators))
@@ -129,6 +135,7 @@ func (handler *validateTerminatorsV2Handler) validateTerminators(msg *channel.Me
 }
 
 func (handler *validateTerminatorsV2Handler) validateTerminator(dialer xgress.Dialer, terminator *ctrl_pb.Terminator, fixInvalid bool) *ctrl_pb.RouterTerminatorState {
+	logtrace.LogWithFunctionName()
 	if inspectable, ok := dialer.(xgress.InspectableDialer); ok {
 		valid, state := inspectable.InspectTerminator(terminator.Id, terminator.Address, fixInvalid)
 		if valid {

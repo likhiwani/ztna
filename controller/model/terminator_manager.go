@@ -16,11 +16,9 @@ package model
 import (
 	"context"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
+	"reflect"
+	"strings"
+	"time"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -30,14 +28,19 @@ import (
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"reflect"
-	"strings"
-	"time"
 )
 
 func newTerminatorManager(env Env) *TerminatorManager {
+	logtrace.LogWithFunctionName()
 	result := &TerminatorManager{
 		baseEntityManager: newBaseEntityManager[*Terminator, *db.Terminator](env, env.GetStores().Terminator),
 	}
@@ -56,14 +59,17 @@ type TerminatorManager struct {
 }
 
 func (self *TerminatorManager) newModelEntity() *Terminator {
+	logtrace.LogWithFunctionName()
 	return &Terminator{}
 }
 
 func (self *TerminatorManager) Create(entity *Terminator, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Terminator](self, entity, ctx)
 }
 
 func (self *TerminatorManager) ApplyCreate(cmd *command.CreateEntityCommand[*Terminator], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		if cmd.Entity.IsSystemEntity() {
 			ctx = ctx.GetSystemContext()
@@ -84,6 +90,7 @@ func (self *TerminatorManager) ApplyCreate(cmd *command.CreateEntityCommand[*Ter
 }
 
 func (self *TerminatorManager) DeleteBatch(ids []string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &DeleteTerminatorsBatchCommand{
 		Context: ctx,
 		Manager: self,
@@ -93,6 +100,7 @@ func (self *TerminatorManager) DeleteBatch(ids []string, ctx *change.Context) er
 }
 
 func (self *TerminatorManager) ApplyDeleteBatch(cmd *DeleteTerminatorsBatchCommand, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var errorList errorz.MultipleErrors
 	err := self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		for _, id := range cmd.Ids {
@@ -111,6 +119,7 @@ func (self *TerminatorManager) ApplyDeleteBatch(cmd *DeleteTerminatorsBatchComma
 }
 
 func (self *TerminatorManager) checkBinding(terminator *Terminator) {
+	logtrace.LogWithFunctionName()
 	if terminator.Binding == "" {
 		if strings.HasPrefix(terminator.Address, "udp:") {
 			terminator.Binding = "udp"
@@ -121,6 +130,7 @@ func (self *TerminatorManager) checkBinding(terminator *Terminator) {
 }
 
 func (self *TerminatorManager) HandlePrecedenceChange(terminatorId string, precedence xt.Precedence) {
+	logtrace.LogWithFunctionName()
 	terminator, err := self.Read(terminatorId)
 	if err != nil {
 		pfxlog.Logger().Errorf("unable to update precedence for terminator %v to %v (%v)",
@@ -139,10 +149,12 @@ func (self *TerminatorManager) HandlePrecedenceChange(terminatorId string, prece
 }
 
 func (self *TerminatorManager) Update(entity *Terminator, updatedFields fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Terminator](self, entity, updatedFields, ctx)
 }
 
 func (self *TerminatorManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Terminator], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	terminator := cmd.Entity
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		if cmd.Entity.IsSystemEntity() {
@@ -159,6 +171,7 @@ func (self *TerminatorManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Ter
 }
 
 func (self *TerminatorManager) Query(query string) (*TerminatorListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &TerminatorListResult{controller: self}
 	if err := self.ListWithHandler(query, result.collect); err != nil {
 		return nil, err
@@ -167,6 +180,7 @@ func (self *TerminatorManager) Query(query string) (*TerminatorListResult, error
 }
 
 func (self *TerminatorManager) Marshall(entity *Terminator) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -214,6 +228,7 @@ func (self *TerminatorManager) Marshall(entity *Terminator) ([]byte, error) {
 }
 
 func (self *TerminatorManager) Unmarshall(bytes []byte) (*Terminator, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.Terminator{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -261,6 +276,7 @@ func (self *TerminatorManager) Unmarshall(bytes []byte) (*Terminator, error) {
 type TerminatorValidationCallback func(detail *mgmt_pb.TerminatorDetail)
 
 func (self *TerminatorManager) ValidateTerminators(filter string, fixInvalid bool, cb TerminatorValidationCallback) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	if filter == "" {
 		filter = "true limit none"
 	}
@@ -291,6 +307,7 @@ func (self *TerminatorManager) ValidateTerminators(filter string, fixInvalid boo
 }
 
 func (self *TerminatorManager) validateTerminatorBatch(fixInvalid bool, routerId string, batch []*Terminator, cb TerminatorValidationCallback) {
+	logtrace.LogWithFunctionName()
 	router := self.env.GetManagers().Router.GetConnected(routerId)
 	if router == nil {
 		self.reportError(router, batch, cb, "router off-line")
@@ -332,6 +349,7 @@ func (self *TerminatorManager) validateTerminatorBatch(fixInvalid bool, routerId
 }
 
 func (self *TerminatorManager) reportError(router *Router, batch []*Terminator, cb TerminatorValidationCallback, err string) {
+	logtrace.LogWithFunctionName()
 	for _, terminator := range batch {
 		detail := self.newTerminatorDetail(router, terminator)
 		detail.State = mgmt_pb.TerminatorState_Unknown
@@ -341,6 +359,7 @@ func (self *TerminatorManager) reportError(router *Router, batch []*Terminator, 
 }
 
 func (self *TerminatorManager) newTerminatorDetail(router *Router, terminator *Terminator) *mgmt_pb.TerminatorDetail {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.TerminatorDetail{
 		TerminatorId: terminator.Id,
 		ServiceId:    terminator.Service,
@@ -376,6 +395,7 @@ type TerminatorListResult struct {
 }
 
 func (result *TerminatorListResult) collect(tx *bbolt.Tx, ids []string, qmd *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *qmd
 	for _, id := range ids {
 		terminator, err := result.controller.readInTx(tx, id)
@@ -393,6 +413,7 @@ type RoutingTerminator struct {
 }
 
 func (r *RoutingTerminator) GetRouteCost() uint32 {
+	logtrace.LogWithFunctionName()
 	return r.RouteCost
 }
 
@@ -403,22 +424,26 @@ type DeleteTerminatorsBatchCommand struct {
 }
 
 func (self *DeleteTerminatorsBatchCommand) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.Manager.ApplyDeleteBatch(self, ctx)
 }
 
 func (self *DeleteTerminatorsBatchCommand) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	return cmd_pb.EncodeProtobuf(&cmd_pb.DeleteTerminatorsBatchCommand{
 		EntityIds: self.Ids,
 	})
 }
 
 func (self *DeleteTerminatorsBatchCommand) Decode(env Env, msg *cmd_pb.DeleteTerminatorsBatchCommand) error {
+	logtrace.LogWithFunctionName()
 	self.Manager = env.GetManagers().Terminator
 	self.Ids = msg.EntityIds
 	return nil
 }
 
 func (self *DeleteTerminatorsBatchCommand) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.Context
 }
 
@@ -435,6 +460,7 @@ type ValidateTerminatorRequestSendable struct {
 }
 
 func (self *ValidateTerminatorRequestSendable) AcceptReply(message *channel.Message) {
+	logtrace.LogWithFunctionName()
 	self.cancelF()
 
 	response := &ctrl_pb.ValidateTerminatorsV2Response{}
@@ -491,13 +517,16 @@ func (self *ValidateTerminatorRequestSendable) AcceptReply(message *channel.Mess
 }
 
 func (self *ValidateTerminatorRequestSendable) Context() context.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }
 
 func (self *ValidateTerminatorRequestSendable) SendListener() channel.SendListener {
+	logtrace.LogWithFunctionName()
 	return self
 }
 
 func (self *ValidateTerminatorRequestSendable) ReplyReceiver() channel.ReplyReceiver {
+	logtrace.LogWithFunctionName()
 	return self
 }

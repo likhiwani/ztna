@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
@@ -40,6 +42,7 @@ type Router struct {
 }
 
 func (entity *Router) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeRouters
 }
 
@@ -51,6 +54,7 @@ type RouterStore interface {
 }
 
 func newRouterStore(stores *stores) *routerStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &routerStoreImpl{}
 	store.baseStore = baseStore[*Router]{
 		stores:    stores,
@@ -67,6 +71,7 @@ type routerStoreImpl struct {
 }
 
 func (store *routerStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	symbolName := store.AddSymbol(FieldName, ast.NodeTypeString)
@@ -80,13 +85,16 @@ func (store *routerStoreImpl) initializeLocal() {
 }
 
 func (store *routerStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 }
 
 func (self *routerStoreImpl) NewEntity() *Router {
+	logtrace.LogWithFunctionName()
 	return &Router{}
 }
 
 func (self *routerStoreImpl) FillEntity(entity *Router, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.Fingerprint = bucket.GetString(FieldRouterFingerprint)
@@ -96,6 +104,7 @@ func (self *routerStoreImpl) FillEntity(entity *Router, bucket *boltz.TypedBucke
 }
 
 func (self *routerStoreImpl) PersistEntity(entity *Router, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetStringP(FieldRouterFingerprint, entity.Fingerprint)
@@ -105,10 +114,12 @@ func (self *routerStoreImpl) PersistEntity(entity *Router, ctx *boltz.PersistCon
 }
 
 func (store *routerStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *routerStoreImpl) FindByName(tx *bbolt.Tx, name string) (*Router, error) {
+	logtrace.LogWithFunctionName()
 	id := store.indexName.Read(tx, []byte(name))
 	if id != nil {
 		entity, _, err := store.FindById(tx, string(id))
@@ -118,6 +129,7 @@ func (store *routerStoreImpl) FindByName(tx *bbolt.Tx, name string) (*Router, er
 }
 
 func (store *routerStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	terminatorIds := store.GetRelatedEntitiesIdList(ctx.Tx(), id, EntityTypeTerminators)
 	for _, terminatorId := range terminatorIds {
 		if err := store.stores.terminator.DeleteById(ctx, terminatorId); err != nil {

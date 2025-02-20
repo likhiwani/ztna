@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto"
 	"io"
 
@@ -39,17 +40,21 @@ type AcmeUser struct {
 }
 
 func (u *AcmeUser) GetEmail() string {
+	logtrace.LogWithFunctionName()
 	return u.Email
 }
 func (u AcmeUser) GetRegistration() *registration.Resource {
+	logtrace.LogWithFunctionName()
 	return u.Registration
 }
 func (u *AcmeUser) GetPrivateKey() crypto.PrivateKey {
+	logtrace.LogWithFunctionName()
 	return u.key
 }
 
 // newCreateCmd creates the 'edge controller create ca local' command for the given entity type
 func newCreateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &leOptions{}
 
 	cmd := &cobra.Command{
@@ -90,6 +95,7 @@ func newCreateCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreate(options *leOptions) (err error) {
+	logtrace.LogWithFunctionName()
 
 	if options.staging {
 		options.acmeserver = acmeStaging
@@ -131,6 +137,7 @@ func runCreate(options *leOptions) (err error) {
 }
 
 func register(options *leOptions, client *lego.Client) (*registration.Resource, error) {
+	logtrace.LogWithFunctionName()
 
 	return client.Registration.Register(registration.RegisterOptions{TermsOfServiceAgreed: true})
 }

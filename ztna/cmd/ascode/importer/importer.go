@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"errors"
 	"io"
@@ -53,6 +54,7 @@ type Importer struct {
 }
 
 func NewImportCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 
 	importer := &Importer{}
 	importer.loginOpts = edge.LoginOptions{}
@@ -114,6 +116,7 @@ func NewImportCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (importer *Importer) Init() {
+	logtrace.LogWithFunctionName()
 
 	logLvl := logrus.InfoLevel
 	if importer.loginOpts.Verbose {
@@ -132,6 +135,7 @@ func (importer *Importer) Init() {
 }
 
 func (importer *Importer) Execute(data map[string][]interface{}, inputArgs []string) (map[string]any, error) {
+	logtrace.LogWithFunctionName()
 
 	args := arrayutils.Map(inputArgs, strings.ToLower)
 
@@ -308,6 +312,7 @@ func (importer *Importer) Execute(data map[string][]interface{}, inputArgs []str
 }
 
 func FromMap[T interface{}](input interface{}, v T) *T {
+	logtrace.LogWithFunctionName()
 	jsonData, _ := json.MarshalIndent(input, "", "  ")
 	create := new(T)
 	err := json.Unmarshal(jsonData, &create)
@@ -328,6 +333,7 @@ type FileReader struct {
 }
 
 func (i FileReader) read(input any) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	file, err := os.ReadFile(input.(string))
 	if err != nil {
 		return nil, err

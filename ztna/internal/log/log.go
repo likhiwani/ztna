@@ -18,34 +18,42 @@ package log
 
 import (
 	"fmt"
+	logtrace "ztna-core/ztna/logtrace"
 
 	"github.com/fatih/color"
 )
 
 func Infof(msg string, args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	Info(fmt.Sprintf(msg, args...))
 }
 
 func Info(msg string) {
+	logtrace.LogWithFunctionName()
 	fmt.Print(msg)
 }
 
 func Infoln(msg string) {
+	logtrace.LogWithFunctionName()
 	fmt.Println(msg)
 }
 
 func Warnf(msg string, args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	Warn(fmt.Sprintf(msg, args...))
 }
 
 func Warn(msg string) {
+	logtrace.LogWithFunctionName()
 	color.Yellow(msg)
 }
 
 func Fatalf(msg string, args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	Fatal(fmt.Sprintf(msg, args...))
 }
 
 func Fatal(msg string) {
+	logtrace.LogWithFunctionName()
 	color.Red(msg)
 }

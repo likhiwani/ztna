@@ -1,3 +1,4 @@
+//go:build dataflow
 // +build dataflow
 
 /*
@@ -21,19 +22,22 @@ package tests
 import (
 	"bytes"
 	"fmt"
-	"github.com/openziti/foundation/v2/info"
-	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"io"
 	"math"
 	"math/rand"
 	"net"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/info"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 func Test_TunnelerDataflowTcp(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -118,6 +122,7 @@ func Test_TunnelerDataflowTcp(t *testing.T) {
 }
 
 func acceptConnections(l net.Listener, errC chan error) {
+	logtrace.LogWithFunctionName()
 	defer func() { _ = l.Close() }()
 	defer close(errC)
 
@@ -131,6 +136,7 @@ func acceptConnections(l net.Listener, errC chan error) {
 }
 
 func handleServerConn(conn net.Conn, errC chan error) {
+	logtrace.LogWithFunctionName()
 	var read []string
 
 	defer func() {
@@ -163,6 +169,7 @@ func handleServerConn(conn net.Conn, errC chan error) {
 }
 
 func Test_TunnelerDataflowHalfClose(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -249,6 +256,7 @@ func Test_TunnelerDataflowHalfClose(t *testing.T) {
 }
 
 func acceptConnectionsHalfClose(l net.Listener, errC chan error) {
+	logtrace.LogWithFunctionName()
 	defer func() { _ = l.Close() }()
 	defer close(errC)
 
@@ -261,6 +269,7 @@ func acceptConnectionsHalfClose(l net.Listener, errC chan error) {
 }
 
 func handleServerConnHalfClose(conn net.Conn, errC chan error) {
+	logtrace.LogWithFunctionName()
 	var read []string
 
 	defer func() {
@@ -302,6 +311,7 @@ func handleServerConnHalfClose(conn net.Conn, errC chan error) {
 }
 
 func Test_TunnelerDataflowUdp(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -393,6 +403,7 @@ func Test_TunnelerDataflowUdp(t *testing.T) {
 var endOfData = "end-of-data"
 
 func echoData(conn net.PacketConn, errC chan error) {
+	logtrace.LogWithFunctionName()
 	defer func() { _ = conn.Close() }()
 	defer close(errC)
 

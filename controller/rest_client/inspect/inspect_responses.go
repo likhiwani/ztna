@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type InspectReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *InspectReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewInspectOK()
@@ -72,6 +74,7 @@ func (o *InspectReader) ReadResponse(response runtime.ClientResponse, consumer r
 
 // NewInspectOK creates a InspectOK with default headers values
 func NewInspectOK() *InspectOK {
+    logtrace.LogWithFunctionName()
 	return &InspectOK{}
 }
 
@@ -84,13 +87,16 @@ type InspectOK struct {
 }
 
 func (o *InspectOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /inspections][%d] inspectOK  %+v", 200, o.Payload)
 }
 func (o *InspectOK) GetPayload() *rest_model.InspectResponse {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *InspectOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.InspectResponse)
 
@@ -104,6 +110,7 @@ func (o *InspectOK) readResponse(response runtime.ClientResponse, consumer runti
 
 // NewInspectUnauthorized creates a InspectUnauthorized with default headers values
 func NewInspectUnauthorized() *InspectUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &InspectUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type InspectUnauthorized struct {
 }
 
 func (o *InspectUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /inspections][%d] inspectUnauthorized  %+v", 401, o.Payload)
 }
 func (o *InspectUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *InspectUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *InspectUnauthorized) readResponse(response runtime.ClientResponse, cons
 
 // NewInspectTooManyRequests creates a InspectTooManyRequests with default headers values
 func NewInspectTooManyRequests() *InspectTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &InspectTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type InspectTooManyRequests struct {
 }
 
 func (o *InspectTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /inspections][%d] inspectTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *InspectTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *InspectTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

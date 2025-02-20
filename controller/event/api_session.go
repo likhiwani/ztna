@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 const ApiSessionEventTypeCreated = "created"
@@ -43,6 +44,7 @@ type ApiSessionEvent struct {
 }
 
 func (event *ApiSessionEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v id=%v timestamp=%v token=%v identityId=%v ipAddress=%v",
 		event.Namespace, event.EventType, event.Id, event.Timestamp, event.Token, event.IdentityId, event.IpAddress)
 }

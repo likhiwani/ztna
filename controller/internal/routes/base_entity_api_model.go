@@ -20,11 +20,13 @@ import (
 	"path"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 )
 
 func BaseEntityToRestModel(entity models.Entity, linkFactory LinksFactory) rest_model.BaseEntity {
+	logtrace.LogWithFunctionName()
 	id := entity.GetId()
 	createdAt := strfmt.DateTime(entity.GetCreatedAt())
 	updatedAt := strfmt.DateTime(entity.GetUpdatedAt())
@@ -66,6 +68,7 @@ type CreateLinkFactory interface {
 }
 
 func NewBasicLinkFactory(entityName string) *BasicLinkFactory {
+	logtrace.LogWithFunctionName()
 	return &BasicLinkFactory{entityName: entityName}
 }
 
@@ -74,35 +77,42 @@ type BasicLinkFactory struct {
 }
 
 func (factory *BasicLinkFactory) SelfLinkFromId(id string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	return NewLink(factory.SelfUrlString(id))
 }
 
 func (factory *BasicLinkFactory) SelfUrlString(id string) string {
+	logtrace.LogWithFunctionName()
 	//path.Join will remove the ./ prefix in its "clean" operation
 	return "./" + path.Join(factory.entityName, id)
 }
 
 func (factory *BasicLinkFactory) SelfLink(entity models.Entity) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	return NewLink(factory.SelfUrlString(entity.GetId()))
 }
 
 func (factory *BasicLinkFactory) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	return rest_model.Links{
 		EntityNameSelf: factory.SelfLink(entity),
 	}
 }
 
 func (factory BasicLinkFactory) NewNestedLink(entity models.Entity, elem ...string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	elem = append([]string{factory.SelfUrlString(entity.GetId())}, elem...)
 	//path.Join will remove the ./ prefix in its "clean" operation
 	return NewLink("./" + path.Join(elem...))
 }
 
 func (factory *BasicLinkFactory) EntityName() string {
+	logtrace.LogWithFunctionName()
 	return factory.entityName
 }
 
 func ToEntityRef(name string, entity models.Entity, factory LinksFactory) *rest_model.EntityRef {
+	logtrace.LogWithFunctionName()
 	return &rest_model.EntityRef{
 		Links:  factory.Links(entity),
 		Entity: factory.EntityName(),
@@ -112,6 +122,7 @@ func ToEntityRef(name string, entity models.Entity, factory LinksFactory) *rest_
 }
 
 func NewLink(path string) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	href := strfmt.URI(path)
 	return rest_model.Link{
 		Href: &href,

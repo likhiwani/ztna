@@ -21,18 +21,6 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/openziti/storage/objectz"
-	"ztna-core/ztna/common/inspect"
-	fabricMetrics "ztna-core/ztna/common/metrics"
-	"ztna-core/ztna/common/pb/cmd_pb"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/idgen"
-	"ztna-core/ztna/controller/model"
-	"google.golang.org/protobuf/proto"
 	"math"
 	"os"
 	"path/filepath"
@@ -41,9 +29,31 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/ztna/common/inspect"
+	fabricMetrics "ztna-core/ztna/common/metrics"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/goroutines"
+	"github.com/openziti/storage/objectz"
+	"google.golang.org/protobuf/proto"
+
+	"ztna-core/ztna/controller/command"
 
 	"github.com/openziti/foundation/v2/versions"
-	"ztna-core/ztna/controller/command"
+
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/xt"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3/protobufs"
@@ -54,12 +64,6 @@ import (
 	"github.com/openziti/metrics"
 	"github.com/openziti/metrics/metrics_pb"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/ctrl_msg"
-	"ztna-core/ztna/common/logcontext"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/trace"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/xt"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
@@ -122,6 +126,7 @@ type Network struct {
 }
 
 func NewNetwork(config Config, env model.Env) (*Network, error) {
+	logtrace.LogWithFunctionName()
 	if config.GetOptions().IntervalAgeThreshold != 0 {
 		metrics.SetIntervalAgeThreshold(config.GetOptions().IntervalAgeThreshold)
 		logrus.Infof("set interval age threshold to '%v'", config.GetOptions().IntervalAgeThreshold)
@@ -182,11 +187,13 @@ func NewNetwork(config Config, env model.Env) (*Network, error) {
 }
 
 func (self *Network) HandleRouterDelete(id string) {
+	logtrace.LogWithFunctionName()
 	self.routerDeleted(id)
 	self.RouterMessaging.RouterDeleted(id)
 }
 
 func (self *Network) decodeSyncSnapshotCommand(_ int32, data []byte) (command.Command, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.SyncSnapshotCommand{}
 	if err := proto.Unmarshal(data, msg); err != nil {
 		return nil, err
@@ -202,6 +209,7 @@ func (self *Network) decodeSyncSnapshotCommand(_ int32, data []byte) (command.Co
 }
 
 func (network *Network) createRouterCommPool(config Config) (goroutines.Pool, error) {
+	logtrace.LogWithFunctionName()
 	poolConfig := goroutines.PoolConfig{
 		QueueSize:   config.GetOptions().RouterComm.QueueSize,
 		MinWorkers:  0,
@@ -223,6 +231,7 @@ func (network *Network) createRouterCommPool(config Config) (goroutines.Pool, er
 }
 
 func (network *Network) relayControllerMetrics() {
+	logtrace.LogWithFunctionName()
 	go func() {
 		timer := time.NewTicker(network.options.MetricsReportInterval)
 		defer timer.Stop()
@@ -241,51 +250,63 @@ func (network *Network) relayControllerMetrics() {
 }
 
 func (network *Network) InitServiceCounterDispatch(handler metrics.Handler) {
+	logtrace.LogWithFunctionName()
 	network.serviceEventMetrics.StartReporting(handler, network.GetOptions().MetricsReportInterval, 10)
 }
 
 func (network *Network) GetAppId() string {
+	logtrace.LogWithFunctionName()
 	return network.nodeId
 }
 
 func (network *Network) GetOptions() *config.NetworkConfig {
+	logtrace.LogWithFunctionName()
 	return network.options
 }
 
 func (network *Network) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return network.config.GetDb()
 }
 
 func (network *Network) GetStores() *db.Stores {
+	logtrace.LogWithFunctionName()
 	return network.env.GetStores()
 }
 
 func (network *Network) GetConnectedRouter(routerId string) *model.Router {
+	logtrace.LogWithFunctionName()
 	return network.Router.GetConnected(routerId)
 }
 
 func (network *Network) GetReloadedRouter(routerId string) (*model.Router, error) {
+	logtrace.LogWithFunctionName()
 	network.Router.RemoveFromCache(routerId)
 	return network.Router.Read(routerId)
 }
 
 func (network *Network) GetRouter(routerId string) (*model.Router, error) {
+	logtrace.LogWithFunctionName()
 	return network.Router.Read(routerId)
 }
 
 func (network *Network) AllConnectedRouters() []*model.Router {
+	logtrace.LogWithFunctionName()
 	return network.Router.AllConnected()
 }
 
 func (network *Network) GetLink(linkId string) (*model.Link, bool) {
+	logtrace.LogWithFunctionName()
 	return network.Link.Get(linkId)
 }
 
 func (network *Network) GetAllLinks() []*model.Link {
+	logtrace.LogWithFunctionName()
 	return network.Link.All()
 }
 
 func (network *Network) GetAllLinksForRouter(routerId string) []*model.Link {
+	logtrace.LogWithFunctionName()
 	r := network.GetConnectedRouter(routerId)
 	if r == nil {
 		return nil
@@ -294,60 +315,74 @@ func (network *Network) GetAllLinksForRouter(routerId string) []*model.Link {
 }
 
 func (network *Network) GetCircuit(circuitId string) (*model.Circuit, bool) {
+	logtrace.LogWithFunctionName()
 	return network.Circuit.Get(circuitId)
 }
 
 func (network *Network) GetAllCircuits() []*model.Circuit {
+	logtrace.LogWithFunctionName()
 	return network.Circuit.All()
 }
 
 func (network *Network) GetCircuitStore() *objectz.ObjectStore[*model.Circuit] {
+	logtrace.LogWithFunctionName()
 	return network.Circuit.GetStore()
 }
 
 func (network *Network) GetLinkStore() *objectz.ObjectStore[*model.Link] {
+	logtrace.LogWithFunctionName()
 	return network.Link.GetStore()
 }
 
 func (network *Network) RouteResult(rs *RouteStatus) bool {
+	logtrace.LogWithFunctionName()
 	return network.routeSenderController.forwardRouteResult(rs)
 }
 
 func (network *Network) newRouteSender(circuitId string) *routeSender {
+	logtrace.LogWithFunctionName()
 	rs := newRouteSender(circuitId, network.options.RouteTimeout, network, network.Terminator)
 	network.routeSenderController.addRouteSender(rs)
 	return rs
 }
 
 func (network *Network) removeRouteSender(rs *routeSender) {
+	logtrace.LogWithFunctionName()
 	network.routeSenderController.removeRouteSender(rs)
 }
 
 func (network *Network) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return network.eventDispatcher
 }
 
 func (network *Network) GetTraceController() trace.Controller {
+	logtrace.LogWithFunctionName()
 	return network.traceController
 }
 
 func (network *Network) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return network.metricsRegistry
 }
 
 func (network *Network) GetServiceEventsMetricsRegistry() metrics.UsageRegistry {
+	logtrace.LogWithFunctionName()
 	return network.serviceEventMetrics
 }
 
 func (network *Network) GetCloseNotify() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return network.closeNotify
 }
 
 func (network *Network) ConnectedRouter(id string) bool {
+	logtrace.LogWithFunctionName()
 	return network.Router.IsConnected(id)
 }
 
 func (network *Network) ConnectRouter(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	network.Link.BuildRouterLinks(r)
 	network.Router.MarkConnected(r)
 
@@ -364,6 +399,7 @@ func (network *Network) ConnectRouter(r *model.Router) {
 }
 
 func (network *Network) ValidateTerminators(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("routerId", r.Id)
 	result, err := network.Terminator.Query(fmt.Sprintf(`router.id = "%v" limit none`, r.Id))
 	if err != nil {
@@ -382,6 +418,7 @@ func (network *Network) ValidateTerminators(r *model.Router) {
 type LinkValidationCallback func(detail *mgmt_pb.RouterLinkDetails)
 
 func (n *Network) ValidateLinks(filter string, cb LinkValidationCallback) (int64, func(), error) {
+	logtrace.LogWithFunctionName()
 	result, err := n.Router.BaseList(filter)
 	if err != nil {
 		return 0, nil, err
@@ -410,6 +447,7 @@ func (n *Network) ValidateLinks(filter string, cb LinkValidationCallback) (int64
 type SdkTerminatorValidationCallback func(detail *mgmt_pb.RouterSdkTerminatorsDetails)
 
 func (n *Network) ValidateRouterSdkTerminators(filter string, cb SdkTerminatorValidationCallback) (int64, func(), error) {
+	logtrace.LogWithFunctionName()
 	result, err := n.Router.BaseList(filter)
 	if err != nil {
 		return 0, nil, err
@@ -436,6 +474,7 @@ func (n *Network) ValidateRouterSdkTerminators(filter string, cb SdkTerminatorVa
 }
 
 func (network *Network) DisconnectRouter(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	// 1: remove Links for Router
 	for _, l := range r.GetLinks() {
 		wasConnected := l.CurrentState().Mode == model.Connected
@@ -457,6 +496,7 @@ func (network *Network) DisconnectRouter(r *model.Router) {
 }
 
 func (network *Network) notifyAssembleAndClean() {
+	logtrace.LogWithFunctionName()
 	select {
 	case network.assembleAndCleanC <- struct{}{}:
 	default:
@@ -464,6 +504,7 @@ func (network *Network) notifyAssembleAndClean() {
 }
 
 func (network *Network) NotifyExistingLink(id string, iteration uint32, linkProtocol, dialAddress string, srcRouter *model.Router, dstRouterId string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("routerId", srcRouter.Id).
 		WithField("linkId", id).
@@ -497,6 +538,7 @@ func (network *Network) NotifyExistingLink(id string, iteration uint32, linkProt
 }
 
 func (network *Network) LinkConnected(msg *ctrl_pb.LinkConnected) error {
+	logtrace.LogWithFunctionName()
 	if l, found := network.Link.Get(msg.Id); found {
 		if state := l.CurrentState(); state.Mode != model.Pending {
 			return errors.Errorf("link [l/%v] state is %v, not pending, cannot mark connected", msg.Id, state.Mode)
@@ -510,6 +552,7 @@ func (network *Network) LinkConnected(msg *ctrl_pb.LinkConnected) error {
 }
 
 func (network *Network) LinkFaulted(l *model.Link, dupe bool) error {
+	logtrace.LogWithFunctionName()
 	l.SetState(model.Failed)
 	if dupe {
 		network.NotifyLinkEvent(l, event.LinkDuplicate)
@@ -522,6 +565,7 @@ func (network *Network) LinkFaulted(l *model.Link, dupe bool) error {
 }
 
 func (network *Network) VerifyRouter(routerId string, fingerprints []string) error {
+	logtrace.LogWithFunctionName()
 	router, err := network.GetRouter(routerId)
 	if err != nil {
 		return err
@@ -542,6 +586,7 @@ func (network *Network) VerifyRouter(routerId string, fingerprints []string) err
 }
 
 func (network *Network) RerouteLink(l *model.Link) {
+	logtrace.LogWithFunctionName()
 	// This is called from Channel.rxer() and thus may not block
 	go func() {
 		network.handleRerouteLink(l)
@@ -549,6 +594,7 @@ func (network *Network) RerouteLink(l *model.Link) {
 }
 
 func (network *Network) CreateCircuit(params model.CreateCircuitParams) (*model.Circuit, error) {
+	logtrace.LogWithFunctionName()
 	clientId := params.GetClientId()
 	service := params.GetServiceId()
 	ctx := params.GetLogContext()
@@ -710,6 +756,7 @@ func (network *Network) CreateCircuit(params model.CreateCircuitParams) (*model.
 }
 
 func (network *Network) ReportForwardingFaults(ffr *ForwardingFaultReport) {
+	logtrace.LogWithFunctionName()
 	select {
 	case network.forwardingFaults <- struct{}{}:
 	default:
@@ -719,6 +766,7 @@ func (network *Network) ReportForwardingFaults(ffr *ForwardingFaultReport) {
 }
 
 func parseInstanceIdAndService(service string) (string, string) {
+	logtrace.LogWithFunctionName()
 	atIndex := strings.IndexRune(service, '@')
 	if atIndex < 0 {
 		return "", service
@@ -729,6 +777,7 @@ func parseInstanceIdAndService(service string) (string, string) {
 }
 
 func (network *Network) selectPath(params model.CreateCircuitParams, svc *model.Service, instanceId string, ctx logcontext.Context) (xt.Strategy, xt.CostedTerminator, []*model.Router, xt.PeerData, CircuitError) {
+	logtrace.LogWithFunctionName()
 	paths := map[string]*PathAndCost{}
 	var weightedTerminators []xt.CostedTerminator
 	var errList []error
@@ -838,6 +887,7 @@ func (network *Network) selectPath(params model.CreateCircuitParams, svc *model.
 }
 
 func (network *Network) RemoveCircuit(circuitId string, now bool) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("circuitId", circuitId)
 
 	if circuit, found := network.Circuit.Get(circuitId); found {
@@ -869,6 +919,7 @@ func (network *Network) RemoveCircuit(circuitId string, now bool) error {
 }
 
 func (network *Network) CreatePath(srcR, dstR *model.Router) (*model.Path, error) {
+	logtrace.LogWithFunctionName()
 	ingressId, err := network.sequence.NextHash()
 	if err != nil {
 		return nil, err
@@ -892,6 +943,7 @@ func (network *Network) CreatePath(srcR, dstR *model.Router) (*model.Path, error
 }
 
 func (network *Network) setLinks(path *model.Path) error {
+	logtrace.LogWithFunctionName()
 	if len(path.Nodes) > 1 {
 		for i := 0; i < len(path.Nodes)-1; i++ {
 			if link, found := network.Link.LeastExpensiveLink(path.Nodes[i], path.Nodes[i+1]); found {
@@ -905,10 +957,12 @@ func (network *Network) setLinks(path *model.Path) error {
 }
 
 func (network *Network) AddRouterPresenceHandler(h model.RouterPresenceHandler) {
+	logtrace.LogWithFunctionName()
 	network.routerPresenceHandlers.Append(h)
 }
 
 func (network *Network) Run() {
+	logtrace.LogWithFunctionName()
 	defer logrus.Info("exited")
 	logrus.Info("started")
 
@@ -947,6 +1001,7 @@ func (network *Network) Run() {
 }
 
 func (network *Network) watchdog() {
+	logtrace.LogWithFunctionName()
 	watchdogInterval := 2 * time.Duration(network.options.CycleSeconds) * time.Second
 	consecutiveFails := 0
 	for {
@@ -974,6 +1029,7 @@ func (network *Network) watchdog() {
 }
 
 func (network *Network) handleRerouteLink(l *model.Link) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("linkId", l.Id)
 	log.Info("changed link")
 	if err := network.rerouteLink(l, time.Now().Add(config.DefaultOptionsRouteTimeout)); err != nil {
@@ -982,22 +1038,26 @@ func (network *Network) handleRerouteLink(l *model.Link) {
 }
 
 func (network *Network) handleForwardingFaults(ffr *ForwardingFaultReport) {
+	logtrace.LogWithFunctionName()
 	network.fault(ffr)
 }
 
 func (network *Network) AddCapability(capability string) {
+	logtrace.LogWithFunctionName()
 	network.lock.Lock()
 	defer network.lock.Unlock()
 	network.capabilities = append(network.capabilities, capability)
 }
 
 func (network *Network) GetCapabilities() []string {
+	logtrace.LogWithFunctionName()
 	network.lock.Lock()
 	defer network.lock.Unlock()
 	return network.capabilities
 }
 
 func (network *Network) RemoveLink(linkId string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("linkId", linkId)
 
 	link, _ := network.Link.Get(linkId)
@@ -1044,6 +1104,7 @@ func (network *Network) RemoveLink(linkId string) {
 }
 
 func (network *Network) rerouteLink(l *model.Link, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	circuits := network.Circuit.All()
 	for _, circuit := range circuits {
 		if circuit.Path.UsesLink(l) {
@@ -1063,6 +1124,7 @@ func (network *Network) rerouteLink(l *model.Link, deadline time.Time) error {
 }
 
 func (network *Network) rerouteCircuitWithTries(circuit *model.Circuit, retries int) bool {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("circuitId", circuit.Id)
 
 	for i := 0; i < retries; i++ {
@@ -1082,6 +1144,7 @@ func (network *Network) rerouteCircuitWithTries(circuit *model.Circuit, retries 
 }
 
 func (network *Network) rerouteCircuit(circuit *model.Circuit, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("circuitId", circuit.Id)
 	if circuit.Rerouting.CompareAndSwap(false, true) {
 		defer circuit.Rerouting.Store(false)
@@ -1114,6 +1177,7 @@ func (network *Network) rerouteCircuit(circuit *model.Circuit, deadline time.Tim
 }
 
 func (network *Network) smartReroute(circuit *model.Circuit, cq *model.Path, deadline time.Time) bool {
+	logtrace.LogWithFunctionName()
 	retry := false
 	log := pfxlog.Logger().WithField("circuitId", circuit.Id)
 	if circuit.Rerouting.CompareAndSwap(false, true) {
@@ -1141,6 +1205,7 @@ func (network *Network) smartReroute(circuit *model.Circuit, cq *model.Path, dea
 }
 
 func (network *Network) AcceptMetricsMsg(metrics *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	if metrics.SourceId == network.nodeId {
 		return // ignore metrics coming from the controller itself
 	}
@@ -1180,6 +1245,7 @@ func (network *Network) AcceptMetricsMsg(metrics *metrics_pb.MetricsMessage) {
 }
 
 func sendRoute(r *model.Router, createMsg *ctrl_pb.Route, timeout time.Duration) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", r.Id).
 		WithField("circuitId", createMsg.CircuitId)
 
@@ -1214,6 +1280,7 @@ func sendRoute(r *model.Router, createMsg *ctrl_pb.Route, timeout time.Duration)
 }
 
 func sendUnroute(r *model.Router, circuitId string, now bool) error {
+	logtrace.LogWithFunctionName()
 	unroute := &ctrl_pb.Unroute{
 		CircuitId: circuitId,
 		Now:       now,
@@ -1222,6 +1289,7 @@ func sendUnroute(r *model.Router, circuitId string, now bool) error {
 }
 
 func (network *Network) showOptions() {
+	logtrace.LogWithFunctionName()
 	if jsonOptions, err := json.MarshalIndent(network.options, "", "  "); err == nil {
 		pfxlog.Logger().Infof("network = %s", string(jsonOptions))
 	} else {
@@ -1234,6 +1302,7 @@ type renderConfig interface {
 }
 
 func (network *Network) routerDeleted(routerId string) {
+	logtrace.LogWithFunctionName()
 	circuits := network.GetAllCircuits()
 	for _, circuit := range circuits {
 		if circuit.HasRouter(routerId) {
@@ -1257,10 +1326,12 @@ var DbSnapshotTooFrequentError = dbSnapshotTooFrequentError{}
 type dbSnapshotTooFrequentError struct{}
 
 func (d dbSnapshotTooFrequentError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "may snapshot database at most once per minute"
 }
 
 func (network *Network) SnapshotDatabase() error {
+	logtrace.LogWithFunctionName()
 	network.lock.Lock()
 	defer network.lock.Unlock()
 
@@ -1278,6 +1349,7 @@ func (network *Network) SnapshotDatabase() error {
 }
 
 func (network *Network) SnapshotDatabaseToFile(path string) (string, error) {
+	logtrace.LogWithFunctionName()
 	network.lock.Lock()
 	defer network.lock.Unlock()
 
@@ -1335,6 +1407,7 @@ func (network *Network) SnapshotDatabaseToFile(path string) (string, error) {
 }
 
 func (network *Network) RestoreSnapshot(cmd *command.SyncSnapshotCommand) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	currentSnapshotId, err := network.GetDb().GetSnapshotId()
 	if err != nil {
@@ -1356,6 +1429,7 @@ func (network *Network) RestoreSnapshot(cmd *command.SyncSnapshotCommand) error 
 }
 
 func (network *Network) SnapshotToRaft() error {
+	logtrace.LogWithFunctionName()
 	buf := &bytes.Buffer{}
 	gzWriter := gzip.NewWriter(buf)
 	snapshotId, err := network.GetDb().SnapshotToWriter(gzWriter)
@@ -1377,10 +1451,12 @@ func (network *Network) SnapshotToRaft() error {
 }
 
 func (network *Network) AddInspectTarget(target InspectTarget) {
+	logtrace.LogWithFunctionName()
 	network.inspectionTargets.Append(target)
 }
 
 func (network *Network) ValidateRouterLinks(router *model.Router, cb LinkValidationCallback) {
+	logtrace.LogWithFunctionName()
 	request := &ctrl_pb.InspectRequest{RequestedValues: []string{"links"}}
 	resp := &ctrl_pb.InspectResponse{}
 	respMsg, err := protobufs.MarshalTyped(request).WithTimeout(time.Minute).SendForReply(router.Control)
@@ -1465,6 +1541,7 @@ func (network *Network) ValidateRouterLinks(router *model.Router, cb LinkValidat
 }
 
 func (network *Network) reportRouterLinksError(router *model.Router, err error, cb LinkValidationCallback) {
+	logtrace.LogWithFunctionName()
 	result := &mgmt_pb.RouterLinkDetails{
 		RouterId:        router.Id,
 		RouterName:      router.Name,
@@ -1475,6 +1552,7 @@ func (network *Network) reportRouterLinksError(router *model.Router, err error, 
 }
 
 func minCost(q map[*model.Router]bool, dist map[*model.Router]int64) *model.Router {
+	logtrace.LogWithFunctionName()
 	if dist == nil || len(dist) < 1 {
 		return nil
 	}
@@ -1496,6 +1574,7 @@ type Cache interface {
 }
 
 func newPathAndCost(path []*model.Router, cost int64) *PathAndCost {
+	logtrace.LogWithFunctionName()
 	if cost > (1 << 20) {
 		cost = 1 << 20
 	}
@@ -1515,5 +1594,6 @@ type InvalidCircuitError struct {
 }
 
 func (err InvalidCircuitError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("invalid circuit (%s)", err.circuitId)
 }

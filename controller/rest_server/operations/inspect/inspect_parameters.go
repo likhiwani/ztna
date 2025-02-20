@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"io"
 	"net/http"
@@ -46,6 +47,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewInspectParams() InspectParams {
+    logtrace.LogWithFunctionName()
 
 	return InspectParams{}
 }
@@ -71,6 +73,7 @@ type InspectParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewInspectParams() beforehand.
 func (o *InspectParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r

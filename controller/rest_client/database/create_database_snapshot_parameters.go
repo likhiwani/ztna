@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateDatabaseSnapshotParams() *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewCreateDatabaseSnapshotParams() *CreateDatabaseSnapshotParams {
 // NewCreateDatabaseSnapshotParamsWithTimeout creates a new CreateDatabaseSnapshotParams object
 // with the ability to set a timeout on a request.
 func NewCreateDatabaseSnapshotParamsWithTimeout(timeout time.Duration) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewCreateDatabaseSnapshotParamsWithTimeout(timeout time.Duration) *CreateDa
 // NewCreateDatabaseSnapshotParamsWithContext creates a new CreateDatabaseSnapshotParams object
 // with the ability to set a context for a request.
 func NewCreateDatabaseSnapshotParamsWithContext(ctx context.Context) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewCreateDatabaseSnapshotParamsWithContext(ctx context.Context) *CreateData
 // NewCreateDatabaseSnapshotParamsWithHTTPClient creates a new CreateDatabaseSnapshotParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateDatabaseSnapshotParamsWithHTTPClient(client *http.Client) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotParams{
 		HTTPClient: client,
 	}
@@ -91,6 +96,7 @@ type CreateDatabaseSnapshotParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateDatabaseSnapshotParams) WithDefaults() *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -99,44 +105,52 @@ func (o *CreateDatabaseSnapshotParams) WithDefaults() *CreateDatabaseSnapshotPar
 //
 // All values with no default are reset to their zero value.
 func (o *CreateDatabaseSnapshotParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) WithTimeout(timeout time.Duration) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) WithContext(ctx context.Context) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) WithHTTPClient(client *http.Client) *CreateDatabaseSnapshotParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the create database snapshot params
 func (o *CreateDatabaseSnapshotParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *CreateDatabaseSnapshotParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

@@ -18,21 +18,24 @@ package loop3
 
 import (
 	"errors"
+	"net"
+	"net/http"
+	"strings"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/agent"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
-	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"net"
-	"net/http"
-	"strings"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	listenerCmd := newListenerCmd()
 	loop3Cmd.AddCommand(listenerCmd.cmd)
 }
@@ -47,6 +50,7 @@ type listenerCmd struct {
 }
 
 func newListenerCmd() *listenerCmd {
+	logtrace.LogWithFunctionName()
 	result := &listenerCmd{
 		cmd: &cobra.Command{
 			Use:   "listener",
@@ -67,6 +71,7 @@ func newListenerCmd() *listenerCmd {
 }
 
 func (cmd *listenerCmd) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	var err error
@@ -131,6 +136,7 @@ func (cmd *listenerCmd) run(_ *cobra.Command, args []string) {
 }
 
 func (cmd *listenerCmd) listenEdge() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(cmd.bindAddress)
 	defer log.Error("exited")
 	log.Info("started")
@@ -166,6 +172,7 @@ func (cmd *listenerCmd) listenEdge() {
 }
 
 func (cmd *listenerCmd) listen(bind transport.Address, i *identity.TokenId) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(bind.String())
 	defer log.Error("exited")
 	log.Info("started")
@@ -182,6 +189,7 @@ func (cmd *listenerCmd) listen(bind transport.Address, i *identity.TokenId) {
 }
 
 func (cmd *listenerCmd) handle(conn net.Conn, context string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(context)
 	if proto, err := newProtocol(conn); err == nil {
 		var test *loop3_pb.Test

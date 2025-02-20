@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewRaftMemberAddParams() *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewRaftMemberAddParams() *RaftMemberAddParams {
 // NewRaftMemberAddParamsWithTimeout creates a new RaftMemberAddParams object
 // with the ability to set a timeout on a request.
 func NewRaftMemberAddParamsWithTimeout(timeout time.Duration) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewRaftMemberAddParamsWithTimeout(timeout time.Duration) *RaftMemberAddPara
 // NewRaftMemberAddParamsWithContext creates a new RaftMemberAddParams object
 // with the ability to set a context for a request.
 func NewRaftMemberAddParamsWithContext(ctx context.Context) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewRaftMemberAddParamsWithContext(ctx context.Context) *RaftMemberAddParams
 // NewRaftMemberAddParamsWithHTTPClient creates a new RaftMemberAddParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewRaftMemberAddParamsWithHTTPClient(client *http.Client) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type RaftMemberAddParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftMemberAddParams) WithDefaults() *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *RaftMemberAddParams) WithDefaults() *RaftMemberAddParams {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftMemberAddParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the raft member add params
 func (o *RaftMemberAddParams) WithTimeout(timeout time.Duration) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the raft member add params
 func (o *RaftMemberAddParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the raft member add params
 func (o *RaftMemberAddParams) WithContext(ctx context.Context) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the raft member add params
 func (o *RaftMemberAddParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the raft member add params
 func (o *RaftMemberAddParams) WithHTTPClient(client *http.Client) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the raft member add params
 func (o *RaftMemberAddParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithMember adds the member to the raft member add params
 func (o *RaftMemberAddParams) WithMember(member *rest_model.RaftMemberAdd) *RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 	o.SetMember(member)
 	return o
 }
 
 // SetMember adds the member to the raft member add params
 func (o *RaftMemberAddParams) SetMember(member *rest_model.RaftMemberAdd) {
+    logtrace.LogWithFunctionName()
 	o.Member = member
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *RaftMemberAddParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

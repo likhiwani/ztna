@@ -20,14 +20,17 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"github.com/pkg/errors"
 	"net/url"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 // GetSpiffeIdFromCertChain cycles through a slice of certificates that goes from leaf up CAs. Each certificate
 // must contain 0 or 1 spiffe:// URI SAN. The first encountered SPIFFE id looking up the chain back to the root CA is returned.
 // If no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromCertChain(certs []*x509.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	var spiffeId *url.URL
 	for _, cert := range certs {
 		var err error
@@ -49,6 +52,7 @@ func GetSpiffeIdFromCertChain(certs []*x509.Certificate) (*url.URL, error) {
 // Each certificate must contain 0 or 1 spiffe:// URI SAN. The first SPIFFE id looking up the chain is returned. If
 // no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromTlsCertChain(tlsCerts []*tls.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	for _, tlsCert := range tlsCerts {
 		for i, rawCert := range tlsCert.Certificate {
 			cert, err := x509.ParseCertificate(rawCert)
@@ -76,6 +80,7 @@ func GetSpiffeIdFromTlsCertChain(tlsCerts []*tls.Certificate) (*url.URL, error) 
 // Each certificate must contain 0 or 1 spiffe:// URI SAN. The first SPIFFE id looking up the chain is returned. If
 // no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromCert(cert *x509.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	var spiffeId *url.URL
 	for _, uriSan := range cert.URIs {
 		if uriSan.Scheme == "spiffe" {

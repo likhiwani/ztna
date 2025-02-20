@@ -20,12 +20,14 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 )
 
@@ -36,6 +38,7 @@ type EnrollModuleCa struct {
 }
 
 func NewEnrollModuleCa(env Env) *EnrollModuleCa {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleCa{
 		env:                  env,
 		method:               db.MethodEnrollCa,
@@ -44,6 +47,7 @@ func NewEnrollModuleCa(env Env) *EnrollModuleCa {
 }
 
 func (module *EnrollModuleCa) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
@@ -54,6 +58,7 @@ func (module *EnrollModuleCa) CanHandle(method string) bool {
 // identity. Subsequent authentications will match the certificate `externalId`. If not present, a certificate
 // authenticator will be created where the fingerprint of the certificate will be matched on subsequent authentications.
 func (module *EnrollModuleCa) Process(context EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("method", module.method)
 	caList, err := module.env.GetManagers().Ca.Query("true limit none")
 
@@ -138,6 +143,7 @@ func (module *EnrollModuleCa) Process(context EnrollmentContext) (*EnrollmentRes
 // authenticator. The certificate is identified by its fingerprint. Generally useful for identities that can
 // store private keys inside of hardware modules (i.e. Android, iOS, HSMs, TPMs, etc.)
 func (module *EnrollModuleCa) completeCertAuthenticatorEnrollment(log *logrus.Entry, context EnrollmentContext, ca *Ca, enrollmentCert *x509.Certificate) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	fingerprint := module.fingerprintGenerator.FromCert(enrollmentCert)
 
 	log = log.WithField("fingerprint", fingerprint).WithField("subMethod", "authenticator")
@@ -220,6 +226,7 @@ func (module *EnrollModuleCa) completeCertAuthenticatorEnrollment(log *logrus.En
 // certificate as defined by the validating Ca. This allows certificate to rotate, as long as the `externalId` claim
 // can be extracted. An example of this is SPIFFE Ids stored as a SAN URI.
 func (module *EnrollModuleCa) completeExternalIdEnrollment(log *logrus.Entry, context EnrollmentContext, ca *Ca, enrollmentCert *x509.Certificate, externalId string) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	identityId := eid.New()
 
 	log = log.WithField("identityId", identityId).WithField("subMethod", "externalId")
@@ -283,6 +290,7 @@ func (module *EnrollModuleCa) completeExternalIdEnrollment(log *logrus.Entry, co
 //
 //     If the resulting name is not unique a six digit zero-padded numerical suffix is appended (i.e. 000001).
 func (module *EnrollModuleCa) getIdentityName(ca *Ca, enrollmentCert *x509.Certificate, requestedName string, identityId string) string {
+	logtrace.LogWithFunctionName()
 	formatter := NewIdentityNameFormatter(ca, enrollmentCert, requestedName, identityId)
 	nameFormat := ca.IdentityNameFormat
 
@@ -310,6 +318,7 @@ func (module *EnrollModuleCa) getIdentityName(ca *Ca, enrollmentCert *x509.Certi
 }
 
 func NewIdentityNameFormatter(ca *Ca, clientCert *x509.Certificate, identityName, identityId string) *Formatter {
+	logtrace.LogWithFunctionName()
 	return NewFormatter(map[string]string{
 		FormatSymbolCaName:        ca.Name,
 		FormatSymbolCaId:          ca.Id,

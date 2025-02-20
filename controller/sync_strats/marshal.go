@@ -17,13 +17,16 @@
 package sync_strats
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"go.etcd.io/bbolt"
 )
 
 func apiSessionToProto(ae *env.AppEnv, token, identityId, apiSessionId string) (*edge_ctrl_pb.ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	var result *edge_ctrl_pb.ApiSession
 	err := ae.GetDb().View(func(tx *bbolt.Tx) error {
 		var err error
@@ -34,6 +37,7 @@ func apiSessionToProto(ae *env.AppEnv, token, identityId, apiSessionId string) (
 }
 
 func apiSessionToProtoWithTx(tx *bbolt.Tx, ae *env.AppEnv, token, identityId, apiSessionId string) (*edge_ctrl_pb.ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	fingerprints, err := getFingerprints(tx, ae, identityId, apiSessionId)
 	if err != nil {
 		return nil, err
@@ -48,6 +52,7 @@ func apiSessionToProtoWithTx(tx *bbolt.Tx, ae *env.AppEnv, token, identityId, ap
 }
 
 func getFingerprints(tx *bbolt.Tx, ae *env.AppEnv, identityId, apiSessionId string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	prints := map[string]struct{}{}
 	err := ae.Managers.ApiSession.VisitFingerprintsForApiSession(tx, identityId, apiSessionId, func(fingerprint string) bool {
 		prints[fingerprint] = struct{}{}

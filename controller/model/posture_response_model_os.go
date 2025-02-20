@@ -18,6 +18,7 @@ package model
 
 import (
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type PostureResponseOs struct {
@@ -28,6 +29,7 @@ type PostureResponseOs struct {
 }
 
 func (pr *PostureResponseOs) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 	postureData.Os = *pr
 	postureData.Os.LastUpdatedAt = time.Now().UTC()
 }

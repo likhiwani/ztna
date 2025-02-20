@@ -17,12 +17,15 @@
 package raft
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestIndexTracker(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("index 1 can be set and notifies", func(t *testing.T) {
 		req := require.New(t)
@@ -106,6 +109,7 @@ type testTracker struct {
 }
 
 func (t *testTracker) notifyAsync(index uint64, after time.Duration) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		time.Sleep(after)
 		t.NotifyOfIndex(index)
@@ -113,6 +117,7 @@ func (t *testTracker) notifyAsync(index uint64, after time.Duration) {
 }
 
 func (t *testTracker) waitAsync(index uint64, timeout time.Duration) <-chan error {
+	logtrace.LogWithFunctionName()
 	result := make(chan error, 1)
 	go func() {
 		err := t.WaitForIndex(index, time.Now().Add(timeout))

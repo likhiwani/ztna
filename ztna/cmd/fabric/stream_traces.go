@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"fmt"
 	"reflect"
@@ -39,6 +40,7 @@ type streamTracesAction struct {
 }
 
 func NewStreamTracesCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := streamTracesAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -57,6 +59,7 @@ func NewStreamTracesCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *streamTracesAction) streamTraces(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	startIndex := 0
 	request := &mgmt_pb.StreamTracesRequest{EnabledFilter: len(args) > 0}
 
@@ -108,6 +111,7 @@ func (self *streamTracesAction) streamTraces(_ *cobra.Command, args []string) {
 }
 
 func (self *streamTracesAction) getContentType(name string) (int32, error) {
+	logtrace.LogWithFunctionName()
 	val, ok := mgmt_pb.ContentType_value[name]
 	if ok {
 		return val, nil
@@ -143,6 +147,7 @@ func (self *streamTracesAction) getContentType(name string) (int32, error) {
 }
 
 func (self *streamTracesAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	event := &trace_pb.ChannelMessage{}
 	err := proto.Unmarshal(msg.Body, event)
 	if err != nil {
@@ -166,6 +171,7 @@ func (self *streamTracesAction) HandleReceive(msg *channel.Message, _ channel.Ch
 }
 
 func (self *streamTracesAction) DecodeTraceAndFormat(decode []byte) string {
+	logtrace.LogWithFunctionName()
 	if len(decode) > 0 {
 		meta := make(map[string]interface{})
 		err := json.Unmarshal(decode, &meta)

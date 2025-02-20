@@ -19,13 +19,14 @@ package model
 import (
 	"crypto/x509"
 	"encoding/pem"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/controller/apierror"
 	fabricApiError "ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
-	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type EnrollModuleOttCa struct {
@@ -35,6 +36,7 @@ type EnrollModuleOttCa struct {
 }
 
 func NewEnrollModuleOttCa(env Env) *EnrollModuleOttCa {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleOttCa{
 		env:                  env,
 		method:               db.MethodEnrollOttCa,
@@ -43,10 +45,12 @@ func NewEnrollModuleOttCa(env Env) *EnrollModuleOttCa {
 }
 
 func (module *EnrollModuleOttCa) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *EnrollModuleOttCa) Process(ctx EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	enrollment, err := module.env.GetManagers().Enrollment.ReadByToken(ctx.GetToken())
 	if err != nil {
 		return nil, err

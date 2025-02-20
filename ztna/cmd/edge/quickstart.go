@@ -36,6 +36,7 @@ import (
 	"ztna-core/ztna/common/version"
 	"ztna-core/ztna/controller/rest_client/raft"
 	edgeSubCmd "ztna-core/ztna/controller/subcmd"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/agentcli"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
@@ -46,6 +47,7 @@ import (
 	ctrlcmd "ztna-core/ztna/ztna/controller"
 	"ztna-core/ztna/ztna/router"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
@@ -75,6 +77,7 @@ type QuickstartOpts struct {
 }
 
 func addCommonQuickstartFlags(cmd *cobra.Command, options *QuickstartOpts) {
+	logtrace.LogWithFunctionName()
 	currentCtrlAddy := helpers.GetCtrlEdgeAdvertisedAddress()
 	currentCtrlPort := helpers.GetCtrlEdgeAdvertisedPort()
 	currentRouterAddy := helpers.GetRouterAdvertisedAddress()
@@ -97,12 +100,14 @@ func addCommonQuickstartFlags(cmd *cobra.Command, options *QuickstartOpts) {
 }
 
 func addQuickstartHaFlags(cmd *cobra.Command, options *QuickstartOpts) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVar(&options.TrustDomain, "trust-domain", "", "the specified trust domain to be used in SPIFFE ids.")
 	cmd.Flags().StringVar(&options.InstanceID, "instance-id", "", "specifies a unique instance id for use in ha mode.")
 }
 
 // NewQuickStartCmd creates a command object for the "create" command
 func NewQuickStartCmd(out io.Writer, errOut io.Writer, context context.Context) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &QuickstartOpts{}
 	cmd := &cobra.Command{
 		Use:   "quickstart",
@@ -123,6 +128,7 @@ func NewQuickStartCmd(out io.Writer, errOut io.Writer, context context.Context) 
 }
 
 func NewQuickStartHaCmd(out io.Writer, errOut io.Writer, context context.Context) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &QuickstartOpts{}
 	cmd := &cobra.Command{
 		Use:   "ha",
@@ -146,6 +152,7 @@ func NewQuickStartHaCmd(out io.Writer, errOut io.Writer, context context.Context
 }
 
 func NewQuickStartJoinClusterCmd(out io.Writer, errOut io.Writer, context context.Context) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &QuickstartOpts{}
 	cmd := &cobra.Command{
 		Use:   "join",
@@ -166,6 +173,7 @@ func NewQuickStartJoinClusterCmd(out io.Writer, errOut io.Writer, context contex
 }
 
 func (o *QuickstartOpts) cleanupHome() {
+	logtrace.LogWithFunctionName()
 	if o.cleanOnExit {
 		fmt.Println("Removing temp directory at: " + o.Home)
 		_ = os.RemoveAll(o.Home)
@@ -175,6 +183,7 @@ func (o *QuickstartOpts) cleanupHome() {
 }
 
 func (o *QuickstartOpts) join(ctx context.Context) {
+	logtrace.LogWithFunctionName()
 	if strings.TrimSpace(o.InstanceID) == "" {
 		logrus.Fatalf("the instance-id is required when joining a cluster")
 	}
@@ -192,6 +201,7 @@ func (o *QuickstartOpts) join(ctx context.Context) {
 }
 
 func (o *QuickstartOpts) run(ctx context.Context) {
+	logtrace.LogWithFunctionName()
 	if o.verbose {
 		pfxlog.GlobalInit(logrus.DebugLevel, pfxlog.DefaultOptions().Color())
 	}
@@ -442,6 +452,7 @@ func (o *QuickstartOpts) run(ctx context.Context) {
 }
 
 func (o *QuickstartOpts) printDetails() {
+	logtrace.LogWithFunctionName()
 	fmt.Println("=======================================================================================")
 	fmt.Println("controller and router started.")
 	fmt.Println("    controller located at  : " + helpers.GetCtrlAdvertisedAddress() + ":" + strconv.Itoa(int(o.ControllerPort)))
@@ -452,6 +463,7 @@ func (o *QuickstartOpts) printDetails() {
 }
 
 func (o *QuickstartOpts) configureRouter(routerName string, configFile string, ctrlUrl string) {
+	logtrace.LogWithFunctionName()
 	if o.routerless {
 		return
 	}
@@ -529,6 +541,7 @@ func (o *QuickstartOpts) configureRouter(routerName string, configFile string, c
 	}
 }
 func (o *QuickstartOpts) runRouter(configFile string) {
+	logtrace.LogWithFunctionName()
 	if o.routerless {
 		return
 	}
@@ -549,6 +562,7 @@ func (o *QuickstartOpts) runRouter(configFile string) {
 }
 
 func (o *QuickstartOpts) createMinimalPki() {
+	logtrace.LogWithFunctionName()
 	where := path.Join(o.Home, "pki")
 	fmt.Println("emitting a minimal PKI")
 
@@ -639,6 +653,7 @@ func (o *QuickstartOpts) createMinimalPki() {
 }
 
 func waitForController(ctrlUrl string, done chan struct{}) {
+	logtrace.LogWithFunctionName()
 	tr := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	client := &http.Client{Transport: tr}
 	for {
@@ -653,6 +668,7 @@ func waitForController(ctrlUrl string, done chan struct{}) {
 }
 
 func waitForRouter(address string, port int16, done chan struct{}) {
+	logtrace.LogWithFunctionName()
 	for {
 		addr := fmt.Sprintf("%s:%d", address, port)
 		conn, err := net.DialTimeout("tcp", addr, 2*time.Second)
@@ -667,9 +683,11 @@ func waitForRouter(address string, port int16, done chan struct{}) {
 }
 
 func (o *QuickstartOpts) scopedNameOff(name string) string {
+	logtrace.LogWithFunctionName()
 	return name
 }
 func (o *QuickstartOpts) scopedName(name string) string {
+	logtrace.LogWithFunctionName()
 	if o.InstanceID != "" {
 		return name + "-" + o.InstanceID
 	} else {
@@ -678,6 +696,7 @@ func (o *QuickstartOpts) scopedName(name string) string {
 }
 
 func (o *QuickstartOpts) instHome() string {
+	logtrace.LogWithFunctionName()
 	if o.isHA {
 		return path.Join(o.Home, o.InstanceID)
 	}
@@ -685,6 +704,7 @@ func (o *QuickstartOpts) instHome() string {
 }
 
 func (o *QuickstartOpts) configureOverlay() {
+	logtrace.LogWithFunctionName()
 	if o.joinCommand {
 		return
 	}
@@ -722,6 +742,7 @@ type raftListMembersAction struct {
 }
 
 func (o *QuickstartOpts) waitForLeader() bool {
+	logtrace.LogWithFunctionName()
 	for {
 		p := common.NewOptionsProvider(o.out, o.errOut)
 		action := &raftListMembersAction{
@@ -750,6 +771,7 @@ func (o *QuickstartOpts) waitForLeader() bool {
 }
 
 func incrementStringSuffix(input string) string {
+	logtrace.LogWithFunctionName()
 	// Regular expression to capture the numeric suffix
 	re := regexp.MustCompile(`(\d+)$`)
 	match := re.FindStringSubmatch(input)

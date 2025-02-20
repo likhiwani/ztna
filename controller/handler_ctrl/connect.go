@@ -20,14 +20,16 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 	"fmt"
+	"time"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/controller/network"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/identity"
 	"github.com/pkg/errors"
-	"time"
 )
 
 type ConnectHandler struct {
@@ -36,6 +38,7 @@ type ConnectHandler struct {
 }
 
 func NewConnectHandler(identity identity.Identity, network *network.Network) *ConnectHandler {
+	logtrace.LogWithFunctionName()
 	return &ConnectHandler{
 		identity: identity,
 		network:  network,
@@ -43,6 +46,7 @@ func NewConnectHandler(identity identity.Identity, network *network.Network) *Co
 }
 
 func (self *ConnectHandler) HandleConnection(hello *channel.Hello, certificates []*x509.Certificate) error {
+	logtrace.LogWithFunctionName()
 	if _, found := hello.Headers[channel.TypeHeader]; found {
 		return nil
 	}

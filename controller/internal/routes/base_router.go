@@ -31,6 +31,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
@@ -45,6 +46,7 @@ const (
 )
 
 func modelToApi[E models.Entity](ae *env.AppEnv, rc *response.RequestContext, mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error), es []E) ([]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	apiEntities := make([]interface{}, 0)
 
 	for _, e := range es {
@@ -68,6 +70,7 @@ func modelToApi[E models.Entity](ae *env.AppEnv, rc *response.RequestContext, ma
 
 func ListWithHandler[E models.Entity](ae *env.AppEnv, rc *response.RequestContext, lister models.EntityRetriever[E],
 	mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	ListWithQueryF(ae, rc, lister, mapper, lister.BasePreparedList)
 }
 
@@ -76,10 +79,12 @@ func ListWithQueryF[E models.Entity](ae *env.AppEnv,
 	lister models.EntityRetriever[E],
 	mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error),
 	qf func(query ast.Query) (*models.EntityListResult[E], error)) {
+	logtrace.LogWithFunctionName()
 	ListWithQueryFAndCollector(ae, rc, lister, mapper, defaultToListEnvelope, qf)
 }
 
 func defaultToListEnvelope(data []interface{}, meta *rest_model.Meta) interface{} {
+	logtrace.LogWithFunctionName()
 	return rest_model.Empty{
 		Data: data,
 		Meta: meta,
@@ -95,6 +100,7 @@ func ListWithQueryFAndCollector[E models.Entity](ae *env.AppEnv,
 	mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error),
 	toEnvelope ApiListEnvelopeFactory,
 	qf func(query ast.Query) (*models.EntityListResult[E], error)) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, toEnvelope, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		// validate that the submitted query is only using public symbols. The query options may contain an final
 		// query which has been modified with additional filters
@@ -120,10 +126,12 @@ func ListWithQueryFAndCollector[E models.Entity](ae *env.AppEnv,
 type modelListF func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error)
 
 func List(rc *response.RequestContext, f modelListF) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, defaultToListEnvelope, f)
 }
 
 func ListWithEnvelopeFactory(rc *response.RequestContext, toEnvelope ApiListEnvelopeFactory, f modelListF) {
+	logtrace.LogWithFunctionName()
 	qo, err := GetModelQueryOptionsFromRequest(rc.Request)
 
 	if err != nil {
@@ -177,10 +185,12 @@ func ListWithEnvelopeFactory(rc *response.RequestContext, toEnvelope ApiListEnve
 type ModelCreateF func() (string, error)
 
 func Create(rc *response.RequestContext, _ response.Responder, linkFactory CreateLinkFactory, creator ModelCreateF) {
+	logtrace.LogWithFunctionName()
 	CreateWithResponder(rc, rc, linkFactory, creator)
 }
 
 func CreateWithResponder(rc *response.RequestContext, rsp response.Responder, linkFactory CreateLinkFactory, creator ModelCreateF) {
+	logtrace.LogWithFunctionName()
 	id, err := creator()
 	if err != nil {
 		if boltz.IsErrNotFoundErr(err) {
@@ -216,6 +226,7 @@ func CreateWithResponder(rc *response.RequestContext, rsp response.Responder, li
 
 func DetailWithHandler[E models.Entity](ae *env.AppEnv, rc *response.RequestContext, loader models.EntityRetriever[E],
 	mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	Detail(rc, func(rc *response.RequestContext, id string) (interface{}, error) {
 		entity, err := loader.BaseLoad(id)
 		if err != nil {
@@ -228,6 +239,7 @@ func DetailWithHandler[E models.Entity](ae *env.AppEnv, rc *response.RequestCont
 type ModelDetailF func(rc *response.RequestContext, id string) (interface{}, error)
 
 func Detail(rc *response.RequestContext, f ModelDetailF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -259,12 +271,14 @@ type DeleteHandler interface {
 }
 
 func DeleteWithHandler(rc *response.RequestContext, deleteHandler DeleteHandler) {
+	logtrace.LogWithFunctionName()
 	Delete(rc, func(rc *response.RequestContext, id string) error {
 		return deleteHandler.Delete(id, rc.NewChangeContext())
 	})
 }
 
 func Delete(rc *response.RequestContext, deleteF ModelDeleteF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -293,10 +307,12 @@ func Delete(rc *response.RequestContext, deleteF ModelDeleteF) {
 type ModelUpdateF func(id string) error
 
 func Update(rc *response.RequestContext, updateF ModelUpdateF) {
+	logtrace.LogWithFunctionName()
 	UpdateAllowEmptyBody(rc, updateF)
 }
 
 func UpdateAllowEmptyBody(rc *response.RequestContext, updateF ModelUpdateF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -332,6 +348,7 @@ func UpdateAllowEmptyBody(rc *response.RequestContext, updateF ModelUpdateF) {
 type ModelPatchF func(id string, fields fields.UpdatedFields) error
 
 func Patch(rc *response.RequestContext, patchF ModelPatchF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -371,6 +388,7 @@ func Patch(rc *response.RequestContext, patchF ModelPatchF) {
 }
 
 func listWithId(rc *response.RequestContext, f func(id string) ([]interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -427,6 +445,7 @@ func ListAssociationsWithFilter[E models.Entity](ae *env.AppEnv,
 	filterTemplate string,
 	entityController AssociationLister[E],
 	mapper func(*env.AppEnv, *response.RequestContext, E) (interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	ListAssociations(rc, func(rc *response.RequestContext, id string, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(entityController.GetListStore())
 		if err != nil {
@@ -464,6 +483,7 @@ func ListAssociationWithHandler[E models.Entity, A models.Entity](ae *env.AppEnv
 	lister models.EntityRetriever[E],
 	associationLoader AssociationLister[A],
 	mapper func(*env.AppEnv, *response.RequestContext, A) (interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	ListAssociations(rc, func(rc *response.RequestContext, id string, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		// validate that the submitted query is only using public symbols. The query options may contain an final
 		// query which has been modified with additional filters
@@ -493,6 +513,7 @@ func ListTerminatorAssociations(ae *env.AppEnv, rc *response.RequestContext,
 	lister models.EntityRetriever[*model.EdgeService],
 	associationLoader *model.TerminatorManager,
 	mapper func(ae *env.AppEnv, _ *response.RequestContext, terminator *model.Terminator) (interface{}, error)) {
+	logtrace.LogWithFunctionName()
 	ListAssociations(rc, func(rc *response.RequestContext, id string, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		// validate that the submitted query is only using public symbols. The query options may contain an final
 		// query which has been modified with additional filters
@@ -526,6 +547,7 @@ func ListTerminatorAssociations(ae *env.AppEnv, rc *response.RequestContext,
 }
 
 func ListAssociations(rc *response.RequestContext, listF listAssocF) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -573,6 +595,7 @@ func ListAssociations(rc *response.RequestContext, listF listAssocF) {
 }
 
 func MapCreate[T models.Entity](f func(T, *change.Context) error, entity T, rc *response.RequestContext) (string, error) {
+	logtrace.LogWithFunctionName()
 	err := f(entity, rc.NewChangeContext())
 	if err != nil {
 		return "", err

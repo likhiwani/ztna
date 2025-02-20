@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"errors"
 	"slices"
@@ -31,11 +32,13 @@ import (
 )
 
 func (importer *Importer) IsServiceImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "service")
 }
 
 func (importer *Importer) ProcessServices(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	var result = map[string]string{}
 
@@ -110,6 +113,7 @@ func (importer *Importer) ProcessServices(input map[string][]interface{}) (map[s
 }
 
 func (importer *Importer) lookupServices(roles []string) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	serviceRoles := []string{}
 	for _, role := range roles {
 		if role[0:1] == "@" {

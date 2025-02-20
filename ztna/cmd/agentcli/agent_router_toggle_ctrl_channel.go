@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -33,6 +34,7 @@ type ToggleCtrlChannelAgentAction struct {
 }
 
 func NewToggleCtrlChannelAgentCmd(p common.OptionsProvider, name string, enable bool) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &ToggleCtrlChannelAgentAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -58,10 +60,12 @@ func NewToggleCtrlChannelAgentCmd(p common.OptionsProvider, name string, enable 
 
 // Run implements the command
 func (self *ToggleCtrlChannelAgentAction) Run() error {
+	logtrace.LogWithFunctionName()
 	return self.MakeChannelRequest(router.AgentAppId, self.makeRequest)
 }
 
 func (self *ToggleCtrlChannelAgentAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	var ctrlId string
 	if len(self.Args) > 0 {
 		ctrlId = self.Args[0]

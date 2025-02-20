@@ -19,6 +19,7 @@
 package test
 
 import (
+	"ztna-core/ztna/logtrace"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -41,14 +42,17 @@ type testSrcConn struct {
 }
 
 func (self *testSrcConn) Close() error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *testSrcConn) LogContext() string {
+    logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (self *testSrcConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+    logtrace.LogWithFunctionName()
 	if self.sendCount.Load() > 1000 {
 		return nil, nil, io.EOF
 	}
@@ -64,10 +68,12 @@ func (self *testSrcConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
 }
 
 func (self *testSrcConn) WritePayload(bytes []byte, m map[uint8][]byte) (int, error) {
+    logtrace.LogWithFunctionName()
 	return len(bytes), nil
 }
 
 func (self *testSrcConn) HandleControlMsg(xgress.ControlType, channel.Headers, xgress.ControlReceiver) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
@@ -79,6 +85,7 @@ type testDstConn struct {
 }
 
 func (self *testDstConn) waitForDone(timeout time.Duration) error {
+    logtrace.LogWithFunctionName()
 	select {
 	case <-self.notifyDone:
 		return nil
@@ -88,19 +95,23 @@ func (self *testDstConn) waitForDone(timeout time.Duration) error {
 }
 
 func (self *testDstConn) Close() error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *testDstConn) LogContext() string {
+    logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (self *testDstConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+    logtrace.LogWithFunctionName()
 	<-self.closeNotify
 	return nil, nil, io.EOF
 }
 
 func (self *testDstConn) WritePayload(bytes []byte, m map[uint8][]byte) (int, error) {
+    logtrace.LogWithFunctionName()
 	count := binary.BigEndian.Uint32(bytes)
 	start := binary.BigEndian.Uint64(bytes[4:])
 	val := self.recvCount.Add(1)
@@ -114,26 +125,32 @@ func (self *testDstConn) WritePayload(bytes []byte, m map[uint8][]byte) (int, er
 }
 
 func (self *testDstConn) HandleControlMsg(xgress.ControlType, channel.Headers, xgress.ControlReceiver) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 type testFaultReceiver struct{}
 
 func (t testFaultReceiver) Report(circuitId string, ctrlId string) {}
+    logtrace.LogWithFunctionName()
 
 func (t testFaultReceiver) NotifyInvalidLink(linkId string) {}
+    logtrace.LogWithFunctionName()
 
 type testXgCloseHandler struct{}
 
 func (t testXgCloseHandler) HandleXgressClose(x *xgress.Xgress) {
+    logtrace.LogWithFunctionName()
 }
 
 type eventSink struct{}
 
 func (e eventSink) AcceptMetrics(message *metrics_pb.MetricsMessage) {
+    logtrace.LogWithFunctionName()
 }
 
 func Test_SingleRouterPerf(t *testing.T) {
+    logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	defer close(closeNotify)
 

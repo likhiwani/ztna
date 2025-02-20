@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDetailServiceParams() *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDetailServiceParams() *DetailServiceParams {
 // NewDetailServiceParamsWithTimeout creates a new DetailServiceParams object
 // with the ability to set a timeout on a request.
 func NewDetailServiceParamsWithTimeout(timeout time.Duration) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDetailServiceParamsWithTimeout(timeout time.Duration) *DetailServicePara
 // NewDetailServiceParamsWithContext creates a new DetailServiceParams object
 // with the ability to set a context for a request.
 func NewDetailServiceParamsWithContext(ctx context.Context) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDetailServiceParamsWithContext(ctx context.Context) *DetailServiceParams
 // NewDetailServiceParamsWithHTTPClient creates a new DetailServiceParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDetailServiceParamsWithHTTPClient(client *http.Client) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DetailServiceParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailServiceParams) WithDefaults() *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DetailServiceParams) WithDefaults() *DetailServiceParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailServiceParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the detail service params
 func (o *DetailServiceParams) WithTimeout(timeout time.Duration) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the detail service params
 func (o *DetailServiceParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the detail service params
 func (o *DetailServiceParams) WithContext(ctx context.Context) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the detail service params
 func (o *DetailServiceParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the detail service params
 func (o *DetailServiceParams) WithHTTPClient(client *http.Client) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the detail service params
 func (o *DetailServiceParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the detail service params
 func (o *DetailServiceParams) WithID(id string) *DetailServiceParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the detail service params
 func (o *DetailServiceParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DetailServiceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

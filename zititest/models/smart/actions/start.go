@@ -17,20 +17,24 @@
 package actions
 
 import (
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/semaphore"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/models"
-	"time"
 )
 
 func NewStartAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := startAction{}
 	return action.bind
 }
 
 func (self *startAction) bind(*model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	workflow := actions.Workflow()
 	workflow.AddAction(component.Start(models.ControllerTag))
 	workflow.AddAction(semaphore.Sleep(2 * time.Second))

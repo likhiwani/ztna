@@ -2,19 +2,21 @@ package xgress_edge_tunnel
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/concurrenz"
+	"os"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/config"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_edge_tunnel_v2"
-	"os"
-	"time"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/concurrenz"
 )
 
 type FactoryWrapper struct {
@@ -29,11 +31,13 @@ type FactoryWrapper struct {
 }
 
 func (self *FactoryWrapper) LoadConfig(map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	// both v1/v2 currently have empty LoadConfig methods. Will need to update this if that changes.
 	return nil
 }
 
 func (self *FactoryWrapper) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	// v1 bindings
 	binding.AddReceiveHandlerF(int32(edge_ctrl_pb.ContentType_ServiceListType), self.handleV1ServiceListType)
 	binding.AddReceiveHandlerF(int32(edge_ctrl_pb.ContentType_CreateTunnelTerminatorResponseType), self.handleV1CreateTunnelTerminatorResponse)
@@ -45,6 +49,7 @@ func (self *FactoryWrapper) BindChannel(binding channel.Binding) error {
 }
 
 func (self *FactoryWrapper) handleV1ServiceListType(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if delegate := self.delegate.Load(); delegate != nil {
 		if v1, ok := delegate.(*Factory); ok {
 			v1.serviceListHandler.HandleReceive(msg, ch)
@@ -53,6 +58,7 @@ func (self *FactoryWrapper) handleV1ServiceListType(msg *channel.Message, ch cha
 }
 
 func (self *FactoryWrapper) handleV1CreateTunnelTerminatorResponse(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if delegate := self.delegate.Load(); delegate != nil {
 		if v1, ok := delegate.(*Factory); ok {
 			v1.tunneler.fabricProvider.HandleTunnelResponse(msg, ch)
@@ -61,6 +67,7 @@ func (self *FactoryWrapper) handleV1CreateTunnelTerminatorResponse(msg *channel.
 }
 
 func (self *FactoryWrapper) handleV2CreateTunnelTerminatorResponse(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if delegate := self.delegate.Load(); delegate != nil {
 		if v2, ok := delegate.(*xgress_edge_tunnel_v2.Factory); ok {
 			v2.HandleCreateTunnelTerminatorResponse(msg, ch)
@@ -69,21 +76,25 @@ func (self *FactoryWrapper) handleV2CreateTunnelTerminatorResponse(msg *channel.
 }
 
 func (self *FactoryWrapper) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *FactoryWrapper) Run(env.RouterEnv) error {
+	logtrace.LogWithFunctionName()
 	// we'll call run when initialization is complete
 	return nil
 }
 
 func (self *FactoryWrapper) NotifyOfReconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if delegate := self.delegate.Load(); delegate != nil {
 		delegate.NotifyOfReconnect(ch)
 	}
 }
 
 func NewFactoryWrapper(env env.RouterEnv, routerConfig *router.Config, stateManager state.Manager) XrctrlFactory {
+	logtrace.LogWithFunctionName()
 	wrapper := &FactoryWrapper{
 		env:             env,
 		routerConfig:    routerConfig,
@@ -164,6 +175,7 @@ func NewFactoryWrapper(env env.RouterEnv, routerConfig *router.Config, stateMana
 }
 
 func (self *FactoryWrapper) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	self.listenerOptions <- optionsData
 	return &delegatingListener{
 		factory: self,
@@ -172,6 +184,7 @@ func (self *FactoryWrapper) CreateListener(optionsData xgress.OptionsData) (xgre
 }
 
 func (self *FactoryWrapper) CreateDialer(optionsData xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	if delegate := self.delegate.Load(); delegate != nil {
 		return delegate.CreateDialer(optionsData)
 	}
@@ -192,6 +205,7 @@ type listenArgs struct {
 }
 
 func (self *delegatingListener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	self.factory.listenerArgs <- listenArgs{
 		address:     address,
 		bindHandler: bindHandler,
@@ -201,6 +215,7 @@ func (self *delegatingListener) Listen(address string, bindHandler xgress.BindHa
 }
 
 func (self *delegatingListener) Close() error {
+	logtrace.LogWithFunctionName()
 	if listener := self.delegate.Load(); listener != nil {
 		return listener.Close()
 	}

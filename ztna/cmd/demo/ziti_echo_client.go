@@ -19,17 +19,20 @@ package demo
 import (
 	"context"
 	"fmt"
-	"github.com/fatih/color"
-	"ztna-core/sdk-golang/ziti"
 	"io"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/fatih/color"
 )
 
 func NewZitiEchoClient(identityJson string) (*zitiEchoClient, error) {
+	logtrace.LogWithFunctionName()
 	config, err := ziti.NewConfigFromFile(identityJson)
 	if err != nil {
 		return nil, err
@@ -59,6 +62,7 @@ type zitiEchoClient struct {
 }
 
 func (self *zitiEchoClient) echo(input string) error {
+	logtrace.LogWithFunctionName()
 	u := fmt.Sprintf("http://echo?input=%v", url.QueryEscape(input))
 	resp, err := self.httpClient.Get(u)
 	if err == nil {

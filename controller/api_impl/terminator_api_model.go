@@ -18,14 +18,16 @@ package api_impl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_model"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 const EntityNameTerminator = "terminators"
@@ -33,6 +35,7 @@ const EntityNameTerminator = "terminators"
 var TerminatorLinkFactory = NewBasicLinkFactory(EntityNameTerminator)
 
 func MapCreateTerminatorToModel(terminator *rest_model.TerminatorCreate) *model.Terminator {
+	logtrace.LogWithFunctionName()
 	ret := &model.Terminator{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(terminator.Tags),
@@ -55,6 +58,7 @@ func MapCreateTerminatorToModel(terminator *rest_model.TerminatorCreate) *model.
 }
 
 func MapUpdateTerminatorToModel(id string, terminator *rest_model.TerminatorUpdate) *model.Terminator {
+	logtrace.LogWithFunctionName()
 	ret := &model.Terminator{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(terminator.Tags),
@@ -76,6 +80,7 @@ func MapUpdateTerminatorToModel(id string, terminator *rest_model.TerminatorUpda
 }
 
 func MapPatchTerminatorToModel(id string, terminator *rest_model.TerminatorPatch) *model.Terminator {
+	logtrace.LogWithFunctionName()
 	ret := &model.Terminator{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(terminator.Tags),
@@ -99,6 +104,7 @@ func MapPatchTerminatorToModel(id string, terminator *rest_model.TerminatorPatch
 type TerminatorModelMapper struct{}
 
 func (TerminatorModelMapper) ToApi(n *network.Network, _ api.RequestContext, terminator *model.Terminator) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	restModel, err := MapTerminatorToRestModel(n, terminator)
 
 	if err != nil {
@@ -111,6 +117,7 @@ func (TerminatorModelMapper) ToApi(n *network.Network, _ api.RequestContext, ter
 }
 
 func MapTerminatorToRestModel(n *network.Network, terminator *model.Terminator) (*rest_model.TerminatorDetail, error) {
+	logtrace.LogWithFunctionName()
 	service, err := n.Managers.Service.Read(terminator.Service)
 	if err != nil {
 		return nil, err

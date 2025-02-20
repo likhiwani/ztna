@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type ListCircuitsOK struct {
 
 // NewListCircuitsOK creates ListCircuitsOK with default headers values
 func NewListCircuitsOK() *ListCircuitsOK {
+    logtrace.LogWithFunctionName()
 
 	return &ListCircuitsOK{}
 }
 
 // WithPayload adds the payload to the list circuits o k response
 func (o *ListCircuitsOK) WithPayload(payload *rest_model.ListCircuitsEnvelope) *ListCircuitsOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list circuits o k response
 func (o *ListCircuitsOK) SetPayload(payload *rest_model.ListCircuitsEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListCircuitsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type ListCircuitsUnauthorized struct {
 
 // NewListCircuitsUnauthorized creates ListCircuitsUnauthorized with default headers values
 func NewListCircuitsUnauthorized() *ListCircuitsUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &ListCircuitsUnauthorized{}
 }
 
 // WithPayload adds the payload to the list circuits unauthorized response
 func (o *ListCircuitsUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *ListCircuitsUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list circuits unauthorized response
 func (o *ListCircuitsUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListCircuitsUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type ListCircuitsTooManyRequests struct {
 
 // NewListCircuitsTooManyRequests creates ListCircuitsTooManyRequests with default headers values
 func NewListCircuitsTooManyRequests() *ListCircuitsTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &ListCircuitsTooManyRequests{}
 }
 
 // WithPayload adds the payload to the list circuits too many requests response
 func (o *ListCircuitsTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *ListCircuitsTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list circuits too many requests response
 func (o *ListCircuitsTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListCircuitsTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

@@ -17,120 +17,217 @@
 package event
 
 import (
-	"github.com/openziti/metrics/metrics_pb"
-	"github.com/openziti/storage/boltz"
 	"regexp"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics/metrics_pb"
+	"github.com/openziti/storage/boltz"
 )
 
 var _ Dispatcher = DispatcherMock{}
 
 type DispatcherMock struct{}
 
-func (d DispatcherMock) AcceptConnectEvent(event *ConnectEvent) {}
-
-func (d DispatcherMock) AcceptSdkEvent(event *SdkEvent) {}
-
-func (d DispatcherMock) AcceptApiSessionEvent(event *ApiSessionEvent) {}
-
-func (d DispatcherMock) AddApiSessionEventHandler(handler ApiSessionEventHandler) {}
-
-func (d DispatcherMock) RemoveApiSessionEventHandler(handler ApiSessionEventHandler) {}
-
-func (d DispatcherMock) AddSessionEventHandler(handler SessionEventHandler) {}
-
-func (d DispatcherMock) RemoveSessionEventHandler(handler SessionEventHandler) {}
-
-func (d DispatcherMock) AddEntityCountEventHandler(handler EntityCountEventHandler, interval time.Duration, onlyLeaderEvents bool) {
+func (d DispatcherMock) AcceptConnectEvent(event *ConnectEvent) {
+	logtrace.LogWithFunctionName()
 }
 
-func (d DispatcherMock) RemoveEntityCountEventHandler(handler EntityCountEventHandler) {}
+func (d DispatcherMock) AcceptSdkEvent(event *SdkEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddEntityChangeSource(store boltz.Store) {}
+func (d DispatcherMock) AcceptApiSessionEvent(event *ApiSessionEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddGlobalEntityChangeMetadata(k string, v any) {}
+func (d DispatcherMock) AddApiSessionEventHandler(handler ApiSessionEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddEntityChangeEventHandler(handler EntityChangeEventHandler) {}
+func (d DispatcherMock) RemoveApiSessionEventHandler(handler ApiSessionEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveEntityChangeEventHandler(handler EntityChangeEventHandler) {}
+func (d DispatcherMock) AddSessionEventHandler(handler SessionEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptEntityChangeEvent(event *EntityChangeEvent) {}
+func (d DispatcherMock) RemoveSessionEventHandler(handler SessionEventHandler) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) AddEntityCountEventHandler(handler EntityCountEventHandler, interval time.Duration, onlyLeaderEvents bool) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) RemoveEntityCountEventHandler(handler EntityCountEventHandler) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) AddEntityChangeSource(store boltz.Store) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) AddGlobalEntityChangeMetadata(k string, v any) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) AddEntityChangeEventHandler(handler EntityChangeEventHandler) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) RemoveEntityChangeEventHandler(handler EntityChangeEventHandler) {
+	logtrace.LogWithFunctionName()
+}
+
+func (d DispatcherMock) AcceptEntityChangeEvent(event *EntityChangeEvent) {
+	logtrace.LogWithFunctionName()
+}
 
 func (d DispatcherMock) GetFormatterFactory(formatterType string) FormatterFactory {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
-func (d DispatcherMock) RegisterFormatterFactory(string, FormatterFactory) {}
+func (d DispatcherMock) RegisterFormatterFactory(string, FormatterFactory) {
+	logtrace.LogWithFunctionName()
+}
 
 func (d DispatcherMock) RegisterEventTypeFunctions(string, RegistrationHandler, UnregistrationHandler) {
+	logtrace.LogWithFunctionName()
 }
 
 func (d DispatcherMock) ProcessSubscriptions(interface{}, []*Subscription) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
-func (d DispatcherMock) RemoveAllSubscriptions(interface{}) {}
+func (d DispatcherMock) RemoveAllSubscriptions(interface{}) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RegisterEventType(string, TypeRegistrar) {}
+func (d DispatcherMock) RegisterEventType(string, TypeRegistrar) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RegisterEventHandlerFactory(string, HandlerFactory) {}
+func (d DispatcherMock) RegisterEventHandlerFactory(string, HandlerFactory) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddCircuitEventHandler(CircuitEventHandler) {}
+func (d DispatcherMock) AddCircuitEventHandler(CircuitEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveCircuitEventHandler(CircuitEventHandler) {}
+func (d DispatcherMock) RemoveCircuitEventHandler(CircuitEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddLinkEventHandler(LinkEventHandler) {}
+func (d DispatcherMock) AddLinkEventHandler(LinkEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveLinkEventHandler(LinkEventHandler) {}
+func (d DispatcherMock) RemoveLinkEventHandler(LinkEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddMetricsMapper(MetricsMapper) {}
+func (d DispatcherMock) AddMetricsMapper(MetricsMapper) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddMetricsEventHandler(MetricsEventHandler) {}
+func (d DispatcherMock) AddMetricsEventHandler(MetricsEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveMetricsEventHandler(MetricsEventHandler) {}
+func (d DispatcherMock) RemoveMetricsEventHandler(MetricsEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddMetricsMessageHandler(MetricsMessageHandler) {}
+func (d DispatcherMock) AddMetricsMessageHandler(MetricsMessageHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveMetricsMessageHandler(MetricsMessageHandler) {}
+func (d DispatcherMock) RemoveMetricsMessageHandler(MetricsMessageHandler) {
+	logtrace.LogWithFunctionName()
+}
 
 func (d DispatcherMock) NewFilteredMetricsAdapter(*regexp.Regexp, *regexp.Regexp, MetricsEventHandler) MetricsMessageHandler {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
-func (d DispatcherMock) AddRouterEventHandler(RouterEventHandler) {}
+func (d DispatcherMock) AddRouterEventHandler(RouterEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveRouterEventHandler(RouterEventHandler) {}
+func (d DispatcherMock) RemoveRouterEventHandler(RouterEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddServiceEventHandler(ServiceEventHandler) {}
+func (d DispatcherMock) AddServiceEventHandler(ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveServiceEventHandler(ServiceEventHandler) {}
+func (d DispatcherMock) RemoveServiceEventHandler(ServiceEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddTerminatorEventHandler(TerminatorEventHandler) {}
+func (d DispatcherMock) AddTerminatorEventHandler(TerminatorEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveTerminatorEventHandler(TerminatorEventHandler) {}
+func (d DispatcherMock) RemoveTerminatorEventHandler(TerminatorEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddUsageEventHandler(UsageEventHandler) {}
+func (d DispatcherMock) AddUsageEventHandler(UsageEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveUsageEventHandler(UsageEventHandler) {}
+func (d DispatcherMock) RemoveUsageEventHandler(UsageEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptCircuitEvent(*CircuitEvent) {}
+func (d DispatcherMock) AcceptCircuitEvent(*CircuitEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptLinkEvent(*LinkEvent) {}
+func (d DispatcherMock) AcceptLinkEvent(*LinkEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptMetricsEvent(*MetricsEvent) {}
+func (d DispatcherMock) AcceptMetricsEvent(*MetricsEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptMetricsMsg(*metrics_pb.MetricsMessage) {}
+func (d DispatcherMock) AcceptMetricsMsg(*metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptRouterEvent(*RouterEvent) {}
+func (d DispatcherMock) AcceptRouterEvent(*RouterEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptServiceEvent(*ServiceEvent) {}
+func (d DispatcherMock) AcceptServiceEvent(*ServiceEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptTerminatorEvent(*TerminatorEvent) {}
+func (d DispatcherMock) AcceptTerminatorEvent(*TerminatorEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptUsageEvent(*UsageEvent) {}
+func (d DispatcherMock) AcceptUsageEvent(*UsageEvent) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AddClusterEventHandler(ClusterEventHandler) {}
+func (d DispatcherMock) AddClusterEventHandler(ClusterEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) RemoveClusterEventHandler(ClusterEventHandler) {}
+func (d DispatcherMock) RemoveClusterEventHandler(ClusterEventHandler) {
+	logtrace.LogWithFunctionName()
+}
 
-func (d DispatcherMock) AcceptClusterEvent(*ClusterEvent) {}
+func (d DispatcherMock) AcceptClusterEvent(*ClusterEvent) {
+	logtrace.LogWithFunctionName()
+}

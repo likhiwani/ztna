@@ -30,6 +30,7 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
@@ -44,12 +45,14 @@ type SpecLinkFactoryImpl struct {
 }
 
 func NewSpecLinkFactory() *SpecLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &SpecLinkFactoryImpl{
 		BasicLinkFactory{entityName: EntityNameSpecs},
 	}
 }
 
 func (factory *SpecLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links["spec"] = factory.NewNestedLink(entity, "spec")
 
@@ -67,6 +70,7 @@ var managementSpec *Spec
 var specs []*Spec
 
 func init() {
+	logtrace.LogWithFunctionName()
 	info := build.GetBuildInfo()
 	date := time.Now()
 	if info.BuildDate() != "unknown" {
@@ -118,12 +122,14 @@ type SpecRouter struct {
 }
 
 func NewSpecRouter() *SpecRouter {
+	logtrace.LogWithFunctionName()
 	return &SpecRouter{
 		BasePath: "/specs",
 	}
 }
 
 func (r *SpecRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//Client
 	ae.ClientApi.InformationalListSpecsHandler = clientInformational.ListSpecsHandlerFunc(func(params clientInformational.ListSpecsParams) middleware.Responder {
 		return ae.IsAllowed(r.List, params.HTTPRequest, "", "", permissions.Always())
@@ -152,6 +158,7 @@ func (r *SpecRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *SpecRouter) List(_ *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	data := rest_model.SpecList{
 		mapSpecToRestModel(clientSpec),
 	}
@@ -160,6 +167,7 @@ func (r *SpecRouter) List(_ *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *SpecRouter) Detail(_ *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 	if err != nil {
 		rc.RespondWithError(fmt.Errorf("entity id not set"))
@@ -175,6 +183,7 @@ func (r *SpecRouter) Detail(_ *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *SpecRouter) DetailBody(_ *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 	if err != nil {
 		rc.RespondWithError(fmt.Errorf("entity id not set"))
@@ -190,6 +199,7 @@ func (r *SpecRouter) DetailBody(_ *env.AppEnv, rc *response.RequestContext) {
 }
 
 func mapSpecToRestModel(spec *Spec) *rest_model.SpecDetail {
+	logtrace.LogWithFunctionName()
 	return &rest_model.SpecDetail{
 		BaseEntity: BaseEntityToRestModel(spec, SpecLinkFactory),
 		Name:       &spec.name,

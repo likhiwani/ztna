@@ -17,11 +17,13 @@
 package handler_link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type ackHandler struct {
@@ -30,6 +32,7 @@ type ackHandler struct {
 }
 
 func newAckHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *ackHandler {
+	logtrace.LogWithFunctionName()
 	return &ackHandler{
 		link:      link,
 		forwarder: forwarder,
@@ -37,10 +40,12 @@ func newAckHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *ackHandler
 }
 
 func (self *ackHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return xgress.ContentTypeAcknowledgementType
 }
 
 func (self *ackHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	ack, err := xgress.UnmarshallAcknowledgement(msg)
 	if err != nil {
 		pfxlog.ContextLogger(ch.Label()).

@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewRaftMemberRemoveParams() *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewRaftMemberRemoveParams() *RaftMemberRemoveParams {
 // NewRaftMemberRemoveParamsWithTimeout creates a new RaftMemberRemoveParams object
 // with the ability to set a timeout on a request.
 func NewRaftMemberRemoveParamsWithTimeout(timeout time.Duration) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewRaftMemberRemoveParamsWithTimeout(timeout time.Duration) *RaftMemberRemo
 // NewRaftMemberRemoveParamsWithContext creates a new RaftMemberRemoveParams object
 // with the ability to set a context for a request.
 func NewRaftMemberRemoveParamsWithContext(ctx context.Context) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewRaftMemberRemoveParamsWithContext(ctx context.Context) *RaftMemberRemove
 // NewRaftMemberRemoveParamsWithHTTPClient creates a new RaftMemberRemoveParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewRaftMemberRemoveParamsWithHTTPClient(client *http.Client) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type RaftMemberRemoveParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftMemberRemoveParams) WithDefaults() *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *RaftMemberRemoveParams) WithDefaults() *RaftMemberRemoveParams {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftMemberRemoveParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the raft member remove params
 func (o *RaftMemberRemoveParams) WithTimeout(timeout time.Duration) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the raft member remove params
 func (o *RaftMemberRemoveParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the raft member remove params
 func (o *RaftMemberRemoveParams) WithContext(ctx context.Context) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the raft member remove params
 func (o *RaftMemberRemoveParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the raft member remove params
 func (o *RaftMemberRemoveParams) WithHTTPClient(client *http.Client) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the raft member remove params
 func (o *RaftMemberRemoveParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithMember adds the member to the raft member remove params
 func (o *RaftMemberRemoveParams) WithMember(member *rest_model.RaftMemberRemove) *RaftMemberRemoveParams {
+    logtrace.LogWithFunctionName()
 	o.SetMember(member)
 	return o
 }
 
 // SetMember adds the member to the raft member remove params
 func (o *RaftMemberRemoveParams) SetMember(member *rest_model.RaftMemberRemove) {
+    logtrace.LogWithFunctionName()
 	o.Member = member
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *RaftMemberRemoveParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

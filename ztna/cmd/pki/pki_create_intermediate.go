@@ -21,12 +21,14 @@ import (
 	"io"
 
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
 	"ztna-core/ztna/ztna/pki/certificate"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -38,6 +40,7 @@ type PKICreateIntermediateOptions struct {
 
 // NewCmdPKICreateIntermediate creates a command object for the "create" command
 func NewCmdPKICreateIntermediate(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateIntermediateOptions{
 		PKICreateOptions: PKICreateOptions{
 			PKIOptions: PKIOptions{
@@ -68,6 +71,7 @@ func NewCmdPKICreateIntermediate(out io.Writer, errOut io.Writer) *cobra.Command
 const FlagCaIntermediateName = "intermediate-name"
 
 func (o *PKICreateIntermediateOptions) addPKICreateIntermediateFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&o.Flags.PKIRoot, "pki-root", "", "", "Directory in which PKI resides")
 	cmd.Flags().StringVarP(&o.Flags.CAName, "ca-name", "", "ca", "Name of CA (within PKI_ROOT) to use to sign the new Intermediate CA")
 	cmd.Flags().StringVarP(&o.Flags.IntermediateFile, "intermediate-file", "", "intermediate", "Dir/File name (within PKI_ROOT) in which to store new Intermediate CA")
@@ -80,6 +84,7 @@ func (o *PKICreateIntermediateOptions) addPKICreateIntermediateFlags(cmd *cobra.
 
 // Run implements this command
 func (o *PKICreateIntermediateOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	pkiRoot, err := o.ObtainPKIRoot()
 	if err != nil {
 		return err

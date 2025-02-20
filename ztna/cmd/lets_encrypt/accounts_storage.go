@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto"
 	"crypto/x509"
 	"encoding/json"
@@ -83,6 +84,7 @@ type AccountsStorage struct {
 
 // NewAccountsStorage Creates a new AccountsStorage.
 func NewAccountsStorage(options *leOptions) *AccountsStorage {
+	logtrace.LogWithFunctionName()
 
 	serverURL, err := url.Parse(options.acmeserver)
 	if err != nil {
@@ -104,6 +106,7 @@ func NewAccountsStorage(options *leOptions) *AccountsStorage {
 }
 
 func (s *AccountsStorage) ExistsAccountFilePath() bool {
+	logtrace.LogWithFunctionName()
 	accountFile := filepath.Join(s.rootUserPath, accountFileName)
 	if _, err := os.Stat(accountFile); os.IsNotExist(err) {
 		return false
@@ -114,18 +117,22 @@ func (s *AccountsStorage) ExistsAccountFilePath() bool {
 }
 
 func (s *AccountsStorage) GetRootPath() string {
+	logtrace.LogWithFunctionName()
 	return s.rootPath
 }
 
 func (s *AccountsStorage) GetRootUserPath() string {
+	logtrace.LogWithFunctionName()
 	return s.rootUserPath
 }
 
 func (s *AccountsStorage) GetUserID() string {
+	logtrace.LogWithFunctionName()
 	return s.userID
 }
 
 func (s *AccountsStorage) Save(account *Account) error {
+	logtrace.LogWithFunctionName()
 	jsonBytes, err := json.MarshalIndent(account, "", "\t")
 	if err != nil {
 		return err
@@ -135,6 +142,7 @@ func (s *AccountsStorage) Save(account *Account) error {
 }
 
 func (s *AccountsStorage) LoadAccount(options *leOptions, privateKey crypto.PrivateKey) *Account {
+	logtrace.LogWithFunctionName()
 	fileBytes, err := os.ReadFile(s.accountFilePath)
 	if err != nil {
 		log.Fatalf("Could not load file for account %s: %v", s.userID, err)
@@ -165,6 +173,7 @@ func (s *AccountsStorage) LoadAccount(options *leOptions, privateKey crypto.Priv
 }
 
 func (s *AccountsStorage) GetPrivateKey(keyType certcrypto.KeyType) crypto.PrivateKey {
+	logtrace.LogWithFunctionName()
 	accKeyPath := filepath.Join(s.keysPath, s.userID+".key")
 
 	if _, err := os.Stat(accKeyPath); os.IsNotExist(err) {
@@ -189,12 +198,14 @@ func (s *AccountsStorage) GetPrivateKey(keyType certcrypto.KeyType) crypto.Priva
 }
 
 func (s *AccountsStorage) createKeysFolder() {
+	logtrace.LogWithFunctionName()
 	if err := createNonExistingFolder(s.keysPath); err != nil {
 		log.Fatalf("Could not check/create directory for account %s: %v", s.userID, err)
 	}
 }
 
 func generatePrivateKey(file string, keyType certcrypto.KeyType) (crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	privateKey, err := certcrypto.GeneratePrivateKey(keyType)
 	if err != nil {
 		return nil, err
@@ -216,6 +227,7 @@ func generatePrivateKey(file string, keyType certcrypto.KeyType) (crypto.Private
 }
 
 func loadPrivateKey(file string) (crypto.PrivateKey, error) {
+	logtrace.LogWithFunctionName()
 	keyBytes, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err
@@ -236,6 +248,7 @@ func loadPrivateKey(file string) (crypto.PrivateKey, error) {
 }
 
 func tryRecoverRegistration(options *leOptions, privateKey crypto.PrivateKey) (*registration.Resource, error) {
+	logtrace.LogWithFunctionName()
 	// couldn't load account but got a key. Try to look the account up.
 	config := lego.NewConfig(&Account{key: privateKey})
 	config.CADirURL = options.acmeserver

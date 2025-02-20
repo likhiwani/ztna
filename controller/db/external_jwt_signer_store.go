@@ -18,12 +18,14 @@ package db
 
 import (
 	"fmt"
+	"strings"
+	"time"
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/apierror"
-	"strings"
-	"time"
 )
 
 const (
@@ -68,10 +70,12 @@ type ExternalJwtSigner struct {
 }
 
 func (entity *ExternalJwtSigner) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *ExternalJwtSigner) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeExternalJwtSigners
 }
 
@@ -83,6 +87,7 @@ type ExternalJwtSignerStore interface {
 }
 
 func newExternalJwtSignerStore(stores *stores) *externalJwtSignerStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &externalJwtSignerStoreImpl{}
 	store.baseStore = newBaseStore[*ExternalJwtSigner](stores, store)
 	store.InitImpl(store)
@@ -102,10 +107,12 @@ type externalJwtSignerStoreImpl struct {
 }
 
 func (store *externalJwtSignerStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *externalJwtSignerStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 
@@ -133,13 +140,16 @@ func (store *externalJwtSignerStoreImpl) initializeLocal() {
 }
 
 func (store *externalJwtSignerStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 }
 
 func (store *externalJwtSignerStoreImpl) NewEntity() *ExternalJwtSigner {
+	logtrace.LogWithFunctionName()
 	return &ExternalJwtSigner{}
 }
 
 func (store *externalJwtSignerStoreImpl) FillEntity(entity *ExternalJwtSigner, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringWithDefault(FieldName, "")
 	entity.CertPem = bucket.GetString(FieldExternalJwtSignerCertPem)
@@ -160,6 +170,7 @@ func (store *externalJwtSignerStoreImpl) FillEntity(entity *ExternalJwtSigner, b
 }
 
 func (store *externalJwtSignerStoreImpl) PersistEntity(entity *ExternalJwtSigner, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetStringP(FieldExternalJwtSignerCertPem, entity.CertPem)
@@ -209,6 +220,7 @@ func (store *externalJwtSignerStoreImpl) PersistEntity(entity *ExternalJwtSigner
 }
 
 func (store *externalJwtSignerStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	ids, _, err := store.stores.authPolicy.QueryIds(ctx.Tx(), fmt.Sprintf(`anyOf(%s) = "%s"`, FieldAuthPolicyPrimaryExtJwtAllowedSigners, id))
 
 	if err != nil {

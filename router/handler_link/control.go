@@ -17,11 +17,13 @@
 package handler_link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type controlHandler struct {
@@ -30,6 +32,7 @@ type controlHandler struct {
 }
 
 func newControlHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *controlHandler {
+	logtrace.LogWithFunctionName()
 	result := &controlHandler{
 		link:      link,
 		forwarder: forwarder,
@@ -38,10 +41,12 @@ func newControlHandler(link xlink.Xlink, forwarder *forwarder.Forwarder) *contro
 }
 
 func (self *controlHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return xgress.ContentTypeControlType
 }
 
 func (self *controlHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	if control, err := xgress.UnmarshallControl(msg); err == nil {

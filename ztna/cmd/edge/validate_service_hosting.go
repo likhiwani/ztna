@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/edge-api/rest_management_api_client/service"
@@ -35,6 +36,7 @@ type validateServiceHostingAction struct {
 }
 
 func NewValidateServiceHostingCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateServiceHostingAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -55,6 +57,7 @@ func NewValidateServiceHostingCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *validateServiceHostingAction) validateServiceHosting(cmd *cobra.Command, _ []string) error {
+	logtrace.LogWithFunctionName()
 	client, err := util.NewEdgeManagementClient(&self.Options)
 
 	if err != nil {

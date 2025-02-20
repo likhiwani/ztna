@@ -18,9 +18,9 @@ package server
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/storage/boltz"
+	"os"
+	"sync"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	runner2 "ztna-core/ztna/common/runner"
 	edgeconfig "ztna-core/ztna/controller/config"
@@ -30,9 +30,11 @@ import (
 	_ "ztna-core/ztna/controller/internal/routes"
 	"ztna-core/ztna/controller/model"
 	sync2 "ztna-core/ztna/controller/sync_strats"
-	"os"
-	"sync"
-	"time"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/storage/boltz"
 )
 
 type Controller struct {
@@ -52,6 +54,7 @@ const (
 )
 
 func NewController(host env.HostController) (*Controller, error) {
+	logtrace.LogWithFunctionName()
 	c := &Controller{
 		config: host.GetConfig().Edge,
 		AppEnv: host.GetEnv(),
@@ -98,6 +101,7 @@ func NewController(host env.HostController) (*Controller, error) {
 }
 
 func (c *Controller) GetCtrlHandlers(binding channel.Binding) []channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	ch := binding.GetChannel()
 	tunnelState := handler_edge_ctrl.NewTunnelState()
 
@@ -132,10 +136,12 @@ func (c *Controller) GetCtrlHandlers(binding channel.Binding) []channel.TypedRec
 }
 
 func (c *Controller) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return c.AppEnv.HostController.GetConfig().Edge.Enabled
 }
 
 func (c *Controller) initializeAuthModules() {
+	logtrace.LogWithFunctionName()
 	c.initModulesOnce.Do(func() {
 		c.AppEnv.AuthRegistry.Add(model.NewAuthModuleUpdb(c.AppEnv))
 		c.AppEnv.AuthRegistry.Add(model.NewAuthModuleCert(c.AppEnv, c.AppEnv.GetConfig().Edge.CaPems()))
@@ -151,6 +157,7 @@ func (c *Controller) initializeAuthModules() {
 }
 
 func (c *Controller) Initialize() {
+	logtrace.LogWithFunctionName()
 	if !c.Enabled() {
 		return
 	}
@@ -202,6 +209,7 @@ func (c *Controller) Initialize() {
 }
 
 func (c *Controller) Run() {
+	logtrace.LogWithFunctionName()
 	if !c.Enabled() {
 		return
 	}
@@ -227,6 +235,7 @@ func (c *Controller) Run() {
 }
 
 func (c *Controller) checkEdgeInitialized() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	defaultAdminFound := false
 	lastWarn := time.Time{}
@@ -266,6 +275,7 @@ func (c *Controller) checkEdgeInitialized() {
 }
 
 func (c *Controller) Shutdown() {
+	logtrace.LogWithFunctionName()
 	if c.Enabled() {
 		log := pfxlog.Logger()
 
@@ -292,23 +302,28 @@ type subctrl struct {
 }
 
 func (c *subctrl) GetTraceDecoders() []channel.TraceMessageDecoder {
+	logtrace.LogWithFunctionName()
 	return []channel.TraceMessageDecoder{
 		edge_ctrl_pb.Decoder{},
 	}
 }
 
 func (c *subctrl) NotifyOfReconnect(channel.Channel) {
+	logtrace.LogWithFunctionName()
 }
 
 func (c *subctrl) LoadConfig(map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (c *subctrl) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return c.parent.Enabled()
 }
 
 func (c *subctrl) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	for _, h := range c.parent.GetCtrlHandlers(binding) {
 		binding.AddTypedReceiveHandler(h)
 	}
@@ -316,5 +331,6 @@ func (c *subctrl) BindChannel(binding channel.Binding) error {
 }
 
 func (c *subctrl) Run(channel.Channel, boltz.Db, chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }

@@ -18,10 +18,12 @@ package handler_mgmt
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,14 +32,17 @@ type inspectHandler struct {
 }
 
 func newInspectHandler(network *network.Network) *inspectHandler {
+	logtrace.LogWithFunctionName()
 	return &inspectHandler{network: network}
 }
 
 func (*inspectHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_InspectRequestType)
 }
 
 func (handler *inspectHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	response := &mgmt_pb.InspectResponse{}
 	request := &mgmt_pb.InspectRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {

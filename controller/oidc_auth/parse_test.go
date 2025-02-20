@@ -1,11 +1,14 @@
 package oidc_auth
 
 import (
-	"github.com/stretchr/testify/require"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Map(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	const (
 		id            = "123"

@@ -17,11 +17,13 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -34,16 +36,19 @@ type validateTerminatorsHandler struct {
 }
 
 func newValidateTerminatorsHandler(env env.RouterEnv) *validateTerminatorsHandler {
+	logtrace.LogWithFunctionName()
 	return &validateTerminatorsHandler{
 		env: env,
 	}
 }
 
 func (handler *validateTerminatorsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_ValidateTerminatorsRequestType)
 }
 
 func (handler *validateTerminatorsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	req := &ctrl_pb.ValidateTerminatorsRequest{}
@@ -58,6 +63,7 @@ func (handler *validateTerminatorsHandler) HandleReceive(msg *channel.Message, c
 }
 
 func (handler *validateTerminatorsHandler) validateTerminators(req *ctrl_pb.ValidateTerminatorsRequest) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	log.Debugf("validate terminators route request received: %v terminators", len(req.Terminators))

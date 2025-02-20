@@ -27,6 +27,7 @@ import (
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/xweb/v2"
 )
@@ -45,20 +46,24 @@ type ManagementApiFactory struct {
 }
 
 func (factory ManagementApiFactory) Validate(_ *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func NewManagementApiFactory(appEnv *env.AppEnv) *ManagementApiFactory {
+	logtrace.LogWithFunctionName()
 	return &ManagementApiFactory{
 		appEnv: appEnv,
 	}
 }
 
 func (factory ManagementApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ManagementApiBinding
 }
 
 func (factory ManagementApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	managementApi, err := NewManagementApiHandler(factory.appEnv, options)
 
 	if err != nil {
@@ -81,26 +86,32 @@ type ManagementApiHandler struct {
 }
 
 func (managementApi ManagementApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ManagementApiBinding
 }
 
 func (managementApi ManagementApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return managementApi.options
 }
 
 func (managementApi ManagementApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return rest_management_api_client.DefaultBasePath
 }
 
 func (managementApi ManagementApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, managementApi.RootPath()) || r.URL.Path == WellKnownEstCaCerts || r.URL.Path == VersionPath || r.URL.Path == RootPath
 }
 
 func (managementApi ManagementApiHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	managementApi.handler.ServeHTTP(writer, request)
 }
 
 func NewManagementApiHandler(ae *env.AppEnv, options map[interface{}]interface{}) (*ManagementApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	managementApi := &ManagementApiHandler{
 		options: options,
 		appEnv:  ae,
@@ -112,6 +123,7 @@ func NewManagementApiHandler(ae *env.AppEnv, options map[interface{}]interface{}
 }
 
 func (managementApi ManagementApiHandler) newHandler(ae *env.AppEnv) http.Handler {
+	logtrace.LogWithFunctionName()
 	innerManagementHandler := ae.ManagementApi.Serve(nil)
 
 	handler := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {

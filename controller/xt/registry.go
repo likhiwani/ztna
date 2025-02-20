@@ -17,12 +17,15 @@
 package xt
 
 import (
-	"github.com/openziti/storage/boltz"
 	"sync"
 	"sync/atomic"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	globalRegistry = &defaultRegistry{
 		factories: &copyOnWriteFactoryMap{
 			value: &atomic.Value{},
@@ -40,6 +43,7 @@ func init() {
 }
 
 func GlobalRegistry() Registry {
+	logtrace.LogWithFunctionName()
 	return globalRegistry
 }
 
@@ -52,10 +56,12 @@ type defaultRegistry struct {
 }
 
 func (registry *defaultRegistry) RegisterFactory(factory Factory) {
+	logtrace.LogWithFunctionName()
 	registry.factories.put(factory.GetStrategyName(), factory)
 }
 
 func (registry *defaultRegistry) GetStrategy(name string) (Strategy, error) {
+	logtrace.LogWithFunctionName()
 	result := registry.strategies.get(name)
 	if result == nil {
 		registry.lock.Lock()
@@ -83,6 +89,7 @@ type copyOnWriteFactoryMap struct {
 }
 
 func (m *copyOnWriteFactoryMap) put(key string, value Factory) {
+	logtrace.LogWithFunctionName()
 	m.lock.Lock()
 	defer m.lock.Unlock()
 
@@ -96,6 +103,7 @@ func (m *copyOnWriteFactoryMap) put(key string, value Factory) {
 }
 
 func (m *copyOnWriteFactoryMap) get(key string) Factory {
+	logtrace.LogWithFunctionName()
 	var current = m.value.Load().(map[string]Factory)
 	return current[key]
 }
@@ -106,6 +114,7 @@ type copyOnWriteStrategyMap struct {
 }
 
 func (m *copyOnWriteStrategyMap) put(key string, value Strategy) {
+	logtrace.LogWithFunctionName()
 	m.lock.Lock()
 	defer m.lock.Unlock()
 
@@ -119,6 +128,7 @@ func (m *copyOnWriteStrategyMap) put(key string, value Strategy) {
 }
 
 func (m *copyOnWriteStrategyMap) get(key string) Strategy {
+	logtrace.LogWithFunctionName()
 	var current = m.value.Load().(map[string]Strategy)
 	return current[key]
 }

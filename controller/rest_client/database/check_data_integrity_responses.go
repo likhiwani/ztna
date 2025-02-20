@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type CheckDataIntegrityReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *CheckDataIntegrityReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 202:
 		result := NewCheckDataIntegrityAccepted()
@@ -72,6 +74,7 @@ func (o *CheckDataIntegrityReader) ReadResponse(response runtime.ClientResponse,
 
 // NewCheckDataIntegrityAccepted creates a CheckDataIntegrityAccepted with default headers values
 func NewCheckDataIntegrityAccepted() *CheckDataIntegrityAccepted {
+    logtrace.LogWithFunctionName()
 	return &CheckDataIntegrityAccepted{}
 }
 
@@ -84,13 +87,16 @@ type CheckDataIntegrityAccepted struct {
 }
 
 func (o *CheckDataIntegrityAccepted) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/check-data-integrity][%d] checkDataIntegrityAccepted  %+v", 202, o.Payload)
 }
 func (o *CheckDataIntegrityAccepted) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CheckDataIntegrityAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -104,6 +110,7 @@ func (o *CheckDataIntegrityAccepted) readResponse(response runtime.ClientRespons
 
 // NewCheckDataIntegrityUnauthorized creates a CheckDataIntegrityUnauthorized with default headers values
 func NewCheckDataIntegrityUnauthorized() *CheckDataIntegrityUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &CheckDataIntegrityUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type CheckDataIntegrityUnauthorized struct {
 }
 
 func (o *CheckDataIntegrityUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/check-data-integrity][%d] checkDataIntegrityUnauthorized  %+v", 401, o.Payload)
 }
 func (o *CheckDataIntegrityUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CheckDataIntegrityUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *CheckDataIntegrityUnauthorized) readResponse(response runtime.ClientRes
 
 // NewCheckDataIntegrityTooManyRequests creates a CheckDataIntegrityTooManyRequests with default headers values
 func NewCheckDataIntegrityTooManyRequests() *CheckDataIntegrityTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &CheckDataIntegrityTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type CheckDataIntegrityTooManyRequests struct {
 }
 
 func (o *CheckDataIntegrityTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/check-data-integrity][%d] checkDataIntegrityTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *CheckDataIntegrityTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CheckDataIntegrityTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

@@ -26,18 +26,20 @@ import (
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/posture"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_common"
 	"ztna-core/ztna/tunnel"
+
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
 	"github.com/openziti/secretstream/kx"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -45,6 +47,7 @@ import (
 )
 
 func newProvider(factory *Factory, tunneler *tunneler) *fabricProvider {
+	logtrace.LogWithFunctionName()
 	return &fabricProvider{
 		factory:  factory,
 		tunneler: tunneler,
@@ -58,21 +61,27 @@ type fabricProvider struct {
 	currentIdentity atomic.Pointer[rest_model.IdentityDetail]
 }
 
-func (self *fabricProvider) PrepForUse(string) {}
+func (self *fabricProvider) PrepForUse(string) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *fabricProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.currentIdentity.Load(), nil
 }
 
 func (self *fabricProvider) GetCurrentIdentityWithBackoff() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.currentIdentity.Load(), nil
 }
 
 func (self *fabricProvider) updateIdentity(i *rest_model.IdentityDetail) {
+	logtrace.LogWithFunctionName()
 	self.currentIdentity.Store(i)
 }
 
 func (self *fabricProvider) TunnelService(service tunnel.Service, terminatorInstanceId string, conn net.Conn, halfClose bool, appData []byte) error {
+	logtrace.LogWithFunctionName()
 	keyPair, err := kx.NewKeyPair()
 	if err != nil {
 		return err
@@ -140,6 +149,7 @@ func (self *fabricProvider) TunnelService(service tunnel.Service, terminatorInst
 }
 
 func (self *fabricProvider) HostService(hostCtx tunnel.HostingContext) (tunnel.HostControl, error) {
+	logtrace.LogWithFunctionName()
 	id := idgen.NewUUIDString()
 
 	terminator := &tunnelTerminator{
@@ -164,6 +174,7 @@ func (self *fabricProvider) HostService(hostCtx tunnel.HostingContext) (tunnel.H
 }
 
 func (self *fabricProvider) establishTerminatorWithRetry(terminator *tunnelTerminator) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("service", terminator.context.ServiceName())
 
 	if terminator.closed.Load() {
@@ -193,6 +204,7 @@ func (self *fabricProvider) establishTerminatorWithRetry(terminator *tunnelTermi
 }
 
 func (self *fabricProvider) establishTerminator(terminator *tunnelTerminator) error {
+	logtrace.LogWithFunctionName()
 	start := time.Now().UnixMilli()
 	log := pfxlog.Logger().
 		WithField("routerId", self.factory.id.Token).
@@ -238,6 +250,7 @@ func (self *fabricProvider) establishTerminator(terminator *tunnelTerminator) er
 }
 
 func (self *fabricProvider) HandleTunnelResponse(msg *channel.Message, ctrlCh channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", self.factory.id.Token)
 
 	response := &edge_ctrl_pb.CreateTunnelTerminatorResponseV2{}
@@ -281,6 +294,7 @@ func (self *fabricProvider) HandleTunnelResponse(msg *channel.Message, ctrlCh ch
 }
 
 func (self *fabricProvider) removeTerminator(terminator *tunnelTerminator) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot remove terminator")
@@ -292,6 +306,7 @@ func (self *fabricProvider) removeTerminator(terminator *tunnelTerminator) error
 }
 
 func (self *fabricProvider) updateTerminator(terminatorId string, cost *uint16, precedence *edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot update terminator")
@@ -335,6 +350,7 @@ func (self *fabricProvider) updateTerminator(terminatorId string, cost *uint16, 
 }
 
 func (self *fabricProvider) sendHealthEvent(terminatorId string, checkPassed bool) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot forward health event")
@@ -368,10 +384,12 @@ type tunnelTerminator struct {
 }
 
 func (self *tunnelTerminator) SendHealthEvent(pass bool) error {
+	logtrace.LogWithFunctionName()
 	return self.provider.sendHealthEvent(self.id, pass)
 }
 
 func (self *tunnelTerminator) NotifyCreated() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.notifyCreated <- struct{}{}:
 	default:
@@ -379,6 +397,7 @@ func (self *tunnelTerminator) NotifyCreated() {
 }
 
 func (self *tunnelTerminator) WaitForCreated(timeout time.Duration) bool {
+	logtrace.LogWithFunctionName()
 	if self.created.Load() {
 		return true
 	}
@@ -390,6 +409,7 @@ func (self *tunnelTerminator) WaitForCreated(timeout time.Duration) bool {
 }
 
 func (self *tunnelTerminator) Close() error {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		log := logrus.WithField("service", self.context.ServiceName()).
 			WithField("routerId", self.provider.factory.id.Token).
@@ -415,17 +435,21 @@ func (self *tunnelTerminator) Close() error {
 }
 
 func (self *tunnelTerminator) UpdateCost(cost uint16) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(&cost, nil)
 }
 
 func (self *tunnelTerminator) UpdatePrecedence(precedence edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(nil, &precedence)
 }
 
 func (self *tunnelTerminator) UpdateCostAndPrecedence(cost uint16, precedence edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(&cost, &precedence)
 }
 
 func (self *tunnelTerminator) updateCostAndPrecedence(cost *uint16, precedence *edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.provider.updateTerminator(self.id, cost, precedence)
 }

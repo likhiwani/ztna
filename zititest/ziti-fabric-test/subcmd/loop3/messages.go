@@ -6,10 +6,12 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/pkg/errors"
-	"time"
 )
 
 type Message interface {
@@ -26,6 +28,7 @@ type Result struct {
 }
 
 func (r *Result) getSuccessBytes() []byte {
+	logtrace.LogWithFunctionName()
 	if r.Success {
 		return success
 	}
@@ -33,6 +36,7 @@ func (r *Result) getSuccessBytes() []byte {
 }
 
 func (r *Result) Tx(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	dataLen := 1 + len(r.Message)
 	if err := p.txHeader(p.peer, dataLen); err != nil {
 		return err
@@ -61,6 +65,7 @@ func (r *Result) Tx(p *protocol) error {
 }
 
 func (r *Result) Rx(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	msgLen, err := p.rxHeader()
 	if err != nil {
 		return err
@@ -108,6 +113,7 @@ type RandHashedBlock struct {
 }
 
 func (block *RandHashedBlock) getTimestampBytes() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if block.Type == BlockTypeLatencyRequest {
 		block.Timestamp = time.Now()
 	}
@@ -131,6 +137,7 @@ func (block *RandHashedBlock) getTimestampBytes() ([]byte, error) {
 }
 
 func (block *RandHashedBlock) PrepForSend(p *protocol) {
+	logtrace.LogWithFunctionName()
 	var latency *time.Time
 	if block.Type == BlockTypePlain {
 		select {
@@ -147,6 +154,7 @@ func (block *RandHashedBlock) PrepForSend(p *protocol) {
 }
 
 func (block *RandHashedBlock) Tx(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	tsBytes, err := block.getTimestampBytes()
 	if err != nil {
 		return err
@@ -197,6 +205,7 @@ func (block *RandHashedBlock) Tx(p *protocol) error {
 }
 
 func (block *RandHashedBlock) Rx(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	length, err := p.rxHeader()
 	if err != nil {
 		return err
@@ -243,6 +252,7 @@ func (block *RandHashedBlock) Rx(p *protocol) error {
 }
 
 func (block *RandHashedBlock) Verify(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	if block.Sequence != uint32(p.rxSequence) {
 		return fmt.Errorf("expected sequence [%d] got sequence [%d]", p.rxSequence, block.Sequence)
 	}
@@ -259,10 +269,12 @@ func (block *RandHashedBlock) Verify(p *protocol) error {
 type SeqBlock []byte
 
 func (s SeqBlock) PrepForSend(*protocol) {
+	logtrace.LogWithFunctionName()
 	// does nothing
 }
 
 func (s SeqBlock) Tx(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	_, err := p.peer.Write(s)
 	if err == nil {
 		pfxlog.ContextLogger(p.test.Name).Infof("-> #%d (%s)", p.txCount, info.ByteCount(int64(len(s))))
@@ -271,6 +283,7 @@ func (s SeqBlock) Tx(p *protocol) error {
 }
 
 func (block SeqBlock) Verify(p *protocol) error {
+	logtrace.LogWithFunctionName()
 	for idx, b := range block {
 		cmp := byte(p.rxSequence)
 		if cmp != b {

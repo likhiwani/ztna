@@ -18,12 +18,14 @@ package model
 
 import (
 	"encoding/base64"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
+	"reflect"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"reflect"
 )
 
 type Authenticator struct {
@@ -42,6 +44,7 @@ type AuthenticatorSelf struct {
 }
 
 func (entity *Authenticator) Fingerprints() []string {
+	logtrace.LogWithFunctionName()
 	switch entity.SubType.(type) {
 	case *AuthenticatorCert:
 		cert, _ := entity.SubType.(*AuthenticatorCert)
@@ -52,6 +55,7 @@ func (entity *Authenticator) Fingerprints() []string {
 }
 
 func (entity *Authenticator) fillFrom(_ Env, _ *bbolt.Tx, boltAuthenticator *db.Authenticator) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltAuthenticator)
 	entity.Method = boltAuthenticator.Type
 	entity.IdentityId = boltAuthenticator.IdentityId
@@ -84,6 +88,7 @@ func (entity *Authenticator) fillFrom(_ Env, _ *bbolt.Tx, boltAuthenticator *db.
 }
 
 func (entity *Authenticator) toBoltEntity() (*db.Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.Authenticator{
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Type:          entity.Method,
@@ -132,14 +137,17 @@ func (entity *Authenticator) toBoltEntity() (*db.Authenticator, error) {
 }
 
 func (entity *Authenticator) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *Authenticator) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.Authenticator, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *Authenticator) ToCert() *AuthenticatorCert {
+	logtrace.LogWithFunctionName()
 	cert, ok := entity.SubType.(*AuthenticatorCert)
 
 	if !ok {
@@ -151,6 +159,7 @@ func (entity *Authenticator) ToCert() *AuthenticatorCert {
 }
 
 func (entity *Authenticator) ToUpdb() *AuthenticatorUpdb {
+	logtrace.LogWithFunctionName()
 	updb, ok := entity.SubType.(*AuthenticatorUpdb)
 
 	if !ok {
@@ -179,6 +188,7 @@ type AuthenticatorUpdb struct {
 }
 
 func (au *AuthenticatorUpdb) DecodedSalt() []byte {
+	logtrace.LogWithFunctionName()
 	result, _ := base64.StdEncoding.DecodeString(au.Salt)
 	return result
 }

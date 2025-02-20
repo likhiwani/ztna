@@ -17,13 +17,15 @@
 package handler_mgmt
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/trace/pb"
-	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/controller/network"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -33,14 +35,17 @@ type streamTracesHandler struct {
 }
 
 func newStreamTracesHandler(network *network.Network) *streamTracesHandler {
+	logtrace.LogWithFunctionName()
 	return &streamTracesHandler{network: network}
 }
 
 func (*streamTracesHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_StreamTracesRequestType)
 }
 
 func (handler *streamTracesHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	request := &mgmt_pb.StreamTracesRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
 		handler_common.SendFailure(msg, ch, err.Error())
@@ -55,12 +60,14 @@ func (handler *streamTracesHandler) HandleReceive(msg *channel.Message, ch chann
 }
 
 func (handler *streamTracesHandler) HandleClose(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	for _, streamHandler := range handler.streamHandlers {
 		trace.RemoveTraceEventHandler(streamHandler)
 	}
 }
 
 func createFilter(request *mgmt_pb.StreamTracesRequest) trace.Filter {
+	logtrace.LogWithFunctionName()
 	if !request.EnabledFilter {
 		return trace.NewAllowAllFilter()
 	}
@@ -76,6 +83,7 @@ type traceEventsHandler struct {
 }
 
 func (handler *traceEventsHandler) Accept(event *trace_pb.ChannelMessage) {
+	logtrace.LogWithFunctionName()
 	if !handler.filter.Accept(event) {
 		return
 	}
@@ -93,6 +101,7 @@ func (handler *traceEventsHandler) Accept(event *trace_pb.ChannelMessage) {
 }
 
 func (handler *traceEventsHandler) close() {
+	logtrace.LogWithFunctionName()
 	if err := handler.ch.Close(); err != nil {
 		pfxlog.Logger().WithError(err).Error("unexpected error while closing mgmt channel")
 	}

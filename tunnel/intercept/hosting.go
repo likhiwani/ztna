@@ -22,14 +22,16 @@ import (
 	"strings"
 	"time"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/entities"
 	"ztna-core/ztna/tunnel/health"
 	"ztna-core/ztna/tunnel/router"
 	"ztna-core/ztna/tunnel/utils"
 
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/sdk-golang/ziti"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/proxies"
 	"github.com/pkg/errors"
@@ -42,6 +44,7 @@ type healthChecksProvider interface {
 }
 
 func createHostingContexts(service *entities.Service, identity *rest_model.IdentityDetail, tracker AddressTracker) []tunnel.HostingContext {
+	logtrace.LogWithFunctionName()
 	var result []tunnel.HostingContext
 	for _, t := range service.HostV2Config.Terminators {
 		context := newDefaultHostingContext(identity, service, t, tracker)
@@ -57,6 +60,7 @@ func createHostingContexts(service *entities.Service, identity *rest_model.Ident
 }
 
 func newDefaultHostingContext(identity *rest_model.IdentityDetail, service *entities.Service, config *entities.HostV1Config, tracker AddressTracker) *hostingContext {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", service.Name)
 
 	if config.ForwardProtocol && len(config.AllowedProtocols) < 1 {
@@ -125,18 +129,22 @@ type hostingContext struct {
 }
 
 func (self *hostingContext) ServiceName() string {
+	logtrace.LogWithFunctionName()
 	return *self.service.Name
 }
 
 func (self *hostingContext) ServiceId() string {
+	logtrace.LogWithFunctionName()
 	return *self.service.ID
 }
 
 func (self *hostingContext) ListenOptions() *ziti.ListenOptions {
+	logtrace.LogWithFunctionName()
 	return self.options
 }
 
 func (self *hostingContext) dialAddress(options map[string]interface{}, protocol string, address string) (net.Conn, bool, error) {
+	logtrace.LogWithFunctionName()
 	var sourceAddr string
 	if val, ok := options[tunnel.SourceAddrKey]; ok {
 		sourceAddr = val.(string)
@@ -192,10 +200,12 @@ func (self *hostingContext) dialAddress(options map[string]interface{}, protocol
 }
 
 func (self *hostingContext) SetCloseCallback(f func()) {
+	logtrace.LogWithFunctionName()
 	self.onClose = f
 }
 
 func (self *hostingContext) OnClose() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", self.service.Name)
 	for _, addr := range self.config.AllowedSourceAddresses {
 		ipNet, err := utils.GetCidr(addr)
@@ -214,6 +224,7 @@ func (self *hostingContext) OnClose() {
 }
 
 func (self *hostingContext) getHealthChecks(provider healthChecksProvider) []health.CheckDefinition {
+	logtrace.LogWithFunctionName()
 	var checkDefinitions []health.CheckDefinition
 
 	for _, checkDef := range provider.GetPortChecks() {
@@ -228,14 +239,17 @@ func (self *hostingContext) getHealthChecks(provider healthChecksProvider) []hea
 }
 
 func (self *hostingContext) GetInitialHealthState() (ziti.Precedence, uint16) {
+	logtrace.LogWithFunctionName()
 	return self.options.Precedence, self.options.Cost
 }
 
 func (self *hostingContext) GetHealthChecks() []health.CheckDefinition {
+	logtrace.LogWithFunctionName()
 	return self.getHealthChecks(self.config)
 }
 
 func (self *hostingContext) Dial(options map[string]interface{}) (net.Conn, bool, error) {
+	logtrace.LogWithFunctionName()
 	if connType, found := options["connType"]; found && connType == "resolver" {
 		return newResolvConn(self)
 	}
@@ -259,6 +273,7 @@ func (self *hostingContext) Dial(options map[string]interface{}) (net.Conn, bool
 }
 
 func getDefaultOptions(service *entities.Service, identity *rest_model.IdentityDetail, config *entities.HostV1Config) (*ziti.ListenOptions, error) {
+	logtrace.LogWithFunctionName()
 	options := ziti.DefaultListenOptions()
 	options.ManualStart = true
 	options.Precedence = ziti.GetPrecedenceForLabel(string(identity.DefaultHostingPrecedence))

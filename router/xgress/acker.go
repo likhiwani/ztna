@@ -1,10 +1,12 @@
 package xgress
 
 import (
+	"sync/atomic"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/ef-ds/deque"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/metrics"
-	"sync/atomic"
 )
 
 var acker ackSender
@@ -14,6 +16,7 @@ type ackSender interface {
 }
 
 func InitAcker(forwarder PayloadBufferForwarder, metrics metrics.Registry, closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	acker = NewAcker(forwarder, metrics, closeNotify)
 }
 
@@ -35,6 +38,7 @@ type Acker struct {
 }
 
 func NewAcker(forwarder PayloadBufferForwarder, metrics metrics.Registry, closeNotify <-chan struct{}) *Acker {
+	logtrace.LogWithFunctionName()
 	result := &Acker{
 		forwarder:   forwarder,
 		acks:        deque.New(),
@@ -54,6 +58,7 @@ func NewAcker(forwarder PayloadBufferForwarder, metrics metrics.Registry, closeN
 }
 
 func (acker *Acker) ack(ack *Acknowledgement, address Address) {
+	logtrace.LogWithFunctionName()
 	acker.ackIngest <- &ackEntry{
 		Acknowledgement: ack,
 		Address:         address,
@@ -61,6 +66,7 @@ func (acker *Acker) ack(ack *Acknowledgement, address Address) {
 }
 
 func (acker *Acker) ackIngester() {
+	logtrace.LogWithFunctionName()
 	var next *ackEntry
 	for {
 		if next == nil {
@@ -91,6 +97,7 @@ func (acker *Acker) ackIngester() {
 }
 
 func (acker *Acker) ackSender() {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	for {
 		select {

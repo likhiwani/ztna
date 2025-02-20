@@ -19,14 +19,16 @@ package dns
 import (
 	"errors"
 	"fmt"
-	"github.com/miekg/dns"
-	"github.com/sirupsen/logrus"
 	"net"
 	"net/url"
 	"os/exec"
 	"strings"
 	"sync"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/miekg/dns"
+	"github.com/sirupsen/logrus"
 )
 
 var log = logrus.StandardLogger()
@@ -41,6 +43,7 @@ type resolver struct {
 }
 
 func flushDnsCaches() {
+	logtrace.LogWithFunctionName()
 	bin, err := exec.LookPath("systemd-resolve")
 	arg := "--flush-caches"
 	if err != nil {
@@ -61,6 +64,7 @@ func flushDnsCaches() {
 }
 
 func NewResolver(config string) (Resolver, error) {
+	logtrace.LogWithFunctionName()
 	flushDnsCaches()
 	if config == "" {
 		return nil, nil
@@ -86,6 +90,7 @@ func NewResolver(config string) (Resolver, error) {
 }
 
 func NewDnsServer(addr string) (Resolver, error) {
+	logtrace.LogWithFunctionName()
 	log.Infof("starting dns server...")
 	s := &dns.Server{
 		Addr: addr,
@@ -134,6 +139,7 @@ func NewDnsServer(addr string) (Resolver, error) {
 }
 
 func (r *resolver) testSystemResolver() error {
+	logtrace.LogWithFunctionName()
 	const resolverTestHostname = "ziti-tunnel.resolver.test"
 	resolverTestIP := net.IP{19, 65, 28, 94}
 	log.Debug("testing system resolver configuration")
@@ -158,6 +164,7 @@ func (r *resolver) testSystemResolver() error {
 }
 
 func (r *resolver) LookupIP(name string) (net.IP, bool) {
+	logtrace.LogWithFunctionName()
 	r.namesMtx.Lock()
 	defer r.namesMtx.Unlock()
 	canonical := strings.ToLower(name)
@@ -166,6 +173,7 @@ func (r *resolver) LookupIP(name string) (net.IP, bool) {
 }
 
 func (r *resolver) getAddress(name string) (net.IP, error) {
+	logtrace.LogWithFunctionName()
 	a, ok := r.LookupIP(name)
 	if ok {
 		return a, nil
@@ -200,6 +208,7 @@ func (r *resolver) getAddress(name string) (net.IP, error) {
 }
 
 func (r *resolver) ServeDNS(w dns.ResponseWriter, query *dns.Msg) {
+	logtrace.LogWithFunctionName()
 	log.Tracef("received:\n%s\n", query.String())
 	msg := dns.Msg{}
 	msg.SetReply(query)
@@ -231,6 +240,7 @@ func (r *resolver) ServeDNS(w dns.ResponseWriter, query *dns.Msg) {
 }
 
 func (r *resolver) AddDomain(name string, ipCB func(string) (net.IP, error)) error {
+	logtrace.LogWithFunctionName()
 	if name[0] != '*' {
 		return fmt.Errorf("invalid wildcard domain")
 	}
@@ -251,6 +261,7 @@ func (r *resolver) AddDomain(name string, ipCB func(string) (net.IP, error)) err
 }
 
 func (r *resolver) RemoveDomain(name string) {
+	logtrace.LogWithFunctionName()
 	if name[0] != '*' {
 		log.Warnf("invalid wildcard domain '%s'", name)
 		return
@@ -263,6 +274,7 @@ func (r *resolver) RemoveDomain(name string) {
 }
 
 func (r *resolver) AddHostname(hostname string, ip net.IP) error {
+	logtrace.LogWithFunctionName()
 	r.namesMtx.Lock()
 	defer r.namesMtx.Unlock()
 
@@ -279,6 +291,7 @@ func (r *resolver) AddHostname(hostname string, ip net.IP) error {
 }
 
 func (r *resolver) Lookup(ip net.IP) (string, error) {
+	logtrace.LogWithFunctionName()
 	if ip == nil {
 		return "", errors.New("illegal argument")
 	}
@@ -292,6 +305,7 @@ func (r *resolver) Lookup(ip net.IP) (string, error) {
 }
 
 func (r *resolver) RemoveHostname(hostname string) net.IP {
+	logtrace.LogWithFunctionName()
 	r.namesMtx.Lock()
 	defer r.namesMtx.Unlock()
 
@@ -308,6 +322,7 @@ func (r *resolver) RemoveHostname(hostname string) net.IP {
 }
 
 func (r *resolver) Cleanup() error {
+	logtrace.LogWithFunctionName()
 	log.Debug("shutting down")
 	return r.server.Shutdown()
 }

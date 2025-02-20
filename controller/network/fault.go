@@ -17,8 +17,10 @@
 package network
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,6 +31,7 @@ type ForwardingFaultReport struct {
 }
 
 func (network *Network) fault(ffr *ForwardingFaultReport) {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("network fault processing for [%d] circuits", len(ffr.CircuitIds))
 	for _, circuitId := range ffr.CircuitIds {
 		log := pfxlog.Logger().WithField("circuitId", circuitId).WithField("routerId", ffr.R.Id)

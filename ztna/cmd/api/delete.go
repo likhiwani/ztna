@@ -17,6 +17,7 @@
 package api
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"net/url"
 	"strings"
 
@@ -26,6 +27,7 @@ import (
 )
 
 func DeleteEntitiesOfType(api util.API, o *Options, entityType string, ids []string, body string) error {
+	logtrace.LogWithFunctionName()
 	for _, id := range ids {
 		err, _ := util.ControllerDelete(api, entityType, id, body, o.Out, o.OutputJSONRequest, o.OutputJSONResponse, o.Timeout, o.Verbose)
 		if err != nil {
@@ -39,6 +41,7 @@ func DeleteEntitiesOfType(api util.API, o *Options, entityType string, ids []str
 
 // DeleteEntityOfTypeWhere implements the commands to delete various entity types
 func DeleteEntityOfTypeWhere(api util.API, options *Options, entityType string, body string) error {
+	logtrace.LogWithFunctionName()
 	filter := strings.Join(options.Args, " ")
 
 	params := url.Values{}
@@ -62,6 +65,7 @@ func DeleteEntityOfTypeWhere(api util.API, options *Options, entityType string, 
 }
 
 func GetPlural(entityType string) string {
+	logtrace.LogWithFunctionName()
 	if strings.HasSuffix(entityType, "y") {
 		return strings.TrimSuffix(entityType, "y") + "ies"
 	}

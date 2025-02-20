@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
@@ -65,6 +66,7 @@ type LoginOptions struct {
 }
 
 func AddLoginFlags(cmd *cobra.Command, options *LoginOptions) {
+	logtrace.LogWithFunctionName()
 	// allow interspersing positional args and flags
 	cmd.Flags().SetInterspersed(true)
 
@@ -85,6 +87,7 @@ func AddLoginFlags(cmd *cobra.Command, options *LoginOptions) {
 
 // NewLoginCmd creates the command
 func NewLoginCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &LoginOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -112,6 +115,7 @@ func NewLoginCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // NewMgmtClient returns a new management client for use with the controller using the set of login material provided
 func (o *LoginOptions) NewMgmtClient() (*rest_management_api_client.ZitiEdgeManagement, error) {
+	logtrace.LogWithFunctionName()
 	client, err := mgmt.NewClient()
 	if err == nil {
 		return client, nil
@@ -154,6 +158,7 @@ func (o *LoginOptions) NewMgmtClient() (*rest_management_api_client.ZitiEdgeMana
 
 // Run implements this command
 func (o *LoginOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	var host string
 
 	config, configFile, cfgErr := util.LoadRestClientConfig()
@@ -312,6 +317,7 @@ func (o *LoginOptions) Run() error {
 }
 
 func (o *LoginOptions) ConfigureCerts(host string, ctrlUrl *url.URL) error {
+	logtrace.LogWithFunctionName()
 	isServerTrusted, err := util.IsServerTrusted(host)
 	if err != nil {
 		return err
@@ -386,6 +392,7 @@ func (o *LoginOptions) ConfigureCerts(host string, ctrlUrl *url.URL) error {
 }
 
 func (o *LoginOptions) askYesNo(prompt string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	filter := &yesNoFilter{}
 	if _, err := o.ask(prompt, filter.Accept); err != nil {
 		return false, err
@@ -394,6 +401,7 @@ func (o *LoginOptions) askYesNo(prompt string) (bool, error) {
 }
 
 func (o *LoginOptions) ask(prompt string, f func(string) bool) (string, error) {
+	logtrace.LogWithFunctionName()
 	for {
 		val, err := term.Prompt(prompt)
 		if err != nil {
@@ -412,6 +420,7 @@ type yesNoFilter struct {
 }
 
 func (self *yesNoFilter) Accept(s string) bool {
+	logtrace.LogWithFunctionName()
 	if strings.EqualFold("y", s) || strings.EqualFold("yes", s) {
 		self.result = true
 		return true
@@ -427,6 +436,7 @@ func (self *yesNoFilter) Accept(s string) bool {
 
 // EdgeControllerLogin will authenticate to the given Edge Controller
 func login(o *LoginOptions, url string, authentication string) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	client := util.NewClient()
 	cert := o.CaCert
 	out := o.Out

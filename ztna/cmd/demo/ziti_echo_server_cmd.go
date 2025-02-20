@@ -19,8 +19,10 @@ package demo
 import (
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/spf13/cobra"
 )
 
@@ -31,6 +33,7 @@ type zitiEchoServerOptions struct {
 }
 
 func (self *zitiEchoServerOptions) run() error {
+	logtrace.LogWithFunctionName()
 	echoServer := &zitiEchoServer{
 		identityJson: self.identity,
 	}
@@ -42,6 +45,7 @@ func (self *zitiEchoServerOptions) run() error {
 }
 
 func newZitiEchoServerCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &zitiEchoServerOptions{
 		CommonOptions: p(),
 	}

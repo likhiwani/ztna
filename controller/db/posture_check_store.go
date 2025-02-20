@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
@@ -58,6 +60,7 @@ type PostureCheckSubType interface {
 }
 
 func newPostureCheck(typeId string) PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	if newChild, found := postureCheckSubTypeMap[typeId]; found {
 		return newChild()
 	}
@@ -74,10 +77,12 @@ type PostureCheck struct {
 }
 
 func (entity *PostureCheck) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *PostureCheck) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypePostureChecks
 }
 
@@ -88,6 +93,7 @@ type PostureCheckStore interface {
 }
 
 func newPostureCheckStore(stores *stores) *postureCheckStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &postureCheckStoreImpl{}
 	store.baseStore = newBaseStore[*PostureCheck](stores, store)
 	store.InitImpl(store)
@@ -109,10 +115,12 @@ type postureCheckStoreImpl struct {
 }
 
 func (store *postureCheckStoreImpl) NewEntity() *PostureCheck {
+	logtrace.LogWithFunctionName()
 	return &PostureCheck{}
 }
 
 func (store *postureCheckStoreImpl) FillEntity(entity *PostureCheck, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.TypeId = bucket.GetStringOrError(FieldPostureCheckTypeId)
@@ -130,6 +138,7 @@ func (store *postureCheckStoreImpl) FillEntity(entity *PostureCheck, bucket *bol
 }
 
 func (store *postureCheckStoreImpl) PersistEntity(entity *PostureCheck, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetString(FieldPostureCheckTypeId, entity.TypeId)
@@ -147,10 +156,12 @@ func (store *postureCheckStoreImpl) PersistEntity(entity *PostureCheck, ctx *bol
 }
 
 func (store *postureCheckStoreImpl) GetRoleAttributesIndex() boltz.SetReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexRoleAttributes
 }
 
 func (store *postureCheckStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 	store.AddSymbol(FieldPostureCheckMfaPromptOnUnlock, ast.NodeTypeBool, PostureCheckTypeMFA)
@@ -168,6 +179,7 @@ func (store *postureCheckStoreImpl) initializeLocal() {
 }
 
 func (store *postureCheckStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddLinkCollection(store.symbolServicePolicies, store.stores.servicePolicy.symbolPostureChecks)
 
 	store.bindServicesCollection = store.AddRefCountedLinkCollection(store.symbolBindServices, store.stores.edgeService.symbolBindIdentities)
@@ -175,10 +187,12 @@ func (store *postureCheckStoreImpl) initializeLinked() {
 }
 
 func (store *postureCheckStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *postureCheckStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	if entity, _ := store.LoadById(ctx.Tx(), id); entity != nil {
 		// Remove entity from PostureCheckRoles in service policies
 		if err := store.deleteEntityReferences(ctx.Tx(), entity, store.stores.servicePolicy.symbolPostureCheckRoles); err != nil {
@@ -191,11 +205,13 @@ func (store *postureCheckStoreImpl) DeleteById(ctx boltz.MutateContext, id strin
 }
 
 func (store *postureCheckStoreImpl) Update(ctx boltz.MutateContext, entity *PostureCheck, checker boltz.FieldChecker) error {
+	logtrace.LogWithFunctionName()
 	store.createServiceChangeEvents(ctx.Tx(), entity.GetId())
 	return store.baseStore.Update(ctx, entity, checker)
 }
 
 func (store *postureCheckStoreImpl) createServiceChangeEvents(tx *bbolt.Tx, id string) {
+	logtrace.LogWithFunctionName()
 	eh := &serviceEventHandler{}
 
 	cursor := store.bindServicesCollection.IterateLinks(tx, []byte(id), true)
@@ -212,6 +228,7 @@ func (store *postureCheckStoreImpl) createServiceChangeEvents(tx *bbolt.Tx, id s
 }
 
 func (store *postureCheckStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, rowId []byte, _ []boltz.FieldTypeAndValue, new []boltz.FieldTypeAndValue, holder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             mutateCtx,
 		rolesSymbol:           store.stores.servicePolicy.symbolPostureCheckRoles,
@@ -223,5 +240,6 @@ func (store *postureCheckStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, 
 }
 
 func (store *postureCheckStoreImpl) GetRoleAttributesCursorProvider(values []string, semantic string) (ast.SetCursorProvider, error) {
+	logtrace.LogWithFunctionName()
 	return store.getRoleAttributesCursorProvider(store.indexRoleAttributes, values, semantic)
 }

@@ -1,3 +1,4 @@
+//go:build !linux
 // +build !linux
 
 /*
@@ -19,11 +20,14 @@
 package utils
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"net"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func AllInterfaceAddrs() ([]net.Addr, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Fatal("utils.AllInterfaceAddrs is not implemented on this operating system")
 	return nil, nil

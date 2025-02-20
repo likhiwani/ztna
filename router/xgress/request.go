@@ -18,16 +18,18 @@ package xgress
 
 import (
 	"encoding/json"
+	"io"
+	"time"
+	"ztna-core/ztna/common/ctrl_msg"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/ctrl_msg"
-	"ztna-core/ztna/common/pb/ctrl_pb"
 	"github.com/pkg/errors"
-	"io"
-	"time"
 )
 
 type Request struct {
@@ -36,6 +38,7 @@ type Request struct {
 }
 
 func RequestFromJSON(payload []byte) (*Request, error) {
+	logtrace.LogWithFunctionName()
 	request := &Request{}
 	err := json.Unmarshal(payload, request)
 	if err != nil {
@@ -45,6 +48,7 @@ func RequestFromJSON(payload []byte) (*Request, error) {
 }
 
 func (r *Request) ToJSON() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	bytes, err := json.Marshal(r)
 	if err != nil {
 		return nil, err
@@ -59,6 +63,7 @@ type Response struct {
 }
 
 func ResponseFromJSON(payload []byte) (*Response, error) {
+	logtrace.LogWithFunctionName()
 	response := &Response{}
 	err := json.Unmarshal(payload, response)
 	if err != nil {
@@ -68,6 +73,7 @@ func ResponseFromJSON(payload []byte) (*Response, error) {
 }
 
 func (r *Response) ToJSON() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	bytes, err := json.Marshal(r)
 	if err != nil {
 		return nil, err
@@ -76,6 +82,7 @@ func (r *Response) ToJSON() ([]byte, error) {
 }
 
 func SendRequest(request *Request, peer io.Writer) error {
+	logtrace.LogWithFunctionName()
 	requestJSON, err := request.ToJSON()
 	if err != nil {
 		return err
@@ -88,6 +95,7 @@ func SendRequest(request *Request, peer io.Writer) error {
 }
 
 func ReceiveRequest(peer transport.Conn) (*Request, error) {
+	logtrace.LogWithFunctionName()
 	line, err := ReadUntilNewline(peer)
 	if err != nil {
 		return nil, err
@@ -102,6 +110,7 @@ func ReceiveRequest(peer transport.Conn) (*Request, error) {
 }
 
 func SendResponse(response *Response, peer io.Writer) error {
+	logtrace.LogWithFunctionName()
 	responseJSON, err := response.ToJSON()
 	if err != nil {
 		return err
@@ -114,6 +123,7 @@ func SendResponse(response *Response, peer io.Writer) error {
 }
 
 func ReceiveResponse(peer transport.Conn) (*Response, error) {
+	logtrace.LogWithFunctionName()
 	line, err := ReadUntilNewline(peer)
 	if err != nil {
 		return nil, err
@@ -145,6 +155,7 @@ type networkControllers interface {
 }
 
 func GetCircuit(ctrl networkControllers, ingressId string, service string, timeout time.Duration, peerData map[uint32][]byte) (*CircuitInfo, error) {
+	logtrace.LogWithFunctionName()
 	ch := ctrl.AnyCtrlChannel()
 	if ch == nil {
 		return nil, errors.New("ctrl not ready")
@@ -196,6 +207,7 @@ func GetCircuit(ctrl networkControllers, ingressId string, service string, timeo
 }
 
 func CreateCircuit(ctrl networkControllers, peer Connection, request *Request, bindHandler BindHandler, options *Options) *Response {
+	logtrace.LogWithFunctionName()
 	circuitInfo, err := GetCircuit(ctrl, request.Id, request.ServiceId, options.GetCircuitTimeout, nil)
 	if err != nil {
 		return &Response{Success: false, Message: err.Error()}
@@ -211,6 +223,7 @@ func CreateCircuit(ctrl networkControllers, peer Connection, request *Request, b
 }
 
 func RemoveTerminator(ctrls networkControllers, terminatorId string) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	request := &ctrl_pb.RemoveTerminatorRequest{
 		TerminatorId: terminatorId,
@@ -236,6 +249,7 @@ func RemoveTerminator(ctrls networkControllers, terminatorId string) error {
 }
 
 func RemoveTerminators(ctrls networkControllers, terminatorIds []string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	request := &ctrl_pb.RemoveTerminatorsRequest{
 		TerminatorIds: terminatorIds,

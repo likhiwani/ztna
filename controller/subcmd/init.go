@@ -18,15 +18,17 @@ package subcmd
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/term"
-	"github.com/openziti/foundation/v2/versions"
+	"strconv"
+	"strings"
 	"ztna-core/ztna/controller"
 	"ztna-core/ztna/controller/config"
 	"ztna-core/ztna/controller/server"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/term"
+	"github.com/openziti/foundation/v2/versions"
 	"github.com/spf13/cobra"
-	"strconv"
-	"strings"
 )
 
 const (
@@ -37,10 +39,12 @@ const (
 )
 
 func AddCommands(root *cobra.Command, versionProvider versions.VersionProvider) {
+	logtrace.LogWithFunctionName()
 	root.AddCommand(NewEdgeCmd(versionProvider))
 }
 
 func NewEdgeCmd(versionProvider versions.VersionProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "edge",
 		Short: "used to perform various edge related functionality",
@@ -59,6 +63,7 @@ type edgeInitializeOptions struct {
 }
 
 func NewEdgeInitializeCmd(versionProvider versions.VersionProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &edgeInitializeOptions{}
 
 	cmd := &cobra.Command{
@@ -116,6 +121,7 @@ func NewEdgeInitializeCmd(versionProvider versions.VersionProvider) *cobra.Comma
 }
 
 func validateUsernameLength(username string) error {
+	logtrace.LogWithFunctionName()
 	length := len(username)
 
 	if length > maxUsernameLength {
@@ -130,6 +136,7 @@ func validateUsernameLength(username string) error {
 }
 
 func validatePasswordLength(password string) error {
+	logtrace.LogWithFunctionName()
 	length := len(password)
 
 	if length > maxPasswordLength {
@@ -144,6 +151,7 @@ func validatePasswordLength(password string) error {
 }
 
 func configureController(configPath string, versionProvider versions.VersionProvider) *server.Controller {
+	logtrace.LogWithFunctionName()
 	config, err := config.LoadConfig(configPath)
 
 	if err != nil {
@@ -167,6 +175,7 @@ func configureController(configPath string, versionProvider versions.VersionProv
 }
 
 func promptUsername() string {
+	logtrace.LogWithFunctionName()
 	username := ""
 	for username == "" {
 		var err error
@@ -188,6 +197,7 @@ func promptUsername() string {
 }
 
 func promptPassword() string {
+	logtrace.LogWithFunctionName()
 	var err error
 	var password string
 

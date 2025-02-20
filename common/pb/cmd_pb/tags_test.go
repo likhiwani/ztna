@@ -1,11 +1,14 @@
 package cmd_pb
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTagEncodeDecode(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	tags := map[string]interface{}{}
 	tags["str"] = "string"
 	tags["str2"] = "another string"

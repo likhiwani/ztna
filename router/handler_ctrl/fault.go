@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/xlink"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,14 +31,17 @@ type faultHandler struct {
 }
 
 func newFaultHandler(registry xlink.Registry) *faultHandler {
+	logtrace.LogWithFunctionName()
 	return &faultHandler{xlinkRegistry: registry}
 }
 
 func (self *faultHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_FaultType)
 }
 
 func (self *faultHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	fault := &ctrl_pb.Fault{}
@@ -49,6 +54,7 @@ func (self *faultHandler) HandleReceive(msg *channel.Message, ch channel.Channel
 }
 
 func (self *faultHandler) handleFault(_ *channel.Message, ch channel.Channel, fault *ctrl_pb.Fault) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).Entry
 
 	switch fault.Subject {

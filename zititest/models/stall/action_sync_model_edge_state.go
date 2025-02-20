@@ -17,18 +17,22 @@
 package main
 
 import (
-	"github.com/openziti/fablab/kernel/lib/actions"
-	"github.com/openziti/fablab/kernel/model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/actions/edge"
 	"ztna-core/ztna/zititest/zitilab/models"
+
+	"github.com/openziti/fablab/kernel/lib/actions"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func NewSyncModelEdgeStateAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := &syncModelEdgeStateAction{}
 	return action.bind
 }
 
 func (a *syncModelEdgeStateAction) bind(*model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	workflow := actions.Workflow()
 	workflow.AddAction(edge.Login("#ctrl"))
 	workflow.AddAction(edge.SyncModelEdgeState(models.EdgeRouterTag))

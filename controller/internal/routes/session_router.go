@@ -26,6 +26,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/michaelquigley/pfxlog"
@@ -33,6 +34,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewSessionRouter()
 	env.AddRouter(r)
 }
@@ -43,12 +45,14 @@ type SessionRouter struct {
 }
 
 func NewSessionRouter() *SessionRouter {
+	logtrace.LogWithFunctionName()
 	return &SessionRouter{
 		BasePath: "/" + EntityNameSession,
 	}
 }
 
 func (r *SessionRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	r.createTimer = ae.GetHostController().GetNetwork().GetMetricsRegistry().Timer("session.create")
 
 	//Management
@@ -88,6 +92,7 @@ func (r *SessionRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *SessionRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	// ListWithHandler won't do search limiting by logged in user
 	List(rc, func(rc *response.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(ae.Managers.Session.GetStore())
@@ -108,6 +113,7 @@ func (r *SessionRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *SessionRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	// DetailWithHandler won't do search limiting by logged in user
 	Detail(rc, func(rc *response.RequestContext, id string) (interface{}, error) {
 		service, err := ae.Managers.Session.ReadForIdentity(id, rc.ApiSession.IdentityId)
@@ -119,12 +125,14 @@ func (r *SessionRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *SessionRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	Delete(rc, func(rc *response.RequestContext, id string) error {
 		return ae.Managers.Session.DeleteForIdentity(id, rc.ApiSession.IdentityId, rc.NewChangeContext())
 	})
 }
 
 func (r *SessionRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params session.CreateSessionParams) {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	if rc.Claims != nil {
 		request := MapCreateSessionToModel(rc.Claims.Subject, rc.Claims.ApiSessionId, params.Session)
@@ -169,6 +177,7 @@ func (r *SessionRouter) Create(ae *env.AppEnv, rc *response.RequestContext, para
 }
 
 func (r *SessionRouter) DetailRoutePath(ae *env.AppEnv, rc *response.RequestContext, params managementSession.DetailSessionRoutePathParams) {
+	logtrace.LogWithFunctionName()
 	path := []string{} //must be non null
 
 	for _, circuit := range ae.HostController.GetNetwork().GetAllCircuits() {

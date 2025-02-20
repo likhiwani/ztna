@@ -18,8 +18,10 @@ package xgress
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 // Options contains common Xgress configuration options
@@ -51,6 +53,7 @@ type Options struct {
 }
 
 func LoadOptions(data OptionsData) (*Options, error) {
+	logtrace.LogWithFunctionName()
 	options := DefaultOptions()
 
 	if value, found := data["options"]; found {
@@ -143,6 +146,7 @@ func LoadOptions(data OptionsData) (*Options, error) {
 }
 
 func DefaultOptions() *Options {
+	logtrace.LogWithFunctionName()
 	return &Options{
 		Mtu:                    0,
 		RandomDrops:            false,
@@ -169,6 +173,7 @@ func DefaultOptions() *Options {
 }
 
 func (options Options) String() string {
+	logtrace.LogWithFunctionName()
 	data, err := json.Marshal(options)
 	if err != nil {
 		return err.Error()

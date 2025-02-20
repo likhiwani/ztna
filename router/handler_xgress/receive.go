@@ -17,11 +17,13 @@
 package handler_xgress
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"time"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xgress"
-	"time"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type receiveHandler struct {
@@ -29,12 +31,14 @@ type receiveHandler struct {
 }
 
 func NewReceiveHandler(forwarder *forwarder.Forwarder) *receiveHandler {
+	logtrace.LogWithFunctionName()
 	return &receiveHandler{
 		forwarder: forwarder,
 	}
 }
 
 func (xrh *receiveHandler) HandleXgressReceive(payload *xgress.Payload, x *xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 	for {
 		if err := xrh.forwarder.ForwardPayload(x.Address(), payload, time.Second); err != nil {
 			if !channel.IsTimeout(err) {
@@ -49,6 +53,7 @@ func (xrh *receiveHandler) HandleXgressReceive(payload *xgress.Payload, x *xgres
 }
 
 func (xrh *receiveHandler) HandleControlReceive(control *xgress.Control, x *xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 	if err := xrh.forwarder.ForwardControl(x.Address(), control); err != nil {
 		pfxlog.ContextLogger(x.Label()).WithFields(control.GetLoggerFields()).WithError(err).Error("unable to forward control")
 	}

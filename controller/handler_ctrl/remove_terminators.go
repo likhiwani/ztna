@@ -17,13 +17,15 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -32,6 +34,7 @@ type removeTerminatorsHandler struct {
 }
 
 func newRemoveTerminatorsHandler(network *network.Network, router *model.Router) *removeTerminatorsHandler {
+	logtrace.LogWithFunctionName()
 	return &removeTerminatorsHandler{
 		baseHandler: baseHandler{
 			router:  router,
@@ -41,10 +44,12 @@ func newRemoveTerminatorsHandler(network *network.Network, router *model.Router)
 }
 
 func (self *removeTerminatorsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_RemoveTerminatorsRequestType)
 }
 
 func (self *removeTerminatorsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	request := &ctrl_pb.RemoveTerminatorsRequest{}
@@ -57,6 +62,7 @@ func (self *removeTerminatorsHandler) HandleReceive(msg *channel.Message, ch cha
 }
 
 func (self *removeTerminatorsHandler) handleRemoveTerminators(msg *channel.Message, ch channel.Channel, request *ctrl_pb.RemoveTerminatorsRequest) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	if err := self.network.Terminator.DeleteBatch(request.TerminatorIds, self.newChangeContext(ch, "fabric.remove.terminators.batch")); err == nil {

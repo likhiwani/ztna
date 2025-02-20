@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"strconv"
 
@@ -52,6 +53,7 @@ type Path struct {
 
 // Validate validates this path
 func (m *Path) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateLinks(formats); err != nil {
@@ -69,6 +71,7 @@ func (m *Path) Validate(formats strfmt.Registry) error {
 }
 
 func (m *Path) validateLinks(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Links) { // not required
 		return nil
 	}
@@ -95,6 +98,7 @@ func (m *Path) validateLinks(formats strfmt.Registry) error {
 }
 
 func (m *Path) validateNodes(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Nodes) { // not required
 		return nil
 	}
@@ -122,6 +126,7 @@ func (m *Path) validateNodes(formats strfmt.Registry) error {
 
 // ContextValidate validate this path based on the context it is used
 func (m *Path) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateLinks(ctx, formats); err != nil {
@@ -139,6 +144,7 @@ func (m *Path) ContextValidate(ctx context.Context, formats strfmt.Registry) err
 }
 
 func (m *Path) contextValidateLinks(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	for i := 0; i < len(m.Links); i++ {
 
@@ -159,6 +165,7 @@ func (m *Path) contextValidateLinks(ctx context.Context, formats strfmt.Registry
 }
 
 func (m *Path) contextValidateNodes(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	for i := 0; i < len(m.Nodes); i++ {
 
@@ -180,6 +187,7 @@ func (m *Path) contextValidateNodes(ctx context.Context, formats strfmt.Registry
 
 // MarshalBinary interface implementation
 func (m *Path) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -188,6 +196,7 @@ func (m *Path) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *Path) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res Path
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

@@ -17,14 +17,17 @@
 package network
 
 import (
+	"time"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
-	"time"
 )
 
 func (network *Network) fillCircuitPath(e *event.CircuitEvent, path *model.Path) {
+	logtrace.LogWithFunctionName()
 	if path == nil {
 		return
 	}
@@ -44,6 +47,7 @@ func (network *Network) fillCircuitPath(e *event.CircuitEvent, path *model.Path)
 }
 
 func (network *Network) CircuitEvent(eventType event.CircuitEventType, circuit *model.Circuit, creationTimespan *time.Duration) {
+	logtrace.LogWithFunctionName()
 	var cost *uint32
 	var duration *time.Duration
 	if eventType == event.CircuitCreated {
@@ -105,14 +109,17 @@ type circuitError struct {
 }
 
 func (self *circuitError) Cause() CircuitFailureCause {
+	logtrace.LogWithFunctionName()
 	return self.CircuitFailureCause
 }
 
 func (self *circuitError) Unwrap() error {
+	logtrace.LogWithFunctionName()
 	return self.error
 }
 
 func newCircuitErrorf(cause CircuitFailureCause, t string, args ...any) CircuitError {
+	logtrace.LogWithFunctionName()
 	return &circuitError{
 		error:               errors.Errorf(t, args...),
 		CircuitFailureCause: cause,
@@ -120,6 +127,7 @@ func newCircuitErrorf(cause CircuitFailureCause, t string, args ...any) CircuitE
 }
 
 func newCircuitErrWrap(cause CircuitFailureCause, err error) CircuitError {
+	logtrace.LogWithFunctionName()
 	return &circuitError{
 		error:               err,
 		CircuitFailureCause: cause,
@@ -133,6 +141,7 @@ func (network *Network) CircuitFailedEvent(
 	path *model.Path,
 	t xt.CostedTerminator,
 	cause CircuitFailureCause) {
+	logtrace.LogWithFunctionName()
 	var failureCause *string
 	if strCause := string(cause); strCause != "" {
 		failureCause = &strCause

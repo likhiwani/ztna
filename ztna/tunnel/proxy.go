@@ -21,12 +21,15 @@ import (
 	"net"
 	"strconv"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept/proxy"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
 func NewProxyCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:     "proxy <service-name:port> [sevice-name:port]",
 		Short:   "Run in 'proxy' mode",
@@ -38,6 +41,7 @@ func NewProxyCmd() *cobra.Command {
 }
 
 func runProxy(cmd *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	// Fiddle with the poll rate and resolver settings if the user didn't want anything special.
 	if flag := cmd.Flag(svcPollRateFlag); !flag.Changed {
 		_ = flag.Value.Set(strconv.FormatUint(math.MaxUint32, 10))

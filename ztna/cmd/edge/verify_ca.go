@@ -32,10 +32,12 @@ import (
 	"os"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/foundation/v2/term"
 	"github.com/spf13/cobra"
@@ -63,6 +65,7 @@ type verifyCaOptions struct {
 
 // newVerifyCaCmd creates the 'edge controller verify ca' command for the given entity type
 func newVerifyCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &verifyCaOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -135,6 +138,7 @@ func newVerifyCaCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runValidateCa(options *verifyCaOptions) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	options.caId, err = mapCaNameToID(options.caNameOrId, options.Options)
 
@@ -166,6 +170,7 @@ func runValidateCa(options *verifyCaOptions) error {
 }
 
 func generateCert(options *verifyCaOptions, token string) ([]byte, crypto.Signer, error) {
+	logtrace.LogWithFunctionName()
 
 	certBlocks := nfpem.PemStringToCertificates(string(options.caCertPemBytes))
 

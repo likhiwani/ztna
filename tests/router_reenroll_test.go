@@ -23,9 +23,11 @@ import (
 	"net/http"
 	"testing"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_Router_ReEnroll(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

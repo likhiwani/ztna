@@ -21,6 +21,7 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/foundation/v2/stringz"
@@ -31,10 +32,12 @@ const EntityNameEnrollment = "enrollments"
 var EnrollmentLinkFactory = NewBasicLinkFactory(EntityNameEnrollment)
 
 func MapEnrollmentToRestEntity(ae *env.AppEnv, _ *response.RequestContext, enrollment *model.Enrollment) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapEnrollmentToRestModel(ae, enrollment)
 }
 
 func MapEnrollmentToRestModel(ae *env.AppEnv, enrollment *model.Enrollment) (*rest_model.EnrollmentDetail, error) {
+	logtrace.LogWithFunctionName()
 	expiresAt := strfmt.DateTime(*enrollment.ExpiresAt)
 	ret := &rest_model.EnrollmentDetail{
 		BaseEntity:      BaseEntityToRestModel(enrollment, EnrollmentLinkFactory),

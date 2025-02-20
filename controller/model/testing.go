@@ -19,16 +19,14 @@ package model
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/controller/models"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
-	"github.com/openziti/identity"
-	"github.com/openziti/metrics"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/transport/v2"
+
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
@@ -38,6 +36,11 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/jwtsigner"
+
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
+	"github.com/openziti/identity"
+	"github.com/openziti/metrics"
 )
 
 var _ Env = &TestContext{}
@@ -53,139 +56,176 @@ type TestContext struct {
 }
 
 func (ctx *TestContext) GetId() string {
+	logtrace.LogWithFunctionName()
 	return ctx.config.Id.Token
 }
 
 func (ctx *TestContext) GetEnrollmentJwtSigner() (jwtsigner.Signer, error) {
+	logtrace.LogWithFunctionName()
 	return ctx, nil
 }
 
 func (ctx *TestContext) GetEventDispatcher() event.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return ctx.eventDispatcher
 }
 
 func (self *TestContext) GetCloseNotifyChannel() <-chan struct{} {
+	logtrace.LogWithFunctionName()
 	return self.closeNotify
 }
 
 func (ctx *TestContext) ValidateAccessToken(token string) (*common.AccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) ValidateServiceAccessToken(token string, apiSessionId *string) (*common.ServiceAccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) OidcIssuer() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) RootIssuer() string {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetPeerControllerAddresses() []string {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (ctx *TestContext) SigningMethod() jwt.SigningMethod {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (ctx *TestContext) KeyId() string {
+	logtrace.LogWithFunctionName()
 	return "123-test-context"
 }
 
 func (ctx *TestContext) JwtSignerKeyFunc(*jwt.Token) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	tlsCert, _, _ := ctx.GetServerCert()
 	return tlsCert.Leaf.PublicKey, nil
 }
 
 func (ctx *TestContext) GetServerCert() (*tls.Certificate, string, jwt.SigningMethod) {
+	logtrace.LogWithFunctionName()
 	return nil, "", nil
 }
 
-func (ctx *TestContext) HandleServiceUpdatedEventForIdentityId(string) {}
+func (ctx *TestContext) HandleServiceUpdatedEventForIdentityId(string) {
+	logtrace.LogWithFunctionName()
+}
 
 func (ctx *TestContext) Generate(jwt.Claims) (string, error) {
+	logtrace.LogWithFunctionName()
 	return "I'm a very legitimate claim", nil
 }
 
 func (ctx *TestContext) GetManagers() *Managers {
+	logtrace.LogWithFunctionName()
 	return ctx.managers
 }
 
 func (ctx *TestContext) GetConfig() *config.Config {
+	logtrace.LogWithFunctionName()
 	return ctx.config
 }
 
 func (ctx *TestContext) GetServerJwtSigner() jwtsigner.Signer {
+	logtrace.LogWithFunctionName()
 	return ctx
 }
 
 func (ctx *TestContext) GetAuthRegistry() AuthRegistry {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetEnrollRegistry() EnrollmentRegistry {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetApiClientCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetApiServerCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetControlClientCsrSigner() cert.Signer {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (ctx *TestContext) IsEdgeRouterOnline(string) bool {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (ctx *TestContext) GetMetricsRegistry() metrics.Registry {
+	logtrace.LogWithFunctionName()
 	return ctx.metricsRegistry
 }
 
 func (ctx *TestContext) GetFingerprintGenerator() cert.FingerprintGenerator {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *TestContext) GetApiAddresses() (map[string][]event.ApiAddress, []byte) {
+	logtrace.LogWithFunctionName()
 	return nil, nil
 }
 
 func (self *TestContext) GetRaftInfo() (string, string, string) {
+	logtrace.LogWithFunctionName()
 	return "testaddr", "testid", "testversion"
 }
 
 func (self *TestContext) GetPeerSigners() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *TestContext) Identity() identity.Identity {
+	logtrace.LogWithFunctionName()
 	return &identity.TokenId{Token: "test"}
 }
 
 func (self *TestContext) Shutdown() {
+	logtrace.LogWithFunctionName()
 	close(self.closeNotify)
 }
 
 func (self *TestContext) Stop() {
+	logtrace.LogWithFunctionName()
 	close(self.closeNotify)
 }
 
 func (self *TestContext) GetCommandDispatcher() command.Dispatcher {
+	logtrace.LogWithFunctionName()
 	return self.dispatcher
 }
 
-func (self *TestContext) AddRouterPresenceHandler(RouterPresenceHandler) {}
+func (self *TestContext) AddRouterPresenceHandler(RouterPresenceHandler) {
+	logtrace.LogWithFunctionName()
+}
 
 func NewTestContext(t testing.TB) *TestContext {
+	logtrace.LogWithFunctionName()
 	fabricTestContext := db.NewTestContext(t)
 	ctx := &TestContext{
 		TestContext:     fabricTestContext,
@@ -220,11 +260,13 @@ func NewTestContext(t testing.TB) *TestContext {
 }
 
 func (ctx *TestContext) Cleanup() {
+	logtrace.LogWithFunctionName()
 	ctx.Stop()
 	ctx.TestContext.Cleanup()
 }
 
 func (ctx *TestContext) requireNewIdentity(isAdmin bool) *Identity {
+	logtrace.LogWithFunctionName()
 	newIdentity := &Identity{
 		Name:           eid.New(),
 		IsAdmin:        isAdmin,
@@ -235,6 +277,7 @@ func (ctx *TestContext) requireNewIdentity(isAdmin bool) *Identity {
 }
 
 func (ctx *TestContext) requireNewService(cfgs ...string) *EdgeService {
+	logtrace.LogWithFunctionName()
 	service := &EdgeService{
 		Name:    eid.New(),
 		Configs: cfgs,
@@ -244,6 +287,7 @@ func (ctx *TestContext) requireNewService(cfgs ...string) *EdgeService {
 }
 
 func (ctx *TestContext) requireNewConfig(configTypeName string, data map[string]any) *Config {
+	logtrace.LogWithFunctionName()
 	cfgType, err := ctx.managers.ConfigType.ReadByName(configTypeName)
 	ctx.NoError(err)
 
@@ -257,6 +301,7 @@ func (ctx *TestContext) requireNewConfig(configTypeName string, data map[string]
 }
 
 func (ctx *TestContext) requireNewEdgeRouter() *EdgeRouter {
+	logtrace.LogWithFunctionName()
 	edgeRouter := &EdgeRouter{
 		Name: eid.New(),
 	}
@@ -265,6 +310,7 @@ func (ctx *TestContext) requireNewEdgeRouter() *EdgeRouter {
 }
 
 func (ctx *TestContext) requireNewApiSession(identity *Identity) *ApiSession {
+	logtrace.LogWithFunctionName()
 	entity := &ApiSession{
 		Token:          uuid.NewString(),
 		IdentityId:     identity.Id,
@@ -277,6 +323,7 @@ func (ctx *TestContext) requireNewApiSession(identity *Identity) *ApiSession {
 }
 
 func (ctx *TestContext) requireNewSession(apiSession *ApiSession, serviceId string, sessionType string) *Session {
+	logtrace.LogWithFunctionName()
 	entity := &Session{
 		Token:        uuid.NewString(),
 		IdentityId:   apiSession.IdentityId,
@@ -290,6 +337,7 @@ func (ctx *TestContext) requireNewSession(apiSession *ApiSession, serviceId stri
 }
 
 func (ctx *TestContext) requireNewServicePolicy(policyType string, identityRoles, serviceRoles []string) *ServicePolicy {
+	logtrace.LogWithFunctionName()
 	policy := &ServicePolicy{
 		Name:          eid.New(),
 		Semantic:      db.SemanticAllOf,
@@ -302,6 +350,7 @@ func (ctx *TestContext) requireNewServicePolicy(policyType string, identityRoles
 }
 
 func (ctx *TestContext) requireNewEdgeRouterPolicy(identityRoles, edgeRouterRoles []string) *EdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := &EdgeRouterPolicy{
 		Name:            eid.New(),
 		Semantic:        db.SemanticAllOf,
@@ -313,6 +362,7 @@ func (ctx *TestContext) requireNewEdgeRouterPolicy(identityRoles, edgeRouterRole
 }
 
 func (ctx *TestContext) requireNewServiceNewEdgeRouterPolicy(serviceRoles, edgeRouterRoles []string) *ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	policy := &ServiceEdgeRouterPolicy{
 		Name:            eid.New(),
 		Semantic:        db.SemanticAllOf,
@@ -324,10 +374,12 @@ func (ctx *TestContext) requireNewServiceNewEdgeRouterPolicy(serviceRoles, edgeR
 }
 
 func ss(vals ...string) []string {
+	logtrace.LogWithFunctionName()
 	return vals
 }
 
 func NewTestLink(id string, src, dst *Router) *Link {
+	logtrace.LogWithFunctionName()
 	l := newLink(id, "tls", "tcp:localhost:1234", 0)
 	l.Src = src
 	l.DstId = dst.Id
@@ -338,6 +390,7 @@ func NewTestLink(id string, src, dst *Router) *Link {
 }
 
 func NewRouterForTest(id string, fingerprint string, advLstnr transport.Address, ctrl channel.Channel, cost uint16, noTraversal bool) *Router {
+	logtrace.LogWithFunctionName()
 	r := &Router{
 		BaseEntity:  models.BaseEntity{Id: id},
 		Name:        id,

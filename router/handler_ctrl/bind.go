@@ -17,17 +17,19 @@
 package handler_ctrl
 
 import (
-	"ztna-core/ztna/common/capabilities"
 	"runtime/debug"
 	"time"
+	"ztna-core/ztna/common/capabilities"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/goroutines"
 	"ztna-core/ztna/common/metrics"
 	"ztna-core/ztna/common/trace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/forwarder"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/goroutines"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -41,6 +43,7 @@ type bindHandler struct {
 }
 
 func NewBindHandler(routerEnv env.RouterEnv, forwarder *forwarder.Forwarder, ctrlAddressUpdater CtrlAddressUpdater) (channel.BindHandler, error) {
+	logtrace.LogWithFunctionName()
 	xgDialerPoolConfig := goroutines.PoolConfig{
 		QueueSize:   uint32(forwarder.Options.XgressDial.QueueLength),
 		MinWorkers:  0,
@@ -87,6 +90,7 @@ func NewBindHandler(routerEnv env.RouterEnv, forwarder *forwarder.Forwarder, ctr
 }
 
 func (self *bindHandler) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddTypedReceiveHandler(newPeerStateChangeHandler(self.env))
 	binding.AddTypedReceiveHandler(newDialHandler(self.env))
 	binding.AddTypedReceiveHandler(newRouteHandler(binding.GetChannel(), self.env, self.forwarder, self.xgDialerPool))

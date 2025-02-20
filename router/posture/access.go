@@ -2,13 +2,16 @@ package posture
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func HasAccess(rdm *common.RouterDataModel, identityId string, serviceId string, cache *Cache, policyType edge_ctrl_pb.PolicyType) (*common.ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("instance", eid.New()).WithField("identityId", identityId).WithField("serviceId", serviceId)
 
 	accessPolicies, err := rdm.GetServiceAccessPolicies(identityId, serviceId, policyType)
@@ -34,6 +37,7 @@ func HasAccess(rdm *common.RouterDataModel, identityId string, serviceId string,
 }
 
 func IsPassing(accessPolicies *common.AccessPolicies, cache *Cache) (*common.ServicePolicy, *PolicyAccessErrors) {
+	logtrace.LogWithFunctionName()
 	errs := &PolicyAccessErrors{}
 
 	for _, policy := range accessPolicies.Policies {

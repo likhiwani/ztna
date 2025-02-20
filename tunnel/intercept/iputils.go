@@ -19,14 +19,16 @@ package intercept
 import (
 	"container/list"
 	"fmt"
-	"github.com/gaissmai/extnetip"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/tunnel/dns"
-	"ztna-core/ztna/tunnel/entities"
-	"ztna-core/ztna/tunnel/utils"
 	"net"
 	"net/netip"
 	"sync"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/tunnel/dns"
+	"ztna-core/ztna/tunnel/entities"
+	"ztna-core/ztna/tunnel/utils"
+
+	"github.com/gaissmai/extnetip"
+	"github.com/michaelquigley/pfxlog"
 )
 
 var dnsPrefix netip.Prefix
@@ -35,6 +37,7 @@ var dnsCurrentIpMtx sync.Mutex
 var dnsRecycledIps *list.List
 
 func SetDnsInterceptIpRange(cidr string) error {
+	logtrace.LogWithFunctionName()
 	prefix, err := netip.ParsePrefix(cidr)
 	if err != nil {
 		return fmt.Errorf("invalid cidr %s: %v", cidr, err)
@@ -53,6 +56,7 @@ func SetDnsInterceptIpRange(cidr string) error {
 }
 
 func GetDnsInterceptIpRange() *net.IPNet {
+	logtrace.LogWithFunctionName()
 	if !dnsPrefix.IsValid() {
 		if err := SetDnsInterceptIpRange("100.64.0.1/10"); err != nil {
 			pfxlog.Logger().WithError(err).Errorf("Failed to set DNS intercept range")
@@ -65,6 +69,7 @@ func GetDnsInterceptIpRange() *net.IPNet {
 }
 
 func cleanUpFunc(hostname string, resolver dns.Resolver) func() {
+	logtrace.LogWithFunctionName()
 	f := func() {
 		ip := resolver.RemoveHostname(hostname)
 		if ip != nil {
@@ -78,6 +83,7 @@ func cleanUpFunc(hostname string, resolver dns.Resolver) func() {
 }
 
 func getDnsIp(host string, addrCB func(*net.IPNet, bool), svc *entities.Service, resolver dns.Resolver) (net.IP, error) {
+	logtrace.LogWithFunctionName()
 	dnsCurrentIpMtx.Lock()
 	defer dnsCurrentIpMtx.Unlock()
 	var ip netip.Addr
@@ -109,6 +115,7 @@ func getDnsIp(host string, addrCB func(*net.IPNet, bool), svc *entities.Service,
 }
 
 func getInterceptIP(svc *entities.Service, hostname string, resolver dns.Resolver, addrCB func(*net.IPNet, bool)) error {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 
 	// handle wildcard domain - IPs will be allocated when matching hostnames are queried

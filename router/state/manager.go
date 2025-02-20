@@ -21,6 +21,23 @@ import (
 	"crypto"
 	"crypto/x509"
 	"fmt"
+	"math/rand"
+	"os"
+	"runtime/debug"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/config"
+	"ztna-core/ztna/common/metrics"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/runner"
+	"ztna-core/ztna/controller/oidc_auth"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress_common"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/kataras/go-events"
 	"github.com/michaelquigley/pfxlog"
@@ -29,25 +46,10 @@ import (
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/goroutines"
 	metrics2 "github.com/openziti/metrics"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/common/config"
-	"ztna-core/ztna/common/metrics"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/common/runner"
-	"ztna-core/ztna/controller/oidc_auth"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/xgress_common"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"math/rand"
-	"os"
-	"runtime/debug"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
 )
 
 const (
@@ -127,6 +129,7 @@ type Manager interface {
 var _ Manager = (*ManagerImpl)(nil)
 
 func NewManager(stateEnv Env) Manager {
+	logtrace.LogWithFunctionName()
 	routerDataModelPoolConfig := goroutines.PoolConfig{
 		QueueSize:   uint32(1000),
 		MinWorkers:  1,
@@ -204,10 +207,12 @@ type ManagerImpl struct {
 }
 
 func (self *ManagerImpl) GetCurrentDataModelSource() string {
+	logtrace.LogWithFunctionName()
 	return self.dataModelSubCtrlId.Load()
 }
 
 func (self *ManagerImpl) manageRouterDataModelSubscription() {
+	logtrace.LogWithFunctionName()
 	<-self.env.GetRouterDataModelEnabledConfig().GetInitNotifyChannel()
 	if !self.env.IsRouterDataModelEnabled() {
 		return
@@ -251,6 +256,7 @@ func (self *ManagerImpl) manageRouterDataModelSubscription() {
 }
 
 func (self *ManagerImpl) checkRouterDataModelSubscription() {
+	logtrace.LogWithFunctionName()
 	ctrl := self.env.GetNetworkControllers().GetNetworkController(self.dataModelSubCtrlId.Load())
 	if ctrl == nil || time.Now().After(self.dataModelSubTimeout) {
 		if bestCtrl := self.env.GetNetworkControllers().AnyCtrlChannel(); bestCtrl != nil {
@@ -274,6 +280,7 @@ func (self *ManagerImpl) checkRouterDataModelSubscription() {
 }
 
 func (self *ManagerImpl) subscribeToDataModelUpdates(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	renew := self.dataModelSubCtrlId.Load() == ch.Id()
 
 	// if we store after success, we may miss an update because the ids don't match yet
@@ -306,10 +313,12 @@ func (self *ManagerImpl) subscribeToDataModelUpdates(ch channel.Channel) {
 }
 
 func (sm *ManagerImpl) GetRouterDataModelPool() goroutines.Pool {
+	logtrace.LogWithFunctionName()
 	return sm.routerDataModelPool
 }
 
 func (sm *ManagerImpl) UpdateChApiSession(ch channel.Channel, newApiSession *ApiSession) error {
+	logtrace.LogWithFunctionName()
 	if newApiSession == nil {
 		return errors.New("nil api session")
 	}
@@ -338,24 +347,29 @@ func (sm *ManagerImpl) UpdateChApiSession(ch channel.Channel, newApiSession *Api
 }
 
 func (sm *ManagerImpl) GetEnv() Env {
+	logtrace.LogWithFunctionName()
 	return sm.env
 }
 
 func (sm *ManagerImpl) GetApiSessionFromCh(ch channel.Channel) *ApiSession {
+	logtrace.LogWithFunctionName()
 	apiSession, _ := sm.activeChannels.Get(ch.Id())
 
 	return apiSession
 }
 
 func (sm *ManagerImpl) AddActiveChannel(ch channel.Channel, session *ApiSession) {
+	logtrace.LogWithFunctionName()
 	sm.activeChannels.Set(ch.Id(), session)
 }
 
 func (sm *ManagerImpl) RemoveActiveChannel(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	sm.activeChannels.Remove(ch.Id())
 }
 
 func (sm *ManagerImpl) StartRouterModelSave(filePath string, duration time.Duration) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for {
 			select {
@@ -369,6 +383,7 @@ func (sm *ManagerImpl) StartRouterModelSave(filePath string, duration time.Durat
 }
 
 func (sm *ManagerImpl) LoadRouterModel(filePath string) {
+	logtrace.LogWithFunctionName()
 	model, err := common.NewReceiverRouterDataModelFromFile(filePath, RouterDataModelListerBufferSize, sm.env.GetCloseNotify())
 
 	if err != nil {
@@ -387,6 +402,7 @@ func (sm *ManagerImpl) LoadRouterModel(filePath string) {
 }
 
 func contains[T comparable](values []T, element T) bool {
+	logtrace.LogWithFunctionName()
 	for _, val := range values {
 		if val == element {
 			return true
@@ -397,6 +413,7 @@ func contains[T comparable](values []T, element T) bool {
 }
 
 func (sm *ManagerImpl) getX509FromData(kid string, data []byte) (*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	if cert, found := sm.certCache.Get(kid); found {
 		return cert, nil
 	}
@@ -413,6 +430,7 @@ func (sm *ManagerImpl) getX509FromData(kid string, data []byte) (*x509.Certifica
 }
 
 func (sm *ManagerImpl) VerifyClientCert(cert *x509.Certificate) error {
+	logtrace.LogWithFunctionName()
 
 	rootPool := x509.NewCertPool()
 
@@ -446,6 +464,7 @@ func (sm *ManagerImpl) VerifyClientCert(cert *x509.Certificate) error {
 }
 
 func (sm *ManagerImpl) ParseJwt(jwtStr string) (*jwt.Token, *common.AccessClaims, error) {
+	logtrace.LogWithFunctionName()
 	//pubKeyLookup also handles extJwtSigner.enabled checking
 	accessClaims := &common.AccessClaims{}
 	jwtToken, err := jwt.ParseWithClaims(jwtStr, accessClaims, sm.pubKeyLookup)
@@ -462,6 +481,7 @@ func (sm *ManagerImpl) ParseJwt(jwtStr string) (*jwt.Token, *common.AccessClaims
 }
 
 func (sm *ManagerImpl) pubKeyLookup(token *jwt.Token) (any, error) {
+	logtrace.LogWithFunctionName()
 	kidVal, ok := token.Header["kid"]
 
 	if !ok {
@@ -491,10 +511,12 @@ func (sm *ManagerImpl) pubKeyLookup(token *jwt.Token) (any, error) {
 }
 
 func (sm *ManagerImpl) RouterDataModel() *common.RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return sm.routerDataModel.Load()
 }
 
 func (sm *ManagerImpl) SetRouterDataModel(model *common.RouterDataModel, resetSubscription bool) {
+	logtrace.LogWithFunctionName()
 	index, _ := model.CurrentIndex()
 	logger := pfxlog.Logger().WithField("index", index)
 
@@ -526,12 +548,14 @@ func (sm *ManagerImpl) SetRouterDataModel(model *common.RouterDataModel, resetSu
 }
 
 func (sm *ManagerImpl) MarkSyncInProgress(trackerId string) {
+	logtrace.LogWithFunctionName()
 	sm.syncLock.Lock()
 	defer sm.syncLock.Unlock()
 	sm.currentSync = trackerId
 }
 
 func (sm *ManagerImpl) MarkSyncStopped(trackerId string) {
+	logtrace.LogWithFunctionName()
 	sm.syncLock.Lock()
 	defer sm.syncLock.Unlock()
 	if sm.currentSync == trackerId {
@@ -540,12 +564,14 @@ func (sm *ManagerImpl) MarkSyncStopped(trackerId string) {
 }
 
 func (sm *ManagerImpl) IsSyncInProgress() bool {
+	logtrace.LogWithFunctionName()
 	sm.syncLock.Lock()
 	defer sm.syncLock.Unlock()
 	return sm.currentSync != ""
 }
 
 func (sm *ManagerImpl) AddApiSession(apiSession *ApiSession) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().
 		WithField("apiSessionId", apiSession.Id).
 		WithField("apiSessionToken", apiSession.Token).
@@ -556,6 +582,7 @@ func (sm *ManagerImpl) AddApiSession(apiSession *ApiSession) {
 }
 
 func (sm *ManagerImpl) UpdateApiSession(apiSession *ApiSession) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().
 		WithField("apiSessionId", apiSession.Id).
 		WithField("apiSessionToken", apiSession.Token).
@@ -566,6 +593,7 @@ func (sm *ManagerImpl) UpdateApiSession(apiSession *ApiSession) {
 }
 
 func (sm *ManagerImpl) RemoveApiSession(token string) {
+	logtrace.LogWithFunctionName()
 	if ns, ok := sm.apiSessionsByToken.Get(token); ok {
 		pfxlog.Logger().WithField("apiSessionToken", token).Debug("removing api session")
 		sm.apiSessionsByToken.Remove(token)
@@ -582,6 +610,7 @@ func (sm *ManagerImpl) RemoveApiSession(token string) {
 // value is not empty string, it will be used as a monotonic comparison between it and  API session ids. API session ids
 // later than the sync will be ignored.
 func (sm *ManagerImpl) RemoveMissingApiSessions(knownApiSessions []*edge_ctrl_pb.ApiSession, beforeSessionId string) {
+	logtrace.LogWithFunctionName()
 	validTokens := map[string]bool{}
 	for _, apiSession := range knownApiSessions {
 		validTokens[apiSession.Token] = true
@@ -600,6 +629,7 @@ func (sm *ManagerImpl) RemoveMissingApiSessions(knownApiSessions []*edge_ctrl_pb
 }
 
 func (sm *ManagerImpl) RemoveEdgeSession(token string) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("sessionToken", token).Debug("removing network session")
 	eventName := sm.getEdgeSessionRemovedEventName(token)
 	sm.Emit(eventName)
@@ -615,6 +645,7 @@ func (sm *ManagerImpl) RemoveEdgeSession(token string) {
 }
 
 func (sm *ManagerImpl) GetApiSessionWithTimeout(token string, timeout time.Duration) *ApiSession {
+	logtrace.LogWithFunctionName()
 	deadline := time.Now().Add(timeout)
 	session := sm.GetApiSession(token)
 
@@ -643,6 +674,7 @@ type ApiSession struct {
 }
 
 func (a *ApiSession) SelectCtrlCh(ctrls env.NetworkControllers) channel.Channel {
+	logtrace.LogWithFunctionName()
 	if a == nil {
 		return nil
 	}
@@ -655,6 +687,7 @@ func (a *ApiSession) SelectCtrlCh(ctrls env.NetworkControllers) channel.Channel 
 }
 
 func (a *ApiSession) SelectModelUpdateCtrlCh(ctrls env.NetworkControllers) channel.Channel {
+	logtrace.LogWithFunctionName()
 	if a == nil {
 		return nil
 	}
@@ -667,6 +700,7 @@ func (a *ApiSession) SelectModelUpdateCtrlCh(ctrls env.NetworkControllers) chann
 }
 
 func NewApiSessionFromToken(jwtToken *jwt.Token, accessClaims *common.AccessClaims) (*ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	subj, err := jwtToken.Claims.GetSubject()
 	if err != nil {
 		return nil, fmt.Errorf("unable to get the api session identity from the JWT subject (%w)", err)
@@ -685,6 +719,7 @@ func NewApiSessionFromToken(jwtToken *jwt.Token, accessClaims *common.AccessClai
 }
 
 func (sm *ManagerImpl) GetApiSession(token string) *ApiSession {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(token, oidc_auth.JwtTokenPrefix) {
 		jwtToken, accessClaims, err := sm.ParseJwt(token)
 
@@ -718,14 +753,17 @@ func (sm *ManagerImpl) GetApiSession(token string) *ApiSession {
 }
 
 func (sm *ManagerImpl) WasSessionRecentlyRemoved(token string) bool {
+	logtrace.LogWithFunctionName()
 	return sm.recentlyRemovedSessions.Has(token)
 }
 
 func (sm *ManagerImpl) MarkSessionRecentlyRemoved(token string) {
+	logtrace.LogWithFunctionName()
 	sm.recentlyRemovedSessions.Set(token, time.Now())
 }
 
 func (sm *ManagerImpl) AddEdgeSessionRemovedListener(token string, callBack func(token string)) RemoveListener {
+	logtrace.LogWithFunctionName()
 	if xgress_common.IsBearerToken(token) {
 		return func() {}
 	}
@@ -759,6 +797,7 @@ func (sm *ManagerImpl) AddEdgeSessionRemovedListener(token string, callBack func
 }
 
 func (sm *ManagerImpl) SessionConnectionClosed(token string) {
+	logtrace.LogWithFunctionName()
 	sm.sessions.Upsert(token, 0, func(exist bool, valueInMap uint32, newValue uint32) uint32 {
 		if !exist {
 			return uint32(0)
@@ -781,6 +820,7 @@ func (sm *ManagerImpl) SessionConnectionClosed(token string) {
 }
 
 func (sm *ManagerImpl) AddApiSessionRemovedListener(token string, callBack func(token string)) RemoveListener {
+	logtrace.LogWithFunctionName()
 	eventName := sm.getApiSessionRemovedEventName(token)
 	listener := func(args ...interface{}) {
 		callBack(token)
@@ -793,16 +833,19 @@ func (sm *ManagerImpl) AddApiSessionRemovedListener(token string, callBack func(
 }
 
 func (sm *ManagerImpl) getEdgeSessionRemovedEventName(token string) events.EventName {
+	logtrace.LogWithFunctionName()
 	eventName := EventRemovedEdgeSession + "-" + token
 	return events.EventName(eventName)
 }
 
 func (sm *ManagerImpl) getApiSessionRemovedEventName(token string) events.EventName {
+	logtrace.LogWithFunctionName()
 	eventName := EventRemovedApiSession + "-" + token
 	return events.EventName(eventName)
 }
 
 func (sm *ManagerImpl) StartHeartbeat(env env.RouterEnv, intervalSeconds int, closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	sm.heartbeatOperation = newHeartbeatOperation(env, time.Duration(intervalSeconds)*time.Second, sm)
 
 	var err error
@@ -826,14 +869,17 @@ func (sm *ManagerImpl) StartHeartbeat(env env.RouterEnv, intervalSeconds int, cl
 }
 
 func (sm *ManagerImpl) AddConnectedApiSession(token string) {
+	logtrace.LogWithFunctionName()
 	sm.activeApiSessions.Set(token, nil)
 }
 
 func (sm *ManagerImpl) RemoveConnectedApiSession(token string) {
+	logtrace.LogWithFunctionName()
 	sm.activeApiSessions.Remove(token)
 }
 
 func (sm *ManagerImpl) AddConnectedApiSessionWithChannel(token string, removeCB func(), ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	var sessions *MapWithMutex
 
 	for sessions == nil {
@@ -850,6 +896,7 @@ func (sm *ManagerImpl) AddConnectedApiSessionWithChannel(token string, removeCB 
 }
 
 func (sm *ManagerImpl) RemoveConnectedApiSessionWithChannel(token string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if sessions, ok := sm.activeApiSessions.Get(token); ok {
 		if !ok {
 			pfxlog.Logger().Panic("could not convert active sessions to map")
@@ -870,6 +917,7 @@ func (sm *ManagerImpl) RemoveConnectedApiSessionWithChannel(token string, ch cha
 }
 
 func (sm *ManagerImpl) ActiveApiSessionTokens() []string {
+	logtrace.LogWithFunctionName()
 	var toClose []func()
 	var activeKeys []string
 	for i := range sm.activeApiSessions.IterBuffered() {
@@ -897,6 +945,7 @@ func (sm *ManagerImpl) ActiveApiSessionTokens() []string {
 }
 
 func (sm *ManagerImpl) flushRecentlyRemoved() {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	var toRemove []string
 	sm.recentlyRemovedSessions.IterCb(func(key string, t time.Time) {
@@ -917,6 +966,7 @@ func (sm *ManagerImpl) flushRecentlyRemoved() {
 }
 
 func (sm *ManagerImpl) DumpApiSessions(c *bufio.ReadWriter) error {
+	logtrace.LogWithFunctionName()
 	ch := make(chan string, 15)
 
 	go func() {
@@ -958,6 +1008,7 @@ func (sm *ManagerImpl) DumpApiSessions(c *bufio.ReadWriter) error {
 }
 
 func newMapWithMutex() *MapWithMutex {
+	logtrace.LogWithFunctionName()
 	return &MapWithMutex{
 		m: map[channel.Channel]func(){},
 	}
@@ -969,12 +1020,14 @@ type MapWithMutex struct {
 }
 
 func (self *MapWithMutex) Put(ch channel.Channel, f func()) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	self.m[ch] = f
 }
 
 func (self *MapWithMutex) Visit(cb func(ch channel.Channel, closeCb func())) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -984,6 +1037,7 @@ func (self *MapWithMutex) Visit(cb func(ch channel.Channel, closeCb func())) {
 }
 
 func (sm *ManagerImpl) ValidateSessions(ch channel.Channel, chunkSize uint32, minInterval, maxInterval time.Duration) {
+	logtrace.LogWithFunctionName()
 	sessionTokens := sm.sessions.Keys()
 
 	for len(sessionTokens) > 0 {
@@ -1029,6 +1083,7 @@ func (sm *ManagerImpl) ValidateSessions(ch channel.Channel, chunkSize uint32, mi
 }
 
 func (sm *ManagerImpl) parsePublicKey(publicKey *edge_ctrl_pb.DataState_PublicKey) (crypto.PublicKey, error) {
+	logtrace.LogWithFunctionName()
 	switch publicKey.Format {
 	case edge_ctrl_pb.DataState_PublicKey_X509CertDer:
 		certs, err := x509.ParseCertificates(publicKey.Data)
@@ -1049,10 +1104,12 @@ func (sm *ManagerImpl) parsePublicKey(publicKey *edge_ctrl_pb.DataState_PublicKe
 }
 
 func (sm *ManagerImpl) LoadConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (sm *ManagerImpl) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddTypedReceiveHandler(NewSessionRemovedHandler(sm))
 	binding.AddTypedReceiveHandler(NewApiSessionAddedHandler(sm, binding))
 	binding.AddTypedReceiveHandler(NewApiSessionRemovedHandler(sm))
@@ -1064,16 +1121,20 @@ func (sm *ManagerImpl) BindChannel(binding channel.Binding) error {
 }
 
 func (sm *ManagerImpl) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (sm *ManagerImpl) Run(env.RouterEnv) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (sm *ManagerImpl) NotifyOfReconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 }
 
 func (sm *ManagerImpl) GetTraceDecoders() []channel.TraceMessageDecoder {
+	logtrace.LogWithFunctionName()
 	return nil
 }

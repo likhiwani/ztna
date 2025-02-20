@@ -16,6 +16,10 @@
 
 package inspect
 
+import (
+	logtrace "ztna-core/ztna/logtrace"
+)
+
 type CircuitInspectDetail struct {
 	CircuitId         string                        `json:"circuitId"`
 	Forwards          map[string]string             `json:"forwards"`
@@ -25,10 +29,12 @@ type CircuitInspectDetail struct {
 }
 
 func (self *CircuitInspectDetail) SetIncludeGoroutines(includeGoroutines bool) {
+	logtrace.LogWithFunctionName()
 	self.includeGoroutines = includeGoroutines
 }
 
 func (self *CircuitInspectDetail) IncludeGoroutines() bool {
+	logtrace.LogWithFunctionName()
 	return self.includeGoroutines
 }
 

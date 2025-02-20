@@ -19,12 +19,14 @@ package api_impl
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/events"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/metrics/metrics_pb"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 const EntityNameMetrics = "metrics"
@@ -41,6 +43,7 @@ type metricsResultMapper struct {
 }
 
 func NewMetricsModelMapper(n *network.Network, format string, includeTimestamps bool) MetricsModelMapper {
+	logtrace.LogWithFunctionName()
 	return &metricsResultMapper{
 		network:           n,
 		format:            format,
@@ -49,6 +52,7 @@ func NewMetricsModelMapper(n *network.Network, format string, includeTimestamps 
 }
 
 func (self *metricsResultMapper) MapInspectResultValueToMetricsResult(inspectResultValue *network.InspectResultValue) (any, error) {
+	logtrace.LogWithFunctionName()
 	var result any
 
 	msg := &metrics_pb.MetricsMessage{}
@@ -89,6 +93,7 @@ func (self *metricsResultMapper) MapInspectResultValueToMetricsResult(inspectRes
 }
 
 func (self *metricsResultMapper) MapInspectResultToMetricsResult(inspectResult *network.InspectResult) (*string, error) {
+	logtrace.LogWithFunctionName()
 
 	var emit string
 

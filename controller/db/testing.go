@@ -1,21 +1,24 @@
 package db
 
 import (
-	"github.com/google/uuid"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
-	"github.com/openziti/storage/boltztest"
+	"testing"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
+	"github.com/openziti/storage/boltztest"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"testing"
 )
 
 func NewTestContext(t testing.TB) *TestContext {
+	logtrace.LogWithFunctionName()
 	xt.GlobalRegistry().RegisterFactory(xt_smartrouting.NewFactory())
 
 	context := &TestContext{
@@ -34,10 +37,12 @@ type TestContext struct {
 }
 
 func (ctx *TestContext) GetStoreForEntity(entity boltz.Entity) boltz.Store {
+	logtrace.LogWithFunctionName()
 	return ctx.stores.GetStoreForEntity(entity)
 }
 
 func (ctx *TestContext) Init() {
+	logtrace.LogWithFunctionName()
 	ctx.InitDb(Open)
 
 	var err error
@@ -69,6 +74,7 @@ func (ctx *TestContext) Init() {
 //}
 
 func (ctx *TestContext) requireNewService() *Service {
+	logtrace.LogWithFunctionName()
 	entity := &Service{
 		BaseExtEntity: boltz.BaseExtEntity{Id: uuid.New().String()},
 		Name:          uuid.New().String(),
@@ -78,6 +84,7 @@ func (ctx *TestContext) requireNewService() *Service {
 }
 
 func (ctx *TestContext) requireNewRouter() *Router {
+	logtrace.LogWithFunctionName()
 	entity := &Router{
 		BaseExtEntity: boltz.BaseExtEntity{Id: uuid.New().String()},
 		Name:          uuid.New().String(),
@@ -87,6 +94,7 @@ func (ctx *TestContext) requireNewRouter() *Router {
 }
 
 func (ctx *TestContext) cleanupAll() {
+	logtrace.LogWithFunctionName()
 	_ = ctx.GetDb().Update(nil, func(changeCtx boltz.MutateContext) error {
 		for _, store := range ctx.stores.storeMap {
 			if err := store.DeleteWhere(changeCtx, `true limit none`); err != nil {
@@ -99,6 +107,7 @@ func (ctx *TestContext) cleanupAll() {
 }
 
 func (ctx *TestContext) newViewTestCtx(tx *bbolt.Tx) boltz.MutateContext {
+	logtrace.LogWithFunctionName()
 	return boltz.NewTxMutateContext(change.New().SetChangeAuthorType("test").GetContext(), tx)
 }
 
@@ -107,15 +116,18 @@ func (ctx *TestContext) newViewTestCtx(tx *bbolt.Tx) boltz.MutateContext {
 //}
 
 func (ctx *TestContext) Cleanup() {
+	logtrace.LogWithFunctionName()
 	close(ctx.closeNotify)
 	ctx.BaseTestContext.Cleanup()
 }
 
 func (ctx *TestContext) GetStores() *Stores {
+	logtrace.LogWithFunctionName()
 	return ctx.stores
 }
 
 func (ctx *TestContext) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return ctx.BaseTestContext.GetDb()
 }
 
@@ -124,6 +136,7 @@ func (ctx *TestContext) GetDb() boltz.Db {
 //}
 
 func (ctx *TestContext) requireNewServicePolicy(policyType PolicyType, identityRoles []string, serviceRoles []string) *ServicePolicy {
+	logtrace.LogWithFunctionName()
 	entity := &ServicePolicy{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Name:          eid.New(),
@@ -137,6 +150,7 @@ func (ctx *TestContext) requireNewServicePolicy(policyType PolicyType, identityR
 }
 
 func (ctx *TestContext) RequireNewIdentity(name string, isAdmin bool) *Identity {
+	logtrace.LogWithFunctionName()
 	identityEntity := &Identity{
 		BaseExtEntity: *boltz.NewExtEntity(eid.New(), nil),
 		Name:          name,
@@ -147,6 +161,7 @@ func (ctx *TestContext) RequireNewIdentity(name string, isAdmin bool) *Identity 
 }
 
 func (ctx *TestContext) RequireNewService(name string) *EdgeService {
+	logtrace.LogWithFunctionName()
 	edgeService := &EdgeService{
 		Service: Service{
 			BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
@@ -158,6 +173,7 @@ func (ctx *TestContext) RequireNewService(name string) *EdgeService {
 }
 
 func (ctx *TestContext) getRelatedIds(entity boltz.Entity, field string) []string {
+	logtrace.LogWithFunctionName()
 	var result []string
 	err := ctx.GetDb().View(func(tx *bbolt.Tx) error {
 		store := ctx.stores.GetStoreForEntity(entity)
@@ -172,6 +188,7 @@ func (ctx *TestContext) getRelatedIds(entity boltz.Entity, field string) []strin
 }
 
 func (ctx *TestContext) CleanupAll() {
+	logtrace.LogWithFunctionName()
 	stores := []boltz.Store{
 		ctx.stores.Session,
 		ctx.stores.ApiSession,
@@ -198,6 +215,7 @@ func (ctx *TestContext) CleanupAll() {
 }
 
 func (ctx *TestContext) getIdentityTypeId() string {
+	logtrace.LogWithFunctionName()
 	var result string
 	err := ctx.GetDb().View(func(tx *bbolt.Tx) error {
 		ids, _, err := ctx.stores.IdentityType.QueryIds(tx, "true")
@@ -212,5 +230,6 @@ func (ctx *TestContext) getIdentityTypeId() string {
 }
 
 func ss(vals ...string) []string {
+	logtrace.LogWithFunctionName()
 	return vals
 }

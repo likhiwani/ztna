@@ -20,23 +20,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
+	"time"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/rest_client/terminator"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zitirest"
+	"ztna-core/ztna/zititest/zitilab/chaos"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/rest_client/terminator"
-	"ztna-core/ztna/zitirest"
-	"ztna-core/ztna/zititest/zitilab/chaos"
 	"google.golang.org/protobuf/proto"
-	"math/rand"
-	"time"
 )
 
 // start with a random scenario then cycle through them
 var scenarioCounter = rand.Intn(7)
 
 func sowChaos(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	var controllers []*model.Component
 	var err error
 
@@ -75,6 +78,7 @@ func sowChaos(run model.Run) error {
 }
 
 func validateTerminators(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ctrls := run.GetModel().SelectComponents(".ctrl")
 	errC := make(chan error, len(ctrls))
 	deadline := time.Now().Add(15 * time.Minute)
@@ -94,10 +98,12 @@ func validateTerminators(run model.Run) error {
 }
 
 func validateTerminatorsForCtrlWithChan(run model.Run, c *model.Component, deadline time.Time, errC chan<- error) {
+	logtrace.LogWithFunctionName()
 	errC <- validateTerminatorsForCtrl(run, c, deadline)
 }
 
 func validateTerminatorsForCtrl(run model.Run, c *model.Component, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	expectedTerminatorCount := int64(6000)
 	clients, err := chaos.EnsureLoggedIntoCtrl(run, c, time.Minute)
 	if err != nil {
@@ -156,6 +162,7 @@ func validateTerminatorsForCtrl(run model.Run, c *model.Component, deadline time
 }
 
 func getTerminatorCount(clients *zitirest.Clients) (int64, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancelF()
 
@@ -173,6 +180,7 @@ func getTerminatorCount(clients *zitirest.Clients) (int64, error) {
 }
 
 func validateRouterSdkTerminators(id string, clients *zitirest.Clients) (int, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("ctrl", id)
 
 	closeNotify := make(chan struct{})

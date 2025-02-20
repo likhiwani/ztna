@@ -17,12 +17,14 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
-	"go.etcd.io/bbolt"
 	"sort"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
+	"go.etcd.io/bbolt"
 )
 
 type Controller struct {
@@ -37,6 +39,7 @@ type Controller struct {
 }
 
 func (entity *Controller) sortApiAddresses() {
+	logtrace.LogWithFunctionName()
 	for _, v := range entity.ApiAddresses {
 		sort.Slice(v, func(i, j int) bool {
 			if v[i].Version < v[j].Version {
@@ -51,6 +54,7 @@ func (entity *Controller) sortApiAddresses() {
 }
 
 func (entity *Controller) IsChanged(other *Controller) bool {
+	logtrace.LogWithFunctionName()
 	if entity.Name != other.Name ||
 		entity.CtrlAddress != other.CtrlAddress ||
 		entity.CertPem != other.CertPem ||
@@ -91,6 +95,7 @@ type ApiAddress struct {
 }
 
 func (entity *Controller) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Controller, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.Controller{
 		BaseExtEntity: *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:          entity.Name,
@@ -116,14 +121,17 @@ func (entity *Controller) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Controller, e
 }
 
 func (entity *Controller) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Controller, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *Controller) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Controller, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *Controller) fillFrom(env Env, tx *bbolt.Tx, boltController *db.Controller) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltController)
 	entity.Name = boltController.Name
 	entity.CtrlAddress = boltController.CtrlAddress

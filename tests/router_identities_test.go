@@ -20,13 +20,16 @@
 package tests
 
 import (
-	"github.com/google/uuid"
 	"net/http"
 	"net/url"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 )
 
 func TestEdgeRouterIdentities(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -83,6 +86,7 @@ func TestEdgeRouterIdentities(t *testing.T) {
 }
 
 func TestEdgeRouterIdentitiesNotEnabled(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

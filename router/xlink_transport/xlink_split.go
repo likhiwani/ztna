@@ -17,15 +17,17 @@
 package xlink_transport
 
 import (
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/xgress"
-	"github.com/pkg/errors"
 	"sync"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
+	"github.com/pkg/errors"
 )
 
 type splitImpl struct {
@@ -51,18 +53,22 @@ type splitImpl struct {
 }
 
 func (self *splitImpl) Id() string {
+	logtrace.LogWithFunctionName()
 	return self.id
 }
 
 func (self *splitImpl) Key() string {
+	logtrace.LogWithFunctionName()
 	return self.key
 }
 
 func (self *splitImpl) Iteration() uint32 {
+	logtrace.LogWithFunctionName()
 	return self.iteration
 }
 
 func (self *splitImpl) Init(metricsRegistry metrics.Registry) error {
+	logtrace.LogWithFunctionName()
 	if self.droppedMsgMeter == nil {
 		self.droppedMsgMeter = metricsRegistry.Meter("link.dropped_msgs:" + self.id)
 		self.droppedXgMsgMeter = metricsRegistry.Meter("link.dropped_xg_msgs:" + self.id)
@@ -73,12 +79,14 @@ func (self *splitImpl) Init(metricsRegistry metrics.Registry) error {
 }
 
 func (self *splitImpl) syncInit(f func() error) error {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	return f()
 }
 
 func (self *splitImpl) SendPayload(msg *xgress.Payload, timeout time.Duration, payloadType xgress.PayloadType) error {
+	logtrace.LogWithFunctionName()
 	if timeout == 0 {
 		sent, err := self.payloadCh.TrySend(msg.Marshall())
 		if err == nil && !sent {
@@ -98,6 +106,7 @@ func (self *splitImpl) SendPayload(msg *xgress.Payload, timeout time.Duration, p
 }
 
 func (self *splitImpl) SendAcknowledgement(msg *xgress.Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	sent, err := self.ackCh.TrySend(msg.Marshall())
 	if err == nil && !sent {
 		self.droppedMsgMeter.Mark(1)
@@ -106,6 +115,7 @@ func (self *splitImpl) SendAcknowledgement(msg *xgress.Acknowledgement) error {
 }
 
 func (self *splitImpl) SendControl(msg *xgress.Control) error {
+	logtrace.LogWithFunctionName()
 	sent, err := self.payloadCh.TrySend(msg.Marshall())
 	if err == nil && !sent {
 		self.droppedMsgMeter.Mark(1)
@@ -114,15 +124,18 @@ func (self *splitImpl) SendControl(msg *xgress.Control) error {
 }
 
 func (self *splitImpl) CloseNotified() error {
+	logtrace.LogWithFunctionName()
 	self.faultsSent.Store(true)
 	return self.Close()
 }
 
 func (self *splitImpl) AreFaultsSent() bool {
+	logtrace.LogWithFunctionName()
 	return self.faultsSent.Load()
 }
 
 func (self *splitImpl) Close() error {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -147,40 +160,49 @@ func (self *splitImpl) Close() error {
 }
 
 func (self *splitImpl) DestinationId() string {
+	logtrace.LogWithFunctionName()
 	return self.routerId
 }
 
 func (self *splitImpl) DestVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.routerVersion
 }
 
 func (self *splitImpl) LinkProtocol() string {
+	logtrace.LogWithFunctionName()
 	return self.linkProtocol
 }
 
 func (self *splitImpl) DialAddress() string {
+	logtrace.LogWithFunctionName()
 	return self.dialAddress
 }
 
 func (self *splitImpl) CloseOnce(f func()) {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		f()
 	}
 }
 
 func (self *splitImpl) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	return self.payloadCh.IsClosed() || self.ackCh.IsClosed()
 }
 
 func (self *splitImpl) IsDialed() bool {
+	logtrace.LogWithFunctionName()
 	return self.dialed
 }
 
 func (self *splitImpl) InspectCircuit(detail *inspect.CircuitInspectDetail) {
+	logtrace.LogWithFunctionName()
 	detail.LinkDetails[self.id] = self.InspectLink()
 }
 
 func (self *splitImpl) InspectLink() *inspect.LinkInspectDetail {
+	logtrace.LogWithFunctionName()
 	return &inspect.LinkInspectDetail{
 		Id:          self.Id(),
 		Iteration:   self.Iteration(),
@@ -195,6 +217,7 @@ func (self *splitImpl) InspectLink() *inspect.LinkInspectDetail {
 }
 
 func (self *splitImpl) GetAddresses() []*ctrl_pb.LinkConn {
+	logtrace.LogWithFunctionName()
 	ackLocalAddr := self.ackCh.Underlay().GetLocalAddr()
 	ackRemoteAddr := self.ackCh.Underlay().GetRemoteAddr()
 
@@ -216,5 +239,6 @@ func (self *splitImpl) GetAddresses() []*ctrl_pb.LinkConn {
 }
 
 func (self *splitImpl) DuplicatesRejected() uint32 {
+	logtrace.LogWithFunctionName()
 	return atomic.AddUint32(&self.dupsRejected, 1)
 }

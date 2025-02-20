@@ -21,14 +21,17 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 
-	"github.com/openziti/identity/engines"
 	"ztna-core/sdk-golang/ziti"
+
+	"github.com/openziti/identity/engines"
+
+	"ztna-core/sdk-golang/ziti/enroll"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/term"
-	"ztna-core/sdk-golang/ziti/enroll"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -63,6 +66,7 @@ type EnrollAction struct {
 }
 
 func NewEnrollCommand(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &EnrollAction{
 		EnrollOptions: EnrollOptions{
 			CommonOptions: p(),
@@ -130,6 +134,7 @@ func NewEnrollCommand(p common.OptionsProvider) *cobra.Command {
 }
 
 func (e *EnrollAction) Run() error {
+	logtrace.LogWithFunctionName()
 	if strings.TrimSpace(e.OutputPath) == "" {
 		out, outErr := outPathFromJwt(e.JwtPath)
 		if outErr != nil {
@@ -236,6 +241,7 @@ func (e *EnrollAction) Run() error {
 }
 
 func outPathFromJwt(jwt string) (string, error) {
+	logtrace.LogWithFunctionName()
 	if strings.HasSuffix(jwt, ".jwt") {
 		return jwt[:len(jwt)-len(".jwt")] + ".json", nil
 	} else if strings.HasSuffix(jwt, ".json") {

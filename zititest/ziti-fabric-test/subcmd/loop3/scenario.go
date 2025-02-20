@@ -17,10 +17,12 @@
 package loop3
 
 import (
-	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
-	"gopkg.in/yaml.v2"
 	"os"
 	"time"
+	"ztna-core/ztna/logtrace"
+	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+
+	"gopkg.in/yaml.v2"
 )
 
 type Scenario struct {
@@ -56,6 +58,7 @@ type Test struct {
 }
 
 func (workload *Workload) GetTests() (*loop3_pb.Test, *loop3_pb.Test) {
+	logtrace.LogWithFunctionName()
 	local := &loop3_pb.Test{
 		Name:             workload.Name,
 		TxRequests:       workload.Dialer.TxRequests,
@@ -108,6 +111,7 @@ type Metrics struct {
 }
 
 func LoadScenario(path string) (*Scenario, error) {
+	logtrace.LogWithFunctionName()
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -122,6 +126,7 @@ func LoadScenario(path string) (*Scenario, error) {
 }
 
 func (scenario *Scenario) String() string {
+	logtrace.LogWithFunctionName()
 	data, err := yaml.Marshal(scenario)
 	if err != nil {
 		panic(err)

@@ -20,15 +20,18 @@ package tests
 
 import (
 	"bytes"
-	"github.com/google/uuid"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/xt_smartrouting"
 	"math"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 )
 
 func Test_Dataflow(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

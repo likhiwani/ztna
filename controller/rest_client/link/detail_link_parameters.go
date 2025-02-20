@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDetailLinkParams() *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDetailLinkParams() *DetailLinkParams {
 // NewDetailLinkParamsWithTimeout creates a new DetailLinkParams object
 // with the ability to set a timeout on a request.
 func NewDetailLinkParamsWithTimeout(timeout time.Duration) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDetailLinkParamsWithTimeout(timeout time.Duration) *DetailLinkParams {
 // NewDetailLinkParamsWithContext creates a new DetailLinkParams object
 // with the ability to set a context for a request.
 func NewDetailLinkParamsWithContext(ctx context.Context) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDetailLinkParamsWithContext(ctx context.Context) *DetailLinkParams {
 // NewDetailLinkParamsWithHTTPClient creates a new DetailLinkParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDetailLinkParamsWithHTTPClient(client *http.Client) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DetailLinkParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DetailLinkParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailLinkParams) WithDefaults() *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DetailLinkParams) WithDefaults() *DetailLinkParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailLinkParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the detail link params
 func (o *DetailLinkParams) WithTimeout(timeout time.Duration) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the detail link params
 func (o *DetailLinkParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the detail link params
 func (o *DetailLinkParams) WithContext(ctx context.Context) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the detail link params
 func (o *DetailLinkParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the detail link params
 func (o *DetailLinkParams) WithHTTPClient(client *http.Client) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the detail link params
 func (o *DetailLinkParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the detail link params
 func (o *DetailLinkParams) WithID(id string) *DetailLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the detail link params
 func (o *DetailLinkParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DetailLinkParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

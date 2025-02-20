@@ -17,14 +17,17 @@
 package config
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"os"
 	"sync"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 var ensureTmpDirEnvOnce sync.Once
 
 func EnsureTempDirEnv() {
+	logtrace.LogWithFunctionName()
 	defaultTemp := os.TempDir()
 
 	err := os.Setenv("TMP", defaultTemp)
@@ -47,8 +50,9 @@ func EnsureTempDirEnv() {
 }
 
 func InjectEnv(config map[interface{}]interface{}) {
+	logtrace.LogWithFunctionName()
 	ensureTmpDirEnvOnce.Do(EnsureTempDirEnv)
-	
+
 	for key, v := range config {
 		if str, ok := v.(string); ok {
 			config[key] = os.ExpandEnv(str)
@@ -61,6 +65,7 @@ func InjectEnv(config map[interface{}]interface{}) {
 }
 
 func InjectEnvSlice(slice []interface{}) {
+	logtrace.LogWithFunctionName()
 	for idx, v := range slice {
 		if str, ok := v.(string); ok {
 			slice[idx] = os.ExpandEnv(str)

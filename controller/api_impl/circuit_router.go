@@ -17,17 +17,20 @@
 package api_impl
 
 import (
-	"github.com/go-openapi/runtime/middleware"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_model"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/circuit"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/openziti/storage/boltz"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewCircuitRouter()
 	AddRouter(r)
 }
@@ -37,12 +40,14 @@ type CircuitRouter struct {
 }
 
 func NewCircuitRouter() *CircuitRouter {
+	logtrace.LogWithFunctionName()
 	return &CircuitRouter{
 		BasePath: "/" + EntityNameCircuit,
 	}
 }
 
 func (r *CircuitRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.CircuitDetailCircuitHandler = circuit.DetailCircuitHandlerFunc(func(params circuit.DetailCircuitParams) middleware.Responder {
 		return wrapper.WrapRequest(r.Detail, params.HTTPRequest, params.ID, "")
 	})
@@ -57,6 +62,7 @@ func (r *CircuitRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper Re
 }
 
 func (r *CircuitRouter) ListCircuits(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithEnvelopeFactory(rc, defaultToListEnvelope, func(rc api.RequestContext, queryOptions *PublicQueryOptions) (*QueryResult, error) {
 		query, err := queryOptions.getFullQuery(n.GetCircuitStore())
 		if err != nil {
@@ -92,6 +98,7 @@ func (r *CircuitRouter) ListCircuits(n *network.Network, rc api.RequestContext) 
 }
 
 func (r *CircuitRouter) Detail(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	Detail(rc, func(rc api.RequestContext, id string) (interface{}, error) {
 		l, found := n.GetCircuit(id)
 		if !found {
@@ -106,6 +113,7 @@ func (r *CircuitRouter) Detail(n *network.Network, rc api.RequestContext) {
 }
 
 func (r *CircuitRouter) Delete(network *network.Network, rc api.RequestContext, p circuit.DeleteCircuitParams) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, DeleteHandlerF(func(id string, _ *change.Context) error {
 		return network.RemoveCircuit(id, p.Options.Immediate)
 	}))

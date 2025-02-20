@@ -18,14 +18,16 @@ package xlink_transport
 
 import (
 	"fmt"
+	"reflect"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/link"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/router/link"
 	"github.com/openziti/transport/v2"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"reflect"
-	"time"
 )
 
 const (
@@ -45,6 +47,7 @@ const (
 )
 
 func loadListenerConfig(data map[interface{}]interface{}) (*listenerConfig, error) {
+	logtrace.LogWithFunctionName()
 	config := &listenerConfig{}
 
 	if value, found := data["bind"]; found {
@@ -147,6 +150,7 @@ type listenerConfig struct {
 }
 
 func loadDialerConfig(data map[interface{}]interface{}) (*dialerConfig, error) {
+	logtrace.LogWithFunctionName()
 	config := &dialerConfig{split: true}
 
 	if value, found := data["split"]; found {
@@ -241,18 +245,22 @@ type backoffConfig struct {
 }
 
 func (self *backoffConfig) GetMinRetryInterval() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.minRetryInterval
 }
 
 func (self *backoffConfig) GetMaxRetryInterval() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.maxRetryInterval
 }
 
 func (self *backoffConfig) GetRetryBackoffFactor() float64 {
+	logtrace.LogWithFunctionName()
 	return self.retryBackoffFactor
 }
 
 func (self *backoffConfig) load(data map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if value, found := data["retryBackoffFactor"]; found {
 		if floatValue, ok := value.(float64); ok {
 			self.retryBackoffFactor = floatValue

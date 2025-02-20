@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type ListLinksHandlerFunc func(ListLinksParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn ListLinksHandlerFunc) Handle(params ListLinksParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type ListLinksHandler interface {
 
 // NewListLinks creates a new http.Handler for the list links operation
 func NewListLinks(ctx *middleware.Context, handler ListLinksHandler) *ListLinks {
+    logtrace.LogWithFunctionName()
 	return &ListLinks{Context: ctx, Handler: handler}
 }
 
@@ -67,6 +70,7 @@ type ListLinks struct {
 }
 
 func (o *ListLinks) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

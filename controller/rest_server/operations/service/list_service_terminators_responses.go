@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type ListServiceTerminatorsOK struct {
 
 // NewListServiceTerminatorsOK creates ListServiceTerminatorsOK with default headers values
 func NewListServiceTerminatorsOK() *ListServiceTerminatorsOK {
+    logtrace.LogWithFunctionName()
 
 	return &ListServiceTerminatorsOK{}
 }
 
 // WithPayload adds the payload to the list service terminators o k response
 func (o *ListServiceTerminatorsOK) WithPayload(payload *rest_model.ListTerminatorsEnvelope) *ListServiceTerminatorsOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list service terminators o k response
 func (o *ListServiceTerminatorsOK) SetPayload(payload *rest_model.ListTerminatorsEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListServiceTerminatorsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type ListServiceTerminatorsBadRequest struct {
 
 // NewListServiceTerminatorsBadRequest creates ListServiceTerminatorsBadRequest with default headers values
 func NewListServiceTerminatorsBadRequest() *ListServiceTerminatorsBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &ListServiceTerminatorsBadRequest{}
 }
 
 // WithPayload adds the payload to the list service terminators bad request response
 func (o *ListServiceTerminatorsBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *ListServiceTerminatorsBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list service terminators bad request response
 func (o *ListServiceTerminatorsBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListServiceTerminatorsBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type ListServiceTerminatorsUnauthorized struct {
 
 // NewListServiceTerminatorsUnauthorized creates ListServiceTerminatorsUnauthorized with default headers values
 func NewListServiceTerminatorsUnauthorized() *ListServiceTerminatorsUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &ListServiceTerminatorsUnauthorized{}
 }
 
 // WithPayload adds the payload to the list service terminators unauthorized response
 func (o *ListServiceTerminatorsUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *ListServiceTerminatorsUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list service terminators unauthorized response
 func (o *ListServiceTerminatorsUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListServiceTerminatorsUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type ListServiceTerminatorsTooManyRequests struct {
 
 // NewListServiceTerminatorsTooManyRequests creates ListServiceTerminatorsTooManyRequests with default headers values
 func NewListServiceTerminatorsTooManyRequests() *ListServiceTerminatorsTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &ListServiceTerminatorsTooManyRequests{}
 }
 
 // WithPayload adds the payload to the list service terminators too many requests response
 func (o *ListServiceTerminatorsTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *ListServiceTerminatorsTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list service terminators too many requests response
 func (o *ListServiceTerminatorsTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListServiceTerminatorsTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

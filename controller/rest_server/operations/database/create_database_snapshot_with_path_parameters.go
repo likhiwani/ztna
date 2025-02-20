@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"io"
 	"net/http"
@@ -46,6 +47,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewCreateDatabaseSnapshotWithPathParams() CreateDatabaseSnapshotWithPathParams {
+    logtrace.LogWithFunctionName()
 
 	return CreateDatabaseSnapshotWithPathParams{}
 }
@@ -71,6 +73,7 @@ type CreateDatabaseSnapshotWithPathParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewCreateDatabaseSnapshotWithPathParams() beforehand.
 func (o *CreateDatabaseSnapshotWithPathParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r

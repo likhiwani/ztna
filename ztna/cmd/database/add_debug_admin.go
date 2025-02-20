@@ -18,17 +18,20 @@ package database
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/openziti/storage/boltz"
 	"github.com/spf13/cobra"
 )
 
 func NewAddDebugAdminAction() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &addDebugAdminAction{}
 	return &cobra.Command{
 		Use:   "add-debug-admin </path/to/ziti-controller.db.file> <username> <password>",
@@ -46,20 +49,24 @@ type addDebugAdminAction struct {
 }
 
 func (action *addDebugAdminAction) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return action.db
 }
 
 func (action *addDebugAdminAction) GetStores() *db.Stores {
+	logtrace.LogWithFunctionName()
 	return action.stores
 }
 
 func (action *addDebugAdminAction) noError(err error) {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		panic(err)
 	}
 }
 
 func (action *addDebugAdminAction) run(dbFile, username, password string) {
+	logtrace.LogWithFunctionName()
 	boltDb, err := db.Open(dbFile)
 	action.noError(err)
 

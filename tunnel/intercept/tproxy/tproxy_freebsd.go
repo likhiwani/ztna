@@ -17,10 +17,13 @@
 package tproxy
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel/intercept"
+
 	"github.com/pkg/errors"
 )
 
 func New(config Config) (intercept.Interceptor, error) {
+	logtrace.LogWithFunctionName()
 	return nil, errors.New("tproxy not supported on FreeBSD")
 }

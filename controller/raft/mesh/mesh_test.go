@@ -1,16 +1,19 @@
 package mesh
 
 import (
-	"github.com/openziti/foundation/v2/versions"
-	"ztna-core/ztna/controller/event"
 	"runtime"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/versions"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_checkState_ReadonlyFalseWhenAllVersionsMatch(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("1"), Address: "1"},
@@ -24,6 +27,7 @@ func Test_checkState_ReadonlyFalseWhenAllVersionsMatch(t *testing.T) {
 }
 
 func Test_checkState_ReadonlyTrueWhenAllVersionsDoNotMatch(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("dne"), Address: "1"},
@@ -37,6 +41,7 @@ func Test_checkState_ReadonlyTrueWhenAllVersionsDoNotMatch(t *testing.T) {
 }
 
 func Test_checkState_ReadonlySetToFalseWhenPreviouslyTrueAndAllVersionsNowMatch(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("1"), Address: "1"},
@@ -51,6 +56,7 @@ func Test_checkState_ReadonlySetToFalseWhenPreviouslyTrueAndAllVersionsNowMatch(
 }
 
 func Test_AddPeer_PassesReadonlyWhenVersionsMatch(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers:           map[string]*Peer{},
 		version:         NewVersionProviderTest(),
@@ -64,6 +70,7 @@ func Test_AddPeer_PassesReadonlyWhenVersionsMatch(t *testing.T) {
 }
 
 func Test_AddPeer_TurnsReadonlyWhenVersionsDoNotMatch(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers:           map[string]*Peer{},
 		version:         NewVersionProviderTest(),
@@ -77,6 +84,7 @@ func Test_AddPeer_TurnsReadonlyWhenVersionsDoNotMatch(t *testing.T) {
 }
 
 func Test_RemovePeer_StaysReadonlyWhenDeletingPeerAndStillHasMismatchedVersions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("dne"), Address: "1"},
@@ -92,6 +100,7 @@ func Test_RemovePeer_StaysReadonlyWhenDeletingPeerAndStillHasMismatchedVersions(
 }
 
 func Test_RemovePeer_RemovesReadonlyWhenDeletingPeerWithNoOtherMismatches(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := &impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("dne"), Address: "1"},
@@ -107,6 +116,7 @@ func Test_RemovePeer_RemovesReadonlyWhenDeletingPeerWithNoOtherMismatches(t *tes
 }
 
 func Test_RemovePeer_RemovesReadonlyWhenDeletingLastPeer(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	m := impl{
 		Peers: map[string]*Peer{
 			"1": {Version: testVersion("dne"), Address: "1"},
@@ -121,6 +131,7 @@ func Test_RemovePeer_RemovesReadonlyWhenDeletingLastPeer(t *testing.T) {
 }
 
 func testVersion(v string) *versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	return &versions.VersionInfo{Version: v}
 }
 
@@ -128,26 +139,32 @@ type VersionProviderTest struct {
 }
 
 func (v VersionProviderTest) Branch() string {
+	logtrace.LogWithFunctionName()
 	return "local"
 }
 
 func (v VersionProviderTest) EncoderDecoder() versions.VersionEncDec {
+	logtrace.LogWithFunctionName()
 	return &versions.StdVersionEncDec
 }
 
 func (v VersionProviderTest) Version() string {
+	logtrace.LogWithFunctionName()
 	return "1"
 }
 
 func (v VersionProviderTest) BuildDate() string {
+	logtrace.LogWithFunctionName()
 	return time.Now().String()
 }
 
 func (v VersionProviderTest) Revision() string {
+	logtrace.LogWithFunctionName()
 	return ""
 }
 
 func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
+	logtrace.LogWithFunctionName()
 	return &versions.VersionInfo{
 		Version:   v.Version(),
 		Revision:  v.Revision(),
@@ -158,5 +175,6 @@ func (v VersionProviderTest) AsVersionInfo() *versions.VersionInfo {
 }
 
 func NewVersionProviderTest() versions.VersionProvider {
+	logtrace.LogWithFunctionName()
 	return &VersionProviderTest{}
 }

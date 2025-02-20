@@ -18,13 +18,16 @@ package subcmd
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	Root.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose logging")
 }
 
@@ -40,6 +43,7 @@ var Root = &cobra.Command{
 var verbose bool
 
 func Execute() {
+	logtrace.LogWithFunctionName()
 	if err := Root.Execute(); err != nil {
 		println(fmt.Errorf("error: %s", err))
 	}

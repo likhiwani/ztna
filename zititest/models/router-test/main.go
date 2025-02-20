@@ -3,6 +3,17 @@ package main
 import (
 	"embed"
 	_ "embed"
+	"os"
+	"path"
+	"strings"
+	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
@@ -19,19 +30,11 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
 	"go.etcd.io/bbolt"
-	"os"
-	"path"
-	"strings"
-	"time"
 )
 
 func getDbFile() string {
+	logtrace.LogWithFunctionName()
 	dbFile := os.Getenv("ZITI_DB")
 	if dbFile == "" {
 		pfxlog.Logger().Fatal("required env var ZITI_DB not set")
@@ -45,10 +48,12 @@ var configResource embed.FS
 type scaleStrategy struct{}
 
 func (self scaleStrategy) IsScaled(entity model.Entity) bool {
+	logtrace.LogWithFunctionName()
 	return entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled")
 }
 
 func (self scaleStrategy) GetEntityCount(entity model.Entity) uint32 {
+	logtrace.LogWithFunctionName()
 	if entity.GetType() == model.EntityTypeHost && entity.GetScope().HasTag("scaled") {
 		return 4
 	}
@@ -58,14 +63,17 @@ func (self scaleStrategy) GetEntityCount(entity model.Entity) uint32 {
 type dbStrategy struct{}
 
 func (d dbStrategy) ProcessDbModel(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	return builder.CreateEdgeRouterHosts(tx, m, d)
 }
 
 func (d dbStrategy) GetDbFile(*model.Model) string {
+	logtrace.LogWithFunctionName()
 	return getDbFile()
 }
 
 func (d dbStrategy) GetSite(router *db.EdgeRouter) (string, bool) {
+	logtrace.LogWithFunctionName()
 	for _, attr := range router.RoleAttributes {
 		if strings.Contains(attr, "Hosted") {
 			return "us-west-2b", true
@@ -75,6 +83,7 @@ func (d dbStrategy) GetSite(router *db.EdgeRouter) (string, bool) {
 }
 
 func (d dbStrategy) PostProcess(router *db.EdgeRouter, c *model.Component) {
+	logtrace.LogWithFunctionName()
 	if router.IsTunnelerEnabled {
 		c.Scope.Tags = append(c.Scope.Tags, "tunneler")
 	}
@@ -174,6 +183,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("stop", "bootstrap")
 
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)

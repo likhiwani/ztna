@@ -17,14 +17,16 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type circuitConfirmationHandler struct {
@@ -33,14 +35,17 @@ type circuitConfirmationHandler struct {
 }
 
 func newCircuitConfirmationHandler(n *network.Network, r *model.Router) *circuitConfirmationHandler {
+	logtrace.LogWithFunctionName()
 	return &circuitConfirmationHandler{n, r}
 }
 
 func (self *circuitConfirmationHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_CircuitConfirmationType)
 }
 
 func (self *circuitConfirmationHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("routerId", self.r.Id)
 	confirm := &ctrl_pb.CircuitConfirmation{}
 	if err := proto.Unmarshal(msg.Body, confirm); err == nil {
@@ -58,6 +63,7 @@ func (self *circuitConfirmationHandler) HandleReceive(msg *channel.Message, _ ch
 }
 
 func (self *circuitConfirmationHandler) checkCircuitMaxIdle(circuit *model.Circuit, confirm *ctrl_pb.CircuitConfirmation) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("routerId", self.r.Id).WithField("circuitId", circuit.Id)
 
 	service, _ := self.n.Service.Read(circuit.ServiceId)
@@ -97,6 +103,7 @@ func (self *circuitConfirmationHandler) checkCircuitMaxIdle(circuit *model.Circu
 }
 
 func (self *circuitConfirmationHandler) sendUnroute(circuitId string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("circuitId", circuitId).WithField("routerId", self.r.Id)
 	unroute := &ctrl_pb.Unroute{}
 	unroute.CircuitId = circuitId

@@ -20,6 +20,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type ClusterEventType string
@@ -52,6 +53,7 @@ type ApiAddress struct {
 }
 
 func (self *ClusterPeer) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("id=%v addr=%v version=%v", self.Id, self.Addr, self.Version)
 }
 
@@ -66,6 +68,7 @@ type ClusterEvent struct {
 }
 
 func (event *ClusterEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v time=%v peers=%v", event.Namespace, event.EventType, event.Timestamp, event.Peers)
 }
 
@@ -76,10 +79,12 @@ type ClusterEventHandler interface {
 type ClusterEventHandlerF func(event *ClusterEvent)
 
 func (f ClusterEventHandlerF) AcceptClusterEvent(event *ClusterEvent) {
+	logtrace.LogWithFunctionName()
 	f(event)
 }
 
 func NewClusterEvent(eventType ClusterEventType) *ClusterEvent {
+	logtrace.LogWithFunctionName()
 	return &ClusterEvent{
 		Namespace: ClusterEventsNs,
 		EventType: eventType,

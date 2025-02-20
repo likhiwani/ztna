@@ -18,20 +18,23 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 func NewCaManager(env Env) *CaManager {
+	logtrace.LogWithFunctionName()
 	manager := &CaManager{
 		baseEntityManager: newBaseEntityManager[*Ca, *db.Ca](env, env.GetStores().Ca),
 	}
@@ -47,19 +50,23 @@ type CaManager struct {
 }
 
 func (self *CaManager) newModelEntity() *Ca {
+	logtrace.LogWithFunctionName()
 	return &Ca{}
 }
 
 func (self *CaManager) Create(entity *Ca, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Ca](self, entity, ctx)
 }
 
 func (self *CaManager) ApplyCreate(cmd *command.CreateEntityCommand[*Ca], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *CaManager) Update(entity *Ca, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if checker != nil {
 		checker.RemoveFields(db.FieldCaIsVerified)
 	}
@@ -67,6 +74,7 @@ func (self *CaManager) Update(entity *Ca, checker fields.UpdatedFields, ctx *cha
 }
 
 func (self *CaManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Ca], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = self
 
 	// isVerified should only be set by the Verified method. We remove isVerified
@@ -83,6 +91,7 @@ func (self *CaManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Ca], ctx bo
 }
 
 func (self *CaManager) Read(id string) (*Ca, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Ca{}
 	if err := self.readEntity(id, modelEntity); err != nil {
 		return nil, err
@@ -91,6 +100,7 @@ func (self *CaManager) Read(id string) (*Ca, error) {
 }
 
 func (self *CaManager) readInTx(tx *bbolt.Tx, id string) (*Ca, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Ca{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -99,6 +109,7 @@ func (self *CaManager) readInTx(tx *bbolt.Tx, id string) (*Ca, error) {
 }
 
 func (self *CaManager) IsUpdated(field string) bool {
+	logtrace.LogWithFunctionName()
 	return strings.EqualFold(field, db.FieldName) ||
 		strings.EqualFold(field, boltz.FieldTags) ||
 		strings.EqualFold(field, db.FieldCaIsAutoCaEnrollmentEnabled) ||
@@ -110,6 +121,7 @@ func (self *CaManager) IsUpdated(field string) bool {
 }
 
 func (self *CaManager) Verified(ca *Ca, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	ca.IsVerified = true
 	checker := &fields.UpdatedFieldsMap{
 		db.FieldCaIsVerified: struct{}{},
@@ -118,6 +130,7 @@ func (self *CaManager) Verified(ca *Ca, ctx *change.Context) error {
 }
 
 func (self *CaManager) Query(query string) (*CaListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &CaListResult{manager: self}
 	if err := self.ListWithHandler(query, result.collect); err != nil {
 		return nil, err
@@ -126,6 +139,7 @@ func (self *CaManager) Query(query string) (*CaListResult, error) {
 }
 
 func (self *CaManager) Stream(query string, collect func(*Ca, error) error) error {
+	logtrace.LogWithFunctionName()
 	filter, err := ast.Parse(self.Store, query)
 
 	if err != nil {
@@ -146,6 +160,7 @@ func (self *CaManager) Stream(query string, collect func(*Ca, error) error) erro
 }
 
 func (self *CaManager) Marshall(entity *Ca) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -183,6 +198,7 @@ func (self *CaManager) Marshall(entity *Ca) ([]byte, error) {
 }
 
 func (self *CaManager) Unmarshall(bytes []byte) (*Ca, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Ca{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -226,6 +242,7 @@ type CaListResult struct {
 }
 
 func (result *CaListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		entity, err := result.manager.readInTx(tx, key)
@@ -257,6 +274,7 @@ type Formatter struct {
 }
 
 func NewFormatter(symbols map[string]string) *Formatter {
+	logtrace.LogWithFunctionName()
 	return &Formatter{
 		symbolValues:  symbols,
 		sentinelStart: FormatSentinelStart,
@@ -265,6 +283,7 @@ func NewFormatter(symbols map[string]string) *Formatter {
 }
 
 func (formatter *Formatter) Format(name string) string {
+	logtrace.LogWithFunctionName()
 	for symbol, value := range formatter.symbolValues {
 		searchSymbol := formatter.sentinelStart + symbol + formatter.sentinelEnd
 		name = strings.Replace(name, searchSymbol, value, -1)

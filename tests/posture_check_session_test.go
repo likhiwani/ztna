@@ -19,14 +19,16 @@
 package tests
 
 import (
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/xt_smartrouting"
-	"ztna-core/sdk-golang/ziti"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_PostureChecks_Sessions(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

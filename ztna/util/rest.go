@@ -31,6 +31,7 @@ import (
 	"ztna-core/edge-api/rest_management_api_client"
 	"ztna-core/edge-api/rest_model"
 	fabric_rest_client "ztna-core/ztna/controller/rest_client"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	openApiRuntime "github.com/go-openapi/runtime"
@@ -40,6 +41,7 @@ import (
 
 // Use a 2-second timeout with a retry count of 5
 func NewClient() *resty.Client {
+	logtrace.LogWithFunctionName()
 	return resty.
 		New().
 		SetTimeout(2 * time.Second).
@@ -48,6 +50,7 @@ func NewClient() *resty.Client {
 }
 
 func PrettyPrintResponse(resp *resty.Response) string {
+	logtrace.LogWithFunctionName()
 	out := resp.String()
 	var prettyJSON bytes.Buffer
 	if err := json.Indent(&prettyJSON, []byte(out), "", "    "); err == nil {
@@ -57,6 +60,7 @@ func PrettyPrintResponse(resp *resty.Response) string {
 }
 
 func OutputJson(out io.Writer, data []byte) {
+	logtrace.LogWithFunctionName()
 	var prettyJSON bytes.Buffer
 	if err := json.Indent(&prettyJSON, data, "", "    "); err == nil {
 		if _, err := fmt.Fprint(out, prettyJSON.String()); err != nil {
@@ -70,6 +74,7 @@ func OutputJson(out io.Writer, data []byte) {
 }
 
 func ControllerDetailEntity(api API, entityType, entityId string, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedIdentity()
 	if err != nil {
 		return nil, err
@@ -113,6 +118,7 @@ func ControllerDetailEntity(api API, entityType, entityId string, logJSON bool, 
 
 // EdgeControllerListSubEntities will list entities of the given type in the given Edge Controller
 func EdgeControllerListSubEntities(entityType, subType, entityId string, filter string, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	params := url.Values{}
 	if filter != "" {
 		params.Add("filter", filter)
@@ -122,11 +128,13 @@ func EdgeControllerListSubEntities(entityType, subType, entityId string, filter 
 
 // EdgeControllerList will list entities of the given type in the given Edge Controller
 func EdgeControllerList(path string, params url.Values, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	return ControllerList("edge", path, params, logJSON, out, timeout, verbose)
 }
 
 // ControllerList will list entities of the given type in the given Edge Controller
 func ControllerList(api API, path string, params url.Values, logJSON bool, out io.Writer, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedIdentity()
 	if err != nil {
 		return nil, err
@@ -181,6 +189,7 @@ type edgeTransport struct {
 }
 
 func (edgeTransport *edgeTransport) RoundTrip(r *http.Request) (*http.Response, error) {
+	logtrace.LogWithFunctionName()
 	if edgeTransport.RequestFunc != nil {
 		if err := edgeTransport.RequestFunc(r); err != nil {
 			return nil, err
@@ -206,6 +215,7 @@ type RestApiError struct {
 }
 
 func formatApiError(error *rest_model.APIError) string {
+	logtrace.LogWithFunctionName()
 	cause := ""
 	if error.Cause != nil {
 		if error.Cause.APIError.Code != "" {
@@ -222,6 +232,7 @@ func formatApiError(error *rest_model.APIError) string {
 }
 
 func (a RestApiError) Error() string {
+	logtrace.LogWithFunctionName()
 	if payload := a.ApiErrorPayload.GetPayload(); payload != nil {
 
 		if payload.Error == nil {
@@ -234,6 +245,7 @@ func (a RestApiError) Error() string {
 }
 
 func WrapIfApiError(err error) error {
+	logtrace.LogWithFunctionName()
 	if apiErrorPayload, ok := err.(ApiErrorPayload); ok {
 		return &RestApiError{apiErrorPayload}
 	}
@@ -249,6 +261,7 @@ type ClientOpts interface {
 }
 
 func NewEdgeManagementClient(clientOpts ClientOpts) (*rest_management_api_client.ZitiEdgeManagement, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedIdentity()
 	if err != nil {
 		return nil, err
@@ -257,6 +270,7 @@ func NewEdgeManagementClient(clientOpts ClientOpts) (*rest_management_api_client
 }
 
 func NewFabricManagementClient(clientOpts ClientOpts) (*fabric_rest_client.ZitiFabric, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedIdentity()
 	if err != nil {
 		return nil, err
@@ -269,11 +283,13 @@ type EdgeManagementAuth struct {
 }
 
 func (e EdgeManagementAuth) AuthenticateRequest(request openApiRuntime.ClientRequest, registry strfmt.Registry) error {
+	logtrace.LogWithFunctionName()
 	return request.SetHeaderParam("zt-session", e.Token)
 }
 
 // ControllerCreate will create entities of the given type in the given Edge Controller
 func ControllerCreate(api API, entityType string, body string, out io.Writer, logRequestJson, logResponseJson bool, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedRWIdentity()
 	if err != nil {
 		return nil, err
@@ -322,6 +338,7 @@ func ControllerCreate(api API, entityType string, body string, out io.Writer, lo
 
 // ControllerDelete will delete entities of the given type in the given Controller
 func ControllerDelete(api API, entityType string, id string, body string, out io.Writer, logRequestJson bool, logResponseJson bool, timeout int, verbose bool) (error, *int) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedRWIdentity()
 	if err != nil {
 		return err, nil
@@ -371,6 +388,7 @@ func ControllerDelete(api API, entityType string, id string, body string, out io
 
 // ControllerUpdate will update entities of the given type in the given Edge Controller
 func ControllerUpdate(api API, entityType string, body string, out io.Writer, method string, logRequestJson, logResponseJSON bool, timeout int, verbose bool) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedRWIdentity()
 	if err != nil {
 		return nil, err
@@ -424,6 +442,7 @@ func ControllerUpdate(api API, entityType string, body string, out io.Writer, me
 
 // EdgeControllerVerify will verify entities of the given type in the given Edge Controller
 func EdgeControllerVerify(entityType, id, body string, out io.Writer, logJSON bool, timeout int, verbose bool) error {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedRWIdentity()
 	if err != nil {
 		return err
@@ -463,6 +482,7 @@ func EdgeControllerVerify(entityType, id, body string, out io.Writer, logJSON bo
 }
 
 func EdgeControllerRequest(entityType string, out io.Writer, logJSON bool, timeout int, verbose bool, doRequest func(*resty.Request, string) (*resty.Response, error)) (*gabs.Container, error) {
+	logtrace.LogWithFunctionName()
 	restClientIdentity, err := LoadSelectedRWIdentity()
 	if err != nil {
 		return nil, err
@@ -507,6 +527,7 @@ func EdgeControllerRequest(entityType string, out io.Writer, logJSON bool, timeo
 }
 
 func EdgeControllerGetManagementApiBasePathWithPool(host string, caPool *x509.CertPool) string {
+	logtrace.LogWithFunctionName()
 	client := NewClient()
 
 	client.SetHostURL(host)
@@ -523,6 +544,7 @@ func EdgeControllerGetManagementApiBasePathWithPool(host string, caPool *x509.Ce
 }
 
 func hasJsonContentType(resp *http.Response) bool {
+	logtrace.LogWithFunctionName()
 	contentType := resp.Header.Get("Content-Type")
 	return strings.HasPrefix(contentType, "application/json")
 }
@@ -531,6 +553,7 @@ func hasJsonContentType(resp *http.Response) bool {
 // return the management path provided in that data. If the data cannot be parsed, empty string
 // is returned.
 func parseManagementPath(body []byte) string {
+	logtrace.LogWithFunctionName()
 	data, err := gabs.ParseJSON(body)
 
 	if err != nil {
@@ -553,6 +576,7 @@ func parseManagementPath(body []byte) string {
 // where only a host is provided w/ no path prefix or where host provided only hosts the client API and the management
 // API is hosted somewhere else. API locations are determined by inspecting the versions endpoint.
 func getManagementApiBasePath(host string, client *resty.Client) string {
+	logtrace.LogWithFunctionName()
 	resp, err := client.R().Get("/edge/management/v1/version")
 
 	if err == nil && resp.StatusCode() == http.StatusOK && hasJsonContentType(resp.RawResponse) {
@@ -594,6 +618,7 @@ func getManagementApiBasePath(host string, client *resty.Client) string {
 // on the version of the Edge Controller the API may be monolith on `/edge/<version>` and `/` or split into
 // `/edge/management/<version>` and `/edge/client/<version>`.
 func EdgeControllerGetManagementApiBasePath(host string, cert string) string {
+	logtrace.LogWithFunctionName()
 	client := NewClient()
 
 	client.SetHostURL(host)

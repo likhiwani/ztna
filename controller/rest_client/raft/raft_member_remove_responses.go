@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type RaftMemberRemoveReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *RaftMemberRemoveReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewRaftMemberRemoveOK()
@@ -84,6 +86,7 @@ func (o *RaftMemberRemoveReader) ReadResponse(response runtime.ClientResponse, c
 
 // NewRaftMemberRemoveOK creates a RaftMemberRemoveOK with default headers values
 func NewRaftMemberRemoveOK() *RaftMemberRemoveOK {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveOK{}
 }
 
@@ -96,13 +99,16 @@ type RaftMemberRemoveOK struct {
 }
 
 func (o *RaftMemberRemoveOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/remove-member][%d] raftMemberRemoveOK  %+v", 200, o.Payload)
 }
 func (o *RaftMemberRemoveOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberRemoveOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *RaftMemberRemoveOK) readResponse(response runtime.ClientResponse, consu
 
 // NewRaftMemberRemoveBadRequest creates a RaftMemberRemoveBadRequest with default headers values
 func NewRaftMemberRemoveBadRequest() *RaftMemberRemoveBadRequest {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type RaftMemberRemoveBadRequest struct {
 }
 
 func (o *RaftMemberRemoveBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/remove-member][%d] raftMemberRemoveBadRequest  %+v", 400, o.Payload)
 }
 func (o *RaftMemberRemoveBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberRemoveBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *RaftMemberRemoveBadRequest) readResponse(response runtime.ClientRespons
 
 // NewRaftMemberRemoveUnauthorized creates a RaftMemberRemoveUnauthorized with default headers values
 func NewRaftMemberRemoveUnauthorized() *RaftMemberRemoveUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type RaftMemberRemoveUnauthorized struct {
 }
 
 func (o *RaftMemberRemoveUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/remove-member][%d] raftMemberRemoveUnauthorized  %+v", 401, o.Payload)
 }
 func (o *RaftMemberRemoveUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberRemoveUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *RaftMemberRemoveUnauthorized) readResponse(response runtime.ClientRespo
 
 // NewRaftMemberRemoveNotFound creates a RaftMemberRemoveNotFound with default headers values
 func NewRaftMemberRemoveNotFound() *RaftMemberRemoveNotFound {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveNotFound{}
 }
 
@@ -192,13 +207,16 @@ type RaftMemberRemoveNotFound struct {
 }
 
 func (o *RaftMemberRemoveNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/remove-member][%d] raftMemberRemoveNotFound  %+v", 404, o.Payload)
 }
 func (o *RaftMemberRemoveNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberRemoveNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *RaftMemberRemoveNotFound) readResponse(response runtime.ClientResponse,
 
 // NewRaftMemberRemoveTooManyRequests creates a RaftMemberRemoveTooManyRequests with default headers values
 func NewRaftMemberRemoveTooManyRequests() *RaftMemberRemoveTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberRemoveTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type RaftMemberRemoveTooManyRequests struct {
 }
 
 func (o *RaftMemberRemoveTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/remove-member][%d] raftMemberRemoveTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *RaftMemberRemoveTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberRemoveTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

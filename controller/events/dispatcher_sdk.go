@@ -17,16 +17,20 @@
 package events
 
 import (
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddSdkEventHandler(handler event.SdkEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.sdkEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveSdkEventHandler(handler event.SdkEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.sdkEventHandlers.DeleteIf(func(val event.SdkEventHandler) bool {
 		if val == handler {
 			return true
@@ -39,6 +43,7 @@ func (self *Dispatcher) RemoveSdkEventHandler(handler event.SdkEventHandler) {
 }
 
 func (self *Dispatcher) AcceptSdkEvent(evt *event.SdkEvent) {
+	logtrace.LogWithFunctionName()
 	evt.EventSrcId = self.ctrlId
 	for _, handler := range self.sdkEventHandlers.Value() {
 		go handler.AcceptSdkEvent(evt)
@@ -46,6 +51,7 @@ func (self *Dispatcher) AcceptSdkEvent(evt *event.SdkEvent) {
 }
 
 func (self *Dispatcher) registerSdkEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.SdkEventHandler)
 
 	if !ok {
@@ -57,6 +63,7 @@ func (self *Dispatcher) registerSdkEventHandler(val interface{}, _ map[string]in
 }
 
 func (self *Dispatcher) unregisterSdkEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.SdkEventHandler); ok {
 		self.RemoveSdkEventHandler(handler)
 	}

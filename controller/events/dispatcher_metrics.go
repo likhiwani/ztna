@@ -17,20 +17,24 @@
 package events
 
 import (
-	"github.com/google/uuid"
-	"github.com/openziti/metrics/metrics_pb"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/network"
-	"github.com/pkg/errors"
 	"reflect"
 	"regexp"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/openziti/metrics/metrics_pb"
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddMetricsEventHandler(handler event.MetricsEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.metricsEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveMetricsEventHandler(handler event.MetricsEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.metricsEventHandlers.DeleteIf(func(val event.MetricsEventHandler) bool {
 		if val == handler {
 			return true
@@ -50,14 +54,17 @@ func (self *Dispatcher) RemoveMetricsEventHandler(handler event.MetricsEventHand
 }
 
 func (self *Dispatcher) AddMetricsMessageHandler(handler event.MetricsMessageHandler) {
+	logtrace.LogWithFunctionName()
 	self.metricsMsgEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveMetricsMessageHandler(handler event.MetricsMessageHandler) {
+	logtrace.LogWithFunctionName()
 	self.metricsMsgEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AcceptMetricsEvent(event *event.MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.metricsEventHandlers.Value() {
 			handler.AcceptMetricsEvent(event)
@@ -66,6 +73,7 @@ func (self *Dispatcher) AcceptMetricsEvent(event *event.MetricsEvent) {
 }
 
 func (self *Dispatcher) AcceptMetricsMsg(msg *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.metricsMsgEventHandlers.Value() {
 			handler.AcceptMetricsMsg(msg)
@@ -74,17 +82,20 @@ func (self *Dispatcher) AcceptMetricsMsg(msg *metrics_pb.MetricsMessage) {
 }
 
 func (self *Dispatcher) initMetricsEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	self.AddMetricsMessageHandler(n)
 	self.AddMetricsMessageHandler(event.MetricsMessageHandlerF(self.relayMessagesToEventsUnfiltered))
 }
 
 func (self *Dispatcher) relayMessagesToEventsUnfiltered(msg *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	if len(self.metricsEventHandlers.Value()) > 0 {
 		self.convertMetricsMsgToEvents(msg, nil, nil, self)
 	}
 }
 
 func (self *Dispatcher) registerMetricsEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.MetricsEventHandler)
 	if !ok {
 		return errors.Errorf("type %v doesn't implement ztna-core/ztna/controller/event/MetricsEventHandler interface.", reflect.TypeOf(val))
@@ -127,12 +138,14 @@ func (self *Dispatcher) registerMetricsEventHandler(val interface{}, config map[
 }
 
 func (self *Dispatcher) unregisterMetricsEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.MetricsEventHandler); ok {
 		self.RemoveMetricsEventHandler(handler)
 	}
 }
 
 func (self *Dispatcher) newMetricEvent(msg *metrics_pb.MetricsMessage, metricType string, name string, id string) *event.MetricsEvent {
+	logtrace.LogWithFunctionName()
 	result := &event.MetricsEvent{
 		Namespace:     event.MetricsEventsNs,
 		EventSrcId:    self.ctrlId,
@@ -157,6 +170,7 @@ func (self *Dispatcher) convertMetricsMsgToEvents(msg *metrics_pb.MetricsMessage
 	metricFilter *regexp.Regexp,
 	handler event.MetricsEventHandler) {
 
+	logtrace.LogWithFunctionName()
 	if sourceFilter != nil && !sourceFilter.Match([]byte(msg.SourceId)) {
 		return
 	}
@@ -228,6 +242,7 @@ func (self *Dispatcher) convertMetricsMsgToEvents(msg *metrics_pb.MetricsMessage
 }
 
 func (self *Dispatcher) filterMetric(metricFilter *regexp.Regexp, key string, value interface{}, event *event.MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	name := event.Metric + "." + key
 	if self.metricNameMatches(metricFilter, name) {
 		if event.Metrics == nil {
@@ -242,16 +257,19 @@ func (self *Dispatcher) filterMetric(metricFilter *regexp.Regexp, key string, va
 }
 
 func (self *Dispatcher) finishEvent(event *event.MetricsEvent, handler event.MetricsEventHandler) {
+	logtrace.LogWithFunctionName()
 	if len(event.Metrics) > 0 {
 		handler.AcceptMetricsEvent(event)
 	}
 }
 
 func (self *Dispatcher) metricNameMatches(metricFilter *regexp.Regexp, name string) bool {
+	logtrace.LogWithFunctionName()
 	return metricFilter == nil || metricFilter.Match([]byte(name))
 }
 
 func (self *Dispatcher) NewFilteredMetricsAdapter(sourceFilter *regexp.Regexp, metricFilter *regexp.Regexp, handler event.MetricsEventHandler) event.MetricsMessageHandler {
+	logtrace.LogWithFunctionName()
 	adapter := &filteringMetricsMessageAdapter{
 		dispatcher:   self,
 		sourceFilter: sourceFilter,
@@ -270,6 +288,7 @@ type filteringMetricsMessageAdapter struct {
 }
 
 func (self *filteringMetricsMessageAdapter) IsWrapping(value event.MetricsEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.handler == value {
 		return true
 	}
@@ -280,6 +299,7 @@ func (self *filteringMetricsMessageAdapter) IsWrapping(value event.MetricsEventH
 }
 
 func (self *filteringMetricsMessageAdapter) AcceptMetricsMsg(msg *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	if msg.DoNotPropagate {
 		return
 	}

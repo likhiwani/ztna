@@ -17,13 +17,15 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/errorz"
+	"time"
 	"ztna-core/sdk-golang/ziti"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type EnvInfo struct {
@@ -36,6 +38,7 @@ type EnvInfo struct {
 }
 
 func (self *EnvInfo) Equals(other *EnvInfo) bool {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return other == nil
 	}
@@ -60,6 +63,7 @@ type SdkInfo struct {
 }
 
 func (self *SdkInfo) Equals(other *SdkInfo) bool {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return other == nil
 	}
@@ -99,6 +103,7 @@ type Identity struct {
 }
 
 func (entity *Identity) toBoltEntityForCreate(_ *bbolt.Tx, env Env) (*db.Identity, error) {
+	logtrace.LogWithFunctionName()
 	identityType, err := env.GetManagers().IdentityType.ReadByIdOrName(entity.IdentityTypeId)
 
 	if err != nil && !boltz.IsErrNotFoundErr(err) {
@@ -165,6 +170,7 @@ func (entity *Identity) toBoltEntityForCreate(_ *bbolt.Tx, env Env) (*db.Identit
 }
 
 func fillModelInfo(identity *Identity, envInfo *db.EnvInfo, sdkInfo *db.SdkInfo) {
+	logtrace.LogWithFunctionName()
 	if envInfo != nil {
 		identity.EnvInfo = &EnvInfo{
 			Arch:      envInfo.Arch,
@@ -189,6 +195,7 @@ func fillModelInfo(identity *Identity, envInfo *db.EnvInfo, sdkInfo *db.SdkInfo)
 }
 
 func fillPersistenceInfo(identity *db.Identity, envInfo *EnvInfo, sdkInfo *SdkInfo) {
+	logtrace.LogWithFunctionName()
 	if envInfo != nil {
 		identity.EnvInfo = &db.EnvInfo{
 			Arch:      envInfo.Arch,
@@ -213,6 +220,7 @@ func fillPersistenceInfo(identity *db.Identity, envInfo *EnvInfo, sdkInfo *SdkIn
 }
 
 func (entity *Identity) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, checker boltz.FieldChecker) (*db.Identity, error) {
+	logtrace.LogWithFunctionName()
 	if checker == nil || checker.IsUpdated("type") {
 		identityType, err := env.GetManagers().IdentityType.ReadByIdOrName(entity.IdentityTypeId)
 
@@ -272,6 +280,7 @@ func (entity *Identity) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, checker bol
 }
 
 func (entity *Identity) fillFrom(env Env, _ *bbolt.Tx, boltIdentity *db.Identity) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltIdentity)
 	entity.Name = boltIdentity.Name
 	entity.IdentityTypeId = boltIdentity.IdentityTypeId

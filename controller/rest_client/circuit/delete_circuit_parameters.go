@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteCircuitParams() *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewDeleteCircuitParams() *DeleteCircuitParams {
 // NewDeleteCircuitParamsWithTimeout creates a new DeleteCircuitParams object
 // with the ability to set a timeout on a request.
 func NewDeleteCircuitParamsWithTimeout(timeout time.Duration) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewDeleteCircuitParamsWithTimeout(timeout time.Duration) *DeleteCircuitPara
 // NewDeleteCircuitParamsWithContext creates a new DeleteCircuitParams object
 // with the ability to set a context for a request.
 func NewDeleteCircuitParamsWithContext(ctx context.Context) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewDeleteCircuitParamsWithContext(ctx context.Context) *DeleteCircuitParams
 // NewDeleteCircuitParamsWithHTTPClient creates a new DeleteCircuitParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDeleteCircuitParamsWithHTTPClient(client *http.Client) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type DeleteCircuitParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteCircuitParams) WithDefaults() *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *DeleteCircuitParams) WithDefaults() *DeleteCircuitParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteCircuitParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete circuit params
 func (o *DeleteCircuitParams) WithTimeout(timeout time.Duration) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the delete circuit params
 func (o *DeleteCircuitParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the delete circuit params
 func (o *DeleteCircuitParams) WithContext(ctx context.Context) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the delete circuit params
 func (o *DeleteCircuitParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the delete circuit params
 func (o *DeleteCircuitParams) WithHTTPClient(client *http.Client) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the delete circuit params
 func (o *DeleteCircuitParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the delete circuit params
 func (o *DeleteCircuitParams) WithID(id string) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the delete circuit params
 func (o *DeleteCircuitParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithOptions adds the options to the delete circuit params
 func (o *DeleteCircuitParams) WithOptions(options *rest_model.CircuitDelete) *DeleteCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetOptions(options)
 	return o
 }
 
 // SetOptions adds the options to the delete circuit params
 func (o *DeleteCircuitParams) SetOptions(options *rest_model.CircuitDelete) {
+    logtrace.LogWithFunctionName()
 	o.Options = options
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DeleteCircuitParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

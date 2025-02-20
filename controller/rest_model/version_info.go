@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/strfmt"
@@ -59,16 +60,19 @@ type VersionInfo struct {
 
 // Validate validates this version info
 func (m *VersionInfo) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // ContextValidate validates this version info based on context it is used
 func (m *VersionInfo) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *VersionInfo) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -77,6 +81,7 @@ func (m *VersionInfo) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *VersionInfo) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res VersionInfo
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DeleteCircuitReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DeleteCircuitReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDeleteCircuitOK()
@@ -84,6 +86,7 @@ func (o *DeleteCircuitReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewDeleteCircuitOK creates a DeleteCircuitOK with default headers values
 func NewDeleteCircuitOK() *DeleteCircuitOK {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitOK{}
 }
 
@@ -96,13 +99,16 @@ type DeleteCircuitOK struct {
 }
 
 func (o *DeleteCircuitOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /circuits/{id}][%d] deleteCircuitOK  %+v", 200, o.Payload)
 }
 func (o *DeleteCircuitOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteCircuitOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *DeleteCircuitOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewDeleteCircuitBadRequest creates a DeleteCircuitBadRequest with default headers values
 func NewDeleteCircuitBadRequest() *DeleteCircuitBadRequest {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type DeleteCircuitBadRequest struct {
 }
 
 func (o *DeleteCircuitBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /circuits/{id}][%d] deleteCircuitBadRequest  %+v", 400, o.Payload)
 }
 func (o *DeleteCircuitBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteCircuitBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *DeleteCircuitBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewDeleteCircuitUnauthorized creates a DeleteCircuitUnauthorized with default headers values
 func NewDeleteCircuitUnauthorized() *DeleteCircuitUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type DeleteCircuitUnauthorized struct {
 }
 
 func (o *DeleteCircuitUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /circuits/{id}][%d] deleteCircuitUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DeleteCircuitUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteCircuitUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *DeleteCircuitUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewDeleteCircuitConflict creates a DeleteCircuitConflict with default headers values
 func NewDeleteCircuitConflict() *DeleteCircuitConflict {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitConflict{}
 }
 
@@ -192,13 +207,16 @@ type DeleteCircuitConflict struct {
 }
 
 func (o *DeleteCircuitConflict) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /circuits/{id}][%d] deleteCircuitConflict  %+v", 409, o.Payload)
 }
 func (o *DeleteCircuitConflict) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteCircuitConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *DeleteCircuitConflict) readResponse(response runtime.ClientResponse, co
 
 // NewDeleteCircuitTooManyRequests creates a DeleteCircuitTooManyRequests with default headers values
 func NewDeleteCircuitTooManyRequests() *DeleteCircuitTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuitTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type DeleteCircuitTooManyRequests struct {
 }
 
 func (o *DeleteCircuitTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /circuits/{id}][%d] deleteCircuitTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DeleteCircuitTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteCircuitTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

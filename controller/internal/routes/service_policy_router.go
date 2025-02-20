@@ -23,11 +23,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewServicePolicyRouter()
 	env.AddRouter(r)
 }
@@ -37,12 +39,14 @@ type ServicePolicyRouter struct {
 }
 
 func NewServicePolicyRouter() *ServicePolicyRouter {
+	logtrace.LogWithFunctionName()
 	return &ServicePolicyRouter{
 		BasePath: "/" + EntityNameServicePolicy,
 	}
 }
 
 func (r *ServicePolicyRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	//CRUD
 	ae.ManagementApi.ServicePolicyDeleteServicePolicyHandler = service_policy.DeleteServicePolicyHandlerFunc(func(params service_policy.DeleteServicePolicyParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
@@ -83,43 +87,52 @@ func (r *ServicePolicyRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ServicePolicyRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.ServicePolicy](ae, rc, ae.Managers.ServicePolicy, MapServicePolicyToRestEntity)
 }
 
 func (r *ServicePolicyRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.ServicePolicy](ae, rc, ae.Managers.ServicePolicy, MapServicePolicyToRestEntity)
 }
 
 func (r *ServicePolicyRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params service_policy.CreateServicePolicyParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, ServicePolicyLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.ServicePolicy.Create, MapCreateServicePolicyToModel(params.Policy), rc)
 	})
 }
 
 func (r *ServicePolicyRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.ServicePolicy)
 }
 
 func (r *ServicePolicyRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params service_policy.UpdateServicePolicyParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.ServicePolicy.Update(MapUpdateServicePolicyToModel(params.ID, params.Policy), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *ServicePolicyRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params service_policy.PatchServicePolicyParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return ae.Managers.ServicePolicy.Update(MapPatchServicePolicyToModel(params.ID, params.Policy), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})
 }
 
 func (r *ServicePolicyRouter) ListServices(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.ServicePolicy, *model.ServiceDetail](ae, rc, ae.Managers.ServicePolicy, ae.Managers.EdgeService.GetDetailLister(), MapServiceToRestEntity)
 }
 
 func (r *ServicePolicyRouter) ListIdentities(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.ServicePolicy, *model.Identity](ae, rc, ae.Managers.ServicePolicy, ae.Managers.Identity, MapIdentityToRestEntity)
 }
 
 func (r *ServicePolicyRouter) ListPostureChecks(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.ServicePolicy, *model.PostureCheck](ae, rc, ae.Managers.ServicePolicy, ae.Managers.PostureCheck, MapPostureCheckToRestEntity)
 }

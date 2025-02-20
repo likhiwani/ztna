@@ -17,6 +17,7 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"encoding/json"
 	"slices"
 	"ztna-core/edge-api/rest_management_api_client/auth_policy"
@@ -30,12 +31,14 @@ import (
 )
 
 func (importer *Importer) IsAuthPolicyImportRequired(args []string) bool {
+	logtrace.LogWithFunctionName()
 	return slices.Contains(args, "all") || len(args) == 0 || // explicit all or nothing specified
 		slices.Contains(args, "auth-policy") ||
 		slices.Contains(args, "identity")
 }
 
 func (importer *Importer) ProcessAuthPolicies(input map[string][]interface{}) (map[string]string, error) {
+	logtrace.LogWithFunctionName()
 
 	if importer.loginOpts.Verbose {
 		log.Debug("Listing all AuthPolicies")

@@ -17,10 +17,12 @@
 package state
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,16 +31,19 @@ type apiSessionRemovedHandler struct {
 }
 
 func NewApiSessionRemovedHandler(sm Manager) *apiSessionRemovedHandler {
+	logtrace.LogWithFunctionName()
 	return &apiSessionRemovedHandler{
 		sm: sm,
 	}
 }
 
 func (h *apiSessionRemovedHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.ApiSessionRemovedType
 }
 
 func (h *apiSessionRemovedHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		req := &edge_ctrl_pb.ApiSessionRemoved{}
 		if err := proto.Unmarshal(msg.Body, req); err == nil {

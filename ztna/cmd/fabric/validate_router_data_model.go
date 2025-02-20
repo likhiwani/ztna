@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"time"
@@ -41,6 +42,7 @@ type validateRouterDataModelAction struct {
 }
 
 func NewValidateRouterDataModelCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateRouterDataModelAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -63,6 +65,7 @@ func NewValidateRouterDataModelCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *validateRouterDataModelAction) validateRouterDataModel(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	self.eventNotify = make(chan *mgmt_pb.RouterDataModelDetails, 1)
 
@@ -145,6 +148,7 @@ func (self *validateRouterDataModelAction) validateRouterDataModel(_ *cobra.Comm
 }
 
 func (self *validateRouterDataModelAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.RouterDataModelDetails{}
 	if err := proto.Unmarshal(msg.Body, detail); err != nil {
 		pfxlog.Logger().WithError(err).Error("unable to unmarshal router data model details")

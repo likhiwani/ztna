@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -76,6 +77,7 @@ type DataIntegrityCheckDetails struct {
 
 // Validate validates this data integrity check details
 func (m *DataIntegrityCheckDetails) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateEndTime(formats); err != nil {
@@ -113,6 +115,7 @@ func (m *DataIntegrityCheckDetails) Validate(formats strfmt.Registry) error {
 }
 
 func (m *DataIntegrityCheckDetails) validateEndTime(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("endTime", "body", m.EndTime); err != nil {
 		return err
@@ -126,6 +129,7 @@ func (m *DataIntegrityCheckDetails) validateEndTime(formats strfmt.Registry) err
 }
 
 func (m *DataIntegrityCheckDetails) validateError(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("error", "body", m.Error); err != nil {
 		return err
@@ -135,6 +139,7 @@ func (m *DataIntegrityCheckDetails) validateError(formats strfmt.Registry) error
 }
 
 func (m *DataIntegrityCheckDetails) validateFixingErrors(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("fixingErrors", "body", m.FixingErrors); err != nil {
 		return err
@@ -144,6 +149,7 @@ func (m *DataIntegrityCheckDetails) validateFixingErrors(formats strfmt.Registry
 }
 
 func (m *DataIntegrityCheckDetails) validateInProgress(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("inProgress", "body", m.InProgress); err != nil {
 		return err
@@ -153,6 +159,7 @@ func (m *DataIntegrityCheckDetails) validateInProgress(formats strfmt.Registry) 
 }
 
 func (m *DataIntegrityCheckDetails) validateResults(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("results", "body", m.Results); err != nil {
 		return err
@@ -171,6 +178,7 @@ func (m *DataIntegrityCheckDetails) validateResults(formats strfmt.Registry) err
 }
 
 func (m *DataIntegrityCheckDetails) validateStartTime(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("startTime", "body", m.StartTime); err != nil {
 		return err
@@ -184,6 +192,7 @@ func (m *DataIntegrityCheckDetails) validateStartTime(formats strfmt.Registry) e
 }
 
 func (m *DataIntegrityCheckDetails) validateTooManyErrors(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("tooManyErrors", "body", m.TooManyErrors); err != nil {
 		return err
@@ -194,6 +203,7 @@ func (m *DataIntegrityCheckDetails) validateTooManyErrors(formats strfmt.Registr
 
 // ContextValidate validate this data integrity check details based on the context it is used
 func (m *DataIntegrityCheckDetails) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateResults(ctx, formats); err != nil {
@@ -207,6 +217,7 @@ func (m *DataIntegrityCheckDetails) ContextValidate(ctx context.Context, formats
 }
 
 func (m *DataIntegrityCheckDetails) contextValidateResults(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := m.Results.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
@@ -222,6 +233,7 @@ func (m *DataIntegrityCheckDetails) contextValidateResults(ctx context.Context, 
 
 // MarshalBinary interface implementation
 func (m *DataIntegrityCheckDetails) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -230,6 +242,7 @@ func (m *DataIntegrityCheckDetails) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *DataIntegrityCheckDetails) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res DataIntegrityCheckDetails
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

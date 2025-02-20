@@ -6,10 +6,12 @@ import (
 	"math"
 	"time"
 
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
-	"ztna-core/sdk-golang/ziti"
+
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -25,6 +27,7 @@ type traceRouteOptions struct {
 }
 
 func newTraceRouteCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &traceRouteOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -64,6 +67,7 @@ func newTraceRouteCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // Run implements this command
 func (o *traceRouteOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	var ctx ziti.Context
 	if o.configFile != "" {
 		cfg, err := ziti.NewConfigFromFile(o.configFile)

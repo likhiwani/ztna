@@ -18,10 +18,12 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -30,16 +32,19 @@ type extendEnrollmentVerifyHandler struct {
 }
 
 func NewExtendEnrollmentVerifyHandler(appEnv *env.AppEnv) *extendEnrollmentVerifyHandler {
+	logtrace.LogWithFunctionName()
 	return &extendEnrollmentVerifyHandler{
 		appEnv: appEnv,
 	}
 }
 
 func (h *extendEnrollmentVerifyHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.EnrollmentExtendRouterVerifyRequestType
 }
 
 func (h *extendEnrollmentVerifyHandler) respond(respErr *edge_ctrl_pb.Error, msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	respErrBody, _ := proto.Marshal(respErr)
 	respMsg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_ErrorType), respErrBody)
 	respMsg.ReplyTo(msg)
@@ -49,6 +54,7 @@ func (h *extendEnrollmentVerifyHandler) respond(respErr *edge_ctrl_pb.Error, msg
 	}
 }
 func (h *extendEnrollmentVerifyHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 
 		verifyMsg := &edge_ctrl_pb.EnrollmentExtendRouterVerifyRequest{}

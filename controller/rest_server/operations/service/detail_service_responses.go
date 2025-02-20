@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DetailServiceOK struct {
 
 // NewDetailServiceOK creates DetailServiceOK with default headers values
 func NewDetailServiceOK() *DetailServiceOK {
+    logtrace.LogWithFunctionName()
 
 	return &DetailServiceOK{}
 }
 
 // WithPayload adds the payload to the detail service o k response
 func (o *DetailServiceOK) WithPayload(payload *rest_model.DetailServiceEnvelope) *DetailServiceOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail service o k response
 func (o *DetailServiceOK) SetPayload(payload *rest_model.DetailServiceEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailServiceOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DetailServiceUnauthorized struct {
 
 // NewDetailServiceUnauthorized creates DetailServiceUnauthorized with default headers values
 func NewDetailServiceUnauthorized() *DetailServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DetailServiceUnauthorized{}
 }
 
 // WithPayload adds the payload to the detail service unauthorized response
 func (o *DetailServiceUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail service unauthorized response
 func (o *DetailServiceUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailServiceUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DetailServiceNotFound struct {
 
 // NewDetailServiceNotFound creates DetailServiceNotFound with default headers values
 func NewDetailServiceNotFound() *DetailServiceNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &DetailServiceNotFound{}
 }
 
 // WithPayload adds the payload to the detail service not found response
 func (o *DetailServiceNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailServiceNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail service not found response
 func (o *DetailServiceNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailServiceNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type DetailServiceTooManyRequests struct {
 
 // NewDetailServiceTooManyRequests creates DetailServiceTooManyRequests with default headers values
 func NewDetailServiceTooManyRequests() *DetailServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DetailServiceTooManyRequests{}
 }
 
 // WithPayload adds the payload to the detail service too many requests response
 func (o *DetailServiceTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DetailServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the detail service too many requests response
 func (o *DetailServiceTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DetailServiceTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

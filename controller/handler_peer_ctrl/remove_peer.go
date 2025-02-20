@@ -17,18 +17,21 @@
 package handler_peer_ctrl
 
 import (
-	raft2 "github.com/hashicorp/raft"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/peermsg"
 	"ztna-core/ztna/controller/raft"
+	"ztna-core/ztna/logtrace"
+
+	raft2 "github.com/hashicorp/raft"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
 
 func newRemovePeerHandler(controller *raft.Controller) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &removePeerHandler{
 		controller: controller,
 	}
@@ -39,10 +42,12 @@ type removePeerHandler struct {
 }
 
 func (self *removePeerHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(cmd_pb.ContentType_RemovePeerRequestType)
 }
 
 func (self *removePeerHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &cmd_pb.RemovePeerRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
@@ -54,6 +59,7 @@ func (self *removePeerHandler) HandleReceive(msg *channel.Message, ch channel.Ch
 }
 
 func (self *removePeerHandler) handleRemovePeer(m *channel.Message, ch channel.Channel, req *cmd_pb.RemovePeerRequest) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	log.Infof("received remove request id: %v", req.Id)
 

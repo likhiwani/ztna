@@ -19,13 +19,15 @@ package handler_mgmt
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/controller/event"
-	"ztna-core/ztna/controller/network"
+	"io"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/mgmt_pb"
-	"io"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type StreamEventsRequest struct {
@@ -39,14 +41,17 @@ type streamEventsHandler struct {
 }
 
 func newStreamEventsHandler(network *network.Network) *streamEventsHandler {
+	logtrace.LogWithFunctionName()
 	return &streamEventsHandler{network: network}
 }
 
 func (*streamEventsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_StreamEventsRequestType)
 }
 
 func (handler *streamEventsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	dispatcher := handler.network.GetEventDispatcher()
 
 	request := &StreamEventsRequest{}
@@ -75,6 +80,7 @@ func (handler *streamEventsHandler) HandleReceive(msg *channel.Message, ch chann
 }
 
 func (handler *streamEventsHandler) HandleClose(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	for _, streamHandler := range handler.eventStreamHandlers {
 		handler.network.GetEventDispatcher().RemoveAllSubscriptions(streamHandler)
 		if err := streamHandler.Close(); err != nil {
@@ -88,6 +94,7 @@ type EventsStreamHandler struct {
 }
 
 func (handler *EventsStreamHandler) AcceptFormattedEvent(eventType string, formattedEvent []byte) {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_StreamEventsEventType), formattedEvent)
 	msg.PutStringHeader(int32(mgmt_pb.Header_EventTypeHeader), eventType)
 	if err := handler.ch.Send(msg); err != nil {
@@ -97,6 +104,7 @@ func (handler *EventsStreamHandler) AcceptFormattedEvent(eventType string, forma
 }
 
 func (handler *EventsStreamHandler) close() {
+	logtrace.LogWithFunctionName()
 	if err := handler.ch.Close(); err != nil {
 		pfxlog.Logger().WithError(err).Errorf("failure while closing handler")
 	}

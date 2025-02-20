@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type ListRoutersReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *ListRoutersReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewListRoutersOK()
@@ -72,6 +74,7 @@ func (o *ListRoutersReader) ReadResponse(response runtime.ClientResponse, consum
 
 // NewListRoutersOK creates a ListRoutersOK with default headers values
 func NewListRoutersOK() *ListRoutersOK {
+    logtrace.LogWithFunctionName()
 	return &ListRoutersOK{}
 }
 
@@ -84,13 +87,16 @@ type ListRoutersOK struct {
 }
 
 func (o *ListRoutersOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers][%d] listRoutersOK  %+v", 200, o.Payload)
 }
 func (o *ListRoutersOK) GetPayload() *rest_model.ListRoutersEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListRoutersOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.ListRoutersEnvelope)
 
@@ -104,6 +110,7 @@ func (o *ListRoutersOK) readResponse(response runtime.ClientResponse, consumer r
 
 // NewListRoutersUnauthorized creates a ListRoutersUnauthorized with default headers values
 func NewListRoutersUnauthorized() *ListRoutersUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &ListRoutersUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type ListRoutersUnauthorized struct {
 }
 
 func (o *ListRoutersUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers][%d] listRoutersUnauthorized  %+v", 401, o.Payload)
 }
 func (o *ListRoutersUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListRoutersUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *ListRoutersUnauthorized) readResponse(response runtime.ClientResponse, 
 
 // NewListRoutersTooManyRequests creates a ListRoutersTooManyRequests with default headers values
 func NewListRoutersTooManyRequests() *ListRoutersTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &ListRoutersTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type ListRoutersTooManyRequests struct {
 }
 
 func (o *ListRoutersTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /routers][%d] listRoutersTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *ListRoutersTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListRoutersTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

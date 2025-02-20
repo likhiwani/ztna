@@ -21,6 +21,16 @@ import (
 	"embed"
 	_ "embed"
 	"fmt"
+	"os"
+	"path"
+	"strings"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
@@ -37,15 +47,7 @@ import (
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
 	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
 	"go.etcd.io/bbolt"
-	"os"
-	"path"
-	"strings"
-	"time"
 )
 
 const (
@@ -69,6 +71,7 @@ type dbStrategy struct {
 }
 
 func (self *dbStrategy) ProcessDbModel(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	dbFile := self.GetDbFile(m)
 	dbDir := path.Dir(dbFile)
 	mapFile := path.Join(dbDir, "edge-router-mapping.csv")
@@ -93,6 +96,7 @@ func (self *dbStrategy) ProcessDbModel(tx *bbolt.Tx, m *model.Model, builder *mo
 }
 
 func (self *dbStrategy) loadErMap(csv string) error {
+	logtrace.LogWithFunctionName()
 	sc := bufio.NewScanner(strings.NewReader(csv))
 	for sc.Scan() {
 		parts := strings.Split(sc.Text(), ",")
@@ -107,10 +111,12 @@ func (self *dbStrategy) loadErMap(csv string) error {
 }
 
 func (self *dbStrategy) GetDbFile(m *model.Model) string {
+	logtrace.LogWithFunctionName()
 	return m.MustStringVariable("db_file")
 }
 
 func (self *dbStrategy) ProcessEdgeRouters(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	ids, _, err := builder.GetStores().EdgeRouter.QueryIds(tx, "true limit none")
 	if err != nil {
 		return err
@@ -245,6 +251,7 @@ func (self *dbStrategy) ProcessEdgeRouters(tx *bbolt.Tx, m *model.Model, builder
 }
 
 func (self *dbStrategy) CreateEnrollIdentitiesAction(tx *bbolt.Tx, m *model.Model, builder *models.ZitiDbBuilder) error {
+	logtrace.LogWithFunctionName()
 	ids, _, err := builder.GetStores().Identity.QueryIds(tx, `type != "Router" limit none`)
 	if err != nil {
 		return err
@@ -375,6 +382,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("bootstrap")
 
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)

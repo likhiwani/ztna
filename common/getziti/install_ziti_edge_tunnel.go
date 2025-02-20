@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	c "ztna-core/ztna/ztna/constants"
 
 	"github.com/blang/semver"
 )
 
 func InstallZitiEdgeTunnel(targetVersion, targetOS, targetArch, binDir string, verbose bool) error {
+	logtrace.LogWithFunctionName()
 	var newVersion semver.Version
 
 	if targetVersion != "" {

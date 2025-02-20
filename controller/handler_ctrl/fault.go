@@ -18,16 +18,18 @@ package handler_ctrl
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
+	"strings"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"strings"
 )
 
 type faultHandler struct {
@@ -36,14 +38,17 @@ type faultHandler struct {
 }
 
 func newFaultHandler(r *model.Router, network *network.Network) *faultHandler {
+	logtrace.LogWithFunctionName()
 	return &faultHandler{r: r, network: network}
 }
 
 func (h *faultHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_FaultType)
 }
 
 func (h *faultHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	fault := &ctrl_pb.Fault{}
@@ -56,6 +61,7 @@ func (h *faultHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
 }
 
 func (h *faultHandler) handleFault(_ *channel.Message, ch channel.Channel, fault *ctrl_pb.Fault) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).WithField("routerId", h.r.Id)
 
 	switch fault.Subject {
@@ -110,6 +116,7 @@ func (h *faultHandler) handleFault(_ *channel.Message, ch channel.Channel, fault
 }
 
 func (h *faultHandler) handleFaultedLink(log *logrus.Entry, fault *ctrl_pb.Fault) {
+	logtrace.LogWithFunctionName()
 	linkId := fault.Id
 	log = log.WithField("linkId", linkId).WithField("fault.iteration", fault.Iteration)
 

@@ -22,6 +22,7 @@ import (
 	"io"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -39,6 +40,7 @@ type updateConfigTypeAction struct {
 }
 
 func newUpdateConfigTypeCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &updateConfigTypeAction{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -69,6 +71,7 @@ func newUpdateConfigTypeCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateConfigType update a new config on the Ziti Edge Controller
 func (self *updateConfigTypeAction) run() error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("config-types", self.Args[0], self.Options)
 	if err != nil {
 		return err

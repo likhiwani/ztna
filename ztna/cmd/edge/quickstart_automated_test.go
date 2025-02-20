@@ -3,6 +3,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 	"fmt"
 	"os"
@@ -14,6 +15,7 @@ import (
 )
 
 func TestEdgeQuickstartAutomated(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx, cancel := context.WithCancel(context.Background())
 	_ = os.Setenv("ZITI_CTRL_EDGE_ADVERTISED_ADDRESS", "localhost") //force localhost
 	_ = os.Setenv("ZITI_ROUTER_NAME", "quickstart-router")

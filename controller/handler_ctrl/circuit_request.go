@@ -17,18 +17,21 @@
 package handler_ctrl
 
 import (
+	"time"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/xt"
-	"google.golang.org/protobuf/proto"
-	"time"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/identity"
+	"google.golang.org/protobuf/proto"
+
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/network"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/identity"
 )
 
 type circuitRequestHandler struct {
@@ -37,14 +40,17 @@ type circuitRequestHandler struct {
 }
 
 func newCircuitRequestHandler(r *model.Router, network *network.Network) *circuitRequestHandler {
+	logtrace.LogWithFunctionName()
 	return &circuitRequestHandler{r: r, network: network}
 }
 
 func (h *circuitRequestHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_CircuitRequestType)
 }
 
 func (h *circuitRequestHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).Entry
 
 	request := &ctrl_pb.CircuitRequest{}
@@ -98,6 +104,7 @@ func (h *circuitRequestHandler) HandleReceive(msg *channel.Message, ch channel.C
 }
 
 func (h *circuitRequestHandler) newCircuitCreateParms(serviceId string, sourceRouter *model.Router, clientId *identity.TokenId) model.CreateCircuitParams {
+	logtrace.LogWithFunctionName()
 	return &circuitParams{
 		serviceId:    serviceId,
 		sourceRouter: sourceRouter,
@@ -116,18 +123,22 @@ type circuitParams struct {
 }
 
 func (self *circuitParams) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return self.serviceId
 }
 
 func (self *circuitParams) GetSourceRouter() *model.Router {
+	logtrace.LogWithFunctionName()
 	return self.sourceRouter
 }
 
 func (self *circuitParams) GetClientId() *identity.TokenId {
+	logtrace.LogWithFunctionName()
 	return self.clientId
 }
 
 func (self *circuitParams) GetCircuitTags(t xt.CostedTerminator) map[string]string {
+	logtrace.LogWithFunctionName()
 	if t == nil {
 		return map[string]string{
 			"serviceId": self.serviceId,
@@ -140,9 +151,11 @@ func (self *circuitParams) GetCircuitTags(t xt.CostedTerminator) map[string]stri
 }
 
 func (self *circuitParams) GetLogContext() logcontext.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }
 
 func (self *circuitParams) GetDeadline() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.deadline
 }

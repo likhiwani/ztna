@@ -31,10 +31,15 @@ import (
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/posture"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_common"
 	"ztna-core/ztna/tunnel"
+
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/sdkinfo"
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/michaelquigley/pfxlog"
@@ -42,9 +47,6 @@ import (
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/sdk-golang/ziti/sdkinfo"
 	"github.com/openziti/secretstream/kx"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
@@ -53,10 +55,12 @@ import (
 )
 
 func ToPtr[T any](in T) *T {
+	logtrace.LogWithFunctionName()
 	return &in
 }
 
 func newProvider(factory *Factory, tunneler *tunneler) *fabricProvider {
+	logtrace.LogWithFunctionName()
 	return &fabricProvider{
 		factory:          factory,
 		tunneler:         tunneler,
@@ -79,16 +83,19 @@ type fabricProvider struct {
 }
 
 func (self *fabricProvider) getDialSession(serviceName string) string {
+	logtrace.LogWithFunctionName()
 	sessionId, _ := self.dialSessions.Get(serviceName)
 	return sessionId
 }
 
 func (self *fabricProvider) getBindSession(serviceName string) string {
+	logtrace.LogWithFunctionName()
 	sessionId, _ := self.bindSessions.Get(serviceName)
 	return sessionId
 }
 
 func (self *fabricProvider) updateApiSession(ctrlId string, resp *edge_ctrl_pb.CreateApiSessionResponse) bool {
+	logtrace.LogWithFunctionName()
 	self.apiSessionLock.Lock()
 	defer self.apiSessionLock.Unlock()
 
@@ -133,6 +140,7 @@ func (self *fabricProvider) updateApiSession(ctrlId string, resp *edge_ctrl_pb.C
 }
 
 func (self *fabricProvider) authenticate() error {
+	logtrace.LogWithFunctionName()
 	envInfo, _ := sdkinfo.GetSdkInfo()
 	buildInfo := build.GetBuildInfo()
 	osVersion := "unknown"
@@ -200,17 +208,22 @@ func (self *fabricProvider) authenticate() error {
 	return results.GetResults()
 }
 
-func (self *fabricProvider) PrepForUse(string) {}
+func (self *fabricProvider) PrepForUse(string) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *fabricProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.currentIdentity, nil
 }
 
 func (self *fabricProvider) GetCurrentIdentityWithBackoff() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.currentIdentity, nil
 }
 
 func (self *fabricProvider) TunnelService(service tunnel.Service, terminatorInstanceId string, conn net.Conn, halfClose bool, appData []byte) error {
+	logtrace.LogWithFunctionName()
 	keyPair, err := kx.NewKeyPair()
 	if err != nil {
 		return err
@@ -252,6 +265,7 @@ func (self *fabricProvider) tunnelServiceV1(
 	peerData map[uint32][]byte,
 	keyPair *kx.KeyPair) error {
 
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("service", service.GetName()).
 		WithField("ctrlId", ctrlCh.Id())
 
@@ -318,6 +332,7 @@ func (self *fabricProvider) tunnelServiceV2(
 	peerData map[uint32][]byte,
 	keyPair *kx.KeyPair) error {
 
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("service", service.GetName()).
 		WithField("ctrlId", ctrlCh.Id())
 
@@ -361,6 +376,7 @@ func (self *fabricProvider) tunnelServiceV2(
 }
 
 func (self *fabricProvider) HostService(hostCtx tunnel.HostingContext) (tunnel.HostControl, error) {
+	logtrace.LogWithFunctionName()
 	id := idgen.NewUUIDString()
 
 	terminator := &tunnelTerminator{
@@ -385,6 +401,7 @@ func (self *fabricProvider) HostService(hostCtx tunnel.HostingContext) (tunnel.H
 }
 
 func (self *fabricProvider) establishTerminatorWithRetry(terminator *tunnelTerminator) {
+	logtrace.LogWithFunctionName()
 	log := logrus.WithField("service", terminator.context.ServiceName())
 
 	if terminator.closed.Load() {
@@ -414,6 +431,7 @@ func (self *fabricProvider) establishTerminatorWithRetry(terminator *tunnelTermi
 }
 
 func (self *fabricProvider) establishTerminator(terminator *tunnelTerminator) error {
+	logtrace.LogWithFunctionName()
 	start := time.Now().UnixMilli()
 	log := pfxlog.Logger().
 		WithField("routerId", self.factory.id.Token).
@@ -461,6 +479,7 @@ func (self *fabricProvider) establishTerminator(terminator *tunnelTerminator) er
 }
 
 func (self *fabricProvider) HandleTunnelResponse(msg *channel.Message, ctrlCh channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", self.factory.id.Token)
 
 	response := &edge_ctrl_pb.CreateTunnelTerminatorResponse{}
@@ -517,6 +536,7 @@ func (self *fabricProvider) HandleTunnelResponse(msg *channel.Message, ctrlCh ch
 }
 
 func (self *fabricProvider) removeTerminator(terminator *tunnelTerminator) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot remove terminator")
@@ -528,6 +548,7 @@ func (self *fabricProvider) removeTerminator(terminator *tunnelTerminator) error
 }
 
 func (self *fabricProvider) updateTerminator(terminatorId string, cost *uint16, precedence *edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot update terminator")
@@ -571,6 +592,7 @@ func (self *fabricProvider) updateTerminator(terminatorId string, cost *uint16, 
 }
 
 func (self *fabricProvider) sendHealthEvent(terminatorId string, checkPassed bool) error {
+	logtrace.LogWithFunctionName()
 	ctrlCh := self.factory.ctrls.AnyCtrlChannel()
 	if ctrlCh == nil {
 		return errors.New("no controller available, cannot forward health event")
@@ -594,6 +616,7 @@ func (self *fabricProvider) sendHealthEvent(terminatorId string, checkPassed boo
 }
 
 func (self *fabricProvider) requestServiceList(ctrlCh channel.Channel, lastUpdateToken []byte) {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(edge_ctrl_pb.ContentType_ListServicesRequestType), lastUpdateToken)
 	if err := ctrlCh.Send(msg); err != nil {
 		logrus.WithError(err).Error("failed to send service list request to controller")
@@ -611,10 +634,12 @@ type tunnelTerminator struct {
 }
 
 func (self *tunnelTerminator) SendHealthEvent(pass bool) error {
+	logtrace.LogWithFunctionName()
 	return self.provider.sendHealthEvent(self.id, pass)
 }
 
 func (self *tunnelTerminator) NotifyCreated() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.notifyCreated <- struct{}{}:
 	default:
@@ -622,6 +647,7 @@ func (self *tunnelTerminator) NotifyCreated() {
 }
 
 func (self *tunnelTerminator) WaitForCreated(timeout time.Duration) bool {
+	logtrace.LogWithFunctionName()
 	if self.created.Load() {
 		return true
 	}
@@ -633,6 +659,7 @@ func (self *tunnelTerminator) WaitForCreated(timeout time.Duration) bool {
 }
 
 func (self *tunnelTerminator) Close() error {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		log := logrus.WithField("service", self.context.ServiceName()).
 			WithField("routerId", self.provider.factory.id.Token).
@@ -658,22 +685,27 @@ func (self *tunnelTerminator) Close() error {
 }
 
 func (self *tunnelTerminator) UpdateCost(cost uint16) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(&cost, nil)
 }
 
 func (self *tunnelTerminator) UpdatePrecedence(precedence edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(nil, &precedence)
 }
 
 func (self *tunnelTerminator) UpdateCostAndPrecedence(cost uint16, precedence edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.updateCostAndPrecedence(&cost, &precedence)
 }
 
 func (self *tunnelTerminator) updateCostAndPrecedence(cost *uint16, precedence *edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	return self.provider.updateTerminator(self.id, cost, precedence)
 }
 
 func newAuthResults(count int) *authResults {
+	logtrace.LogWithFunctionName()
 	return &authResults{
 		ctrlCount: count,
 		okCh:      make(chan interface{}, 1),
@@ -688,6 +720,7 @@ type authResults struct {
 }
 
 func (self *authResults) Success() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.okCh <- nil:
 	default:
@@ -695,10 +728,12 @@ func (self *authResults) Success() {
 }
 
 func (self *authResults) Error(err error) {
+	logtrace.LogWithFunctionName()
 	self.errCh <- err
 }
 
 func (self *authResults) GetResults() error {
+	logtrace.LogWithFunctionName()
 	var errList []error
 	for {
 		select {

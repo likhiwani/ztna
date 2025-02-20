@@ -8,7 +8,9 @@ import (
 	"testing"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -18,6 +20,7 @@ var defaultArgs = []string{"edge", "--routerName", "test-router"}
 var testHostname, _ = os.Hostname()
 
 func TestEdgeRouterAdvertisedAddress(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOpts := clearEnvAndInitializeTestData()
 	routerAdvHostIp := "192.168.10.10"
 	routerAdvHostDns := "controller01.zitinetwork.example.org"
@@ -42,6 +45,7 @@ func TestEdgeRouterAdvertisedAddress(t *testing.T) {
 }
 
 func TestTunnelerEnabledByDefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup options
 	routerOptions := clearEnvAndInitializeTestData()
 
@@ -59,6 +63,7 @@ func TestTunnelerEnabledByDefault(t *testing.T) {
 }
 
 func TestTunnelerNoneMode(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup options
 	routerOptions := clearEnvAndInitializeTestData()
 
@@ -79,6 +84,7 @@ func TestTunnelerNoneMode(t *testing.T) {
 }
 
 func TestTunnelerHostModeIsDefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup options
 	routerOptions := clearEnvAndInitializeTestData()
 
@@ -97,6 +103,7 @@ func TestTunnelerHostModeIsDefault(t *testing.T) {
 }
 
 func TestTunnelerTproxyMode(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup options
 	routerOptions := clearEnvAndInitializeTestData()
 
@@ -115,6 +122,7 @@ func TestTunnelerTproxyMode(t *testing.T) {
 }
 
 func TestTunnelerInvalidMode(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	invalidMode := "invalidMode"
 
 	expectedErrorMsg := "Unknown tunneler mode [" + invalidMode + "] provided, should be \"" + noneTunMode + "\", \"" + hostTunMode + "\", \"" + proxyTunMode + "\", or \"" + tproxyTunMode + "\""
@@ -129,6 +137,7 @@ func TestTunnelerInvalidMode(t *testing.T) {
 }
 
 func TestPrivateEdgeRouterNotAdvertising(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 
 	// Create and run the CLI command
@@ -139,6 +148,7 @@ func TestPrivateEdgeRouterNotAdvertising(t *testing.T) {
 }
 
 func TestBlankEdgeRouterNameBecomesHostname(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	hostname, _ := os.Hostname()
 	blank := ""
 
@@ -158,6 +168,7 @@ func TestBlankEdgeRouterNameBecomesHostname(t *testing.T) {
 }
 
 func TestDefaultZitiEdgeRouterListenerBindPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	expectedDefaultPortStr := strconv.Itoa(testDefaultRouterListenerPort)
 
@@ -182,6 +193,7 @@ func TestDefaultZitiEdgeRouterListenerBindPort(t *testing.T) {
 }
 
 func TestSetZitiEdgeRouterListenerBindPort(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	myPortValue := "1234"
 
@@ -205,6 +217,7 @@ func TestSetZitiEdgeRouterListenerBindPort(t *testing.T) {
 }
 
 func TestEdgeRouterCannotBeWSSAndPrivate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedErrorMsg := "Flags for private and wss configs are mutually exclusive. You must choose private or wss, not both"
 
 	// Create the options with both flags set to true
@@ -218,6 +231,7 @@ func TestEdgeRouterCannotBeWSSAndPrivate(t *testing.T) {
 }
 
 func TestEdgeRouterOutputPathDoesNotExist(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Set the router options
 	routerOptions := clearEnvAndInitializeTestData()
 	routerOptions.TunnelerMode = defaultTunnelerMode
@@ -231,6 +245,7 @@ func TestEdgeRouterOutputPathDoesNotExist(t *testing.T) {
 }
 
 func TestExecuteCreateConfigRouterEdgeHasNonBlankTemplateValues(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 
 	routerName := "MyEdgeRouter"
@@ -262,6 +277,7 @@ func TestExecuteCreateConfigRouterEdgeHasNonBlankTemplateValues(t *testing.T) {
 }
 
 func TestEdgeRouterIPOverrideIsConsumed(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 
 	routerName := "MyFabricRouter"
@@ -291,6 +307,7 @@ func TestEdgeRouterIPOverrideIsConsumed(t *testing.T) {
 }
 
 func TestEdgeRouterCsrFields(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	routerOptions := clearEnvAndInitializeTestData()
 	routerName := "CstTest"
 	config1, data := createRouterConfig([]string{"edge", "--routerName", routerName}, routerOptions, nil)

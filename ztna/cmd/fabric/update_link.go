@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/ztna/cmd/api"
@@ -35,6 +36,7 @@ type updateLinkOptions struct {
 }
 
 func newUpdateLinkCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateLinkOptions{
 		Options: api.Options{CommonOptions: p()},
 	}
@@ -63,6 +65,7 @@ func newUpdateLinkCmd(p common.OptionsProvider) *cobra.Command {
 
 // runUpdateLink update a new link on the Ziti Edge Controller
 func runUpdateLink(o *updateLinkOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	change := false
 

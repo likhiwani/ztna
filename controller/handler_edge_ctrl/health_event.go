@@ -17,14 +17,16 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type healthEventHandler struct {
@@ -34,6 +36,7 @@ type healthEventHandler struct {
 }
 
 func NewHealthEventHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	serviceEventMetrics := appEnv.GetHostController().GetNetwork().GetServiceEventsMetricsRegistry()
 	return &healthEventHandler{
 		baseRequestHandler: baseRequestHandler{
@@ -46,14 +49,17 @@ func NewHealthEventHandler(appEnv *env.AppEnv, ch channel.Channel) channel.Typed
 }
 
 func (self *healthEventHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_HealthEventType)
 }
 
 func (self *healthEventHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "health.event"
 }
 
 func (self *healthEventHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.HealthEventRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal health event")
@@ -69,6 +75,7 @@ func (self *healthEventHandler) HandleReceive(msg *channel.Message, ch channel.C
 }
 
 func (self *healthEventHandler) handleHealthEvent(ctx *HealthEventRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}
@@ -94,5 +101,6 @@ type HealthEventRequestContext struct {
 }
 
 func (self *HealthEventRequestContext) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.req.SessionToken
 }

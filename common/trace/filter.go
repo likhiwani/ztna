@@ -16,27 +16,35 @@
 
 package trace
 
-import "github.com/openziti/channel/v3/trace/pb"
+import (
+	logtrace "ztna-core/ztna/logtrace"
+
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
+)
 
 type Filter interface {
 	Accept(event *trace_pb.ChannelMessage) bool
 }
 
 func NewAllowAllFilter() Filter {
+	logtrace.LogWithFunctionName()
 	return &allowAllFilter{}
 }
 
 func NewIncludeFilter(includedContentTypes []int32) Filter {
+	logtrace.LogWithFunctionName()
 	return &includeFilter{contentTypes: includedContentTypes}
 }
 
 func NewExcludeFilter(excludedContentTypes []int32) Filter {
+	logtrace.LogWithFunctionName()
 	return &excludeFilter{contentTypes: excludedContentTypes}
 }
 
 type allowAllFilter struct{}
 
 func (*allowAllFilter) Accept(event *trace_pb.ChannelMessage) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
@@ -45,6 +53,7 @@ type includeFilter struct {
 }
 
 func (filter *includeFilter) Accept(event *trace_pb.ChannelMessage) bool {
+	logtrace.LogWithFunctionName()
 	for _, contentType := range filter.contentTypes {
 		if event.ContentType == contentType {
 			return true
@@ -58,6 +67,7 @@ type excludeFilter struct {
 }
 
 func (filter *excludeFilter) Accept(event *trace_pb.ChannelMessage) bool {
+	logtrace.LogWithFunctionName()
 	for _, contentType := range filter.contentTypes {
 		if event.ContentType == contentType {
 			return false

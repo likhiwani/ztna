@@ -18,20 +18,24 @@ package events
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/storage/boltz"
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddSessionEventHandler(handler event.SessionEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.sessionEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveSessionEventHandler(handler event.SessionEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.sessionEventHandlers.DeleteIf(func(val event.SessionEventHandler) bool {
 		if val == handler {
 			return true
@@ -44,11 +48,13 @@ func (self *Dispatcher) RemoveSessionEventHandler(handler event.SessionEventHand
 }
 
 func (self *Dispatcher) initSessionEvents(stores *db.Stores) {
+	logtrace.LogWithFunctionName()
 	stores.Session.AddEntityEventListenerF(self.sessionCreated, boltz.EntityCreated)
 	stores.Session.AddEntityEventListenerF(self.sessionDeleted, boltz.EntityDeleted)
 }
 
 func (self *Dispatcher) sessionCreated(session *db.Session) {
+	logtrace.LogWithFunctionName()
 	evt := &event.SessionEvent{
 		Namespace:    event.SessionEventNS,
 		EventType:    event.SessionEventTypeCreated,
@@ -68,6 +74,7 @@ func (self *Dispatcher) sessionCreated(session *db.Session) {
 }
 
 func (self *Dispatcher) sessionDeleted(session *db.Session) {
+	logtrace.LogWithFunctionName()
 	evt := &event.SessionEvent{
 		Namespace:    event.SessionEventNS,
 		EventType:    event.SessionEventTypeDeleted,
@@ -86,6 +93,7 @@ func (self *Dispatcher) sessionDeleted(session *db.Session) {
 }
 
 func (self *Dispatcher) registerSessionEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.SessionEventHandler)
 
 	if !ok {
@@ -124,6 +132,7 @@ func (self *Dispatcher) registerSessionEventHandler(val interface{}, config map[
 }
 
 func (self *Dispatcher) unregisterSessionEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.SessionEventHandler); ok {
 		self.RemoveSessionEventHandler(handler)
 	}
@@ -135,12 +144,14 @@ type sessionEventAdapter struct {
 }
 
 func (adapter *sessionEventAdapter) AcceptSessionEvent(event *event.SessionEvent) {
+	logtrace.LogWithFunctionName()
 	if stringz.Contains(adapter.includeList, event.EventType) {
 		adapter.wrapped.AcceptSessionEvent(event)
 	}
 }
 
 func (self *sessionEventAdapter) IsWrapping(value event.SessionEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.wrapped == value {
 		return true
 	}

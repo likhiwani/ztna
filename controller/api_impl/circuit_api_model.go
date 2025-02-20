@@ -20,6 +20,7 @@ import (
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/controller/rest_model"
 )
@@ -33,12 +34,14 @@ type CircuitLinkFactoryIml struct {
 }
 
 func NewCircuitLinkFactory() *CircuitLinkFactoryIml {
+	logtrace.LogWithFunctionName()
 	return &CircuitLinkFactoryIml{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameCircuit),
 	}
 }
 
 func (factory *CircuitLinkFactoryIml) Links(entity LinkEntity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameTerminator] = factory.NewNestedLink(entity, EntityNameTerminator)
 	links[EntityNameService] = factory.NewNestedLink(entity, EntityNameService)
@@ -46,6 +49,7 @@ func (factory *CircuitLinkFactoryIml) Links(entity LinkEntity) rest_model.Links 
 }
 
 func MapCircuitToRestModel(n *network.Network, _ api.RequestContext, circuit *model.Circuit) (*rest_model.CircuitDetail, error) {
+	logtrace.LogWithFunctionName()
 	path := &rest_model.Path{}
 	for _, node := range circuit.Path.Nodes {
 		path.Nodes = append(path.Nodes, ToEntityRef(node.Name, node, RouterLinkFactory))
@@ -75,5 +79,6 @@ func MapCircuitToRestModel(n *network.Network, _ api.RequestContext, circuit *mo
 type deletedEntity string
 
 func (self deletedEntity) GetId() string {
+	logtrace.LogWithFunctionName()
 	return string(self)
 }

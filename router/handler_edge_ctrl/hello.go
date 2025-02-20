@@ -19,13 +19,15 @@ package handler_edge_ctrl
 import (
 	"strconv"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
 	"ztna-core/ztna/common/build"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/state"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -40,6 +42,7 @@ type helloHandler struct {
 }
 
 func NewHelloHandler(stateManager state.Manager, listeners []*edge_ctrl_pb.Listener) *helloHandler {
+	logtrace.LogWithFunctionName()
 	//supportedProtocols, protocolPorts, and hostname is for backwards compatibility with v0.26.3 and older controllers
 	var supportedProtocols []string
 	var protocolPorts []string
@@ -71,10 +74,12 @@ func NewHelloHandler(stateManager state.Manager, listeners []*edge_ctrl_pb.Liste
 }
 
 func (h *helloHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.ServerHelloType
 }
 
 func (h *helloHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 
 		serverHello := &edge_ctrl_pb.ServerHello{}

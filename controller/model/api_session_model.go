@@ -17,13 +17,15 @@
 package model
 
 import (
+	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type ApiSession struct {
@@ -43,6 +45,7 @@ type ApiSession struct {
 }
 
 func (entity *ApiSession) toBoltEntity(tx *bbolt.Tx, env Env) (*db.ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	if !env.GetStores().Identity.IsEntityPresent(tx, entity.IdentityId) {
 		return nil, errorz.NewFieldError("identity not found", "IdentityId", entity.IdentityId)
 	}
@@ -64,14 +67,17 @@ func (entity *ApiSession) toBoltEntity(tx *bbolt.Tx, env Env) (*db.ApiSession, e
 }
 
 func (entity *ApiSession) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *ApiSession) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *ApiSession) fillFrom(env Env, tx *bbolt.Tx, boltApiSession *db.ApiSession) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltApiSession)
 	entity.Token = boltApiSession.Token
 	entity.IdentityId = boltApiSession.IdentityId

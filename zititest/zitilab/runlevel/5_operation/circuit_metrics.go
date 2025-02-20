@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/Jeffail/gabs/v2"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
+
+	"github.com/Jeffail/gabs/v2"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
@@ -16,6 +18,7 @@ import (
 )
 
 func CircuitMetrics(pollFreq time.Duration, closer <-chan struct{}, f func(string) string) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &circuitMetrics{
 		closer:             closer,
 		circuits:           map[string]struct{}{},
@@ -36,6 +39,7 @@ type circuitMetrics struct {
 }
 
 func (self *circuitMetrics) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	self.model = run.GetModel()
 	bindHandler := func(binding channel.Binding) error {
 		binding.AddReceiveHandler(int32(mgmt_pb.ContentType_StreamEventsEventType), channel.ReceiveHandlerF(self.receiveCircuitEvents))
@@ -68,6 +72,7 @@ func (self *circuitMetrics) Execute(run model.Run) error {
 }
 
 func (self *circuitMetrics) receiveCircuitEvents(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	circuitEvent := &event.CircuitEvent{}
 	err := json.Unmarshal(msg.Body, &circuitEvent)
@@ -91,6 +96,7 @@ func (self *circuitMetrics) receiveCircuitEvents(msg *channel.Message, _ channel
 }
 
 func (self *circuitMetrics) receiveCircuitInspectResults(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	response := &mgmt_pb.InspectResponse{}
 	if err := protobufs.TypedResponse(response).Unmarshall(msg, nil); err != nil {
@@ -113,6 +119,7 @@ func (self *circuitMetrics) receiveCircuitInspectResults(msg *channel.Message, _
 }
 
 func (self *circuitMetrics) runMetrics() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
@@ -133,6 +140,7 @@ func (self *circuitMetrics) runMetrics() {
 }
 
 func (self *circuitMetrics) requestCircuitMetrics() {
+	logtrace.LogWithFunctionName()
 	if len(self.circuits) > 0 {
 		inspectRequest := &mgmt_pb.InspectRequest{}
 		for circuitId := range self.circuits {
@@ -145,6 +153,7 @@ func (self *circuitMetrics) requestCircuitMetrics() {
 }
 
 func (self *circuitMetrics) ingestCircuitMetrics(sourceId string, circuitDetail *api.Gabs2Wrapper) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	circuitId := circuitDetail.String("circuitId")
 	xgDetails := circuitDetail.Path("xgressDetails")

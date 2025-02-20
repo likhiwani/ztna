@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
@@ -79,10 +81,12 @@ type ExternalIdClaim struct {
 }
 
 func (entity *Ca) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *Ca) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeCas
 }
 
@@ -93,6 +97,7 @@ type CaStore interface {
 }
 
 func newCaStore(stores *stores) *caStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &caStoreImpl{}
 	store.baseStore = newBaseStore[*Ca](stores, store)
 	store.InitImpl(store)
@@ -106,6 +111,7 @@ type caStoreImpl struct {
 }
 
 func (store *caStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 	store.AddSymbol(FieldCaFingerprint, ast.NodeTypeString)
@@ -119,13 +125,17 @@ func (store *caStoreImpl) initializeLocal() {
 
 }
 
-func (store *caStoreImpl) initializeLinked() {}
+func (store *caStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (store *caStoreImpl) NewEntity() *Ca {
+	logtrace.LogWithFunctionName()
 	return &Ca{}
 }
 
 func (store *caStoreImpl) FillEntity(entity *Ca, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.Fingerprint = bucket.GetStringOrError(FieldCaFingerprint)
@@ -150,6 +160,7 @@ func (store *caStoreImpl) FillEntity(entity *Ca, bucket *boltz.TypedBucket) {
 }
 
 func (store *caStoreImpl) PersistEntity(entity *Ca, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetString(FieldCaFingerprint, entity.Fingerprint)
@@ -176,6 +187,7 @@ func (store *caStoreImpl) PersistEntity(entity *Ca, ctx *boltz.PersistContext) {
 }
 
 func (store *caStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	for _, enrollmentId := range store.GetRelatedEntitiesIdList(ctx.Tx(), id, FieldCaEnrollments) {
 		if err := store.stores.enrollment.DeleteById(ctx, enrollmentId); err != nil {
 			return err

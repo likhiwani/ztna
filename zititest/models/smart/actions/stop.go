@@ -17,19 +17,23 @@
 package actions
 
 import (
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/openziti/fablab/kernel/lib/actions"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/models"
 )
 
 func NewStopAction() model.ActionBinder {
+	logtrace.LogWithFunctionName()
 	action := &stopAction{}
 	return action.bind
 }
 
 func (_ *stopAction) bind(m *model.Model) model.Action {
+	logtrace.LogWithFunctionName()
 	return actions.Workflow(
 		host.GroupKill(models.LoopDialerTag, "ziti-fabric-test"),
 		host.GroupKill(models.LoopListenerTag, "ziti-fabric-test"),

@@ -1,13 +1,16 @@
 package model
 
 import (
+	"testing"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"go.etcd.io/bbolt"
-	"testing"
 )
 
 func TestEdgeRouterManager(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -16,6 +19,7 @@ func TestEdgeRouterManager(t *testing.T) {
 }
 
 func (ctx *TestContext) testGetEdgeRoutersForServiceAndIdentity(*testing.T) {
+	logtrace.LogWithFunctionName()
 	edgeRouter := ctx.requireNewEdgeRouter()
 	edgeRouter2 := ctx.requireNewEdgeRouter()
 	identity := ctx.requireNewIdentity(false)
@@ -48,6 +52,7 @@ func (ctx *TestContext) testGetEdgeRoutersForServiceAndIdentity(*testing.T) {
 }
 
 func (ctx *TestContext) isEdgeRouterAccessible(edgeRouterId, identityId, serviceId string) bool {
+	logtrace.LogWithFunctionName()
 	found := false
 	err := ctx.GetDb().View(func(tx *bbolt.Tx) error {
 		result, err := ctx.managers.EdgeRouter.ListForIdentityAndServiceWithTx(tx, identityId, serviceId)

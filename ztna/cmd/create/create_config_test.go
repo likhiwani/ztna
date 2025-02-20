@@ -2,12 +2,14 @@ package create
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // These constants are hard-coded so that they may serve as a notifier. When the constants change in the source from
@@ -32,6 +34,7 @@ const (
 )
 
 func getZitiEnvironmentVariables() []string {
+	logtrace.LogWithFunctionName()
 	return []string{
 		"ZITI_HOME",
 		"ZITI_ROUTER_NAME",
@@ -79,6 +82,7 @@ func getZitiEnvironmentVariables() []string {
 }
 
 func unsetZitiEnv() {
+	logtrace.LogWithFunctionName()
 	// Unset environment variables
 	envVars := getZitiEnvironmentVariables()
 	for i := 0; i < len(envVars); i++ {
@@ -88,6 +92,7 @@ func unsetZitiEnv() {
 
 // Test that all ZITI_* variables are included in the values for output
 func TestNoUnknownOutputEnvVariablesExist(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Get the list of ZITI_* environment variables
 	allEnvVars := getZitiEnvironmentVariables()
 
@@ -129,6 +134,7 @@ func TestNoUnknownOutputEnvVariablesExist(t *testing.T) {
 
 // Test that all known ZITI_* variables are included in the env file
 func TestAllKnownEnvVariablesAreFoundInOutput(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Get the list of ZITI_* environment variables
 	allEnvVars := getZitiEnvironmentVariables()
 
@@ -166,6 +172,7 @@ func TestAllKnownEnvVariablesAreFoundInOutput(t *testing.T) {
 
 // Test that all known ZITI_* variables are included in the help output
 func TestAllKnownEnvVariablesAreFoundInHelpOutput(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Get the list of ZITI_* environment variables
 	allEnvVars := getZitiEnvironmentVariables()
 
@@ -202,6 +209,7 @@ func TestAllKnownEnvVariablesAreFoundInHelpOutput(t *testing.T) {
 
 // Test that all ZITI_* variables are included in the values for help output
 func TestNoUnknownHelpEnvVariablesExist(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Get the list of ZITI_* environment variables
 	allEnvVars := getZitiEnvironmentVariables()
 
@@ -242,6 +250,7 @@ func TestNoUnknownHelpEnvVariablesExist(t *testing.T) {
 }
 
 func contains(s []string, str string) bool {
+	logtrace.LogWithFunctionName()
 	for _, v := range s {
 		if v == str {
 			return true
@@ -256,6 +265,7 @@ func contains(s []string, str string) bool {
 // should only be used for functionality that we do not control. Many instances of its usage are unnecessary and should
 // be remedied with the aforementioned solution where possible.
 func captureOutput(function func()) string {
+	logtrace.LogWithFunctionName()
 	oldStdOut := os.Stdout
 	r, w, _ := os.Pipe()
 	os.Stdout = w
@@ -309,6 +319,7 @@ func captureOutput(function func()) string {
 }
 
 func setEnvByMap[K string, V string](m map[K]V) {
+	logtrace.LogWithFunctionName()
 	for k, v := range m {
 		os.Setenv(string(k), string(v))
 	}

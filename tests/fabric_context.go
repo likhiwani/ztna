@@ -22,18 +22,6 @@ import (
 	tls2 "crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/go-resty/resty/v2"
-	"github.com/openziti/foundation/v2/util"
-	"github.com/openziti/foundation/v2/versions"
-	id "github.com/openziti/identity"
-	"github.com/openziti/identity/certtools"
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/rest_client"
-	restClientRouter "ztna-core/ztna/controller/rest_client/router"
-	"ztna-core/ztna/controller/rest_model"
-	"ztna-core/ztna/controller/rest_util"
-	"ztna-core/ztna/controller/webapis"
-	"ztna-core/ztna/router"
 	"net"
 	"net/http"
 	"net/http/cookiejar"
@@ -42,12 +30,27 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/rest_client"
+	restClientRouter "ztna-core/ztna/controller/rest_client/router"
+	"ztna-core/ztna/controller/rest_model"
+	"ztna-core/ztna/controller/rest_util"
+	"ztna-core/ztna/controller/webapis"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router"
+
+	"github.com/go-resty/resty/v2"
+	"github.com/openziti/foundation/v2/util"
+	"github.com/openziti/foundation/v2/versions"
+	id "github.com/openziti/identity"
+	"github.com/openziti/identity/certtools"
+
+	"ztna-core/ztna/controller"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
 	"github.com/openziti/transport/v2/tls"
-	"ztna-core/ztna/controller"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 )
@@ -58,6 +61,7 @@ const (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	logOptions := pfxlog.DefaultOptions().
 		SetTrimPrefix("github.com/openziti/").
 		StartingToday()
@@ -82,6 +86,7 @@ type FabricTestContext struct {
 }
 
 func NewFabricTestContext(t *testing.T) *FabricTestContext {
+	logtrace.LogWithFunctionName()
 	ret := &FabricTestContext{
 		LogLevel: os.Getenv("ZITI_TEST_LOG_LEVEL"),
 		Req:      require.New(t),
@@ -95,15 +100,18 @@ func NewFabricTestContext(t *testing.T) *FabricTestContext {
 // level tests. Necessary because using the wrong *testing.T will cause go test library
 // errors.
 func (ctx *FabricTestContext) testContextChanged(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.testing = t
 	ctx.Req = require.New(t)
 }
 
 func (ctx *FabricTestContext) T() *testing.T {
+	logtrace.LogWithFunctionName()
 	return ctx.testing
 }
 
 func (ctx *FabricTestContext) NewTransport(i id.Identity) *http.Transport {
+	logtrace.LogWithFunctionName()
 	var tlsClientConfig *tls2.Config
 
 	if i != nil {
@@ -125,6 +133,7 @@ func (ctx *FabricTestContext) NewTransport(i id.Identity) *http.Transport {
 }
 
 func (ctx *FabricTestContext) NewHttpClient(transport *http.Transport) *http.Client {
+	logtrace.LogWithFunctionName()
 	jar, err := cookiejar.New(&cookiejar.Options{})
 	ctx.Req.NoError(err)
 
@@ -137,10 +146,12 @@ func (ctx *FabricTestContext) NewHttpClient(transport *http.Transport) *http.Cli
 }
 
 func (ctx *FabricTestContext) NewRestClient(i id.Identity) *resty.Client {
+	logtrace.LogWithFunctionName()
 	return resty.NewWithClient(ctx.NewHttpClient(ctx.NewTransport(i)))
 }
 
 func (ctx *FabricTestContext) NewRestClientWithDefaults() *resty.Client {
+	logtrace.LogWithFunctionName()
 	id, err := id.LoadClientIdentity(
 		"./testdata/valid_client_cert/client.cert",
 		"./testdata/valid_client_cert/client.key",
@@ -150,10 +161,12 @@ func (ctx *FabricTestContext) NewRestClientWithDefaults() *resty.Client {
 }
 
 func (ctx *FabricTestContext) StartServer() {
+	logtrace.LogWithFunctionName()
 	ctx.StartServerFor("default", true)
 }
 
 func (ctx *FabricTestContext) StartServerFor(test string, clean bool) {
+	logtrace.LogWithFunctionName()
 	webapis.OverrideRequestWrapper(nil) // clear possible wrapper from another test
 	if ctx.LogLevel != "" {
 		if level, err := logrus.ParseLevel(ctx.LogLevel); err == nil {
@@ -200,6 +213,7 @@ func (ctx *FabricTestContext) StartServerFor(test string, clean bool) {
 }
 
 func (ctx *FabricTestContext) startRouter(index uint8) *router.Router {
+	logtrace.LogWithFunctionName()
 	config, err := router.LoadConfig(fmt.Sprintf(FabricRouterConfFile, index))
 	ctx.Req.NoError(err)
 	r := router.Create(config, versions.NewDefaultVersionProvider())
@@ -210,6 +224,7 @@ func (ctx *FabricTestContext) startRouter(index uint8) *router.Router {
 }
 
 func (ctx *FabricTestContext) shutdownRouters() {
+	logtrace.LogWithFunctionName()
 	for _, r := range ctx.routers {
 		ctx.Req.NoError(r.Shutdown())
 	}
@@ -217,15 +232,18 @@ func (ctx *FabricTestContext) shutdownRouters() {
 }
 
 func (ctx *FabricTestContext) waitForCtrlPort(duration time.Duration) error {
+	logtrace.LogWithFunctionName()
 	return ctx.waitForPort("127.0.0.1:6363", duration)
 }
 
 func (ctx *FabricTestContext) requireRestPort(duration time.Duration) {
+	logtrace.LogWithFunctionName()
 	err := ctx.waitForPort("127.0.0.1:1281", duration)
 	ctx.Req.NoError(err)
 }
 
 func (ctx *FabricTestContext) waitForPort(address string, duration time.Duration) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	endTime := now.Add(duration)
 	maxWait := duration
@@ -245,6 +263,7 @@ func (ctx *FabricTestContext) waitForPort(address string, duration time.Duration
 }
 
 func (ctx *FabricTestContext) waitForPortClose(address string, duration time.Duration) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	endTime := now.Add(duration)
 	maxWait := duration
@@ -264,6 +283,7 @@ func (ctx *FabricTestContext) waitForPortClose(address string, duration time.Dur
 }
 
 func (ctx *FabricTestContext) Teardown() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("tearing down test context")
 	ctx.shutdownRouters()
 	if ctx.fabricController != nil {
@@ -273,6 +293,7 @@ func (ctx *FabricTestContext) Teardown() {
 }
 
 func (ctx *FabricTestContext) createFabricRestClient() *rest_client.ZitiFabric {
+	logtrace.LogWithFunctionName()
 	id, err := id.LoadClientIdentity(
 		"./testdata/valid_client_cert/client.cert",
 		"./testdata/valid_client_cert/client.key",
@@ -285,6 +306,7 @@ func (ctx *FabricTestContext) createFabricRestClient() *rest_client.ZitiFabric {
 }
 
 func (ctx *FabricTestContext) createTestFabricRestClient() *RestClient {
+	logtrace.LogWithFunctionName()
 	client := ctx.createFabricRestClient()
 	return &RestClient{
 		FabricTestContext: ctx,
@@ -298,6 +320,7 @@ type RestClient struct {
 }
 
 func (self *RestClient) EnrollRouter(id string, name string, certFile string) {
+	logtrace.LogWithFunctionName()
 	cert, err := certtools.LoadCertFromFile(certFile)
 	self.Req.NoError(err)
 

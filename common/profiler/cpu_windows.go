@@ -18,18 +18,25 @@
 
 package profiler
 
-import "github.com/michaelquigley/pfxlog"
+import (
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+)
 
 type CPU struct{}
 
 func NewCPU(path string) (*CPU, error) {
+	logtrace.LogWithFunctionName()
 	return NewCPUWithShutdown(path, nil)
 }
 
 func NewCPUWithShutdown(path string, shutdownC chan struct{}) (*CPU, error) {
+	logtrace.LogWithFunctionName()
 	return &CPU{}, nil
 }
 
 func (cpu *CPU) Run() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("cpu profiling not (currently) supported on windows")
 }

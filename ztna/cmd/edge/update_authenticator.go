@@ -19,13 +19,16 @@ package edge
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
+
 	"github.com/spf13/cobra"
 )
 
 // newUpdateAuthenticatorCmd creates the 'edge controller update authenticator' command
 func newUpdateAuthenticatorCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := api.Options{
 		CommonOptions:      common.CommonOptions{Out: out, Err: errOut},
 		OutputJSONResponse: false,

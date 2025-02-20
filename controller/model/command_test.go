@@ -6,10 +6,13 @@ import (
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/stretchr/testify/require"
 )
 
 func TestProtobufFactory(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -41,6 +44,7 @@ func TestProtobufFactory(t *testing.T) {
 }
 
 func BenchmarkRegisterCommand(t *testing.B) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 

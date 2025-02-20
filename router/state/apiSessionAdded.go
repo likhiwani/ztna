@@ -24,12 +24,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/sync_strats"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -47,6 +49,7 @@ type apiSessionAddedHandler struct {
 }
 
 func NewApiSessionAddedHandler(sm Manager, binding channel.Binding) *apiSessionAddedHandler {
+	logtrace.LogWithFunctionName()
 	handler := &apiSessionAddedHandler{
 		control: binding.GetChannel(),
 		sm:      sm,
@@ -62,16 +65,19 @@ func NewApiSessionAddedHandler(sm Manager, binding channel.Binding) *apiSessionA
 }
 
 func (h *apiSessionAddedHandler) HandleClose(_ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if h.stopped.CompareAndSwap(false, true) {
 		close(h.stop)
 	}
 }
 
 func (h *apiSessionAddedHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.ApiSessionAddedType
 }
 
 func (h *apiSessionAddedHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		req := &edge_ctrl_pb.ApiSessionAdded{}
 		if err := proto.Unmarshal(msg.Body, req); err == nil {
@@ -111,6 +117,7 @@ func (h *apiSessionAddedHandler) HandleReceive(msg *channel.Message, ch channel.
 }
 
 func (h *apiSessionAddedHandler) applySync(tracker *apiSessionSyncTracker) {
+	logtrace.LogWithFunctionName()
 	h.trackerLock.Lock()
 	defer h.trackerLock.Unlock()
 
@@ -132,6 +139,7 @@ func (h *apiSessionAddedHandler) applySync(tracker *apiSessionSyncTracker) {
 }
 
 func (h *apiSessionAddedHandler) syncFailed(err error) {
+	logtrace.LogWithFunctionName()
 	h.trackerLock.Lock()
 	defer h.trackerLock.Unlock()
 
@@ -154,6 +162,7 @@ func (h *apiSessionAddedHandler) syncFailed(err error) {
 }
 
 func (h *apiSessionAddedHandler) legacySync(reqWithState *apiSessionAddedWithState) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Warn("using legacy sync logic some connections may be dropped")
 	for _, apiSession := range reqWithState.ApiSessions {
 		h.sm.AddApiSession(&ApiSession{
@@ -165,6 +174,7 @@ func (h *apiSessionAddedHandler) legacySync(reqWithState *apiSessionAddedWithSta
 }
 
 func (h *apiSessionAddedHandler) startReceiveSync() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-h.stop:
@@ -185,6 +195,7 @@ func (h *apiSessionAddedHandler) startReceiveSync() {
 }
 
 func (h *apiSessionAddedHandler) instantSync(reqWithState *apiSessionAddedWithState) {
+	logtrace.LogWithFunctionName()
 	h.trackerLock.Lock()
 	defer h.trackerLock.Unlock()
 
@@ -247,6 +258,7 @@ type apiSessionSyncTracker struct {
 }
 
 func newApiSessionSyncTracker(id string) *apiSessionSyncTracker {
+	logtrace.LogWithFunctionName()
 	return &apiSessionSyncTracker{
 		syncId:        id,
 		reqsWithState: map[int]*apiSessionAddedWithState{},
@@ -256,12 +268,14 @@ func newApiSessionSyncTracker(id string) *apiSessionSyncTracker {
 }
 
 func (tracker *apiSessionSyncTracker) Clear() {
+	logtrace.LogWithFunctionName()
 	tracker.lock.Lock()
 	defer tracker.lock.Unlock()
 	tracker.reqsWithState = map[int]*apiSessionAddedWithState{}
 }
 
 func (tracker *apiSessionSyncTracker) Add(reqWithState *apiSessionAddedWithState) {
+	logtrace.LogWithFunctionName()
 	tracker.lock.Lock()
 	defer tracker.lock.Unlock()
 
@@ -284,6 +298,7 @@ func (tracker *apiSessionSyncTracker) Add(reqWithState *apiSessionAddedWithState
 }
 
 func (tracker *apiSessionSyncTracker) Stop() {
+	logtrace.LogWithFunctionName()
 	if tracker != nil && tracker.stop != nil {
 		close(tracker.stop)
 		tracker.stop = nil
@@ -291,6 +306,7 @@ func (tracker *apiSessionSyncTracker) Stop() {
 }
 
 func (tracker *apiSessionSyncTracker) StartDeadline(timeout time.Duration, h *apiSessionAddedHandler) {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
@@ -316,6 +332,7 @@ func (tracker *apiSessionSyncTracker) StartDeadline(timeout time.Duration, h *ap
 }
 
 func (tracker *apiSessionSyncTracker) HasAll() bool {
+	logtrace.LogWithFunctionName()
 	tracker.lock.Lock()
 	defer tracker.lock.Unlock()
 
@@ -333,6 +350,7 @@ func (tracker *apiSessionSyncTracker) HasAll() bool {
 }
 
 func (tracker *apiSessionSyncTracker) all() []*edge_ctrl_pb.ApiSession {
+	logtrace.LogWithFunctionName()
 	tracker.lock.Lock()
 	defer tracker.lock.Unlock()
 
@@ -360,6 +378,7 @@ type apiSessionAddedWithState struct {
 }
 
 func parseInstantSyncHeaders(msg *channel.Message) (string, *sync_strats.InstantSyncState, error) {
+	logtrace.LogWithFunctionName()
 	if syncStrategyType, ok := msg.Headers[env.SyncStrategyTypeHeader]; ok {
 		if syncStrategyState, ok := msg.Headers[env.SyncStrategyStateHeader]; ok {
 			state := &sync_strats.InstantSyncState{}

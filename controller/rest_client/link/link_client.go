@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new link API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -71,6 +73,7 @@ type ClientService interface {
   Delete a link by id. Requires admin access.
 */
 func (a *Client) DeleteLink(params *DeleteLinkParams, opts ...ClientOption) (*DeleteLinkOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteLinkParams()
@@ -111,6 +114,7 @@ func (a *Client) DeleteLink(params *DeleteLinkParams, opts ...ClientOption) (*De
   Retrieves a single link by id. Requires admin access.
 */
 func (a *Client) DetailLink(params *DetailLinkParams, opts ...ClientOption) (*DetailLinkOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDetailLinkParams()
@@ -152,6 +156,7 @@ func (a *Client) DetailLink(params *DetailLinkParams, opts ...ClientOption) (*De
 
 */
 func (a *Client) ListLinks(params *ListLinksParams, opts ...ClientOption) (*ListLinksOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListLinksParams()
@@ -192,6 +197,7 @@ func (a *Client) ListLinks(params *ListLinksParams, opts ...ClientOption) (*List
   Update the supplied fields on a link. Requires admin access.
 */
 func (a *Client) PatchLink(params *PatchLinkParams, opts ...ClientOption) (*PatchLinkOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPatchLinkParams()
@@ -228,5 +234,6 @@ func (a *Client) PatchLink(params *PatchLinkParams, opts ...ClientOption) (*Patc
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

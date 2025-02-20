@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
 	edgeController "ztna-core/ztna/controller/webapis"
+	"ztna-core/ztna/logtrace"
 )
 
 const EntityNameController = "controllers"
@@ -29,14 +30,17 @@ const EntityNameController = "controllers"
 var ControllerLinkFactory = NewBasicLinkFactory(EntityNameController)
 
 func MapControllerToManagementRestEntity(_ *env.AppEnv, _ *response.RequestContext, Controller *model.Controller) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapControllerToManagementRestModel(Controller)
 }
 
 func MapControllerToClientRestEntity(_ *env.AppEnv, _ *response.RequestContext, Controller *model.Controller) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapControllerToClientRestModel(Controller)
 }
 
 func MapControllerToManagementRestModel(controller *model.Controller) (*rest_model.ControllerDetail, error) {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.ControllerDetail{
 		BaseEntity:   BaseEntityToRestModel(controller, ControllerLinkFactory),
 		Name:         &controller.Name,
@@ -61,6 +65,7 @@ func MapControllerToManagementRestModel(controller *model.Controller) (*rest_mod
 }
 
 func MapControllerToClientRestModel(controller *model.Controller) (*rest_model.ControllerDetail, error) {
+	logtrace.LogWithFunctionName()
 	ret, err := MapControllerToManagementRestModel(controller)
 
 	if err != nil {

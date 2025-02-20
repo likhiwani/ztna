@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DeleteTerminatorReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DeleteTerminatorReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDeleteTerminatorOK()
@@ -84,6 +86,7 @@ func (o *DeleteTerminatorReader) ReadResponse(response runtime.ClientResponse, c
 
 // NewDeleteTerminatorOK creates a DeleteTerminatorOK with default headers values
 func NewDeleteTerminatorOK() *DeleteTerminatorOK {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorOK{}
 }
 
@@ -96,13 +99,16 @@ type DeleteTerminatorOK struct {
 }
 
 func (o *DeleteTerminatorOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /terminators/{id}][%d] deleteTerminatorOK  %+v", 200, o.Payload)
 }
 func (o *DeleteTerminatorOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteTerminatorOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *DeleteTerminatorOK) readResponse(response runtime.ClientResponse, consu
 
 // NewDeleteTerminatorBadRequest creates a DeleteTerminatorBadRequest with default headers values
 func NewDeleteTerminatorBadRequest() *DeleteTerminatorBadRequest {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type DeleteTerminatorBadRequest struct {
 }
 
 func (o *DeleteTerminatorBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /terminators/{id}][%d] deleteTerminatorBadRequest  %+v", 400, o.Payload)
 }
 func (o *DeleteTerminatorBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteTerminatorBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *DeleteTerminatorBadRequest) readResponse(response runtime.ClientRespons
 
 // NewDeleteTerminatorUnauthorized creates a DeleteTerminatorUnauthorized with default headers values
 func NewDeleteTerminatorUnauthorized() *DeleteTerminatorUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type DeleteTerminatorUnauthorized struct {
 }
 
 func (o *DeleteTerminatorUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /terminators/{id}][%d] deleteTerminatorUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DeleteTerminatorUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteTerminatorUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *DeleteTerminatorUnauthorized) readResponse(response runtime.ClientRespo
 
 // NewDeleteTerminatorConflict creates a DeleteTerminatorConflict with default headers values
 func NewDeleteTerminatorConflict() *DeleteTerminatorConflict {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorConflict{}
 }
 
@@ -192,13 +207,16 @@ type DeleteTerminatorConflict struct {
 }
 
 func (o *DeleteTerminatorConflict) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /terminators/{id}][%d] deleteTerminatorConflict  %+v", 409, o.Payload)
 }
 func (o *DeleteTerminatorConflict) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteTerminatorConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *DeleteTerminatorConflict) readResponse(response runtime.ClientResponse,
 
 // NewDeleteTerminatorTooManyRequests creates a DeleteTerminatorTooManyRequests with default headers values
 func NewDeleteTerminatorTooManyRequests() *DeleteTerminatorTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DeleteTerminatorTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type DeleteTerminatorTooManyRequests struct {
 }
 
 func (o *DeleteTerminatorTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[DELETE /terminators/{id}][%d] deleteTerminatorTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DeleteTerminatorTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DeleteTerminatorTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

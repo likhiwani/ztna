@@ -17,10 +17,12 @@
 package event
 
 import (
-	"github.com/openziti/storage/boltz"
 	"io"
 	"regexp"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 // A TypeRegistrar handles registering and unregistering handlers for a given event type
@@ -62,6 +64,7 @@ type FormatterFactory interface {
 type FormatterFactoryF func(sink FormattedEventSink) io.Closer
 
 func (self FormatterFactoryF) NewFormatter(sink FormattedEventSink) io.Closer {
+	logtrace.LogWithFunctionName()
 	return self(sink)
 }
 

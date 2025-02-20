@@ -23,6 +23,7 @@ import (
 	"strings"
 	"text/template"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/templates"
 
@@ -66,6 +67,7 @@ var routerConfigEdgeTemplate string
 
 // NewCmdCreateConfigRouterEdge creates a command object for the "edge" command
 func NewCmdCreateConfigRouterEdge(routerOptions *CreateConfigRouterOptions, data *ConfigTemplateValues) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     "edge",
 		Short:   "Create an edge router config",
@@ -96,6 +98,7 @@ func NewCmdCreateConfigRouterEdge(routerOptions *CreateConfigRouterOptions, data
 }
 
 func (options *CreateConfigRouterOptions) addEdgeFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().BoolVar(&options.WssEnabled, optionWSS, defaultWSS, wssDescription)
 	cmd.Flags().BoolVar(&options.IsPrivate, optionPrivate, defaultPrivate, privateDescription)
 	cmd.PersistentFlags().StringVarP(&options.TunnelerMode, optionTunnelerMode, "", defaultTunnelerMode, tunnelerModeDescription)
@@ -109,6 +112,7 @@ func (options *CreateConfigRouterOptions) addEdgeFlags(cmd *cobra.Command) {
 
 // run implements the command
 func (options *CreateConfigRouterOptions) runEdgeRouter(data *ConfigTemplateValues) error {
+	logtrace.LogWithFunctionName()
 	// Ensure private and wss are not both used
 	if options.IsPrivate && options.WssEnabled {
 		return errors.New("Flags for private and wss configs are mutually exclusive. You must choose private or wss, not both")

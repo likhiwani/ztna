@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -48,6 +49,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListLinksParams() *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	return &ListLinksParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -56,6 +58,7 @@ func NewListLinksParams() *ListLinksParams {
 // NewListLinksParamsWithTimeout creates a new ListLinksParams object
 // with the ability to set a timeout on a request.
 func NewListLinksParamsWithTimeout(timeout time.Duration) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	return &ListLinksParams{
 		timeout: timeout,
 	}
@@ -64,6 +67,7 @@ func NewListLinksParamsWithTimeout(timeout time.Duration) *ListLinksParams {
 // NewListLinksParamsWithContext creates a new ListLinksParams object
 // with the ability to set a context for a request.
 func NewListLinksParamsWithContext(ctx context.Context) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	return &ListLinksParams{
 		Context: ctx,
 	}
@@ -72,6 +76,7 @@ func NewListLinksParamsWithContext(ctx context.Context) *ListLinksParams {
 // NewListLinksParamsWithHTTPClient creates a new ListLinksParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewListLinksParamsWithHTTPClient(client *http.Client) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	return &ListLinksParams{
 		HTTPClient: client,
 	}
@@ -102,6 +107,7 @@ type ListLinksParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *ListLinksParams) WithDefaults() *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -110,77 +116,91 @@ func (o *ListLinksParams) WithDefaults() *ListLinksParams {
 //
 // All values with no default are reset to their zero value.
 func (o *ListLinksParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the list links params
 func (o *ListLinksParams) WithTimeout(timeout time.Duration) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the list links params
 func (o *ListLinksParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the list links params
 func (o *ListLinksParams) WithContext(ctx context.Context) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the list links params
 func (o *ListLinksParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the list links params
 func (o *ListLinksParams) WithHTTPClient(client *http.Client) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the list links params
 func (o *ListLinksParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithFilter adds the filter to the list links params
 func (o *ListLinksParams) WithFilter(filter *string) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetFilter(filter)
 	return o
 }
 
 // SetFilter adds the filter to the list links params
 func (o *ListLinksParams) SetFilter(filter *string) {
+    logtrace.LogWithFunctionName()
 	o.Filter = filter
 }
 
 // WithLimit adds the limit to the list links params
 func (o *ListLinksParams) WithLimit(limit *int64) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the list links params
 func (o *ListLinksParams) SetLimit(limit *int64) {
+    logtrace.LogWithFunctionName()
 	o.Limit = limit
 }
 
 // WithOffset adds the offset to the list links params
 func (o *ListLinksParams) WithOffset(offset *int64) *ListLinksParams {
+    logtrace.LogWithFunctionName()
 	o.SetOffset(offset)
 	return o
 }
 
 // SetOffset adds the offset to the list links params
 func (o *ListLinksParams) SetOffset(offset *int64) {
+    logtrace.LogWithFunctionName()
 	o.Offset = offset
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *ListLinksParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

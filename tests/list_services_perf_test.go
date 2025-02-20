@@ -5,19 +5,22 @@ package tests
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/metrics"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/model"
-	"go.etcd.io/bbolt"
 	"net/url"
 	"os"
 	"sort"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/metrics"
+	"go.etcd.io/bbolt"
 )
 
 func TestServicePerf(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	ctx.ApiHost = "127.0.0.1:1280"
 	ctx.AdminAuthenticator.Username = "admin"
@@ -62,6 +65,7 @@ func TestServicePerf(t *testing.T) {
 }
 
 func Test_ExportIdentityServicePostureChecks(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServerFor("/home/plorenz/work/nf/var/db/ctrl.db", false)

@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/stringz"
 )
@@ -31,10 +32,12 @@ const EntityNameAuthPolicy = "auth-policies"
 var AuthPolicyLinkFactory = NewBasicLinkFactory(EntityNameAuthPolicy)
 
 func MapAuthPolicyToRestEntity(_ *env.AppEnv, _ *response.RequestContext, authPolicyModel *model.AuthPolicy) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapAuthPolicyToRestModel(authPolicyModel)
 }
 
 func MapAuthPolicyToRestModel(model *model.AuthPolicy) (*rest_model.AuthPolicyDetail, error) {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.AuthPolicyDetail{
 		BaseEntity: BaseEntityToRestModel(model, AuthPolicyLinkFactory),
 		Name:       &model.Name,
@@ -71,6 +74,7 @@ func MapAuthPolicyToRestModel(model *model.AuthPolicy) (*rest_model.AuthPolicyDe
 }
 
 func mapCreateAuthPolicyToModel(authPolicy *rest_model.AuthPolicyCreate) *model.AuthPolicy {
+	logtrace.LogWithFunctionName()
 	return &model.AuthPolicy{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(authPolicy.Tags),
@@ -103,16 +107,19 @@ func mapCreateAuthPolicyToModel(authPolicy *rest_model.AuthPolicyCreate) *model.
 }
 
 func MapCreateAuthPolicyToModel(authPolicy *rest_model.AuthPolicyCreate) *model.AuthPolicy {
+	logtrace.LogWithFunctionName()
 	return mapCreateAuthPolicyToModel(authPolicy)
 }
 
 func MapUpdateAuthPolicyToModel(id string, authPolicy *rest_model.AuthPolicyUpdate) *model.AuthPolicy {
+	logtrace.LogWithFunctionName()
 	ret := mapCreateAuthPolicyToModel(&authPolicy.AuthPolicyCreate)
 	ret.BaseEntity.Id = id
 	return ret
 }
 
 func MapPatchAuthPolicyToModel(id string, authPolicy *rest_model.AuthPolicyPatch) *model.AuthPolicy {
+	logtrace.LogWithFunctionName()
 	ret := &model.AuthPolicy{
 		BaseEntity: models.BaseEntity{
 			Id:   id,

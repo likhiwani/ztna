@@ -17,6 +17,7 @@
 package verify
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"ztna-core/ztna/internal"
 	"io"
@@ -52,6 +53,7 @@ type stringMapList []interface{}
 type StringMap map[string]interface{}
 
 func NewVerifyNetwork(_ io.Writer, _ io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	n := &network{}
 
 	cmd := &cobra.Command{
@@ -94,6 +96,7 @@ func NewVerifyNetwork(_ io.Writer, _ io.Writer) *cobra.Command {
 }
 
 func (m StringMap) mapFromKey(key string) StringMap {
+	logtrace.LogWithFunctionName()
 	if v, ok := m[key]; ok {
 		return v.(StringMap)
 	}
@@ -102,6 +105,7 @@ func (m StringMap) mapFromKey(key string) StringMap {
 }
 
 func (m StringMap) listFromKey(key string) stringMapList {
+	logtrace.LogWithFunctionName()
 	if v, ok := m[key]; ok {
 		return v.([]interface{})
 	}
@@ -110,6 +114,7 @@ func (m StringMap) listFromKey(key string) stringMapList {
 }
 
 func (p protoHostPort) testPort(msg string) bool {
+	logtrace.LogWithFunctionName()
 	conn, err := net.DialTimeout("tcp", p.address(), 3*time.Second)
 	if err != nil {
 		log.Errorf("%s at %s cannot be reached.", msg, p.address())
@@ -123,10 +128,12 @@ func (p protoHostPort) testPort(msg string) bool {
 }
 
 func (p protoHostPort) address() string {
+	logtrace.LogWithFunctionName()
 	return p.host + ":" + p.port
 }
 
 func fromString(input string) *protoHostPort {
+	logtrace.LogWithFunctionName()
 	// input is expected to be in either "proto:host:port" format or "host:port" format
 	r := new(protoHostPort)
 	parts := strings.Split(input, ":")
@@ -145,6 +152,7 @@ func fromString(input string) *protoHostPort {
 }
 
 func verifyControllerConfig(controllerConfigFile string) bool {
+	logtrace.LogWithFunctionName()
 	if _, err := os.Stat(controllerConfigFile); err != nil {
 		log.Errorf("controller config file %s does not exist", controllerConfigFile)
 		return true
@@ -191,6 +199,7 @@ func verifyControllerConfig(controllerConfigFile string) bool {
 }
 
 func verifyRouterConfig(routerConfigFile string) bool {
+	logtrace.LogWithFunctionName()
 	if _, err := os.Stat(routerConfigFile); err != nil {
 		log.Errorf("router config file %s does not exist", routerConfigFile)
 		return true
@@ -240,6 +249,7 @@ func verifyRouterConfig(routerConfigFile string) bool {
 }
 
 func stringOrEmpty(input interface{}) string {
+	logtrace.LogWithFunctionName()
 	if str, ok := input.(string); ok {
 		return str
 	}
@@ -247,6 +257,7 @@ func stringOrEmpty(input interface{}) string {
 }
 
 func verifyLinkListener(which string, listener StringMap) bool {
+	logtrace.LogWithFunctionName()
 	bind := fromString(stringOrEmpty(listener["bind"]))
 	adv := fromString(stringOrEmpty(listener["advertise"]))
 	if bind.port != adv.port {
@@ -256,6 +267,7 @@ func verifyLinkListener(which string, listener StringMap) bool {
 }
 
 func verifyEdgeListener(which string, listener StringMap) bool {
+	logtrace.LogWithFunctionName()
 	binding := stringOrEmpty(listener["binding"])
 	if binding == common.EdgeBinding {
 		address := stringOrEmpty(listener["address"])

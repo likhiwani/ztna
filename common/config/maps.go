@@ -1,10 +1,13 @@
 package config
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
 )
 
 func ToJsonCompatibleMap(m map[any]any) (map[string]any, error) {
+	logtrace.LogWithFunctionName()
 	result := map[string]any{}
 	for k, v := range m {
 		if subMap, ok := v.(map[any]any); ok {

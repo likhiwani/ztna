@@ -30,6 +30,7 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"net/http"
 	"strings"
@@ -55,6 +56,7 @@ import (
 
 // NewZitiFabricAPI creates a new ZitiFabric instance
 func NewZitiFabricAPI(spec *loads.Document) *ZitiFabricAPI {
+    logtrace.LogWithFunctionName()
 	return &ZitiFabricAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
@@ -318,51 +320,61 @@ type ZitiFabricAPI struct {
 
 // UseRedoc for documentation at /docs
 func (o *ZitiFabricAPI) UseRedoc() {
+    logtrace.LogWithFunctionName()
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
 func (o *ZitiFabricAPI) UseSwaggerUI() {
+    logtrace.LogWithFunctionName()
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
 func (o *ZitiFabricAPI) SetDefaultProduces(mediaType string) {
+    logtrace.LogWithFunctionName()
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
 func (o *ZitiFabricAPI) SetDefaultConsumes(mediaType string) {
+    logtrace.LogWithFunctionName()
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
 func (o *ZitiFabricAPI) SetSpec(spec *loads.Document) {
+    logtrace.LogWithFunctionName()
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
 func (o *ZitiFabricAPI) DefaultProduces() string {
+    logtrace.LogWithFunctionName()
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
 func (o *ZitiFabricAPI) DefaultConsumes() string {
+    logtrace.LogWithFunctionName()
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
 func (o *ZitiFabricAPI) Formats() strfmt.Registry {
+    logtrace.LogWithFunctionName()
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
 func (o *ZitiFabricAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+    logtrace.LogWithFunctionName()
 	o.formats.Add(name, format, validator)
 }
 
 // Validate validates the registrations in the ZitiFabricAPI
 func (o *ZitiFabricAPI) Validate() error {
+    logtrace.LogWithFunctionName()
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -494,22 +506,26 @@ func (o *ZitiFabricAPI) Validate() error {
 
 // ServeErrorFor gets a error handler for a given operation id
 func (o *ZitiFabricAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+    logtrace.LogWithFunctionName()
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *ZitiFabricAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // Authorizer returns the registered authorizer
 func (o *ZitiFabricAPI) Authorizer() runtime.Authorizer {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
 func (o *ZitiFabricAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+    logtrace.LogWithFunctionName()
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -527,6 +543,7 @@ func (o *ZitiFabricAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Con
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
 func (o *ZitiFabricAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+    logtrace.LogWithFunctionName()
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -543,6 +560,7 @@ func (o *ZitiFabricAPI) ProducersFor(mediaTypes []string) map[string]runtime.Pro
 
 // HandlerFor gets a http.Handler for the provided operation method and path
 func (o *ZitiFabricAPI) HandlerFor(method, path string) (http.Handler, bool) {
+    logtrace.LogWithFunctionName()
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -559,6 +577,7 @@ func (o *ZitiFabricAPI) HandlerFor(method, path string) (http.Handler, bool) {
 
 // Context returns the middleware context for the ziti fabric API
 func (o *ZitiFabricAPI) Context() *middleware.Context {
+    logtrace.LogWithFunctionName()
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -567,6 +586,7 @@ func (o *ZitiFabricAPI) Context() *middleware.Context {
 }
 
 func (o *ZitiFabricAPI) initHandlerCache() {
+    logtrace.LogWithFunctionName()
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -725,6 +745,7 @@ func (o *ZitiFabricAPI) initHandlerCache() {
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
 func (o *ZitiFabricAPI) Serve(builder middleware.Builder) http.Handler {
+    logtrace.LogWithFunctionName()
 	o.Init()
 
 	if o.Middleware != nil {
@@ -738,6 +759,7 @@ func (o *ZitiFabricAPI) Serve(builder middleware.Builder) http.Handler {
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
 func (o *ZitiFabricAPI) Init() {
+    logtrace.LogWithFunctionName()
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
@@ -745,16 +767,19 @@ func (o *ZitiFabricAPI) Init() {
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
 func (o *ZitiFabricAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+    logtrace.LogWithFunctionName()
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
 func (o *ZitiFabricAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
 func (o *ZitiFabricAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+    logtrace.LogWithFunctionName()
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

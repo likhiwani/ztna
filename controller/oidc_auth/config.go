@@ -4,8 +4,9 @@ import (
 	"crypto"
 	"crypto/sha256"
 	"crypto/x509"
-	"ztna-core/ztna/common"
 	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/logtrace"
 )
 
 // Config represents the configuration necessary to operate an OIDC Provider
@@ -26,6 +27,7 @@ type Config struct {
 
 // NewConfig will create a Config with default values
 func NewConfig(issuers []string, cert *x509.Certificate, key crypto.PrivateKey) Config {
+	logtrace.LogWithFunctionName()
 	return Config{
 		Issuers:              issuers,
 		Certificate:          cert,
@@ -38,6 +40,7 @@ func NewConfig(issuers []string, cert *x509.Certificate, key crypto.PrivateKey) 
 
 // MaxTokenDuration returns the maximum token lifetime currently configured
 func (c *Config) MaxTokenDuration() time.Duration {
+	logtrace.LogWithFunctionName()
 	if c.maxTokenDuration == nil {
 		curMaxDur := c.RefreshTokenDuration
 
@@ -55,5 +58,6 @@ func (c *Config) MaxTokenDuration() time.Duration {
 
 // Secret returns a sha256 sum of the configured token secret
 func (c *Config) Secret() [32]byte {
+	logtrace.LogWithFunctionName()
 	return sha256.Sum256([]byte(c.TokenSecret))
 }

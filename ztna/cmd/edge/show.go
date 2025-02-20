@@ -21,15 +21,18 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/spf13/cobra"
 )
 
 // newCreateCmd creates a command object for the "list" command
 func newShowCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	showCmd := &cobra.Command{
 		Use:   "show",
 		Short: "displays various entities managed by the Ziti Edge Controller",
@@ -44,6 +47,7 @@ func newShowCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func newShowConfigAction(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &showConfigAction{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -74,6 +78,7 @@ type showConfigAction struct {
 }
 
 func (self *showConfigAction) run(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("configs", args[0], self.Options)
 	if err != nil {
 		return err
@@ -100,6 +105,7 @@ func (self *showConfigAction) run(_ *cobra.Command, args []string) error {
 }
 
 func newShowConfigTypeAction(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &showConfigTypeAction{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -130,6 +136,7 @@ type showConfigTypeAction struct {
 }
 
 func (self *showConfigTypeAction) run(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("config-types", args[0], self.Options)
 	if err != nil {
 		return err

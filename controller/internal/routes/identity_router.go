@@ -30,6 +30,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
@@ -43,6 +44,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewIdentityRouter()
 	env.AddRouter(r)
 }
@@ -52,12 +54,14 @@ type IdentityRouter struct {
 }
 
 func NewIdentityRouter() *IdentityRouter {
+	logtrace.LogWithFunctionName()
 	return &IdentityRouter{
 		BasePath: "/" + EntityNameIdentity,
 	}
 }
 
 func (r *IdentityRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 
 	//identity crud
 	ae.ManagementApi.IdentityDeleteIdentityHandler = identity.DeleteIdentityHandlerFunc(func(params identity.DeleteIdentityParams, _ interface{}) middleware.Responder {
@@ -174,6 +178,7 @@ func (r *IdentityRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *IdentityRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	roleFilters := rc.Request.URL.Query()["roleFilter"]
 	roleSemantic := rc.Request.URL.Query().Get("roleSemantic")
 
@@ -191,10 +196,12 @@ func (r *IdentityRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
 }
 
 func (r *IdentityRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Identity](ae, rc, ae.Managers.Identity, MapIdentityToRestEntity)
 }
 
 func getIdentityTypeId(ae *env.AppEnv, identityType rest_model.IdentityType) string {
+	logtrace.LogWithFunctionName()
 	//todo: Remove this, should be identityTypeId coming in through the API so we can defer this lookup and subsequent checks to the handlers
 	if identityType == rest_model.IdentityTypeDevice || identityType == rest_model.IdentityTypeService || identityType == rest_model.IdentityTypeUser {
 		return db.DefaultIdentityType
@@ -208,6 +215,7 @@ func getIdentityTypeId(ae *env.AppEnv, identityType rest_model.IdentityType) str
 }
 
 func (r *IdentityRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params identity.CreateIdentityParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, IdentityLinkFactory, func() (string, error) {
 		identityModel, enrollments := MapCreateIdentityToModel(params.Identity, getIdentityTypeId(ae, *params.Identity.Type))
 		err := ae.Managers.Identity.CreateWithEnrollments(identityModel, enrollments, rc.NewChangeContext())
@@ -219,16 +227,19 @@ func (r *IdentityRouter) Create(ae *env.AppEnv, rc *response.RequestContext, par
 }
 
 func (r *IdentityRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Identity)
 }
 
 func (r *IdentityRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params identity.UpdateIdentityParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return ae.Managers.Identity.Update(MapUpdateIdentityToModel(params.ID, params.Identity, getIdentityTypeId(ae, *params.Identity.Type)), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *IdentityRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params identity.PatchIdentityParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		fields = fields.FilterMaps(boltz.FieldTags, db.FieldIdentityAppData, db.FieldIdentityServiceHostingCosts, db.FieldIdentityServiceHostingPrecedences)
 		return ae.Managers.Identity.Update(MapPatchIdentityToModel(params.ID, params.Identity, getIdentityTypeId(ae, params.Identity.Type)), fields, rc.NewChangeContext())
@@ -236,14 +247,17 @@ func (r *IdentityRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, para
 }
 
 func (r *IdentityRouter) listEdgeRouterPolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.Identity, *model.EdgeRouterPolicy](ae, rc, ae.Managers.Identity, ae.Managers.EdgeRouterPolicy, MapEdgeRouterPolicyToRestEntity)
 }
 
 func (r *IdentityRouter) listServicePolicies(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.Identity, *model.ServicePolicy](ae, rc, ae.Managers.Identity, ae.Managers.ServicePolicy, MapServicePolicyToRestEntity)
 }
 
 func (r *IdentityRouter) listServices(ae *env.AppEnv, rc *response.RequestContext, params identity.ListIdentityServicesParams) {
+	logtrace.LogWithFunctionName()
 	typeFilter := ""
 	if params.PolicyType != nil {
 		if strings.EqualFold(*params.PolicyType, db.PolicyTypeBind.String()) {
@@ -260,21 +274,25 @@ func (r *IdentityRouter) listServices(ae *env.AppEnv, rc *response.RequestContex
 }
 
 func (r *IdentityRouter) listAuthenticators(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `identity = "%v"`
 	ListAssociationsWithFilter[*model.Authenticator](ae, rc, filterTemplate, ae.Managers.Authenticator, MapAuthenticatorToRestEntity)
 }
 
 func (r *IdentityRouter) listEnrollments(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `identity = "%v"`
 	ListAssociationsWithFilter[*model.Enrollment](ae, rc, filterTemplate, ae.Managers.Enrollment, MapEnrollmentToRestEntity)
 }
 
 func (r *IdentityRouter) listEdgeRouters(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	filterTemplate := `not isEmpty(from edgeRouterPolicies where anyOf(identities) = "%v")`
 	ListAssociationsWithFilter[*model.EdgeRouter](ae, rc, filterTemplate, ae.Managers.EdgeRouter, MapEdgeRouterToRestEntity)
 }
 
 func (r *IdentityRouter) listServiceConfigs(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	listWithId(rc, func(id string) ([]interface{}, error) {
 		modelIdentity, err := ae.Managers.Identity.Read(id)
 		if err != nil {
@@ -308,6 +326,7 @@ func (r *IdentityRouter) listServiceConfigs(ae *env.AppEnv, rc *response.Request
 }
 
 func (r *IdentityRouter) assignServiceConfigs(ae *env.AppEnv, rc *response.RequestContext, params identity.AssociateIdentitysServiceConfigsParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		var modelServiceConfigs []model.ServiceConfig
 		for _, serviceConfig := range params.ServiceConfigs {
@@ -318,6 +337,7 @@ func (r *IdentityRouter) assignServiceConfigs(ae *env.AppEnv, rc *response.Reque
 }
 
 func (r *IdentityRouter) removeServiceConfigs(ae *env.AppEnv, rc *response.RequestContext, params identity.DisassociateIdentitysServiceConfigsParams) {
+	logtrace.LogWithFunctionName()
 	UpdateAllowEmptyBody(rc, func(id string) error {
 		var modelServiceConfigs []model.ServiceConfig
 		for _, serviceConfig := range params.ServiceConfigIDPairs {
@@ -328,6 +348,7 @@ func (r *IdentityRouter) removeServiceConfigs(ae *env.AppEnv, rc *response.Reque
 }
 
 func (r *IdentityRouter) getPolicyAdvice(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -367,6 +388,7 @@ func (r *IdentityRouter) getPolicyAdvice(ae *env.AppEnv, rc *response.RequestCon
 }
 
 func (r *IdentityRouter) getPostureData(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, _ := rc.GetEntityId()
 	postureData := ae.GetManagers().PostureResponse.PostureData(id)
 
@@ -374,6 +396,7 @@ func (r *IdentityRouter) getPostureData(ae *env.AppEnv, rc *response.RequestCont
 }
 
 func (r *IdentityRouter) getPostureDataFailedServiceRequests(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, _ := rc.GetEntityId()
 	postureData := ae.GetManagers().PostureResponse.PostureData(id)
 
@@ -381,6 +404,7 @@ func (r *IdentityRouter) getPostureDataFailedServiceRequests(ae *env.AppEnv, rc 
 }
 
 func (r *IdentityRouter) removeMfa(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	id, _ := rc.GetEntityId()
 	err := ae.Managers.Mfa.DeleteAllForIdentity(id, rc.NewChangeContext())
 
@@ -393,6 +417,7 @@ func (r *IdentityRouter) removeMfa(ae *env.AppEnv, rc *response.RequestContext) 
 }
 
 func (r *IdentityRouter) updateTracing(ae *env.AppEnv, rc *response.RequestContext, params identity.UpdateIdentityTracingParams) {
+	logtrace.LogWithFunctionName()
 	id, _ := rc.GetEntityId()
 	_, err := ae.Managers.Identity.Read(id)
 
@@ -440,6 +465,7 @@ func (r *IdentityRouter) updateTracing(ae *env.AppEnv, rc *response.RequestConte
 }
 
 func (r *IdentityRouter) Enable(ae *env.AppEnv, rc *response.RequestContext, params identity.EnableIdentityParams) {
+	logtrace.LogWithFunctionName()
 	if err := ae.Managers.Identity.Enable(params.ID, rc.NewChangeContext()); err != nil {
 		rc.RespondWithError(err)
 		return
@@ -449,6 +475,7 @@ func (r *IdentityRouter) Enable(ae *env.AppEnv, rc *response.RequestContext, par
 }
 
 func (r *IdentityRouter) Disable(ae *env.AppEnv, rc *response.RequestContext, params identity.DisableIdentityParams) {
+	logtrace.LogWithFunctionName()
 	if err := ae.Managers.Identity.Disable(params.ID, time.Duration(*params.Disable.DurationMinutes)*time.Minute, rc.NewChangeContext()); err != nil {
 		rc.RespondWithError(err)
 		return

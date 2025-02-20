@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DeleteCircuitHandlerFunc func(DeleteCircuitParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn DeleteCircuitHandlerFunc) Handle(params DeleteCircuitParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DeleteCircuitHandler interface {
 
 // NewDeleteCircuit creates a new http.Handler for the delete circuit operation
 func NewDeleteCircuit(ctx *middleware.Context, handler DeleteCircuitHandler) *DeleteCircuit {
+    logtrace.LogWithFunctionName()
 	return &DeleteCircuit{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DeleteCircuit struct {
 }
 
 func (o *DeleteCircuit) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

@@ -19,17 +19,20 @@ package xgress_transport_udp
 import (
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"net"
+	"time"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_udp"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/identity"
-	"net"
-	"time"
 )
 
 func (l *listener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	if address == "" {
 		return errors.New("address must be specified for transport_udp listeners")
 	}
@@ -56,27 +59,33 @@ func (l *listener) Listen(address string, bindHandler xgress.BindHandler) error 
 }
 
 func (l *listener) WriteTo(data []byte, addr net.Addr) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	return l.conn.WriteTo(data, addr)
 }
 
 func (l *listener) GetSession(sessionId string) (xgress_udp.Session, bool) {
+	logtrace.LogWithFunctionName()
 	session, found := l.sessions[sessionId]
 	return session, found
 }
 
 func (l *listener) DeleteSession(sessionId string) {
+	logtrace.LogWithFunctionName()
 	delete(l.sessions, sessionId)
 }
 
 func (l *listener) QueueEvent(event xgress_udp.EventHandler) {
+	logtrace.LogWithFunctionName()
 	l.eventChan <- event
 }
 
 func (l *listener) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return l.address
 }
 
 func (l *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	if l.conn != nil {
 		return l.conn.Close()
 	}
@@ -84,6 +93,7 @@ func (l *listener) Close() error {
 }
 
 func (l *listener) relayIncomingPackets() {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.ContextLogger(l.address)
 
 	defer func() {
@@ -110,6 +120,7 @@ func (l *listener) relayIncomingPackets() {
 }
 
 func (l *listener) rx() {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.ContextLogger(l.address)
 
 	sessionScanTicker := time.NewTicker(time.Second * 10)
@@ -150,6 +161,7 @@ func (l *listener) rx() {
 }
 
 func (l *listener) handleConnect(initialRequest []byte, session xgress_udp.Session) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(session.LogContext())
 
 	var response *xgress.Response
@@ -166,6 +178,7 @@ func (l *listener) handleConnect(initialRequest []byte, session xgress_udp.Sessi
 }
 
 func newListener(id *identity.TokenId, ctrl env.NetworkControllers, options *xgress.Options) xgress.Listener {
+	logtrace.LogWithFunctionName()
 	return &listener{
 		id:        id,
 		ctrl:      ctrl,
@@ -189,6 +202,7 @@ type listener struct {
 }
 
 func (response *sessionResponse) Handle(listener xgress_udp.Listener) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.ContextLogger(listener.LogContext())
 
 	sessionId := response.addr.String()

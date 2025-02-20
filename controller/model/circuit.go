@@ -17,14 +17,16 @@
 package model
 
 import (
-	"github.com/openziti/identity"
-	"github.com/openziti/storage/objectz"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/datastructures"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/controller/xt"
-	"github.com/orcaman/concurrent-map/v2"
-	"sync/atomic"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/identity"
+	"github.com/openziti/storage/objectz"
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 type Circuit struct {
@@ -41,22 +43,27 @@ type Circuit struct {
 }
 
 func (self *Circuit) GetId() string {
+	logtrace.LogWithFunctionName()
 	return self.Id
 }
 
 func (self *Circuit) SetId(string) {
+	logtrace.LogWithFunctionName()
 	// id cannot be updated
 }
 
 func (self *Circuit) GetCreatedAt() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.CreatedAt
 }
 
 func (self *Circuit) GetUpdatedAt() time.Time {
+	logtrace.LogWithFunctionName()
 	return self.UpdatedAt
 }
 
 func (self *Circuit) GetTags() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	result := map[string]interface{}{}
 	for k, v := range self.Tags {
 		result[k] = v
@@ -65,10 +72,12 @@ func (self *Circuit) GetTags() map[string]interface{} {
 }
 
 func (self *Circuit) IsSystemEntity() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (self *Circuit) HasRouter(routerId string) bool {
+	logtrace.LogWithFunctionName()
 	if self == nil || self.Path == nil {
 		return false
 	}
@@ -81,6 +90,7 @@ func (self *Circuit) HasRouter(routerId string) bool {
 }
 
 func (self *Circuit) IsEndpointRouter(routerId string) bool {
+	logtrace.LogWithFunctionName()
 	if self == nil || self.Path == nil || len(self.Path.Nodes) == 0 {
 		return false
 	}
@@ -93,6 +103,7 @@ type CircuitManager struct {
 }
 
 func NewCircuitController() *CircuitManager {
+	logtrace.LogWithFunctionName()
 	result := &CircuitManager{
 		circuits: cmap.New[*Circuit](),
 	}
@@ -122,14 +133,17 @@ func NewCircuitController() *CircuitManager {
 }
 
 func (self *CircuitManager) GetStore() *objectz.ObjectStore[*Circuit] {
+	logtrace.LogWithFunctionName()
 	return self.store
 }
 
 func (self *CircuitManager) Add(circuit *Circuit) {
+	logtrace.LogWithFunctionName()
 	self.circuits.Set(circuit.Id, circuit)
 }
 
 func (self *CircuitManager) Get(id string) (*Circuit, bool) {
+	logtrace.LogWithFunctionName()
 	if circuit, found := self.circuits.Get(id); found {
 		return circuit, true
 	}
@@ -137,6 +151,7 @@ func (self *CircuitManager) Get(id string) (*Circuit, bool) {
 }
 
 func (self *CircuitManager) All() []*Circuit {
+	logtrace.LogWithFunctionName()
 	var circuits []*Circuit
 	self.circuits.IterCb(func(_ string, circuit *Circuit) {
 		circuits = append(circuits, circuit)
@@ -145,6 +160,7 @@ func (self *CircuitManager) All() []*Circuit {
 }
 
 func (self *CircuitManager) Remove(circuit *Circuit) {
+	logtrace.LogWithFunctionName()
 	self.circuits.Remove(circuit.Id)
 }
 

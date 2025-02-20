@@ -19,18 +19,21 @@ package model
 import (
 	"crypto/x509"
 	"fmt"
+	"net/url"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"go.etcd.io/bbolt"
-	"net/url"
-	"time"
 )
 
 func NewApiSessionCertificateManager(env Env) *ApiSessionCertificateManager {
+	logtrace.LogWithFunctionName()
 	manager := &ApiSessionCertificateManager{
 		baseEntityManager: newBaseEntityManager[*ApiSessionCertificate, *db.ApiSessionCertificate](env, env.GetStores().ApiSessionCertificate),
 	}
@@ -44,14 +47,17 @@ type ApiSessionCertificateManager struct {
 }
 
 func (self *ApiSessionCertificateManager) newModelEntity() *ApiSessionCertificate {
+	logtrace.LogWithFunctionName()
 	return &ApiSessionCertificate{}
 }
 
 func (self *ApiSessionCertificateManager) Create(entity *ApiSessionCertificate, ctx *change.Context) (string, error) {
+	logtrace.LogWithFunctionName()
 	return self.createEntity(entity, ctx.NewMutateContext())
 }
 
 func (self *ApiSessionCertificateManager) CreateFromCSR(identity *Identity, apiSession *ApiSession, isJwt bool, lifespan time.Duration, csrPem []byte, ctx *change.Context) (*ApiSessionCertificate, error) {
+	logtrace.LogWithFunctionName()
 	notBefore := time.Now()
 	notAfter := time.Now().Add(lifespan)
 
@@ -121,14 +127,17 @@ func (self *ApiSessionCertificateManager) CreateFromCSR(identity *Identity, apiS
 }
 
 func (self *ApiSessionCertificateManager) IsUpdated(_ string) bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (self *ApiSessionCertificateManager) Delete(id string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.deleteEntity(id, ctx)
 }
 
 func (self *ApiSessionCertificateManager) Query(tx *bbolt.Tx, query string) (*ApiSessionCertificateListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &ApiSessionCertificateListResult{manager: self}
 	err := self.ListWithTx(tx, query, result.collect)
 	if err != nil {
@@ -138,6 +147,7 @@ func (self *ApiSessionCertificateManager) Query(tx *bbolt.Tx, query string) (*Ap
 }
 
 func (self *ApiSessionCertificateManager) ReadByApiSessionId(tx *bbolt.Tx, apiSessionId string) ([]*ApiSessionCertificate, error) {
+	logtrace.LogWithFunctionName()
 	var result []*ApiSessionCertificate
 
 	certIds := self.env.GetStores().ApiSession.GetRelatedEntitiesIdList(tx, apiSessionId, db.EntityTypeApiSessionCertificates)
@@ -159,6 +169,7 @@ type ApiSessionCertificateListResult struct {
 }
 
 func (result *ApiSessionCertificateListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		ApiSessionCertificate, err := result.manager.readInTx(tx, key)

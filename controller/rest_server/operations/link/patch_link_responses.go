@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type PatchLinkOK struct {
 
 // NewPatchLinkOK creates PatchLinkOK with default headers values
 func NewPatchLinkOK() *PatchLinkOK {
+    logtrace.LogWithFunctionName()
 
 	return &PatchLinkOK{}
 }
 
 // WithPayload adds the payload to the patch link o k response
 func (o *PatchLinkOK) WithPayload(payload *rest_model.Empty) *PatchLinkOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch link o k response
 func (o *PatchLinkOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchLinkOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type PatchLinkBadRequest struct {
 
 // NewPatchLinkBadRequest creates PatchLinkBadRequest with default headers values
 func NewPatchLinkBadRequest() *PatchLinkBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &PatchLinkBadRequest{}
 }
 
 // WithPayload adds the payload to the patch link bad request response
 func (o *PatchLinkBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchLinkBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch link bad request response
 func (o *PatchLinkBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchLinkBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type PatchLinkUnauthorized struct {
 
 // NewPatchLinkUnauthorized creates PatchLinkUnauthorized with default headers values
 func NewPatchLinkUnauthorized() *PatchLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &PatchLinkUnauthorized{}
 }
 
 // WithPayload adds the payload to the patch link unauthorized response
 func (o *PatchLinkUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchLinkUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch link unauthorized response
 func (o *PatchLinkUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchLinkUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type PatchLinkNotFound struct {
 
 // NewPatchLinkNotFound creates PatchLinkNotFound with default headers values
 func NewPatchLinkNotFound() *PatchLinkNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &PatchLinkNotFound{}
 }
 
 // WithPayload adds the payload to the patch link not found response
 func (o *PatchLinkNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchLinkNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch link not found response
 func (o *PatchLinkNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchLinkNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type PatchLinkTooManyRequests struct {
 
 // NewPatchLinkTooManyRequests creates PatchLinkTooManyRequests with default headers values
 func NewPatchLinkTooManyRequests() *PatchLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &PatchLinkTooManyRequests{}
 }
 
 // WithPayload adds the payload to the patch link too many requests response
 func (o *PatchLinkTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *PatchLinkTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the patch link too many requests response
 func (o *PatchLinkTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *PatchLinkTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

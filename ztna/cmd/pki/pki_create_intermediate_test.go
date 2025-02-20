@@ -17,13 +17,16 @@ package pki
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSpiffedSetFromCa(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	intermediateCmd := NewCmdPKICreateIntermediate(out, errOut)
 	name := uuid.New().String()

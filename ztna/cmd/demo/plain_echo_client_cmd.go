@@ -19,8 +19,10 @@ package demo
 import (
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,6 +34,7 @@ type plainEchoClientOptions struct {
 }
 
 func (self *plainEchoClientOptions) run() error {
+	logtrace.LogWithFunctionName()
 	echoClient := &plainEchoClient{
 		host: self.host,
 		port: self.port,
@@ -40,6 +43,7 @@ func (self *plainEchoClientOptions) run() error {
 }
 
 func newPlainEchoClientCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &plainEchoClientOptions{
 		CommonOptions: p(),
 	}

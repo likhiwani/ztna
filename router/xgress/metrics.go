@@ -1,8 +1,10 @@
 package xgress
 
 import (
-	"github.com/openziti/metrics"
 	"sync/atomic"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics"
 )
 
 var ackTxMeter metrics.Meter
@@ -22,6 +24,7 @@ var outstandingPayloads int64
 var outstandingPayloadBytes int64
 
 func InitMetrics(registry metrics.Registry) {
+	logtrace.LogWithFunctionName()
 	droppedPayloadsMeter = registry.Meter("xgress.dropped_payloads")
 	retransmissions = registry.Meter("xgress.retransmissions")
 	retransmissionFailures = registry.Meter("xgress.retransmission_failures")

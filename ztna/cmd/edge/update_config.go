@@ -22,8 +22,10 @@ import (
 	"io"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/pkg/errors"
 
 	"github.com/Jeffail/gabs"
@@ -39,6 +41,7 @@ type updateConfigOptions struct {
 
 // newUpdateConfigCmd updates the 'edge controller update service-policy' command
 func newUpdateConfigCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateConfigOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -70,6 +73,7 @@ func newUpdateConfigCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateConfig update a new config on the Ziti Edge Controller
 func runUpdateConfig(o *updateConfigOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("configs", o.Args[0], o.Options)
 	if err != nil {
 		return err

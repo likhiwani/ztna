@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewInspectParams() *InspectParams {
+    logtrace.LogWithFunctionName()
 	return &InspectParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewInspectParams() *InspectParams {
 // NewInspectParamsWithTimeout creates a new InspectParams object
 // with the ability to set a timeout on a request.
 func NewInspectParamsWithTimeout(timeout time.Duration) *InspectParams {
+    logtrace.LogWithFunctionName()
 	return &InspectParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewInspectParamsWithTimeout(timeout time.Duration) *InspectParams {
 // NewInspectParamsWithContext creates a new InspectParams object
 // with the ability to set a context for a request.
 func NewInspectParamsWithContext(ctx context.Context) *InspectParams {
+    logtrace.LogWithFunctionName()
 	return &InspectParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewInspectParamsWithContext(ctx context.Context) *InspectParams {
 // NewInspectParamsWithHTTPClient creates a new InspectParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewInspectParamsWithHTTPClient(client *http.Client) *InspectParams {
+    logtrace.LogWithFunctionName()
 	return &InspectParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type InspectParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *InspectParams) WithDefaults() *InspectParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *InspectParams) WithDefaults() *InspectParams {
 //
 // All values with no default are reset to their zero value.
 func (o *InspectParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the inspect params
 func (o *InspectParams) WithTimeout(timeout time.Duration) *InspectParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the inspect params
 func (o *InspectParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the inspect params
 func (o *InspectParams) WithContext(ctx context.Context) *InspectParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the inspect params
 func (o *InspectParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the inspect params
 func (o *InspectParams) WithHTTPClient(client *http.Client) *InspectParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the inspect params
 func (o *InspectParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithRequest adds the request to the inspect params
 func (o *InspectParams) WithRequest(request *rest_model.InspectRequest) *InspectParams {
+    logtrace.LogWithFunctionName()
 	o.SetRequest(request)
 	return o
 }
 
 // SetRequest adds the request to the inspect params
 func (o *InspectParams) SetRequest(request *rest_model.InspectRequest) {
+    logtrace.LogWithFunctionName()
 	o.Request = request
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *InspectParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

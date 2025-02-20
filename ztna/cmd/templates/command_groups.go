@@ -17,6 +17,8 @@
 package templates
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/spf13/cobra"
 )
 
@@ -28,6 +30,7 @@ type CommandGroup struct {
 type CommandGroups []CommandGroup
 
 func (g CommandGroups) Add(parent *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	for _, group := range g {
 		for _, c := range group.Commands {
 			if !c.HasParent() {
@@ -38,6 +41,7 @@ func (g CommandGroups) Add(parent *cobra.Command) {
 }
 
 func (g CommandGroups) Has(c *cobra.Command) bool {
+	logtrace.LogWithFunctionName()
 	for _, group := range g {
 		for _, command := range group.Commands {
 			if command == c {
@@ -49,6 +53,7 @@ func (g CommandGroups) Has(c *cobra.Command) bool {
 }
 
 func AddAdditionalCommands(g CommandGroups, message string, cmds []*cobra.Command) CommandGroups {
+	logtrace.LogWithFunctionName()
 	group := CommandGroup{Message: message}
 	for _, c := range cmds {
 		// Don't show commands that have no short description

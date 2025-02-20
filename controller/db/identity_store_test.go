@@ -1,16 +1,19 @@
 package db
 
 import (
+	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/change"
 	"go.etcd.io/bbolt"
-	"testing"
 )
 
 func Test_IdentityStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -19,6 +22,7 @@ func Test_IdentityStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testIdentityServiceConfigs(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	service1 := ctx.RequireNewService(eid.New())
 	service2 := ctx.RequireNewService(eid.New())
 	identity := ctx.RequireNewIdentity(eid.New(), false)
@@ -160,6 +164,7 @@ func (ctx *TestContext) testIdentityServiceConfigs(_ *testing.T) {
 }
 
 func (ctx *TestContext) validateServiceConfigs(identity *Identity) {
+	logtrace.LogWithFunctionName()
 	compareIdentity := &Identity{
 		BaseExtEntity: boltz.BaseExtEntity{
 			Id: identity.Id,
@@ -172,6 +177,7 @@ func (ctx *TestContext) validateServiceConfigs(identity *Identity) {
 }
 
 func (ctx *TestContext) getServiceConfigs(tx *bbolt.Tx, identityId string, configTypes ...string) map[string]map[string]map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	configTypeMap := map[string]struct{}{}
 	for _, configType := range configTypes {
 		configTypeMap[configType] = struct{}{}

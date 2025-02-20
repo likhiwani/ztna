@@ -18,16 +18,19 @@ package model
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/ast"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/db"
-	"go.etcd.io/bbolt"
 	"runtime/debug"
 	"time"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/ast"
+	"go.etcd.io/bbolt"
 )
 
 func NewPostureResponseManager(env Env) *PostureResponseManager {
+	logtrace.LogWithFunctionName()
 	manager := &PostureResponseManager{
 		env:          env,
 		postureCache: newPostureCache(env),
@@ -43,11 +46,13 @@ type PostureResponseManager struct {
 }
 
 func (self *PostureResponseManager) Create(identityId string, postureResponses []*PostureResponse) {
+	logtrace.LogWithFunctionName()
 	self.postureCache.Add(identityId, postureResponses)
 }
 
 // SetMfaPosture sets the MFA passing status a specific API Session owned by an identity
 func (self *PostureResponseManager) SetMfaPosture(identityId string, apiSessionId string, isPassed bool) {
+	logtrace.LogWithFunctionName()
 	postureResponse := &PostureResponse{
 		PostureCheckId: MfaProviderZiti,
 		TypeId:         PostureCheckTypeMFA,
@@ -74,6 +79,7 @@ func (self *PostureResponseManager) SetMfaPosture(identityId string, apiSessionI
 
 // SetMfaPostureForIdentity sets the MFA passing status for all API Sessions associated to an identity
 func (self *PostureResponseManager) SetMfaPostureForIdentity(identityId string, isPassed bool) {
+	logtrace.LogWithFunctionName()
 	postureResponse := &PostureResponse{
 		PostureCheckId: MfaProviderZiti,
 		TypeId:         PostureCheckTypeMFA,
@@ -117,6 +123,7 @@ func (self *PostureResponseManager) SetMfaPostureForIdentity(identityId string, 
 }
 
 func (self *PostureResponseManager) AddPostureDataListener(cb func(env Env, identityId string)) {
+	logtrace.LogWithFunctionName()
 	self.postureCache.AddListener(EventIdentityPostureDataAltered, func(i ...interface{}) {
 		defer func() {
 			if r := recover(); r != nil {
@@ -133,6 +140,7 @@ func (self *PostureResponseManager) AddPostureDataListener(cb func(env Env, iden
 // Kills active sessions that do not have passing posture checks. Run when posture data is updated
 // via posture response or posture data timeout.
 func (self *PostureResponseManager) postureDataUpdated(env Env, identityId string) {
+	logtrace.LogWithFunctionName()
 	var sessionIdsToDelete []string
 
 	//todo: Be smarter about this? Store a cache of service-> result on postureDataCach detect changes?
@@ -213,6 +221,7 @@ func (self *PostureResponseManager) postureDataUpdated(env Env, identityId strin
 }
 
 func (self *PostureResponseManager) Evaluate(identityId, apiSessionId string, check *PostureCheck) (bool, *PostureCheckFailure) {
+	logtrace.LogWithFunctionName()
 	isValid, failures := self.postureCache.Evaluate(identityId, apiSessionId, []*PostureCheck{check})
 
 	if isValid {
@@ -223,14 +232,17 @@ func (self *PostureResponseManager) Evaluate(identityId, apiSessionId string, ch
 }
 
 func (self *PostureResponseManager) PostureData(id string) *PostureData {
+	logtrace.LogWithFunctionName()
 	return self.postureCache.PostureData(id)
 }
 
 func (self *PostureResponseManager) WithPostureData(id string, f func(data *PostureData)) {
+	logtrace.LogWithFunctionName()
 	self.postureCache.WithPostureData(id, f)
 }
 
 func (self *PostureResponseManager) SetSdkInfo(identityId, apiSessionId string, sdkInfo *SdkInfo) {
+	logtrace.LogWithFunctionName()
 	if identityId == "" || apiSessionId == "" || sdkInfo == nil {
 		return
 	}
@@ -260,6 +272,7 @@ type ServiceWithTimeout struct {
 }
 
 func shouldPostureCheckTimeoutBeAltered(mfaCheck *db.PostureCheckMfa, timeSinceLastMfa, gracePeriod time.Duration, onWake, onUnlock bool) bool {
+	logtrace.LogWithFunctionName()
 	if mfaCheck == nil {
 		return false
 	}
@@ -278,6 +291,7 @@ func shouldPostureCheckTimeoutBeAltered(mfaCheck *db.PostureCheckMfa, timeSinceL
 }
 
 func (self *PostureResponseManager) GetEndpointStateChangeAffectedServices(timeSinceLastMfa, gracePeriod time.Duration, onWake bool, onUnlock bool) []*ServiceWithTimeout {
+	logtrace.LogWithFunctionName()
 	affectedChecks := map[string]int64{} //check id -> timeout
 	if onWake || onUnlock {
 		queryStr := fmt.Sprintf("%s=true or %s=true", db.FieldPostureCheckMfaPromptOnUnlock, db.FieldPostureCheckMfaPromptOnWake)

@@ -3,9 +3,11 @@ package db
 import (
 	"fmt"
 	"testing"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_GenerateSymbols(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	t.SkipNow()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()

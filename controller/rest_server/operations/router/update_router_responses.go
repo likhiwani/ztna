@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type UpdateRouterOK struct {
 
 // NewUpdateRouterOK creates UpdateRouterOK with default headers values
 func NewUpdateRouterOK() *UpdateRouterOK {
+    logtrace.LogWithFunctionName()
 
 	return &UpdateRouterOK{}
 }
 
 // WithPayload adds the payload to the update router o k response
 func (o *UpdateRouterOK) WithPayload(payload *rest_model.Empty) *UpdateRouterOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update router o k response
 func (o *UpdateRouterOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *UpdateRouterOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type UpdateRouterBadRequest struct {
 
 // NewUpdateRouterBadRequest creates UpdateRouterBadRequest with default headers values
 func NewUpdateRouterBadRequest() *UpdateRouterBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &UpdateRouterBadRequest{}
 }
 
 // WithPayload adds the payload to the update router bad request response
 func (o *UpdateRouterBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *UpdateRouterBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update router bad request response
 func (o *UpdateRouterBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *UpdateRouterBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type UpdateRouterUnauthorized struct {
 
 // NewUpdateRouterUnauthorized creates UpdateRouterUnauthorized with default headers values
 func NewUpdateRouterUnauthorized() *UpdateRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &UpdateRouterUnauthorized{}
 }
 
 // WithPayload adds the payload to the update router unauthorized response
 func (o *UpdateRouterUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *UpdateRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update router unauthorized response
 func (o *UpdateRouterUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *UpdateRouterUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type UpdateRouterNotFound struct {
 
 // NewUpdateRouterNotFound creates UpdateRouterNotFound with default headers values
 func NewUpdateRouterNotFound() *UpdateRouterNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &UpdateRouterNotFound{}
 }
 
 // WithPayload adds the payload to the update router not found response
 func (o *UpdateRouterNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *UpdateRouterNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update router not found response
 func (o *UpdateRouterNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *UpdateRouterNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type UpdateRouterTooManyRequests struct {
 
 // NewUpdateRouterTooManyRequests creates UpdateRouterTooManyRequests with default headers values
 func NewUpdateRouterTooManyRequests() *UpdateRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &UpdateRouterTooManyRequests{}
 }
 
 // WithPayload adds the payload to the update router too many requests response
 func (o *UpdateRouterTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *UpdateRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update router too many requests response
 func (o *UpdateRouterTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *UpdateRouterTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

@@ -22,6 +22,7 @@ import (
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 
 	"github.com/openziti/channel/v3"
@@ -30,12 +31,14 @@ import (
 )
 
 func ModelMetrics(closer <-chan struct{}) model.Stage {
+	logtrace.LogWithFunctionName()
 	return ModelMetricsWithIdMapper(closer, func(id string) string {
 		return "#" + id
 	})
 }
 
 func ModelMetricsWithIdMapper(closer <-chan struct{}, f func(string) string) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &modelMetrics{
 		closer:             closer,
 		idToSelectorMapper: f,
@@ -50,6 +53,7 @@ type modelMetrics struct {
 }
 
 func (self *modelMetrics) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	self.m = run.GetModel()
 
 	bindHandler := func(binding channel.Binding) error {
@@ -84,6 +88,7 @@ func (self *modelMetrics) Execute(run model.Run) error {
 }
 
 func (self *modelMetrics) handleMetricsMessages(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	evt := &event.MetricsEvent{}
 	err := json.Unmarshal(msg.Body, evt)
 	if err != nil {
@@ -102,6 +107,7 @@ func (self *modelMetrics) handleMetricsMessages(msg *channel.Message, _ channel.
 }
 
 func (self *modelMetrics) runMetrics() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
@@ -110,6 +116,7 @@ func (self *modelMetrics) runMetrics() {
 }
 
 func (self *modelMetrics) toModelMetricsEvent(fabricEvent *event.MetricsEvent) *model.MetricsEvent {
+	logtrace.LogWithFunctionName()
 	modelEvent := &model.MetricsEvent{
 		Timestamp: fabricEvent.Timestamp,
 		Metrics:   model.MetricSet{},

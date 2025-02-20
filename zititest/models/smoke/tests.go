@@ -2,9 +2,11 @@ package smoke
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/openziti/fablab/kernel/model"
-	"time"
 )
 
 var hashes = map[string]string{
@@ -30,6 +32,7 @@ var FileSizes = []string{"1KB", "100KB", "20MB"}
 var HttpClients = []HttpClient{ClientCurl, ClientWget}
 
 func TestFileDownload(hostSelector string, client HttpClient, hostType string, encrypted bool, fileSize string) (string, error) {
+	logtrace.LogWithFunctionName()
 	host := model.GetModel().MustSelectHost("." + hostSelector + "-client")
 
 	urlExtra := ""
@@ -58,6 +61,7 @@ func TestFileDownload(hostSelector string, client HttpClient, hostType string, e
 }
 
 func TestIperf(clientHostSelector, hostType string, encrypted, reversed bool, run model.Run) (string, error) {
+	logtrace.LogWithFunctionName()
 	c, err := model.GetModel().SelectComponent(".iperf." + hostType)
 	if err != nil {
 		return "", err

@@ -18,26 +18,30 @@ package zitilib_runlevel_5_operation
 
 import (
 	"encoding/binary"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/sdk-golang/ziti"
-	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/cli"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"net"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/logtrace"
+	zitilib_actions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/cli"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 )
 
 func NewClientMetrics(service string, closer <-chan struct{}) *ClientMetrics {
+	logtrace.LogWithFunctionName()
 	return NewClientMetricsWithIdMapper(service, closer, func(id string) string {
 		return "#" + id
 	})
 }
 
 func NewClientMetricsWithIdMapper(service string, closer <-chan struct{}, f func(string) string) *ClientMetrics {
+	logtrace.LogWithFunctionName()
 	return &ClientMetrics{
 		service:            service,
 		closer:             closer,
@@ -54,6 +58,7 @@ type ClientMetrics struct {
 }
 
 func (metrics *ClientMetrics) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	if err := zitilib_actions.EdgeExec(run.GetModel(), "delete", "identity", "metrics-host"); err != nil {
 		return err
 	}
@@ -72,6 +77,7 @@ func (metrics *ClientMetrics) Execute(run model.Run) error {
 }
 
 func (metrics *ClientMetrics) Operate(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	metrics.model = run.GetModel()
 
 	identityConfigPath := run.GetLabel().GetFilePath("metrics-host.json")
@@ -105,6 +111,7 @@ func (metrics *ClientMetrics) Operate(run model.Run) error {
 }
 
 func (metrics *ClientMetrics) HandleMetricsConn(conn net.Conn) {
+	logtrace.LogWithFunctionName()
 	defer func() { _ = conn.Close() }()
 
 	log := pfxlog.Logger()
@@ -151,6 +158,7 @@ func (metrics *ClientMetrics) HandleMetricsConn(conn net.Conn) {
 }
 
 func (metrics *ClientMetrics) runMetrics() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("starting")
 	defer logrus.Infof("exiting")
 
@@ -159,6 +167,7 @@ func (metrics *ClientMetrics) runMetrics() {
 }
 
 func (metrics *ClientMetrics) toClientMetricsEvent(fabricEvent *mgmt_pb.StreamMetricsEvent) *model.MetricsEvent {
+	logtrace.LogWithFunctionName()
 	modelEvent := &model.MetricsEvent{
 		Timestamp: time.Unix(fabricEvent.Timestamp.Seconds, int64(fabricEvent.Timestamp.Nanos)),
 		Metrics:   model.MetricSet{},

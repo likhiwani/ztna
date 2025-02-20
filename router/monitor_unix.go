@@ -19,11 +19,13 @@
 package router
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/forwarder"
 	"os"
 	"os/signal"
 	"syscall"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/forwarder"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 type routerMonitor struct {
@@ -32,10 +34,12 @@ type routerMonitor struct {
 }
 
 func newRouterMonitor(forwarder *forwarder.Forwarder, closeNotify <-chan struct{}) *routerMonitor {
+	logtrace.LogWithFunctionName()
 	return &routerMonitor{forwarder: forwarder, closeNotify: closeNotify}
 }
 
 func (routerMonitor *routerMonitor) Monitor() {
+	logtrace.LogWithFunctionName()
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGUSR1)
 	for {

@@ -17,17 +17,20 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewEdgeRouterPolicyManager(env Env) *EdgeRouterPolicyManager {
+	logtrace.LogWithFunctionName()
 	manager := &EdgeRouterPolicyManager{
 		baseEntityManager: newBaseEntityManager[*EdgeRouterPolicy, *db.EdgeRouterPolicy](env, env.GetStores().EdgeRouterPolicy),
 	}
@@ -43,27 +46,33 @@ type EdgeRouterPolicyManager struct {
 }
 
 func (self *EdgeRouterPolicyManager) newModelEntity() *EdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouterPolicy{}
 }
 
 func (self *EdgeRouterPolicyManager) Create(entity *EdgeRouterPolicy, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*EdgeRouterPolicy](self, entity, ctx)
 }
 
 func (self *EdgeRouterPolicyManager) ApplyCreate(cmd *command.CreateEntityCommand[*EdgeRouterPolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *EdgeRouterPolicyManager) Update(entity *EdgeRouterPolicy, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*EdgeRouterPolicy](self, entity, checker, ctx)
 }
 
 func (self *EdgeRouterPolicyManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*EdgeRouterPolicy], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *EdgeRouterPolicyManager) Marshall(entity *EdgeRouterPolicy) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -82,6 +91,7 @@ func (self *EdgeRouterPolicyManager) Marshall(entity *EdgeRouterPolicy) ([]byte,
 }
 
 func (self *EdgeRouterPolicyManager) Unmarshall(bytes []byte) (*EdgeRouterPolicy, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.EdgeRouterPolicy{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

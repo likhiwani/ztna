@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -48,6 +49,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewListCircuitsParams() *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -56,6 +58,7 @@ func NewListCircuitsParams() *ListCircuitsParams {
 // NewListCircuitsParamsWithTimeout creates a new ListCircuitsParams object
 // with the ability to set a timeout on a request.
 func NewListCircuitsParamsWithTimeout(timeout time.Duration) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsParams{
 		timeout: timeout,
 	}
@@ -64,6 +67,7 @@ func NewListCircuitsParamsWithTimeout(timeout time.Duration) *ListCircuitsParams
 // NewListCircuitsParamsWithContext creates a new ListCircuitsParams object
 // with the ability to set a context for a request.
 func NewListCircuitsParamsWithContext(ctx context.Context) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsParams{
 		Context: ctx,
 	}
@@ -72,6 +76,7 @@ func NewListCircuitsParamsWithContext(ctx context.Context) *ListCircuitsParams {
 // NewListCircuitsParamsWithHTTPClient creates a new ListCircuitsParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewListCircuitsParamsWithHTTPClient(client *http.Client) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsParams{
 		HTTPClient: client,
 	}
@@ -102,6 +107,7 @@ type ListCircuitsParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *ListCircuitsParams) WithDefaults() *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -110,77 +116,91 @@ func (o *ListCircuitsParams) WithDefaults() *ListCircuitsParams {
 //
 // All values with no default are reset to their zero value.
 func (o *ListCircuitsParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the list circuits params
 func (o *ListCircuitsParams) WithTimeout(timeout time.Duration) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the list circuits params
 func (o *ListCircuitsParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the list circuits params
 func (o *ListCircuitsParams) WithContext(ctx context.Context) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the list circuits params
 func (o *ListCircuitsParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the list circuits params
 func (o *ListCircuitsParams) WithHTTPClient(client *http.Client) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the list circuits params
 func (o *ListCircuitsParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithFilter adds the filter to the list circuits params
 func (o *ListCircuitsParams) WithFilter(filter *string) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetFilter(filter)
 	return o
 }
 
 // SetFilter adds the filter to the list circuits params
 func (o *ListCircuitsParams) SetFilter(filter *string) {
+    logtrace.LogWithFunctionName()
 	o.Filter = filter
 }
 
 // WithLimit adds the limit to the list circuits params
 func (o *ListCircuitsParams) WithLimit(limit *int64) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetLimit(limit)
 	return o
 }
 
 // SetLimit adds the limit to the list circuits params
 func (o *ListCircuitsParams) SetLimit(limit *int64) {
+    logtrace.LogWithFunctionName()
 	o.Limit = limit
 }
 
 // WithOffset adds the offset to the list circuits params
 func (o *ListCircuitsParams) WithOffset(offset *int64) *ListCircuitsParams {
+    logtrace.LogWithFunctionName()
 	o.SetOffset(offset)
 	return o
 }
 
 // SetOffset adds the offset to the list circuits params
 func (o *ListCircuitsParams) SetOffset(offset *int64) {
+    logtrace.LogWithFunctionName()
 	o.Offset = offset
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *ListCircuitsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

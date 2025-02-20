@@ -17,16 +17,19 @@
 package api_impl
 
 import (
-	"github.com/go-openapi/runtime/middleware"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/rest_server/operations/terminator"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewTerminatorRouter()
 	AddRouter(r)
 }
@@ -36,12 +39,14 @@ type TerminatorRouter struct {
 }
 
 func NewTerminatorRouter() *TerminatorRouter {
+	logtrace.LogWithFunctionName()
 	return &TerminatorRouter{
 		BasePath: "/" + EntityNameTerminator,
 	}
 }
 
 func (r *TerminatorRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	fabricApi.TerminatorDeleteTerminatorHandler = terminator.DeleteTerminatorHandlerFunc(func(params terminator.DeleteTerminatorParams) middleware.Responder {
 		return wrapper.WrapRequest(r.Delete, params.HTTPRequest, params.ID, "")
 	})
@@ -68,14 +73,17 @@ func (r *TerminatorRouter) Register(fabricApi *operations.ZitiFabricAPI, wrapper
 }
 
 func (r *TerminatorRouter) List(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Terminator](n, rc, n.Managers.Terminator, TerminatorModelMapper{})
 }
 
 func (r *TerminatorRouter) Detail(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Terminator](n, rc, n.Managers.Terminator, TerminatorModelMapper{})
 }
 
 func (r *TerminatorRouter) Create(n *network.Network, rc api.RequestContext, params terminator.CreateTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, TerminatorLinkFactory, func() (string, error) {
 		entity := MapCreateTerminatorToModel(params.Terminator)
 		err := n.Terminator.Create(entity, rc.NewChangeContext())
@@ -87,16 +95,19 @@ func (r *TerminatorRouter) Create(n *network.Network, rc api.RequestContext, par
 }
 
 func (r *TerminatorRouter) Delete(n *network.Network, rc api.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, n.Managers.Terminator)
 }
 
 func (r *TerminatorRouter) Update(n *network.Network, rc api.RequestContext, params terminator.UpdateTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Update(rc, func(id string) error {
 		return n.Managers.Terminator.Update(MapUpdateTerminatorToModel(params.ID, params.Terminator), nil, rc.NewChangeContext())
 	})
 }
 
 func (r *TerminatorRouter) Patch(n *network.Network, rc api.RequestContext, params terminator.PatchTerminatorParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		return n.Managers.Terminator.Update(MapPatchTerminatorToModel(params.ID, params.Terminator), fields.FilterMaps("tags"), rc.NewChangeContext())
 	})

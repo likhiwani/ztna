@@ -24,12 +24,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/openziti/foundation/v2/errorz"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewEnrollmentRouter()
 	env.AddRouter(r)
 }
@@ -39,12 +41,14 @@ type EnrollmentRouter struct {
 }
 
 func NewEnrollmentRouter() *EnrollmentRouter {
+	logtrace.LogWithFunctionName()
 	return &EnrollmentRouter{
 		BasePath: "/" + EntityNameEnrollment,
 	}
 }
 
 func (r *EnrollmentRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.EnrollmentDeleteEnrollmentHandler = enrollment.DeleteEnrollmentHandlerFunc(func(params enrollment.DeleteEnrollmentParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -71,18 +75,22 @@ func (r *EnrollmentRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *EnrollmentRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Enrollment](ae, rc, ae.Managers.Enrollment, MapEnrollmentToRestEntity)
 }
 
 func (r *EnrollmentRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Enrollment](ae, rc, ae.Managers.Enrollment, MapEnrollmentToRestEntity)
 }
 
 func (r *EnrollmentRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Enrollment)
 }
 
 func (r *EnrollmentRouter) Refresh(ae *env.AppEnv, rc *response.RequestContext, params enrollment.RefreshEnrollmentParams) {
+	logtrace.LogWithFunctionName()
 	id, err := rc.GetEntityId()
 
 	if err != nil {
@@ -108,6 +116,7 @@ func (r *EnrollmentRouter) Refresh(ae *env.AppEnv, rc *response.RequestContext, 
 }
 
 func (r *EnrollmentRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params enrollment.CreateEnrollmentParams) {
+	logtrace.LogWithFunctionName()
 	Create(rc, rc, EnrollmentLinkFactory, func() (string, error) {
 		return MapCreate(ae.Managers.Enrollment.Create, MapCreateEnrollmentToModel(params.Enrollment), rc)
 	})
@@ -115,6 +124,7 @@ func (r *EnrollmentRouter) Create(ae *env.AppEnv, rc *response.RequestContext, p
 }
 
 func MapCreateEnrollmentToModel(create *rest_model.EnrollmentCreate) *model.Enrollment {
+	logtrace.LogWithFunctionName()
 	ret := &model.Enrollment{
 		Method:     *create.Method,
 		IdentityId: create.IdentityID,

@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type TerminatorEventType string
@@ -53,12 +54,14 @@ type TerminatorEvent struct {
 }
 
 func (event *TerminatorEvent) IsModelEvent() bool {
+	logtrace.LogWithFunctionName()
 	return event.EventType == TerminatorCreated ||
 		event.EventType == TerminatorUpdated ||
 		event.EventType == TerminatorDeleted
 }
 
 func (event *TerminatorEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v time=%v serviceId=%v terminatorId=%v routerId=%v routerOnline=%v precedence=%v "+
 		"staticCost=%v dynamicCost=%v totalTerminators=%v usableDefaultTerminator=%v usableRequiredTerminators=%v",
 		event.Namespace, event.EventType, event.Timestamp, event.ServiceId, event.TerminatorId, event.RouterId, event.RouterOnline,

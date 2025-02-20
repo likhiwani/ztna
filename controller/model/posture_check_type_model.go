@@ -17,9 +17,11 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -30,6 +32,7 @@ type PostureCheckType struct {
 }
 
 func (entity *PostureCheckType) toBoltEntity() (*db.PostureCheckType, error) {
+	logtrace.LogWithFunctionName()
 	var operatingSystems []db.OperatingSystem
 
 	for _, os := range entity.OperatingSystems {
@@ -47,14 +50,17 @@ func (entity *PostureCheckType) toBoltEntity() (*db.PostureCheckType, error) {
 }
 
 func (entity *PostureCheckType) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.PostureCheckType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *PostureCheckType) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.PostureCheckType, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity()
 }
 
 func (entity *PostureCheckType) fillFrom(_ Env, _ *bbolt.Tx, boltPostureCheckType *db.PostureCheckType) error {
+	logtrace.LogWithFunctionName()
 	var operatingSystems []OperatingSystem
 
 	for _, os := range boltPostureCheckType.OperatingSystems {

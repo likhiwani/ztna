@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new circuit API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -69,6 +71,7 @@ type ClientService interface {
   Delete a circuit by id. Requires admin access.
 */
 func (a *Client) DeleteCircuit(params *DeleteCircuitParams, opts ...ClientOption) (*DeleteCircuitOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteCircuitParams()
@@ -109,6 +112,7 @@ func (a *Client) DeleteCircuit(params *DeleteCircuitParams, opts ...ClientOption
   Retrieves a single circuit by id. Requires admin access.
 */
 func (a *Client) DetailCircuit(params *DetailCircuitParams, opts ...ClientOption) (*DetailCircuitOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDetailCircuitParams()
@@ -150,6 +154,7 @@ func (a *Client) DetailCircuit(params *DetailCircuitParams, opts ...ClientOption
 
 */
 func (a *Client) ListCircuits(params *ListCircuitsParams, opts ...ClientOption) (*ListCircuitsOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListCircuitsParams()
@@ -186,5 +191,6 @@ func (a *Client) ListCircuits(params *ListCircuitsParams, opts ...ClientOption) 
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

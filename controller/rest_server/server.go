@@ -27,6 +27,7 @@
 package rest_server
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"crypto/tls"
 	"crypto/x509"
@@ -61,6 +62,7 @@ const (
 var defaultSchemes []string
 
 func init() {
+    logtrace.LogWithFunctionName()
 	defaultSchemes = []string{
 		schemeHTTPS,
 	}
@@ -68,6 +70,7 @@ func init() {
 
 // NewServer creates a new api ziti fabric server but does not configure it
 func NewServer(api *operations.ZitiFabricAPI) *Server {
+    logtrace.LogWithFunctionName()
 	s := new(Server)
 
 	s.shutdown = make(chan struct{})
@@ -78,6 +81,7 @@ func NewServer(api *operations.ZitiFabricAPI) *Server {
 
 // ConfigureAPI configures the API and handlers.
 func (s *Server) ConfigureAPI() {
+    logtrace.LogWithFunctionName()
 	if s.api != nil {
 		s.handler = configureAPI(s.api)
 	}
@@ -85,6 +89,7 @@ func (s *Server) ConfigureAPI() {
 
 // ConfigureFlags configures the additional flags defined by the handlers. Needs to be called before the parser.Parse
 func (s *Server) ConfigureFlags() {
+    logtrace.LogWithFunctionName()
 	if s.api != nil {
 		configureFlags(s.api)
 	}
@@ -130,6 +135,7 @@ type Server struct {
 
 // Logf logs message either via defined user logger or via system one if no user logger is defined.
 func (s *Server) Logf(f string, args ...interface{}) {
+    logtrace.LogWithFunctionName()
 	if s.api != nil && s.api.Logger != nil {
 		s.api.Logger(f, args...)
 	} else {
@@ -140,6 +146,7 @@ func (s *Server) Logf(f string, args ...interface{}) {
 // Fatalf logs message either via defined user logger or via system one if no user logger is defined.
 // Exits with non-zero status after printing
 func (s *Server) Fatalf(f string, args ...interface{}) {
+    logtrace.LogWithFunctionName()
 	if s.api != nil && s.api.Logger != nil {
 		s.api.Logger(f, args...)
 		os.Exit(1)
@@ -150,6 +157,7 @@ func (s *Server) Fatalf(f string, args ...interface{}) {
 
 // SetAPI configures the server with the specified API. Needs to be called before Serve
 func (s *Server) SetAPI(api *operations.ZitiFabricAPI) {
+    logtrace.LogWithFunctionName()
 	if api == nil {
 		s.api = nil
 		s.handler = nil
@@ -161,6 +169,7 @@ func (s *Server) SetAPI(api *operations.ZitiFabricAPI) {
 }
 
 func (s *Server) hasScheme(scheme string) bool {
+    logtrace.LogWithFunctionName()
 	schemes := s.EnabledListeners
 	if len(schemes) == 0 {
 		schemes = defaultSchemes
@@ -176,6 +185,7 @@ func (s *Server) hasScheme(scheme string) bool {
 
 // Serve the api
 func (s *Server) Serve() (err error) {
+    logtrace.LogWithFunctionName()
 	if !s.hasListeners {
 		if err = s.Listen(); err != nil {
 			return err
@@ -352,6 +362,7 @@ func (s *Server) Serve() (err error) {
 
 // Listen creates the listeners for the server
 func (s *Server) Listen() error {
+    logtrace.LogWithFunctionName()
 	if s.hasListeners { // already done this
 		return nil
 	}
@@ -423,6 +434,7 @@ func (s *Server) Listen() error {
 
 // Shutdown server and clean up resources
 func (s *Server) Shutdown() error {
+    logtrace.LogWithFunctionName()
 	if atomic.CompareAndSwapInt32(&s.shuttingDown, 0, 1) {
 		close(s.shutdown)
 	}
@@ -430,6 +442,7 @@ func (s *Server) Shutdown() error {
 }
 
 func (s *Server) handleShutdown(wg *sync.WaitGroup, serversPtr *[]*http.Server) {
+    logtrace.LogWithFunctionName()
 	// wg.Done must occur last, after s.api.ServerShutdown()
 	// (to preserve old behaviour)
 	defer wg.Done()
@@ -473,16 +486,19 @@ func (s *Server) handleShutdown(wg *sync.WaitGroup, serversPtr *[]*http.Server) 
 
 // GetHandler returns a handler useful for testing
 func (s *Server) GetHandler() http.Handler {
+    logtrace.LogWithFunctionName()
 	return s.handler
 }
 
 // SetHandler allows for setting a http handler on this server
 func (s *Server) SetHandler(handler http.Handler) {
+    logtrace.LogWithFunctionName()
 	s.handler = handler
 }
 
 // UnixListener returns the domain socket listener
 func (s *Server) UnixListener() (net.Listener, error) {
+    logtrace.LogWithFunctionName()
 	if !s.hasListeners {
 		if err := s.Listen(); err != nil {
 			return nil, err
@@ -493,6 +509,7 @@ func (s *Server) UnixListener() (net.Listener, error) {
 
 // HTTPListener returns the http listener
 func (s *Server) HTTPListener() (net.Listener, error) {
+    logtrace.LogWithFunctionName()
 	if !s.hasListeners {
 		if err := s.Listen(); err != nil {
 			return nil, err
@@ -503,6 +520,7 @@ func (s *Server) HTTPListener() (net.Listener, error) {
 
 // TLSListener returns the https listener
 func (s *Server) TLSListener() (net.Listener, error) {
+    logtrace.LogWithFunctionName()
 	if !s.hasListeners {
 		if err := s.Listen(); err != nil {
 			return nil, err
@@ -512,6 +530,7 @@ func (s *Server) TLSListener() (net.Listener, error) {
 }
 
 func handleInterrupt(once *sync.Once, s *Server) {
+    logtrace.LogWithFunctionName()
 	once.Do(func() {
 		for range s.interrupt {
 			if s.interrupted {
@@ -528,5 +547,6 @@ func handleInterrupt(once *sync.Once, s *Server) {
 }
 
 func signalNotify(interrupt chan<- os.Signal) {
+    logtrace.LogWithFunctionName()
 	signal.Notify(interrupt, syscall.SIGINT, syscall.SIGTERM)
 }

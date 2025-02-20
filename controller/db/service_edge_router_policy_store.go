@@ -2,15 +2,18 @@ package db
 
 import (
 	"fmt"
+	"sort"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
-	"sort"
 )
 
 func newServiceEdgeRouterPolicy(name string) *ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	return &ServiceEdgeRouterPolicy{
 		BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
 		Name:          name,
@@ -27,14 +30,17 @@ type ServiceEdgeRouterPolicy struct {
 }
 
 func (entity *ServiceEdgeRouterPolicy) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *ServiceEdgeRouterPolicy) GetSemantic() string {
+	logtrace.LogWithFunctionName()
 	return entity.Semantic
 }
 
 func (entity *ServiceEdgeRouterPolicy) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeServiceEdgeRouterPolicies
 }
 
@@ -46,6 +52,7 @@ type ServiceEdgeRouterPolicyStore interface {
 }
 
 func newServiceEdgeRouterPolicyStore(stores *stores) *serviceEdgeRouterPolicyStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &serviceEdgeRouterPolicyStoreImpl{}
 	store.baseStore = newBaseStore[*ServiceEdgeRouterPolicy](stores, store)
 	store.InitImpl(store)
@@ -67,14 +74,17 @@ type serviceEdgeRouterPolicyStoreImpl struct {
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) NewEntity() *ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	return &ServiceEdgeRouterPolicy{}
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 
 	store.indexName = store.addUniqueNameField()
@@ -86,11 +96,13 @@ func (store *serviceEdgeRouterPolicyStoreImpl) initializeLocal() {
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.edgeRouterCollection = store.AddLinkCollection(store.symbolEdgeRouters, store.stores.edgeRouter.symbolServiceEdgeRouterPolicies)
 	store.serviceCollection = store.AddLinkCollection(store.symbolServices, store.stores.edgeService.symbolServiceEdgeRouterPolicies)
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) FillEntity(entity *ServiceEdgeRouterPolicy, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.Semantic = bucket.GetStringWithDefault(FieldSemantic, SemanticAllOf)
@@ -99,6 +111,7 @@ func (store *serviceEdgeRouterPolicyStoreImpl) FillEntity(entity *ServiceEdgeRou
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) PersistEntity(entity *ServiceEdgeRouterPolicy, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	if err := validateRolesAndIds(FieldServiceRoles, entity.ServiceRoles); err != nil {
 		ctx.Bucket.SetError(err)
 	}
@@ -139,6 +152,7 @@ Optimizations
  3. Related entity deletes should be handled automatically by FK Indexes on those entities (need to verify the reverse as well/deleting policy)
 */
 func (store *serviceEdgeRouterPolicyStoreImpl) edgeRouterRolesUpdated(persistCtx *boltz.PersistContext, policy *ServiceEdgeRouterPolicy) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             persistCtx.MutateContext,
 		rolesSymbol:           store.symbolEdgeRouterRoles,
@@ -151,6 +165,7 @@ func (store *serviceEdgeRouterPolicyStoreImpl) edgeRouterRolesUpdated(persistCtx
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) serviceRolesUpdated(persistCtx *boltz.PersistContext, policy *ServiceEdgeRouterPolicy) {
+	logtrace.LogWithFunctionName()
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             persistCtx.MutateContext,
 		rolesSymbol:           store.symbolServiceRoles,
@@ -163,6 +178,7 @@ func (store *serviceEdgeRouterPolicyStoreImpl) serviceRolesUpdated(persistCtx *b
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) DeleteById(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	policy, err := store.LoadById(ctx.Tx(), id)
 	if err != nil {
 		return err
@@ -177,6 +193,7 @@ func (store *serviceEdgeRouterPolicyStoreImpl) DeleteById(ctx boltz.MutateContex
 }
 
 func (store *serviceEdgeRouterPolicyStoreImpl) CheckIntegrity(mutateCtx boltz.MutateContext, fix bool, errorSink func(err error, fixed bool)) error {
+	logtrace.LogWithFunctionName()
 	ctx := &denormCheckCtx{
 		name:                   "service-edge-router-policies",
 		mutateCtx:              mutateCtx,

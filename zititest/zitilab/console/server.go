@@ -17,12 +17,15 @@
 package console
 
 import (
+	"net/http"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
-	"net/http"
 )
 
 func NewServer() *Server {
+	logtrace.LogWithFunctionName()
 	return &Server{
 		clients:   make(map[int]*Client),
 		addCh:     make(chan *Client),
@@ -36,28 +39,34 @@ func NewServer() *Server {
 }
 
 func (server *Server) Add(c *Client) {
+	logtrace.LogWithFunctionName()
 	server.addCh <- c
 }
 
 func (server *Server) Del(c *Client) {
+	logtrace.LogWithFunctionName()
 	server.delCh <- c
 }
 
 func (server *Server) Done() {
+	logtrace.LogWithFunctionName()
 	close(server.doneCh)
 }
 
 func (server *Server) SendAll(msg *Message) {
+	logtrace.LogWithFunctionName()
 	server.sendAllCh <- msg
 }
 
 func (server *Server) sendAll(msg *Message) {
+	logtrace.LogWithFunctionName()
 	for _, c := range server.clients {
 		c.Write(msg)
 	}
 }
 
 func (server *Server) Listen() {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("listening")
 
 	onConnected := func(ws *websocket.Conn) {
@@ -95,6 +104,7 @@ func (server *Server) Listen() {
 }
 
 func (server *Server) sendNetwork(c *Client) {
+	logtrace.LogWithFunctionName()
 	msg := &Message{}
 	for id := range server.routers {
 		msg.Routers = append(msg.Routers, id)

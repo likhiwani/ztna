@@ -17,11 +17,13 @@
 package controller
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/version"
 	"ztna-core/ztna/controller/config"
 	fabricdb "ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -29,6 +31,7 @@ import (
 )
 
 func NewDeleteSessionsFromDbCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:   "delete-sessions-from-db <path/to/db>",
 		Short: "Delete all API Sessions and Edge Sessions, controller must be shutdown",
@@ -38,6 +41,7 @@ func NewDeleteSessionsFromDbCmd() *cobra.Command {
 }
 
 func NewDeleteSessionsFromConfigCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:   "delete-sessions <config>",
 		Short: "Delete all API Sessions and Edge Sessions, controller must be shutdown",
@@ -56,6 +60,7 @@ const (
 )
 
 func deleteSessionsFromConfig(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	if config, err := config.LoadConfig(args[0]); err == nil {
 		deleteSessions(config.Db)
 	} else {
@@ -64,6 +69,7 @@ func deleteSessionsFromConfig(_ *cobra.Command, args []string) {
 }
 
 func deleteSessionsFromDb(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	db, err := fabricdb.Open(args[0])
 	if err != nil {
 		panic(err)
@@ -72,6 +78,7 @@ func deleteSessionsFromDb(_ *cobra.Command, args []string) {
 }
 
 func deleteSessions(db boltz.Db) {
+	logtrace.LogWithFunctionName()
 	logrus.WithField("version", version.GetVersion()).
 		WithField("go-version", version.GetGoVersion()).
 		WithField("os", version.GetOS()).

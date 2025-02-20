@@ -18,12 +18,14 @@ package link
 
 import (
 	"container/heap"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/xlink"
 	"math/rand"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 const (
@@ -39,10 +41,12 @@ const (
 type linkStatus string
 
 func (self linkStatus) String() string {
+	logtrace.LogWithFunctionName()
 	return string(self)
 }
 
 func newLinkDest(destId string) *linkDest {
+	logtrace.LogWithFunctionName()
 	return &linkDest{
 		id:          destId,
 		healthy:     true,
@@ -60,6 +64,7 @@ type linkDest struct {
 }
 
 func (self *linkDest) update(update *linkDestUpdate) {
+	logtrace.LogWithFunctionName()
 	if self.healthy && !update.healthy {
 		self.unhealthyAt = time.Now()
 	}
@@ -95,6 +100,7 @@ type linkState struct {
 }
 
 func (self *linkState) updateStatus(status linkStatus) {
+	logtrace.LogWithFunctionName()
 	if self.status != status {
 		log := pfxlog.Logger().
 			WithField("key", self.linkKey).
@@ -111,34 +117,42 @@ func (self *linkState) updateStatus(status linkStatus) {
 }
 
 func (self *linkState) GetLinkKey() string {
+	logtrace.LogWithFunctionName()
 	return self.linkKey
 }
 
 func (self *linkState) GetLinkId() string {
+	logtrace.LogWithFunctionName()
 	return self.linkId
 }
 
 func (self *linkState) GetRouterId() string {
+	logtrace.LogWithFunctionName()
 	return self.dest.id
 }
 
 func (self *linkState) GetAddress() string {
+	logtrace.LogWithFunctionName()
 	return self.listener.Address
 }
 
 func (self *linkState) GetLinkProtocol() string {
+	logtrace.LogWithFunctionName()
 	return self.listener.Protocol
 }
 
 func (self *linkState) GetRouterVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.dest.version
 }
 
 func (self *linkState) GetIteration() uint32 {
+	logtrace.LogWithFunctionName()
 	return uint32(self.dialAttempts.Load())
 }
 
 func (self *linkState) addPendingLinkFault(linkId string, iteration uint32) {
+	logtrace.LogWithFunctionName()
 	for _, fault := range self.linkFaults {
 		if fault.linkId == linkId {
 			if fault.iteration < iteration {
@@ -154,6 +168,7 @@ func (self *linkState) addPendingLinkFault(linkId string, iteration uint32) {
 }
 
 func (self *linkState) clearFaultsForLinkId(linkId string) {
+	logtrace.LogWithFunctionName()
 	faults := self.linkFaults
 	self.linkFaults = nil
 
@@ -165,6 +180,7 @@ func (self *linkState) clearFaultsForLinkId(linkId string) {
 }
 
 func (self *linkState) clearFault(toClear linkFault) {
+	logtrace.LogWithFunctionName()
 	faults := self.linkFaults
 	self.linkFaults = nil
 
@@ -176,6 +192,7 @@ func (self *linkState) clearFault(toClear linkFault) {
 }
 
 func (self *linkState) dialFailed(registry *linkRegistryImpl) {
+	logtrace.LogWithFunctionName()
 	if self.allowedDials > 0 {
 		self.allowedDials--
 	}

@@ -18,14 +18,17 @@ package tests
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSdkEcho(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	components := run.GetModel().SelectComponents("#zcat")
 
 	req := require.New(t)

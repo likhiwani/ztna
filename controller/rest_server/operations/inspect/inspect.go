@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type InspectHandlerFunc func(InspectParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn InspectHandlerFunc) Handle(params InspectParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type InspectHandler interface {
 
 // NewInspect creates a new http.Handler for the inspect operation
 func NewInspect(ctx *middleware.Context, handler InspectHandler) *Inspect {
+    logtrace.LogWithFunctionName()
 	return &Inspect{Context: ctx, Handler: handler}
 }
 
@@ -67,6 +70,7 @@ type Inspect struct {
 }
 
 func (o *Inspect) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

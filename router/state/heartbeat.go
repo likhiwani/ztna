@@ -17,14 +17,16 @@ limitations under the License.
 package state
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/common/runner"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
 	routerEnv "ztna-core/ztna/router/env"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 const maxTokensPerMessage = 10000
@@ -41,6 +43,7 @@ type TokenProvider interface {
 }
 
 func newHeartbeatOperation(env routerEnv.RouterEnv, frequency time.Duration, tokenProvider TokenProvider) *heartbeatOperation {
+	logtrace.LogWithFunctionName()
 	return &heartbeatOperation{
 		env:           env,
 		tokenProvider: tokenProvider,
@@ -48,6 +51,7 @@ func newHeartbeatOperation(env routerEnv.RouterEnv, frequency time.Duration, tok
 }
 
 func (operation *heartbeatOperation) Run() error {
+	logtrace.LogWithFunctionName()
 	tokens := operation.tokenProvider.ActiveApiSessionTokens()
 
 	operation.beat(tokens)
@@ -57,6 +61,7 @@ func (operation *heartbeatOperation) Run() error {
 }
 
 func (operation *heartbeatOperation) beat(tokens []string) {
+	logtrace.LogWithFunctionName()
 	var msgs []*channel.Message
 
 	pfxlog.Logger().Tracef("heartbeat tokens: %d", len(tokens))

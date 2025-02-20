@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"os"
 
 	"ztna-core/ztna/ztna/cmd/common"
@@ -29,6 +30,7 @@ type AgentTraceAction struct {
 }
 
 func NewTraceCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentTraceAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),

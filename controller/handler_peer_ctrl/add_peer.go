@@ -17,18 +17,21 @@
 package handler_peer_ctrl
 
 import (
-	raft2 "github.com/hashicorp/raft"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/peermsg"
 	"ztna-core/ztna/controller/raft"
+	"ztna-core/ztna/logtrace"
+
+	raft2 "github.com/hashicorp/raft"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
 
 func newAddPeerHandler(controller *raft.Controller) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &addPeerHandler{
 		controller: controller,
 	}
@@ -39,10 +42,12 @@ type addPeerHandler struct {
 }
 
 func (self *addPeerHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(cmd_pb.ContentType_AddPeerRequestType)
 }
 
 func (self *addPeerHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &cmd_pb.AddPeerRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
@@ -54,6 +59,7 @@ func (self *addPeerHandler) HandleReceive(msg *channel.Message, ch channel.Chann
 }
 
 func (self *addPeerHandler) handleAddPeer(m *channel.Message, ch channel.Channel, req *cmd_pb.AddPeerRequest) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 
 	log.Infof("received join request id: %v, addr: %v, voter: %v", req.Id, req.Addr, !req.IsVoter)

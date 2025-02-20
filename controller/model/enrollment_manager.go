@@ -19,11 +19,7 @@ package model
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/identity"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/cmd_pb"
@@ -34,10 +30,16 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/identity"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type EnrollmentManager struct {
@@ -46,6 +48,7 @@ type EnrollmentManager struct {
 }
 
 func NewEnrollmentManager(env Env) *EnrollmentManager {
+	logtrace.LogWithFunctionName()
 	manager := &EnrollmentManager{
 		baseEntityManager: newBaseEntityManager[*Enrollment, *db.Enrollment](env, env.GetStores().Enrollment),
 		enrollmentStore:   env.GetStores().Enrollment,
@@ -61,10 +64,12 @@ func NewEnrollmentManager(env Env) *EnrollmentManager {
 }
 
 func (self *EnrollmentManager) Create(entity *Enrollment, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Enrollment](self, entity, ctx)
 }
 
 func (self *EnrollmentManager) ApplyCreate(cmd *command.CreateEntityCommand[*Enrollment], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	model := cmd.Entity
 
 	if model.EdgeRouterId != nil || model.TransitRouterId != nil {
@@ -130,18 +135,22 @@ func (self *EnrollmentManager) ApplyCreate(cmd *command.CreateEntityCommand[*Enr
 }
 
 func (self *EnrollmentManager) Update(entity *Enrollment, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Enrollment](self, entity, checker, ctx)
 }
 
 func (self *EnrollmentManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Enrollment], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *EnrollmentManager) newModelEntity() *Enrollment {
+	logtrace.LogWithFunctionName()
 	return &Enrollment{}
 }
 
 func (self *EnrollmentManager) getEnrollmentMethod(ctx EnrollmentContext) (string, error) {
+	logtrace.LogWithFunctionName()
 	method := ctx.GetMethod()
 
 	if method == db.MethodEnrollCa {
@@ -167,6 +176,7 @@ func (self *EnrollmentManager) getEnrollmentMethod(ctx EnrollmentContext) (strin
 }
 
 func (self *EnrollmentManager) Enroll(ctx EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	method, err := self.getEnrollmentMethod(ctx)
 
 	if err != nil {
@@ -183,6 +193,7 @@ func (self *EnrollmentManager) Enroll(ctx EnrollmentContext) (*EnrollmentResult,
 }
 
 func (self *EnrollmentManager) ReadByToken(token string) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	enrollment := &Enrollment{}
 
 	err := self.env.GetDb().View(func(tx *bbolt.Tx) error {
@@ -208,6 +219,7 @@ func (self *EnrollmentManager) ReadByToken(token string) (*Enrollment, error) {
 }
 
 func (self *EnrollmentManager) ReplaceWithAuthenticator(enrollmentId string, authenticator *Authenticator, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.Dispatch(&ReplaceEnrollmentWithAuthenticatorCmd{
 		manager:       self,
 		enrollmentId:  enrollmentId,
@@ -219,6 +231,7 @@ func (self *EnrollmentManager) ReplaceWithAuthenticator(enrollmentId string, aut
 // GetCertChainPem parses a given certificate in raw DER and attempt to provide string in PEM format of the
 // original certificate followed by each signing intermediate up to but not including the root CA.
 func (self *EnrollmentManager) GetCertChainPem(certRaw []byte) (string, error) {
+	logtrace.LogWithFunctionName()
 	targetCert, err := x509.ParseCertificate(certRaw)
 	if err != nil {
 		pfxlog.Logger().WithError(err).Error("error parsing cert raw during enrollment, attempting to assemble chain")
@@ -242,6 +255,7 @@ func (self *EnrollmentManager) GetCertChainPem(certRaw []byte) (string, error) {
 }
 
 func (self *EnrollmentManager) ApplyReplaceEncoderWithAuthenticatorCommand(cmd *ReplaceEnrollmentWithAuthenticatorCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.env.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		err := self.env.GetStores().Enrollment.DeleteById(ctx, cmd.enrollmentId)
 		if err != nil {
@@ -254,6 +268,7 @@ func (self *EnrollmentManager) ApplyReplaceEncoderWithAuthenticatorCommand(cmd *
 }
 
 func (self *EnrollmentManager) readInTx(tx *bbolt.Tx, id string) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	modelEntity := &Enrollment{}
 	if err := self.readEntityInTx(tx, id, modelEntity); err != nil {
 		return nil, err
@@ -262,6 +277,7 @@ func (self *EnrollmentManager) readInTx(tx *bbolt.Tx, id string) (*Enrollment, e
 }
 
 func (self *EnrollmentManager) Read(id string) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	entity := &Enrollment{}
 	if err := self.readEntity(id, entity); err != nil {
 		return nil, err
@@ -270,6 +286,7 @@ func (self *EnrollmentManager) Read(id string) (*Enrollment, error) {
 }
 
 func (self *EnrollmentManager) RefreshJwt(id string, expiresAt time.Time, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	enrollment, err := self.Read(id)
 
 	if err != nil {
@@ -302,6 +319,7 @@ func (self *EnrollmentManager) RefreshJwt(id string, expiresAt time.Time, ctx *c
 }
 
 func (self *EnrollmentManager) Query(query string) ([]*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	var enrollments []*Enrollment
 	if err := self.ListWithHandler(query, func(tx *bbolt.Tx, ids []string, qmd *models.QueryMetaData) error {
 		for _, id := range ids {
@@ -321,6 +339,7 @@ func (self *EnrollmentManager) Query(query string) ([]*Enrollment, error) {
 }
 
 func (self *EnrollmentManager) EnrollmentToProtobuf(entity *Enrollment) (*edge_cmd_pb.Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -345,6 +364,7 @@ func (self *EnrollmentManager) EnrollmentToProtobuf(entity *Enrollment) (*edge_c
 }
 
 func (self *EnrollmentManager) Marshall(entity *Enrollment) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg, err := self.EnrollmentToProtobuf(entity)
 	if err != nil {
 		return nil, err
@@ -353,6 +373,7 @@ func (self *EnrollmentManager) Marshall(entity *Enrollment) ([]byte, error) {
 }
 
 func (self *EnrollmentManager) ProtobufToEnrollment(msg *edge_cmd_pb.Enrollment) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	return &Enrollment{
 		BaseEntity: models.BaseEntity{
 			Id:   msg.Id,
@@ -372,6 +393,7 @@ func (self *EnrollmentManager) ProtobufToEnrollment(msg *edge_cmd_pb.Enrollment)
 }
 
 func (self *EnrollmentManager) Unmarshall(bytes []byte) (*Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Enrollment{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -386,6 +408,7 @@ type ReEnrollEdgeRouterCmd struct {
 }
 
 func (d *ReEnrollEdgeRouterCmd) Decode(env Env, msg *edge_cmd_pb.ReEnrollEdgeRouterCmd) error {
+	logtrace.LogWithFunctionName()
 	d.edgeRouterId = msg.EdgeRouterId
 	d.ctx = ProtobufToContext(msg.Ctx)
 	d.manager = env.GetManagers().Enrollment
@@ -394,14 +417,17 @@ func (d *ReEnrollEdgeRouterCmd) Decode(env Env, msg *edge_cmd_pb.ReEnrollEdgeRou
 }
 
 func (d *ReEnrollEdgeRouterCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return d.manager.ApplyReEnrollEdgeRouter(d, ctx)
 }
 
 func (d *ReEnrollEdgeRouterCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return d.ctx
 }
 
 func (d *ReEnrollEdgeRouterCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.ReEnrollEdgeRouterCmd{
 		EdgeRouterId: d.edgeRouterId,
 	}
@@ -410,6 +436,7 @@ func (d *ReEnrollEdgeRouterCmd) Encode() ([]byte, error) {
 }
 
 func (self *EnrollmentManager) ApplyReEnrollEdgeRouter(cmd *ReEnrollEdgeRouterCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", cmd.edgeRouterId)
 
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
@@ -488,10 +515,12 @@ type ReplaceEnrollmentWithAuthenticatorCmd struct {
 }
 
 func (self *ReplaceEnrollmentWithAuthenticatorCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.manager.ApplyReplaceEncoderWithAuthenticatorCommand(self, ctx)
 }
 
 func (self *ReplaceEnrollmentWithAuthenticatorCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	authMsg, err := self.manager.GetEnv().GetManagers().Authenticator.AuthenticatorToProtobuf(self.authenticator)
 	if err != nil {
 		return nil, err
@@ -506,6 +535,7 @@ func (self *ReplaceEnrollmentWithAuthenticatorCmd) Encode() ([]byte, error) {
 }
 
 func (self *ReplaceEnrollmentWithAuthenticatorCmd) Decode(env Env, msg *edge_cmd_pb.ReplaceEnrollmentWithAuthenticatorCmd) error {
+	logtrace.LogWithFunctionName()
 	self.ctx = ProtobufToContext(msg.Ctx)
 	self.manager = env.GetManagers().Enrollment
 	self.enrollmentId = msg.EnrollmentId
@@ -518,5 +548,6 @@ func (self *ReplaceEnrollmentWithAuthenticatorCmd) Decode(env Env, msg *edge_cmd
 }
 
 func (self *ReplaceEnrollmentWithAuthenticatorCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }

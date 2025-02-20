@@ -19,17 +19,20 @@
 package tests
 
 import (
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/controller/xt_smartrouting"
-	"github.com/pkg/errors"
 	"net"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func Test_AddressableTerminators(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -114,6 +117,7 @@ func Test_AddressableTerminators(t *testing.T) {
 }
 
 func Test_AddressableTerminatorSameIdentity(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -162,6 +166,7 @@ func Test_AddressableTerminatorSameIdentity(t *testing.T) {
 }
 
 func Test_AddressableTerminatorDifferentIdentity(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

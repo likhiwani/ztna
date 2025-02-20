@@ -17,20 +17,24 @@
 package xgress_transport_udp
 
 import (
-	"ztna-core/ztna/router/env"
-	"github.com/pkg/errors"
 	"net"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
 
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/controller/xt"
+	"github.com/pkg/errors"
+
 	"ztna-core/ztna/common/logcontext"
+	"ztna-core/ztna/controller/xt"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/router/xgress_udp"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 )
 
 func (txd *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	destination := params.GetDestination()
 	circuitId := params.GetCircuitId()
 	address := params.GetAddress()
@@ -67,10 +71,12 @@ func (txd *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
 }
 
 func (txd *dialer) IsTerminatorValid(string, string) bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func newDialer(id *identity.TokenId, ctrl env.NetworkControllers, options *xgress.Options) (*dialer, error) {
+	logtrace.LogWithFunctionName()
 	txd := &dialer{
 		id:      id,
 		ctrl:    ctrl,

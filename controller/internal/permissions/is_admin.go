@@ -16,15 +16,19 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequireAdmin struct{}
 
 var requireAdmin = &RequireAdmin{}
 
 func IsAdmin() *RequireAdmin {
+	logtrace.LogWithFunctionName()
 	return requireAdmin
 }
 
 func (ia *RequireAdmin) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	for _, p := range identityPerms {
 		if p == AdminPermission {
 			return true

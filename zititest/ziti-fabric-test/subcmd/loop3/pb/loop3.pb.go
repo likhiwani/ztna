@@ -7,6 +7,7 @@
 package loop3_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -46,6 +47,7 @@ type Test struct {
 }
 
 func (x *Test) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Test{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_loop3_proto_msgTypes[0]
@@ -55,12 +57,15 @@ func (x *Test) Reset() {
 }
 
 func (x *Test) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
 func (*Test) ProtoMessage() {}
+    logtrace.LogWithFunctionName()
 
 func (x *Test) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_loop3_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -74,10 +79,12 @@ func (x *Test) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Test.ProtoReflect.Descriptor instead.
 func (*Test) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_loop3_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Test) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -85,6 +92,7 @@ func (x *Test) GetName() string {
 }
 
 func (x *Test) GetTxRequests() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxRequests
 	}
@@ -92,6 +100,7 @@ func (x *Test) GetTxRequests() int32 {
 }
 
 func (x *Test) GetTxPacing() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxPacing
 	}
@@ -99,6 +108,7 @@ func (x *Test) GetTxPacing() string {
 }
 
 func (x *Test) GetTxMaxJitter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxMaxJitter
 	}
@@ -106,6 +116,7 @@ func (x *Test) GetTxMaxJitter() string {
 }
 
 func (x *Test) GetTxPauseEvery() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxPauseEvery
 	}
@@ -113,6 +124,7 @@ func (x *Test) GetTxPauseEvery() string {
 }
 
 func (x *Test) GetTxPauseFor() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxPauseFor
 	}
@@ -120,6 +132,7 @@ func (x *Test) GetTxPauseFor() string {
 }
 
 func (x *Test) GetRxRequests() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxRequests
 	}
@@ -127,6 +140,7 @@ func (x *Test) GetRxRequests() int32 {
 }
 
 func (x *Test) GetRxTimeout() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxTimeout
 	}
@@ -134,6 +148,7 @@ func (x *Test) GetRxTimeout() int32 {
 }
 
 func (x *Test) GetRxPauseEvery() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxPauseEvery
 	}
@@ -141,6 +156,7 @@ func (x *Test) GetRxPauseEvery() string {
 }
 
 func (x *Test) GetRxPauseFor() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxPauseFor
 	}
@@ -148,6 +164,7 @@ func (x *Test) GetRxPauseFor() string {
 }
 
 func (x *Test) GetPayloadMinBytes() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PayloadMinBytes
 	}
@@ -155,6 +172,7 @@ func (x *Test) GetPayloadMinBytes() int32 {
 }
 
 func (x *Test) GetPayloadMaxBytes() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PayloadMaxBytes
 	}
@@ -162,6 +180,7 @@ func (x *Test) GetPayloadMaxBytes() int32 {
 }
 
 func (x *Test) GetLatencyFrequency() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LatencyFrequency
 	}
@@ -169,6 +188,7 @@ func (x *Test) GetLatencyFrequency() int32 {
 }
 
 func (x *Test) GetTxBlockType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxBlockType
 	}
@@ -176,6 +196,7 @@ func (x *Test) GetTxBlockType() string {
 }
 
 func (x *Test) GetRxBlockType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxBlockType
 	}
@@ -183,6 +204,7 @@ func (x *Test) GetRxBlockType() string {
 }
 
 func (x *Test) GetRxSeqBlockSize() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxSeqBlockSize
 	}
@@ -190,6 +212,7 @@ func (x *Test) GetRxSeqBlockSize() int32 {
 }
 
 func (x *Test) GetRxPacing() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxPacing
 	}
@@ -197,6 +220,7 @@ func (x *Test) GetRxPacing() string {
 }
 
 func (x *Test) GetRxMaxJitter() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxMaxJitter
 	}
@@ -260,6 +284,7 @@ var (
 )
 
 func file_loop3_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_loop3_proto_rawDescOnce.Do(func() {
 		file_loop3_proto_rawDescData = protoimpl.X.CompressGZIP(file_loop3_proto_rawDescData)
 	})
@@ -279,7 +304,9 @@ var file_loop3_proto_depIdxs = []int32{
 }
 
 func init() { file_loop3_proto_init() }
+    logtrace.LogWithFunctionName()
 func file_loop3_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_loop3_proto != nil {
 		return
 	}

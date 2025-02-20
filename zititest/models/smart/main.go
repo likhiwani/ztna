@@ -19,18 +19,21 @@ package main
 import (
 	"embed"
 
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab"
+
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/binding"
 	"github.com/openziti/fablab/kernel/lib/runlevel/0_infrastructure/aws_ssh_key"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/zitilab"
 )
 
 //go:embed config
 var configs embed.FS
 
 func init() {
+	logtrace.LogWithFunctionName()
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
 }
@@ -162,6 +165,7 @@ var smartrouting = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	//smartrouting.VarConfig.EnableDebugLogger()
 
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)

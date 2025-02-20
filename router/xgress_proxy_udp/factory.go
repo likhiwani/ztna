@@ -18,16 +18,20 @@ package xgress_proxy_udp
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
 	"github.com/pkg/errors"
 )
 
 func NewFactory(ctrl env.NetworkControllers) xgress.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{ctrl: ctrl}
 }
 
 func (f *factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	options, err := xgress.LoadOptions(optionsData)
 	if err != nil {
 		return nil, errors.Wrap(err, "error loading options")
@@ -42,6 +46,7 @@ func (f *factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listene
 }
 
 func (f *factory) CreateDialer(_ xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	return nil, fmt.Errorf("not implemented")
 }
 

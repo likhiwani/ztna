@@ -17,20 +17,25 @@
 package events
 
 import (
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddLinkEventHandler(handler event.LinkEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.linkEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveLinkEventHandler(handler event.LinkEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.linkEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AcceptLinkEvent(event *event.LinkEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.linkEventHandlers.Value() {
 			handler.AcceptLinkEvent(event)
@@ -39,6 +44,7 @@ func (self *Dispatcher) AcceptLinkEvent(event *event.LinkEvent) {
 }
 
 func (self *Dispatcher) registerLinkEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.LinkEventHandler)
 
 	if !ok {
@@ -51,6 +57,7 @@ func (self *Dispatcher) registerLinkEventHandler(val interface{}, _ map[string]i
 }
 
 func (self *Dispatcher) unregisterLinkEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.LinkEventHandler); ok {
 		self.RemoveLinkEventHandler(handler)
 	}

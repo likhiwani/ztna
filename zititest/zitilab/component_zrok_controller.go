@@ -21,8 +21,10 @@ import (
 	"io/fs"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
@@ -49,24 +51,29 @@ type ZrokControllerType struct {
 }
 
 func (self *ZrokControllerType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "zrok-controller"
 }
 
 func (self *ZrokControllerType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ZrokControllerType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 }
 
 func (self *ZrokControllerType) GetActions() map[string]model.ComponentAction {
+	logtrace.LogWithFunctionName()
 	return map[string]model.ComponentAction{
 		ZrokControllerActionPreCreateAccounts: model.ComponentActionF(self.PreCreateAccounts),
 	}
 }
 
 func (self *ZrokControllerType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":       "zrok-controller",
 		"config_source": self.ConfigSource,
@@ -77,6 +84,7 @@ func (self *ZrokControllerType) Dump() any {
 }
 
 func (self *ZrokControllerType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	configSource := self.ConfigSource
 	if configSource == "" {
 		configSource = "zrok.yml.tmpl"
@@ -92,6 +100,7 @@ func (self *ZrokControllerType) StageFiles(r model.Run, c *model.Component) erro
 }
 
 func (self *ZrokControllerType) getConfigName(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	configName := self.ConfigName
 	if configName == "" {
 		configName = c.Id + ".yml"
@@ -100,6 +109,7 @@ func (self *ZrokControllerType) getConfigName(c *model.Component) string {
 }
 
 func (self *ZrokControllerType) getProcessFilter() func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, "zrok") &&
 			strings.Contains(s, " controller")
@@ -107,6 +117,7 @@ func (self *ZrokControllerType) getProcessFilter() func(string) bool {
 }
 
 func (self *ZrokControllerType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter())
 	if err != nil {
 		return false, err
@@ -115,6 +126,7 @@ func (self *ZrokControllerType) IsRunning(_ model.Run, c *model.Component) (bool
 }
 
 func (self *ZrokControllerType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := getBinaryPath(c, constants.ZROK, self.Version)
@@ -140,14 +152,17 @@ func (self *ZrokControllerType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *ZrokControllerType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter())
 }
 
 func (self *ZrokControllerType) getConfigPath(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("/home/%s/fablab/cfg/%s", c.GetHost().GetSshUser(), self.getConfigName(c))
 }
 
 func (self *ZrokControllerType) Init(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	binaryPath := getBinaryPath(c, constants.ZROK, self.Version)
 	configPath := self.getConfigPath(c)
 
@@ -157,6 +172,7 @@ func (self *ZrokControllerType) Init(run model.Run, c *model.Component) error {
 }
 
 func (self *ZrokControllerType) PreCreateAccounts(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	binaryPath := getBinaryPath(c, constants.ZROK, self.Version)
 	configPath := self.getConfigPath(c)
 

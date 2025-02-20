@@ -17,13 +17,15 @@
 package forwarder
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
-	"github.com/sirupsen/logrus"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/sirupsen/logrus"
 )
 
 type Scanner struct {
@@ -35,6 +37,7 @@ type Scanner struct {
 }
 
 func newScanner(ctrls env.NetworkControllers, options *Options, closeNotify <-chan struct{}) *Scanner {
+	logtrace.LogWithFunctionName()
 	s := &Scanner{
 		ctrls:       ctrls,
 		interval:    options.IdleTxInterval,
@@ -45,10 +48,12 @@ func newScanner(ctrls env.NetworkControllers, options *Options, closeNotify <-ch
 }
 
 func (self *Scanner) setCircuitTable(circuits *circuitTable) {
+	logtrace.LogWithFunctionName()
 	self.circuits = circuits
 }
 
 func (self *Scanner) run() {
+	logtrace.LogWithFunctionName()
 	logrus.Info("started")
 	defer logrus.Warn("exited")
 
@@ -64,6 +69,7 @@ func (self *Scanner) run() {
 }
 
 func (self *Scanner) scan() {
+	logtrace.LogWithFunctionName()
 	circuits := self.circuits.circuits.Items()
 	logrus.Debugf("scanning [%d] circuits", len(circuits))
 

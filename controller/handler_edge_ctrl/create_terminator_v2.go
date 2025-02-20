@@ -18,9 +18,8 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
+	"math"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/command"
@@ -29,11 +28,14 @@ import (
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"math"
-	"time"
 )
 
 type createTerminatorV2Handler struct {
@@ -41,6 +43,7 @@ type createTerminatorV2Handler struct {
 }
 
 func NewCreateTerminatorV2Handler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createTerminatorV2Handler{
 		baseRequestHandler{
 			ch:     ch,
@@ -50,14 +53,17 @@ func NewCreateTerminatorV2Handler(appEnv *env.AppEnv, ch channel.Channel) channe
 }
 
 func (self *createTerminatorV2Handler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateTerminatorV2RequestType)
 }
 
 func (self *createTerminatorV2Handler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "create.terminator"
 }
 
 func (self *createTerminatorV2Handler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.CreateTerminatorV2Request{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal CreateTerminatorV2Request")
@@ -73,6 +79,7 @@ func (self *createTerminatorV2Handler) HandleReceive(msg *channel.Message, ch ch
 }
 
 func (self *createTerminatorV2Handler) CreateTerminatorV2(ctx *CreateTerminatorV2RequestContext) {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	logger := pfxlog.ContextLogger(self.ch.Label()).
 		WithField("routerId", self.ch.Id()).
@@ -195,6 +202,7 @@ func (self *createTerminatorV2Handler) CreateTerminatorV2(ctx *CreateTerminatorV
 }
 
 func (self *createTerminatorV2Handler) returnError(ctx *CreateTerminatorV2RequestContext, resultType edge_ctrl_pb.CreateTerminatorResult, err error, logger *logrus.Entry) {
+	logtrace.LogWithFunctionName()
 	response := &edge_ctrl_pb.CreateTerminatorV2Response{
 		TerminatorId: ctx.req.Address,
 		Result:       resultType,
@@ -214,10 +222,12 @@ type CreateTerminatorV2RequestContext struct {
 }
 
 func (self *CreateTerminatorV2RequestContext) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.req.SessionToken
 }
 
 func (self *CreateTerminatorV2RequestContext) validateExistingTerminator(terminator *model.Terminator, log *logrus.Entry) controllerError {
+	logtrace.LogWithFunctionName()
 	if terminator.Binding != common.EdgeBinding {
 		log.WithField("binding", common.EdgeBinding).
 			WithField("conflictingBinding", terminator.Binding).

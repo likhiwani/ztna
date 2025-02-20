@@ -18,9 +18,11 @@ package zitilab
 
 import (
 	"fmt"
+	"strings"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
-	"strings"
 )
 
 var _ model.ComponentType = (*IPerfServerType)(nil)
@@ -30,14 +32,17 @@ type IPerfServerType struct {
 }
 
 func (self *IPerfServerType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "iperf-server"
 }
 
 func (self *IPerfServerType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return "os-provided"
 }
 
 func (self *IPerfServerType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id": "iperf-server",
 		"port":    fmt.Sprintf("%v", self.GetPort()),
@@ -45,6 +50,7 @@ func (self *IPerfServerType) Dump() any {
 }
 
 func (self *IPerfServerType) GetPort() uint16 {
+	logtrace.LogWithFunctionName()
 	if self.Port == 0 {
 		return 5201
 	}
@@ -52,12 +58,14 @@ func (self *IPerfServerType) GetPort() uint16 {
 }
 
 func (self *IPerfServerType) getProcessFilter() func(string) bool {
+	logtrace.LogWithFunctionName()
 	return func(s string) bool {
 		return strings.Contains(s, fmt.Sprintf("iperf3 -s -p %v", self.GetPort()))
 	}
 }
 
 func (self *IPerfServerType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter())
 	if err != nil {
 		return false, err
@@ -66,6 +74,7 @@ func (self *IPerfServerType) IsRunning(_ model.Run, c *model.Component) (bool, e
 }
 
 func (self *IPerfServerType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 	logsPath := fmt.Sprintf("/home/%s/logs/%s.log", user, c.Id)
 	serviceCmd := fmt.Sprintf("nohup iperf3 -s -p %v > %s 2>&1 &", self.GetPort(), logsPath)
@@ -83,5 +92,6 @@ func (self *IPerfServerType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *IPerfServerType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter())
 }

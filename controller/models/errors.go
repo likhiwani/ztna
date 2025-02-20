@@ -1,12 +1,15 @@
 package models
 
 import (
+	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/apierror"
 )
 
 func ToApiError(err error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	if apiErr, ok := err.(*errorz.ApiError); ok {
 		return apiErr
 	}

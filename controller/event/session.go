@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 const SessionEventTypeCreated = "created"
@@ -39,6 +40,7 @@ type SessionEvent struct {
 }
 
 func (event *SessionEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v id=%v timestamp=%v token=%v apiSessionId=%v identityId=%v",
 		event.Namespace, event.EventType, event.Id, event.Timestamp, event.Token, event.ApiSessionId, event.IdentityId)
 }

@@ -18,12 +18,14 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type EdgeService struct {
@@ -37,6 +39,7 @@ type EdgeService struct {
 }
 
 func (entity *EdgeService) toBoltEntity(tx *bbolt.Tx, env Env) (*db.EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	if err := entity.validateConfigs(tx, env); err != nil {
 		return nil, err
 	}
@@ -56,10 +59,12 @@ func (entity *EdgeService) toBoltEntity(tx *bbolt.Tx, env Env) (*db.EdgeService,
 }
 
 func (entity *EdgeService) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *EdgeService) validateConfigs(tx *bbolt.Tx, env Env) error {
+	logtrace.LogWithFunctionName()
 	typeMap := map[string]*db.Config{}
 	configStore := env.GetStores().Config
 	for _, id := range entity.Configs {
@@ -83,10 +88,12 @@ func (entity *EdgeService) validateConfigs(tx *bbolt.Tx, env Env) error {
 }
 
 func (entity *EdgeService) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *EdgeService) fillFrom(_ Env, _ *bbolt.Tx, boltService *db.EdgeService) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltService)
 	entity.Name = boltService.Name
 	entity.TerminatorStrategy = boltService.TerminatorStrategy
@@ -109,14 +116,17 @@ type ServiceDetail struct {
 }
 
 func (entity *ServiceDetail) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	panic("should never be called")
 }
 
 func (entity *ServiceDetail) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	panic("should never be called")
 }
 
 func (entity *ServiceDetail) fillFrom(_ Env, _ *bbolt.Tx, boltService *db.EdgeService) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltService)
 	entity.MaxIdleTime = boltService.MaxIdleTime
 	entity.Name = boltService.Name

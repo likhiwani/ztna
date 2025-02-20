@@ -19,11 +19,13 @@ package pki
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/lets_encrypt"
 	"ztna-core/ztna/ztna/cmd/templates"
 	"ztna-core/ztna/ztna/pki/pki"
+
 	"github.com/spf13/cobra"
 )
 
@@ -74,6 +76,7 @@ Provide the components needed to manage a Ziti PKI.
 
 // NewCmdPKI PKIs a command object for the "PKI" command
 func NewCmdPKI(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKIOptions{
 		CommonOptions: common.CommonOptions{
 			Out: out,
@@ -102,6 +105,7 @@ func NewCmdPKI(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // Run implements this command
 func (o *PKIOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	return o.Cmd.Help()
 
 }

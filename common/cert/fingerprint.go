@@ -21,11 +21,13 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"ztna-core/ztna/logtrace"
 )
 
 type Fingerprints map[string]*x509.Certificate
 
 func (fingerprints Fingerprints) Contains(fp string) bool {
+	logtrace.LogWithFunctionName()
 	if _, matchingFingerprints := fingerprints[fp]; matchingFingerprints {
 		return true
 	}
@@ -33,6 +35,7 @@ func (fingerprints Fingerprints) Contains(fp string) bool {
 }
 
 func (fingerprints Fingerprints) HasAny(fps []string) (string, bool) {
+	logtrace.LogWithFunctionName()
 	for _, fp := range fps {
 		if _, matchingFingerprints := fingerprints[fp]; matchingFingerprints {
 			return fp, true
@@ -42,6 +45,7 @@ func (fingerprints Fingerprints) HasAny(fps []string) (string, bool) {
 }
 
 func (fingerprints Fingerprints) Prints() []string {
+	logtrace.LogWithFunctionName()
 	var ret []string
 
 	for k := range fingerprints {
@@ -52,6 +56,7 @@ func (fingerprints Fingerprints) Prints() []string {
 }
 
 func NewFingerprintGenerator() FingerprintGenerator {
+	logtrace.LogWithFunctionName()
 	return &defaultFingerprintGenerator{}
 }
 
@@ -65,6 +70,7 @@ type FingerprintGenerator interface {
 type defaultFingerprintGenerator struct{}
 
 func firstCertBlock(pemBytes []byte) (*pem.Block, []byte) {
+	logtrace.LogWithFunctionName()
 	var block *pem.Block
 	for len(pemBytes) > 0 {
 		pemLength := len(pemBytes)
@@ -86,6 +92,7 @@ func firstCertBlock(pemBytes []byte) (*pem.Block, []byte) {
 }
 
 func (fpg *defaultFingerprintGenerator) FromPem(cert []byte) string {
+	logtrace.LogWithFunctionName()
 	block, _ := firstCertBlock(cert)
 	if block == nil {
 		return ""
@@ -103,10 +110,12 @@ func (fpg *defaultFingerprintGenerator) FromPem(cert []byte) string {
 }
 
 func (fpg *defaultFingerprintGenerator) FromCert(cert *x509.Certificate) string {
+	logtrace.LogWithFunctionName()
 	return fpg.FromRaw(cert.Raw)
 }
 
 func (fpg *defaultFingerprintGenerator) FromCerts(certs []*x509.Certificate) Fingerprints {
+	logtrace.LogWithFunctionName()
 	fps := make(Fingerprints)
 
 	for _, cert := range certs {
@@ -117,6 +126,7 @@ func (fpg *defaultFingerprintGenerator) FromCerts(certs []*x509.Certificate) Fin
 }
 
 func (fpg *defaultFingerprintGenerator) FromRaw(raw []byte) string {
+	logtrace.LogWithFunctionName()
 	// #nosec
 	return fmt.Sprintf("%x", sha1.Sum(raw))
 }

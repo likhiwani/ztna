@@ -4,16 +4,18 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/controller/db"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-	"go.etcd.io/bbolt"
 	"os"
 	"sort"
 	"strings"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"go.etcd.io/bbolt"
 )
 
 var attrCounter = 0
@@ -28,6 +30,7 @@ const (
 )
 
 func NewAnonymizeAction() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := anonymizeDbAction{
 		mappings: map[string]map[string]string{
 			"attributes": {},
@@ -86,6 +89,7 @@ type anonymizeDbAction struct {
 }
 
 func (self *anonymizeDbAction) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	dbFile := args[0]
 
 	zitiDb, err := db.Open(dbFile)
@@ -133,6 +137,7 @@ func (self *anonymizeDbAction) run(_ *cobra.Command, args []string) {
 }
 
 func (self *anonymizeDbAction) outputMappings() {
+	logtrace.LogWithFunctionName()
 	if self.mappingOutput == "" {
 		return
 	}
@@ -170,6 +175,7 @@ func (self *anonymizeDbAction) outputMappings() {
 }
 
 func (self *anonymizeDbAction) initValidation() {
+	logtrace.LogWithFunctionName()
 	self.identityDialSvcCounts = map[string]int{}
 	self.identityBindSvcCounts = map[string]int{}
 	self.identityErCounts = map[string]int{}
@@ -239,6 +245,7 @@ func (self *anonymizeDbAction) initValidation() {
 }
 
 func (self *anonymizeDbAction) rename(entity boltz.NamedExtEntity, counter int) string {
+	logtrace.LogWithFunctionName()
 	m, ok := self.mappings[entity.GetEntityType()]
 	if !ok {
 		m = make(map[string]string)
@@ -250,6 +257,7 @@ func (self *anonymizeDbAction) rename(entity boltz.NamedExtEntity, counter int) 
 }
 
 func (self *anonymizeDbAction) anonymizeIdentities() {
+	logtrace.LogWithFunctionName()
 	//  Update Identities
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.Identity.QueryIds(ctx.Tx(), "true limit none")
@@ -291,6 +299,7 @@ func (self *anonymizeDbAction) anonymizeIdentities() {
 }
 
 func (self *anonymizeDbAction) anonymizeServices() {
+	logtrace.LogWithFunctionName()
 	// Update Services
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.EdgeService.QueryIds(ctx.Tx(), "true limit none")
@@ -330,6 +339,7 @@ func (self *anonymizeDbAction) anonymizeServices() {
 }
 
 func (self *anonymizeDbAction) anonymizeEdgeRouters() {
+	logtrace.LogWithFunctionName()
 	// Update Edge Routers
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.EdgeRouter.QueryIds(ctx.Tx(), "true limit none")
@@ -373,6 +383,7 @@ func (self *anonymizeDbAction) anonymizeEdgeRouters() {
 }
 
 func (self *anonymizeDbAction) anonymizeEdgeRouterPolicies() {
+	logtrace.LogWithFunctionName()
 	// Update Edge Router Policies
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ctx = ctx.GetSystemContext()
@@ -414,6 +425,7 @@ func (self *anonymizeDbAction) anonymizeEdgeRouterPolicies() {
 }
 
 func (self *anonymizeDbAction) anonymizeServiceEdgeRouterPolicies() {
+	logtrace.LogWithFunctionName()
 	// Update Service Edge Router Policies
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.ServiceEdgeRouterPolicy.QueryIds(ctx.Tx(), "true limit none")
@@ -454,6 +466,7 @@ func (self *anonymizeDbAction) anonymizeServiceEdgeRouterPolicies() {
 }
 
 func (self *anonymizeDbAction) anonymizeServicePolicies() {
+	logtrace.LogWithFunctionName()
 	// Update Service Policies
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.ServicePolicy.QueryIds(ctx.Tx(), "true limit none")
@@ -496,6 +509,7 @@ func (self *anonymizeDbAction) anonymizeServicePolicies() {
 }
 
 func (self *anonymizeDbAction) validateEntityCounts() {
+	logtrace.LogWithFunctionName()
 	// Validate identity references
 	err := self.zitiDb.View(func(tx *bbolt.Tx) error {
 		ids, _, err := self.stores.Identity.QueryIds(tx, "true limit none")
@@ -563,6 +577,7 @@ func (self *anonymizeDbAction) validateEntityCounts() {
 }
 
 func (self *anonymizeDbAction) scrubConfigs() {
+	logtrace.LogWithFunctionName()
 	hostV2 := map[string]interface{}{
 		"terminators": []interface{}{
 			map[string]interface{}{
@@ -642,6 +657,7 @@ func (self *anonymizeDbAction) scrubConfigs() {
 }
 
 func (self *anonymizeDbAction) scrubAuthenticators() {
+	logtrace.LogWithFunctionName()
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.Authenticator.QueryIds(ctx.Tx(), "true limit none")
 		if err != nil {
@@ -672,6 +688,7 @@ func (self *anonymizeDbAction) scrubAuthenticators() {
 }
 
 func (self *anonymizeDbAction) scrubEnrollments() {
+	logtrace.LogWithFunctionName()
 	err := self.zitiDb.Update(nil, func(ctx boltz.MutateContext) error {
 		ids, _, err := self.stores.Enrollment.QueryIds(ctx.Tx(), "true limit none")
 		if err != nil {
@@ -702,6 +719,7 @@ func (self *anonymizeDbAction) scrubEnrollments() {
 }
 
 func getRelatedEntityCount(tx *bbolt.Tx, store boltz.Store, id string, name string) int {
+	logtrace.LogWithFunctionName()
 	count := 0
 	cursor := store.GetRelatedEntitiesCursor(tx, id, name, true)
 	for cursor.IsValid() {
@@ -712,6 +730,7 @@ func getRelatedEntityCount(tx *bbolt.Tx, store boltz.Store, id string, name stri
 }
 
 func (self *anonymizeDbAction) mapRoles(roles []string) []string {
+	logtrace.LogWithFunctionName()
 	attrMap := self.mappings["attributes"]
 	var result []string
 	for _, attr := range roles {
@@ -733,6 +752,7 @@ func (self *anonymizeDbAction) mapRoles(roles []string) []string {
 }
 
 func (self *anonymizeDbAction) mapAttr(attrs []string) []string {
+	logtrace.LogWithFunctionName()
 	attrMap := self.mappings["attributes"]
 
 	var result []string
@@ -751,6 +771,7 @@ func (self *anonymizeDbAction) mapAttr(attrs []string) []string {
 }
 
 func (self *anonymizeDbAction) validateRefCount(tx *bbolt.Tx, store boltz.Store, id string, field string, m map[string]int) {
+	logtrace.LogWithFunctionName()
 	count := getRelatedEntityCount(tx, store, id, field)
 
 	if _, ok := m[id]; !ok {
@@ -765,6 +786,7 @@ func (self *anonymizeDbAction) validateRefCount(tx *bbolt.Tx, store boltz.Store,
 }
 
 func (self *anonymizeDbAction) scrubSessions() {
+	logtrace.LogWithFunctionName()
 	apiSessionBucketExists := false
 	apiSessionCertsBucketExists := false
 	sessionBucketExists := false

@@ -21,6 +21,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 )
 
 type SessionRequestResponder struct {
@@ -29,6 +30,7 @@ type SessionRequestResponder struct {
 }
 
 func (nsr *SessionRequestResponder) RespondWithCreatedId(id string, _ rest_model.Link) {
+	logtrace.LogWithFunctionName()
 	modelSession, err := nsr.ae.GetManagers().Session.Read(id)
 	if err != nil {
 		nsr.RespondWithError(err)

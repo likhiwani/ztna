@@ -17,14 +17,16 @@
 package command
 
 import (
+	"reflect"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/debugz"
 	"github.com/openziti/foundation/v2/rate"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
 	"github.com/sirupsen/logrus"
-	"reflect"
 )
 
 // Command instances represent actions to be taken by the fabric controller. They are serializable,
@@ -65,30 +67,37 @@ type LocalDispatcher struct {
 }
 
 func (self *LocalDispatcher) Bootstrap() error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *LocalDispatcher) IsLeader() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *LocalDispatcher) IsLeaderOrLeaderless() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *LocalDispatcher) IsLeaderless() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (self *LocalDispatcher) GetPeers() map[string]channel.Channel {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *LocalDispatcher) GetRateLimiter() rate.RateLimiter {
+	logtrace.LogWithFunctionName()
 	return self.Limiter
 }
 
 func (self *LocalDispatcher) Dispatch(command Command) error {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		if p := recover(); p != nil {
 			pfxlog.Logger().
@@ -132,5 +141,6 @@ type Decoder interface {
 type DecoderF func(commandType int32, data []byte) (Command, error)
 
 func (self DecoderF) Decode(commandType int32, data []byte) (Command, error) {
+	logtrace.LogWithFunctionName()
 	return self(commandType, data)
 }

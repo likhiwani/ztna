@@ -19,7 +19,11 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/channel/v3/protobufs"
+	"maps"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/common/pb/ctrl_pb"
@@ -28,17 +32,16 @@ import (
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3/protobufs"
 	"google.golang.org/protobuf/proto"
-	"maps"
-	"strings"
-	"sync"
-	"sync/atomic"
-	"time"
+
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
@@ -60,6 +63,7 @@ type SyncRouterPresenceHandler interface {
 }
 
 func NewRouter(id, name, fingerprint string, cost uint16, noTraversal bool) *Router {
+	logtrace.LogWithFunctionName()
 	if name == "" {
 		name = id
 	}
@@ -82,6 +86,7 @@ type RouterManager struct {
 }
 
 func newRouterManager(env Env) *RouterManager {
+	logtrace.LogWithFunctionName()
 	routerStore := env.GetStores().Router
 	result := &RouterManager{
 		baseEntityManager: newBaseEntityManager[*Router, *db.Router](env, routerStore),
@@ -110,10 +115,12 @@ func newRouterManager(env Env) *RouterManager {
 }
 
 func (self *RouterManager) newModelEntity() *Router {
+	logtrace.LogWithFunctionName()
 	return &Router{}
 }
 
 func (self *RouterManager) MarkConnected(r *Router) {
+	logtrace.LogWithFunctionName()
 	if router, _ := self.connected.Get(r.Id); router != nil {
 		if ch := router.Control; ch != nil {
 			if err := ch.Close(); err != nil {
@@ -127,6 +134,7 @@ func (self *RouterManager) MarkConnected(r *Router) {
 }
 
 func (self *RouterManager) MarkDisconnected(r *Router) {
+	logtrace.LogWithFunctionName()
 	r.Connected.Store(false)
 	self.connected.RemoveCb(r.Id, func(key string, v *Router, exists bool) bool {
 		if exists && v != r {
@@ -139,10 +147,12 @@ func (self *RouterManager) MarkDisconnected(r *Router) {
 }
 
 func (self *RouterManager) IsConnected(id string) bool {
+	logtrace.LogWithFunctionName()
 	return self.connected.Has(id)
 }
 
 func (self *RouterManager) GetConnected(id string) *Router {
+	logtrace.LogWithFunctionName()
 	if router, found := self.connected.Get(id); found {
 		return router
 	}
@@ -150,6 +160,7 @@ func (self *RouterManager) GetConnected(id string) *Router {
 }
 
 func (self *RouterManager) AllConnected() []*Router {
+	logtrace.LogWithFunctionName()
 	var routers []*Router
 	self.connected.IterCb(func(_ string, router *Router) {
 		routers = append(routers, router)
@@ -158,14 +169,17 @@ func (self *RouterManager) AllConnected() []*Router {
 }
 
 func (self *RouterManager) ConnectedCount() int {
+	logtrace.LogWithFunctionName()
 	return self.connected.Count()
 }
 
 func (self *RouterManager) Create(entity *Router, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Router](self, entity, ctx)
 }
 
 func (self *RouterManager) ApplyCreate(cmd *command.CreateEntityCommand[*Router], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	router := cmd.Entity
 	routerId, err := self.createEntity(router, ctx)
 	if err == nil {
@@ -175,6 +189,7 @@ func (self *RouterManager) ApplyCreate(cmd *command.CreateEntityCommand[*Router]
 }
 
 func (self *RouterManager) Read(id string) (entity *Router, err error) {
+	logtrace.LogWithFunctionName()
 	err = self.GetDb().View(func(tx *bbolt.Tx) error {
 		entity, err = self.readInTx(tx, id)
 		return err
@@ -186,6 +201,7 @@ func (self *RouterManager) Read(id string) (entity *Router, err error) {
 }
 
 func (self *RouterManager) Exists(id string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	exists := false
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		exists = self.Store.IsEntityPresent(tx, id)
@@ -195,6 +211,7 @@ func (self *RouterManager) Exists(id string) (bool, error) {
 }
 
 func (self *RouterManager) readUncached(id string) (*Router, error) {
+	logtrace.LogWithFunctionName()
 	entity := &Router{}
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		return self.readEntityInTx(tx, id, entity)
@@ -206,6 +223,7 @@ func (self *RouterManager) readUncached(id string) (*Router, error) {
 }
 
 func (self *RouterManager) readInTx(tx *bbolt.Tx, id string) (*Router, error) {
+	logtrace.LogWithFunctionName()
 	if router, _ := self.cache.Get(id); router != nil {
 		return router, nil
 	}
@@ -220,10 +238,12 @@ func (self *RouterManager) readInTx(tx *bbolt.Tx, id string) (*Router, error) {
 }
 
 func (self *RouterManager) Update(entity *Router, updatedFields fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Router](self, entity, updatedFields, ctx)
 }
 
 func (self *RouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Router], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	if cmd.Flags == RouterQuiesceFlag {
 		return self.ApplyQuiesce(cmd, ctx)
 	} else if cmd.Flags == RouterDequiesceFlag {
@@ -236,6 +256,7 @@ func (self *RouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Router]
 // QuiesceRouter marks all terminators on the router as failed, so that new traffic will avoid this router, if there's
 // any alternative path
 func (self *RouterManager) QuiesceRouter(entity *Router, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &command.UpdateEntityCommand[*Router]{
 		Context:       ctx,
 		Updater:       self,
@@ -249,6 +270,7 @@ func (self *RouterManager) QuiesceRouter(entity *Router, ctx *change.Context) er
 
 // DequiesceRouter returns all routers with a saved precedence that are in a failed state back to their saved state
 func (self *RouterManager) DequiesceRouter(entity *Router, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	cmd := &command.UpdateEntityCommand[*Router]{
 		Context:       ctx,
 		Updater:       self,
@@ -261,6 +283,7 @@ func (self *RouterManager) DequiesceRouter(entity *Router, ctx *change.Context) 
 }
 
 func (self *RouterManager) ApplyQuiesce(cmd *command.UpdateEntityCommand[*Router], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.UpdateTerminators(cmd.Entity, ctx, func(terminator *db.Terminator) error {
 		if terminator.Precedence == xt.Precedences.Failed.String() {
 			return nil
@@ -278,6 +301,7 @@ func (self *RouterManager) ApplyQuiesce(cmd *command.UpdateEntityCommand[*Router
 }
 
 func (self *RouterManager) ApplyDequiesce(cmd *command.UpdateEntityCommand[*Router], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.UpdateTerminators(cmd.Entity, ctx, func(terminator *db.Terminator) error {
 		if terminator.SavedPrecedence == nil || terminator.Precedence != xt.Precedences.Failed.String() {
 			return nil
@@ -294,6 +318,7 @@ func (self *RouterManager) ApplyDequiesce(cmd *command.UpdateEntityCommand[*Rout
 }
 
 func (self *RouterManager) UpdateTerminators(router *Router, ctx boltz.MutateContext, f func(terminator *db.Terminator) error) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		terminatorIds := self.Store.GetRelatedEntitiesIdList(ctx.Tx(), router.Id, db.EntityTypeTerminators)
 		for _, terminatorId := range terminatorIds {
@@ -310,6 +335,7 @@ func (self *RouterManager) UpdateTerminators(router *Router, ctx boltz.MutateCon
 }
 
 func (self *RouterManager) HandleRouterDelete(id string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", id)
 	log.Info("processing router delete")
 	self.cache.Remove(id)
@@ -329,6 +355,7 @@ func (self *RouterManager) HandleRouterDelete(id string) {
 }
 
 func (self *RouterManager) UpdateCachedRouter(id string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("routerId", id)
 	if router, err := self.readUncached(id); err != nil {
 		log.WithError(err).Error("failed to read router for cache update")
@@ -360,10 +387,12 @@ func (self *RouterManager) UpdateCachedRouter(id string) {
 }
 
 func (self *RouterManager) RemoveFromCache(id string) {
+	logtrace.LogWithFunctionName()
 	self.cache.Remove(id)
 }
 
 func (self *RouterManager) Marshall(entity *Router) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -388,6 +417,7 @@ func (self *RouterManager) Marshall(entity *Router) ([]byte, error) {
 }
 
 func (self *RouterManager) Unmarshall(bytes []byte) (*Router, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.Router{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -413,6 +443,7 @@ func (self *RouterManager) Unmarshall(bytes []byte) (*Router, error) {
 }
 
 func (self *RouterManager) ValidateRouterSdkTerminators(router *Router, cb func(detail *mgmt_pb.RouterSdkTerminatorsDetails)) {
+	logtrace.LogWithFunctionName()
 	request := &ctrl_pb.InspectRequest{RequestedValues: []string{"sdk-terminators"}}
 	resp := &ctrl_pb.InspectResponse{}
 	respMsg, err := protobufs.MarshalTyped(request).WithTimeout(time.Minute).SendForReply(router.Control)
@@ -497,6 +528,7 @@ func (self *RouterManager) ValidateRouterSdkTerminators(router *Router, cb func(
 }
 
 func (self *RouterManager) ReportRouterSdkTerminatorsError(router *Router, err error, cb func(detail *mgmt_pb.RouterSdkTerminatorsDetails)) {
+	logtrace.LogWithFunctionName()
 	result := &mgmt_pb.RouterSdkTerminatorsDetails{
 		RouterId:        router.Id,
 		RouterName:      router.Name,
@@ -513,6 +545,7 @@ type RouterLinks struct {
 }
 
 func (self *RouterLinks) GetLinks() []*Link {
+	logtrace.LogWithFunctionName()
 	result := self.allLinks.Load()
 	if result == nil {
 		return nil
@@ -521,6 +554,7 @@ func (self *RouterLinks) GetLinks() []*Link {
 }
 
 func (self *RouterLinks) GetLinksByRouter() map[string][]*Link {
+	logtrace.LogWithFunctionName()
 	result := self.linkByRouter.Load()
 	if result == nil {
 		return nil
@@ -529,6 +563,7 @@ func (self *RouterLinks) GetLinksByRouter() map[string][]*Link {
 }
 
 func (self *RouterLinks) Add(link *Link, otherRouterId string) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	links := self.GetLinks()
@@ -547,6 +582,7 @@ func (self *RouterLinks) Add(link *Link, otherRouterId string) {
 }
 
 func (self *RouterLinks) Remove(link *Link, otherRouterId string) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	links := self.GetLinks()
@@ -578,6 +614,7 @@ func (self *RouterLinks) Remove(link *Link, otherRouterId string) {
 }
 
 func (self *RouterLinks) Clear() {
+	logtrace.LogWithFunctionName()
 	self.allLinks.Store([]*Link{})
 	self.linkByRouter.Store(map[string][]*Link{})
 }

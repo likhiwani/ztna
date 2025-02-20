@@ -7,6 +7,7 @@
 package loop2_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -36,6 +37,7 @@ type Test struct {
 }
 
 func (x *Test) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Test{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_loop_proto_msgTypes[0]
@@ -45,12 +47,15 @@ func (x *Test) Reset() {
 }
 
 func (x *Test) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
 func (*Test) ProtoMessage() {}
+    logtrace.LogWithFunctionName()
 
 func (x *Test) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_loop_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -64,10 +69,12 @@ func (x *Test) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Test.ProtoReflect.Descriptor instead.
 func (*Test) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_loop_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Test) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -75,6 +82,7 @@ func (x *Test) GetName() string {
 }
 
 func (x *Test) GetTxRequests() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxRequests
 	}
@@ -82,6 +90,7 @@ func (x *Test) GetTxRequests() int32 {
 }
 
 func (x *Test) GetTxPacing() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxPacing
 	}
@@ -89,6 +98,7 @@ func (x *Test) GetTxPacing() int32 {
 }
 
 func (x *Test) GetTxMaxJitter() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TxMaxJitter
 	}
@@ -96,6 +106,7 @@ func (x *Test) GetTxMaxJitter() int32 {
 }
 
 func (x *Test) GetRxRequests() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxRequests
 	}
@@ -103,6 +114,7 @@ func (x *Test) GetRxRequests() int32 {
 }
 
 func (x *Test) GetRxTimeout() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RxTimeout
 	}
@@ -110,6 +122,7 @@ func (x *Test) GetRxTimeout() int32 {
 }
 
 func (x *Test) GetPayloadMinBytes() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PayloadMinBytes
 	}
@@ -117,6 +130,7 @@ func (x *Test) GetPayloadMinBytes() int32 {
 }
 
 func (x *Test) GetPayloadMaxBytes() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PayloadMaxBytes
 	}
@@ -134,6 +148,7 @@ type Block struct {
 }
 
 func (x *Block) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Block{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_loop_proto_msgTypes[1]
@@ -143,12 +158,15 @@ func (x *Block) Reset() {
 }
 
 func (x *Block) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
 func (*Block) ProtoMessage() {}
+    logtrace.LogWithFunctionName()
 
 func (x *Block) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_loop_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -162,10 +180,12 @@ func (x *Block) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Block.ProtoReflect.Descriptor instead.
 func (*Block) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_loop_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Block) GetSequence() int32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Sequence
 	}
@@ -173,6 +193,7 @@ func (x *Block) GetSequence() int32 {
 }
 
 func (x *Block) GetData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Data
 	}
@@ -180,6 +201,7 @@ func (x *Block) GetData() []byte {
 }
 
 func (x *Block) GetHash() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Hash
 	}
@@ -196,6 +218,7 @@ type Result struct {
 }
 
 func (x *Result) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Result{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_loop_proto_msgTypes[2]
@@ -205,12 +228,15 @@ func (x *Result) Reset() {
 }
 
 func (x *Result) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
 func (*Result) ProtoMessage() {}
+    logtrace.LogWithFunctionName()
 
 func (x *Result) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_loop_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -224,10 +250,12 @@ func (x *Result) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Result.ProtoReflect.Descriptor instead.
 func (*Result) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_loop_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Result) GetSuccess() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Success
 	}
@@ -235,6 +263,7 @@ func (x *Result) GetSuccess() bool {
 }
 
 func (x *Result) GetMessage() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Message
 	}
@@ -285,6 +314,7 @@ var (
 )
 
 func file_loop_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_loop_proto_rawDescOnce.Do(func() {
 		file_loop_proto_rawDescData = protoimpl.X.CompressGZIP(file_loop_proto_rawDescData)
 	})
@@ -306,7 +336,9 @@ var file_loop_proto_depIdxs = []int32{
 }
 
 func init() { file_loop_proto_init() }
+    logtrace.LogWithFunctionName()
 func file_loop_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_loop_proto != nil {
 		return
 	}

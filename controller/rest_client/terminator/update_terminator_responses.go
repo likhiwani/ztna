@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type UpdateTerminatorReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *UpdateTerminatorReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewUpdateTerminatorOK()
@@ -84,6 +86,7 @@ func (o *UpdateTerminatorReader) ReadResponse(response runtime.ClientResponse, c
 
 // NewUpdateTerminatorOK creates a UpdateTerminatorOK with default headers values
 func NewUpdateTerminatorOK() *UpdateTerminatorOK {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorOK{}
 }
 
@@ -96,13 +99,16 @@ type UpdateTerminatorOK struct {
 }
 
 func (o *UpdateTerminatorOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /terminators/{id}][%d] updateTerminatorOK  %+v", 200, o.Payload)
 }
 func (o *UpdateTerminatorOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateTerminatorOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *UpdateTerminatorOK) readResponse(response runtime.ClientResponse, consu
 
 // NewUpdateTerminatorBadRequest creates a UpdateTerminatorBadRequest with default headers values
 func NewUpdateTerminatorBadRequest() *UpdateTerminatorBadRequest {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type UpdateTerminatorBadRequest struct {
 }
 
 func (o *UpdateTerminatorBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /terminators/{id}][%d] updateTerminatorBadRequest  %+v", 400, o.Payload)
 }
 func (o *UpdateTerminatorBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateTerminatorBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *UpdateTerminatorBadRequest) readResponse(response runtime.ClientRespons
 
 // NewUpdateTerminatorUnauthorized creates a UpdateTerminatorUnauthorized with default headers values
 func NewUpdateTerminatorUnauthorized() *UpdateTerminatorUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type UpdateTerminatorUnauthorized struct {
 }
 
 func (o *UpdateTerminatorUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /terminators/{id}][%d] updateTerminatorUnauthorized  %+v", 401, o.Payload)
 }
 func (o *UpdateTerminatorUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateTerminatorUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *UpdateTerminatorUnauthorized) readResponse(response runtime.ClientRespo
 
 // NewUpdateTerminatorNotFound creates a UpdateTerminatorNotFound with default headers values
 func NewUpdateTerminatorNotFound() *UpdateTerminatorNotFound {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorNotFound{}
 }
 
@@ -192,13 +207,16 @@ type UpdateTerminatorNotFound struct {
 }
 
 func (o *UpdateTerminatorNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /terminators/{id}][%d] updateTerminatorNotFound  %+v", 404, o.Payload)
 }
 func (o *UpdateTerminatorNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateTerminatorNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *UpdateTerminatorNotFound) readResponse(response runtime.ClientResponse,
 
 // NewUpdateTerminatorTooManyRequests creates a UpdateTerminatorTooManyRequests with default headers values
 func NewUpdateTerminatorTooManyRequests() *UpdateTerminatorTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &UpdateTerminatorTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type UpdateTerminatorTooManyRequests struct {
 }
 
 func (o *UpdateTerminatorTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PUT /terminators/{id}][%d] updateTerminatorTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *UpdateTerminatorTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *UpdateTerminatorTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

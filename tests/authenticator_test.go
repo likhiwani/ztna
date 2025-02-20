@@ -27,6 +27,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 	"github.com/google/uuid"
@@ -35,6 +36,7 @@ import (
 )
 
 func Test_Authenticators_AdminUsingAdminEndpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -482,6 +484,7 @@ func Test_Authenticators_AdminUsingAdminEndpoints(t *testing.T) {
 }
 
 func Test_Authenticators_NonAdminUsingAdminEndpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -621,6 +624,7 @@ func Test_Authenticators_NonAdminUsingAdminEndpoints(t *testing.T) {
 }
 
 func Test_Authenticators_NonAdminUsingSelfServiceEndpoints(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

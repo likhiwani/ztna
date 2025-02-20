@@ -22,18 +22,20 @@ import (
 	"crypto"
 	"crypto/x509"
 	"fmt"
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	cmap "github.com/orcaman/concurrent-map/v2"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"os"
 	"sort"
 	"sync/atomic"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/concurrenz"
+	cmap "github.com/orcaman/concurrent-map/v2"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 )
 
 // RouterDataModelConfig contains the configuration values for a RouterDataModel
@@ -129,6 +131,7 @@ type RouterDataModel struct {
 
 // NewBareRouterDataModel creates a new RouterDataModel that is expected to have no buffers, listeners or subscriptions
 func NewBareRouterDataModel() *RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return &RouterDataModel{
 		EventCache:      NewForgetfulEventCache(),
 		ConfigTypes:     cmap.New[*ConfigType](),
@@ -145,6 +148,7 @@ func NewBareRouterDataModel() *RouterDataModel {
 // NewSenderRouterDataModel creates a new RouterDataModel that will store events in a circular buffer of
 // logSize. listenerBufferSize affects the buffer size of channels returned to listeners of the data model.
 func NewSenderRouterDataModel(logSize uint64, listenerBufferSize uint) *RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return &RouterDataModel{
 		EventCache:         NewLoggingEventCache(logSize),
 		ConfigTypes:        cmap.New[*ConfigType](),
@@ -162,6 +166,7 @@ func NewSenderRouterDataModel(logSize uint64, listenerBufferSize uint) *RouterDa
 // NewReceiverRouterDataModel creates a new RouterDataModel that does not store events. listenerBufferSize affects the
 // buffer size of channels returned to listeners of the data model.
 func NewReceiverRouterDataModel(listenerBufferSize uint, closeNotify <-chan struct{}) *RouterDataModel {
+	logtrace.LogWithFunctionName()
 	result := &RouterDataModel{
 		EventCache:         NewForgetfulEventCache(),
 		ConfigTypes:        cmap.New[*ConfigType](),
@@ -185,6 +190,7 @@ func NewReceiverRouterDataModel(listenerBufferSize uint, closeNotify <-chan stru
 // NewReceiverRouterDataModelFromDataState creates a new RouterDataModel that does not store events. listenerBufferSize affects the
 // buffer size of channels returned to listeners of the data model.
 func NewReceiverRouterDataModelFromDataState(dataState *edge_ctrl_pb.DataState, listenerBufferSize uint, closeNotify <-chan struct{}) *RouterDataModel {
+	logtrace.LogWithFunctionName()
 	result := &RouterDataModel{
 		EventCache:         NewForgetfulEventCache(),
 		ConfigTypes:        cmap.New[*ConfigType](),
@@ -217,6 +223,7 @@ func NewReceiverRouterDataModelFromDataState(dataState *edge_ctrl_pb.DataState, 
 // NewReceiverRouterDataModel creates a new RouterDataModel that does not store events. listenerBufferSize affects the
 // buffer size of channels returned to listeners of the data model.
 func NewReceiverRouterDataModelFromExisting(existing *RouterDataModel, listenerBufferSize uint, closeNotify <-chan struct{}) *RouterDataModel {
+	logtrace.LogWithFunctionName()
 	result := &RouterDataModel{
 		EventCache:         NewForgetfulEventCache(),
 		ConfigTypes:        existing.ConfigTypes,
@@ -243,6 +250,7 @@ func NewReceiverRouterDataModelFromExisting(existing *RouterDataModel, listenerB
 // NewReceiverRouterDataModelFromFile creates a new RouterDataModel that does not store events and is initialized from
 // a file backup. listenerBufferSize affects the buffer size of channels returned to listeners of the data model.
 func NewReceiverRouterDataModelFromFile(path string, listenerBufferSize uint, closeNotify <-chan struct{}) (*RouterDataModel, error) {
+	logtrace.LogWithFunctionName()
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -272,6 +280,7 @@ func NewReceiverRouterDataModelFromFile(path string, listenerBufferSize uint, cl
 }
 
 func (rdm *RouterDataModel) processSubscriberEvents() {
+	logtrace.LogWithFunctionName()
 	for !rdm.stopped.Load() {
 		select {
 		case <-rdm.closeNotify:
@@ -285,6 +294,7 @@ func (rdm *RouterDataModel) processSubscriberEvents() {
 }
 
 func (rdm *RouterDataModel) Stop() {
+	logtrace.LogWithFunctionName()
 	if rdm.stopped.CompareAndSwap(false, true) {
 		close(rdm.stopNotify)
 	}
@@ -292,6 +302,7 @@ func (rdm *RouterDataModel) Stop() {
 
 // NewListener returns a channel that will receive the events applied to this data model.
 func (rdm *RouterDataModel) NewListener() <-chan *edge_ctrl_pb.DataState_ChangeSet {
+	logtrace.LogWithFunctionName()
 	if rdm.listeners == nil {
 		rdm.listeners = map[chan *edge_ctrl_pb.DataState_ChangeSet]struct{}{}
 	}
@@ -303,6 +314,7 @@ func (rdm *RouterDataModel) NewListener() <-chan *edge_ctrl_pb.DataState_ChangeS
 }
 
 func (rdm *RouterDataModel) sendEvent(event *edge_ctrl_pb.DataState_ChangeSet) {
+	logtrace.LogWithFunctionName()
 	for listener := range rdm.listeners {
 		listener <- event
 	}
@@ -310,6 +322,7 @@ func (rdm *RouterDataModel) sendEvent(event *edge_ctrl_pb.DataState_ChangeSet) {
 
 // ApplyChangeSet applies the given even to the router data model.
 func (rdm *RouterDataModel) ApplyChangeSet(change *edge_ctrl_pb.DataState_ChangeSet) {
+	logtrace.LogWithFunctionName()
 	changeAccepted := false
 	logger := pfxlog.Logger().
 		WithField("index", change.Index).
@@ -351,6 +364,7 @@ func (rdm *RouterDataModel) ApplyChangeSet(change *edge_ctrl_pb.DataState_Change
 }
 
 func (rdm *RouterDataModel) Handle(index uint64, event *edge_ctrl_pb.DataState_Event) bool {
+	logtrace.LogWithFunctionName()
 	switch typedModel := event.Model.(type) {
 	case *edge_ctrl_pb.DataState_Event_ConfigType:
 		rdm.HandleConfigTypeEvent(index, event, typedModel)
@@ -378,12 +392,14 @@ func (rdm *RouterDataModel) Handle(index uint64, event *edge_ctrl_pb.DataState_E
 }
 
 func (rdm *RouterDataModel) queueEvent(event subscriberEvent) {
+	logtrace.LogWithFunctionName()
 	if rdm.events != nil {
 		rdm.events <- event
 	}
 }
 
 func (rdm *RouterDataModel) SyncAllSubscribers() {
+	logtrace.LogWithFunctionName()
 	if rdm.events != nil {
 		rdm.events <- syncAllSubscribersEvent{}
 	}
@@ -393,6 +409,7 @@ func (rdm *RouterDataModel) SyncAllSubscribers() {
 // Use ApplyIdentityEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleIdentityEvent(index uint64, event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_Identity) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.Identities.Remove(model.Identity.Id)
 		rdm.queueEvent(identityRemoveEvent{identityId: model.Identity.Id})
@@ -428,6 +445,7 @@ func (rdm *RouterDataModel) HandleIdentityEvent(index uint64, event *edge_ctrl_p
 // Use ApplyServiceEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleServiceEvent(index uint64, event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_Service) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.Services.Remove(model.Service.Id)
 		rdm.ServicePolicies.IterCb(func(key string, v *ServicePolicy) {
@@ -445,6 +463,7 @@ func (rdm *RouterDataModel) HandleServiceEvent(index uint64, event *edge_ctrl_pb
 // Use ApplyConfigTypeEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleConfigTypeEvent(index uint64, event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_ConfigType) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.ConfigTypes.Remove(model.ConfigType.Id)
 	} else {
@@ -459,6 +478,7 @@ func (rdm *RouterDataModel) HandleConfigTypeEvent(index uint64, event *edge_ctrl
 // Use ApplyConfigEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleConfigEvent(index uint64, event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_Config) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.Configs.Remove(model.Config.Id)
 	} else {
@@ -470,6 +490,7 @@ func (rdm *RouterDataModel) HandleConfigEvent(index uint64, event *edge_ctrl_pb.
 }
 
 func (rdm *RouterDataModel) applyUpdateServicePolicyEvent(model *edge_ctrl_pb.DataState_Event_ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	servicePolicy := model.ServicePolicy
 	rdm.ServicePolicies.Upsert(servicePolicy.Id, nil, func(exist bool, valueInMap *ServicePolicy, newValue *ServicePolicy) *ServicePolicy {
 		if valueInMap == nil {
@@ -489,6 +510,7 @@ func (rdm *RouterDataModel) applyUpdateServicePolicyEvent(model *edge_ctrl_pb.Da
 }
 
 func (rdm *RouterDataModel) applyDeleteServicePolicyEvent(model *edge_ctrl_pb.DataState_Event_ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	rdm.ServicePolicies.Remove(model.ServicePolicy.Id)
 }
 
@@ -496,6 +518,7 @@ func (rdm *RouterDataModel) applyDeleteServicePolicyEvent(model *edge_ctrl_pb.Da
 // Use ApplyServicePolicyEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleServicePolicyEvent(event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("policyId", model.ServicePolicy.Id).WithField("action", event.Action).Debug("applying service policy event")
 	switch event.Action {
 	case edge_ctrl_pb.DataState_Create:
@@ -511,6 +534,7 @@ func (rdm *RouterDataModel) HandleServicePolicyEvent(event *edge_ctrl_pb.DataSta
 // Use ApplyPostureCheckEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandlePostureCheckEvent(index uint64, event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_PostureCheck) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.PostureChecks.Remove(model.PostureCheck.Id)
 	} else {
@@ -525,6 +549,7 @@ func (rdm *RouterDataModel) HandlePostureCheckEvent(index uint64, event *edge_ct
 // Use ApplyPublicKeyEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandlePublicKeyEvent(event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_PublicKey) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.PublicKeys.Remove(model.PublicKey.Kid)
 	} else {
@@ -537,6 +562,7 @@ func (rdm *RouterDataModel) HandlePublicKeyEvent(event *edge_ctrl_pb.DataState_E
 // Use ApplyRevocationEvent for event logged event handling. This method is generally meant for bulk loading of data
 // during startup.
 func (rdm *RouterDataModel) HandleRevocationEvent(event *edge_ctrl_pb.DataState_Event, model *edge_ctrl_pb.DataState_Event_Revocation) {
+	logtrace.LogWithFunctionName()
 	if event.Action == edge_ctrl_pb.DataState_Delete {
 		rdm.Revocations.Remove(model.Revocation.Id)
 	} else {
@@ -545,6 +571,7 @@ func (rdm *RouterDataModel) HandleRevocationEvent(event *edge_ctrl_pb.DataState_
 }
 
 func (rdm *RouterDataModel) HandleServicePolicyChange(index uint64, model *edge_ctrl_pb.DataState_ServicePolicyChange) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().
 		WithField("policyId", model.PolicyId).
 		WithField("isAdd", model.Add).
@@ -606,10 +633,12 @@ func (rdm *RouterDataModel) HandleServicePolicyChange(index uint64, model *edge_
 }
 
 func (rdm *RouterDataModel) GetPublicKeys() map[string]crypto.PublicKey {
+	logtrace.LogWithFunctionName()
 	return rdm.cachedPublicKeys.Load()
 }
 
 func (rdm *RouterDataModel) getPublicKeysAsCmap() cmap.ConcurrentMap[string, crypto.PublicKey] {
+	logtrace.LogWithFunctionName()
 	m := cmap.New[crypto.PublicKey]()
 	for k, v := range rdm.cachedPublicKeys.Load() {
 		m.Set(k, v)
@@ -618,6 +647,7 @@ func (rdm *RouterDataModel) getPublicKeysAsCmap() cmap.ConcurrentMap[string, cry
 }
 
 func (rdm *RouterDataModel) recalculateCachedPublicKeys() {
+	logtrace.LogWithFunctionName()
 	publicKeys := map[string]crypto.PublicKey{}
 	rdm.PublicKeys.IterCb(func(kid string, pubKey *edge_ctrl_pb.DataState_PublicKey) {
 		log := pfxlog.Logger().WithField("format", pubKey.Format).WithField("kid", kid)
@@ -643,6 +673,7 @@ func (rdm *RouterDataModel) recalculateCachedPublicKeys() {
 }
 
 func (rdm *RouterDataModel) GetDataState() *edge_ctrl_pb.DataState {
+	logtrace.LogWithFunctionName()
 	var result *edge_ctrl_pb.DataState
 	rdm.EventCache.WhileLocked(func(currentIndex uint64, _ bool) {
 		result = rdm.getDataStateAlreadyLocked(currentIndex)
@@ -651,6 +682,7 @@ func (rdm *RouterDataModel) GetDataState() *edge_ctrl_pb.DataState {
 }
 
 func (rdm *RouterDataModel) getDataStateAlreadyLocked(index uint64) *edge_ctrl_pb.DataState {
+	logtrace.LogWithFunctionName()
 	var events []*edge_ctrl_pb.DataState_Event
 
 	rdm.ConfigTypes.IterCb(func(key string, v *ConfigType) {
@@ -781,6 +813,7 @@ func (rdm *RouterDataModel) getDataStateAlreadyLocked(index uint64) *edge_ctrl_p
 }
 
 func (rdm *RouterDataModel) Save(path string) {
+	logtrace.LogWithFunctionName()
 	rdm.EventCache.WhileLocked(func(index uint64, indexInitialized bool) {
 		if !indexInitialized {
 			pfxlog.Logger().Debug("could not save router data model, no index")
@@ -827,6 +860,7 @@ func (rdm *RouterDataModel) Save(path string) {
 
 // GetServiceAccessPolicies returns an AccessPolicies instance for an identity attempting to access a service.
 func (rdm *RouterDataModel) GetServiceAccessPolicies(identityId string, serviceId string, policyType edge_ctrl_pb.PolicyType) (*AccessPolicies, error) {
+	logtrace.LogWithFunctionName()
 	identity, ok := rdm.Identities.Get(identityId)
 
 	if !ok {
@@ -869,6 +903,7 @@ func (rdm *RouterDataModel) GetServiceAccessPolicies(identityId string, serviceI
 }
 
 func CloneMap[V any](m cmap.ConcurrentMap[string, V]) cmap.ConcurrentMap[string, V] {
+	logtrace.LogWithFunctionName()
 	result := cmap.New[V]()
 	m.IterCb(func(key string, v V) {
 		result.Set(key, v)
@@ -877,6 +912,7 @@ func CloneMap[V any](m cmap.ConcurrentMap[string, V]) cmap.ConcurrentMap[string,
 }
 
 func (rdm *RouterDataModel) SubscribeToIdentityChanges(identityId string, subscriber IdentityEventSubscriber, isRouterIdentity bool) error {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("identityId", identityId).Debug("subscribing to changes for identity")
 	identity, ok := rdm.Identities.Get(identityId)
 	if !ok && !isRouterIdentity {
@@ -904,12 +940,14 @@ func (rdm *RouterDataModel) SubscribeToIdentityChanges(identityId string, subscr
 }
 
 func (rdm *RouterDataModel) InheritSubscribers(other *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	other.subscriptions.IterCb(func(key string, v *IdentitySubscription) {
 		rdm.subscriptions.Set(key, v)
 	})
 }
 
 func (rdm *RouterDataModel) buildServiceList(sub *IdentitySubscription) (map[string]*IdentityService, map[string]*PostureCheck) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("identityId", sub.IdentityId)
 	services := map[string]*IdentityService{}
 	postureChecks := map[string]*PostureCheck{}
@@ -954,6 +992,7 @@ func (rdm *RouterDataModel) buildServiceList(sub *IdentitySubscription) (map[str
 }
 
 func (rdm *RouterDataModel) loadServicePostureChecks(identity *Identity, policy *ServicePolicy, svc *IdentityService, checks map[string]*PostureCheck) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("identityId", identity.Id).
 		WithField("serviceId", svc.Service.Id).
@@ -971,6 +1010,7 @@ func (rdm *RouterDataModel) loadServicePostureChecks(identity *Identity, policy 
 }
 
 func (rdm *RouterDataModel) loadServiceConfigs(identity *Identity, svc *IdentityService) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("identityId", identity.Id).
 		WithField("serviceId", svc.Service.Id)
@@ -997,6 +1037,7 @@ func (rdm *RouterDataModel) loadServiceConfigs(identity *Identity, svc *Identity
 }
 
 func (rdm *RouterDataModel) loadIdentityConfig(configId string, log *logrus.Entry) *IdentityConfig {
+	logtrace.LogWithFunctionName()
 	config, ok := rdm.Configs.Get(configId)
 	if !ok {
 		log.WithField("configId", configId).Error("could not find config")
@@ -1018,6 +1059,7 @@ func (rdm *RouterDataModel) loadIdentityConfig(configId string, log *logrus.Entr
 }
 
 func (rdm *RouterDataModel) GetEntityCounts() map[string]uint32 {
+	logtrace.LogWithFunctionName()
 	result := map[string]uint32{
 		"configType":         uint32(rdm.ConfigTypes.Count()),
 		"configs":            uint32(rdm.Configs.Count()),
@@ -1043,6 +1085,7 @@ const (
 type DiffSink func(entityType string, id string, diffType DiffType, detail string)
 
 func (rdm *RouterDataModel) Validate(correct *RouterDataModel, sink DiffSink) {
+	logtrace.LogWithFunctionName()
 	correct.Diff(rdm, sink)
 	rdm.subscriptions.IterCb(func(key string, v *IdentitySubscription) {
 		v.Diff(rdm, sink)
@@ -1050,6 +1093,7 @@ func (rdm *RouterDataModel) Validate(correct *RouterDataModel, sink DiffSink) {
 }
 
 func (rdm *RouterDataModel) Diff(o *RouterDataModel, sink DiffSink) {
+	logtrace.LogWithFunctionName()
 	if o == nil {
 		sink("router-data-model", "root", DiffTypeSub, "router data model not present")
 		return
@@ -1093,6 +1137,7 @@ func (rdm *RouterDataModel) Diff(o *RouterDataModel, sink DiffSink) {
 type diffF[T any] func(a, b T) []string
 
 func diffMaps[T any](entityType string, m1, m2 cmap.ConcurrentMap[string, T], sink DiffSink, differ diffF[T]) {
+	logtrace.LogWithFunctionName()
 	hasMissing := false
 	m1.IterCb(func(key string, v T) {
 		v2, exists := m2.Get(key)
@@ -1116,6 +1161,7 @@ func diffMaps[T any](entityType string, m1, m2 cmap.ConcurrentMap[string, T], si
 }
 
 func diffType[P any, T *P](entityType string, m1 cmap.ConcurrentMap[string, T], m2 cmap.ConcurrentMap[string, T], sink DiffSink, ignoreTypes ...any) {
+	logtrace.LogWithFunctionName()
 	diffReporter := &compareReporter{
 		f: func(key string, detail string) {
 			sink(entityType, key, DiffTypeMod, detail)
@@ -1148,6 +1194,7 @@ func diffType[P any, T *P](entityType string, m1 cmap.ConcurrentMap[string, T], 
 }
 
 func CMapToMap[T any](m cmap.ConcurrentMap[string, T]) map[string]T {
+	logtrace.LogWithFunctionName()
 	result := map[string]T{}
 	m.IterCb(func(key string, val T) {
 		result[key] = val
@@ -1162,10 +1209,12 @@ type compareReporter struct {
 }
 
 func (self *compareReporter) PushStep(step cmp.PathStep) {
+	logtrace.LogWithFunctionName()
 	self.steps = append(self.steps, step)
 }
 
 func (self *compareReporter) Report(result cmp.Result) {
+	logtrace.LogWithFunctionName()
 	if !result.Equal() {
 		var step cmp.PathStep
 		path := &bytes.Buffer{}
@@ -1193,5 +1242,6 @@ func (self *compareReporter) Report(result cmp.Result) {
 }
 
 func (self *compareReporter) PopStep() {
+	logtrace.LogWithFunctionName()
 	self.steps = self.steps[:len(self.steps)-1]
 }

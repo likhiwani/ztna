@@ -22,11 +22,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewIdentityTypeRouter()
 	env.AddRouter(r)
 }
@@ -36,12 +38,14 @@ type IdentityTypeRouter struct {
 }
 
 func NewIdentityTypeRouter() *IdentityTypeRouter {
+	logtrace.LogWithFunctionName()
 	return &IdentityTypeRouter{
 		BasePath: "/" + EntityNameIdentityType,
 	}
 }
 
 func (r *IdentityTypeRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.IdentityDetailIdentityTypeHandler = identity.DetailIdentityTypeHandlerFunc(func(params identity.DetailIdentityTypeParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Detail, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -53,9 +57,11 @@ func (r *IdentityTypeRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *IdentityTypeRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.IdentityType](ae, rc, ae.Managers.IdentityType, MapIdentityTypeToRestEntity)
 }
 
 func (r *IdentityTypeRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.IdentityType](ae, rc, ae.Managers.IdentityType, MapIdentityTypeToRestEntity)
 }

@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -90,6 +91,7 @@ type LinkDetail struct {
 
 // Validate validates this link detail
 func (m *LinkDetail) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateCost(formats); err != nil {
@@ -143,6 +145,7 @@ func (m *LinkDetail) Validate(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateCost(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("cost", "body", m.Cost); err != nil {
 		return err
@@ -152,6 +155,7 @@ func (m *LinkDetail) validateCost(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateDestLatency(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("destLatency", "body", m.DestLatency); err != nil {
 		return err
@@ -161,6 +165,7 @@ func (m *LinkDetail) validateDestLatency(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateDestRouter(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("destRouter", "body", m.DestRouter); err != nil {
 		return err
@@ -181,6 +186,7 @@ func (m *LinkDetail) validateDestRouter(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateDown(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("down", "body", m.Down); err != nil {
 		return err
@@ -190,6 +196,7 @@ func (m *LinkDetail) validateDown(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateID(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
@@ -199,6 +206,7 @@ func (m *LinkDetail) validateID(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateIteration(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("iteration", "body", m.Iteration); err != nil {
 		return err
@@ -208,6 +216,7 @@ func (m *LinkDetail) validateIteration(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateProtocol(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("protocol", "body", m.Protocol); err != nil {
 		return err
@@ -217,6 +226,7 @@ func (m *LinkDetail) validateProtocol(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateSourceLatency(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("sourceLatency", "body", m.SourceLatency); err != nil {
 		return err
@@ -226,6 +236,7 @@ func (m *LinkDetail) validateSourceLatency(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateSourceRouter(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("sourceRouter", "body", m.SourceRouter); err != nil {
 		return err
@@ -246,6 +257,7 @@ func (m *LinkDetail) validateSourceRouter(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateState(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("state", "body", m.State); err != nil {
 		return err
@@ -255,6 +267,7 @@ func (m *LinkDetail) validateState(formats strfmt.Registry) error {
 }
 
 func (m *LinkDetail) validateStaticCost(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("staticCost", "body", m.StaticCost); err != nil {
 		return err
@@ -265,6 +278,7 @@ func (m *LinkDetail) validateStaticCost(formats strfmt.Registry) error {
 
 // ContextValidate validate this link detail based on the context it is used
 func (m *LinkDetail) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateDestRouter(ctx, formats); err != nil {
@@ -282,6 +296,7 @@ func (m *LinkDetail) ContextValidate(ctx context.Context, formats strfmt.Registr
 }
 
 func (m *LinkDetail) contextValidateDestRouter(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.DestRouter != nil {
 		if err := m.DestRouter.ContextValidate(ctx, formats); err != nil {
@@ -298,6 +313,7 @@ func (m *LinkDetail) contextValidateDestRouter(ctx context.Context, formats strf
 }
 
 func (m *LinkDetail) contextValidateSourceRouter(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.SourceRouter != nil {
 		if err := m.SourceRouter.ContextValidate(ctx, formats); err != nil {
@@ -315,6 +331,7 @@ func (m *LinkDetail) contextValidateSourceRouter(ctx context.Context, formats st
 
 // MarshalBinary interface implementation
 func (m *LinkDetail) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -323,6 +340,7 @@ func (m *LinkDetail) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *LinkDetail) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res LinkDetail
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

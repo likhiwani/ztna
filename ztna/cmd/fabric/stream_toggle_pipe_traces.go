@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"time"
 
@@ -34,6 +35,7 @@ type streamTogglePipeTracesAction struct {
 }
 
 func NewStreamTogglePipeTracesCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := streamTogglePipeTracesAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -54,6 +56,7 @@ func NewStreamTogglePipeTracesCmd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *streamTogglePipeTracesAction) togglePipeTraces(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	ch, err := api.NewWsMgmtChannel(nil)
 	if err != nil {
 		panic(err)

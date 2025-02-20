@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	"ztna-core/edge-api/rest_management_api_client/authenticator"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
@@ -41,6 +42,7 @@ type updateUpdbOptions struct {
 }
 
 func newUpdateAuthenticatorUpdb(idType string, options api.Options) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	updbOptions := updateUpdbOptions{
 		Options: options,
 	}
@@ -71,6 +73,7 @@ func newUpdateAuthenticatorUpdb(idType string, options api.Options) *cobra.Comma
 }
 
 func runUpdateUpdbPassword(idType string, options *updateUpdbOptions) error {
+	logtrace.LogWithFunctionName()
 
 	if options.identity != "" && options.self {
 		return errors.New("--self and --identity cannot be mixed")
@@ -88,6 +91,7 @@ func runUpdateUpdbPassword(idType string, options *updateUpdbOptions) error {
 }
 
 func updateSelfPassword(current string, new string, options api.Options) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	if current == "" {
 		if current, err = term.PromptPassword("Enter your current password: ", false); err != nil {
@@ -133,6 +137,7 @@ func updateSelfPassword(current string, new string, options api.Options) error {
 }
 
 func setIdentityPassword(identity, password string, options api.Options) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapIdentityNameToID(identity, options)
 
 	if err != nil {

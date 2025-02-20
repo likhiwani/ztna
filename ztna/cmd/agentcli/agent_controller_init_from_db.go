@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -32,6 +33,7 @@ type AgentCtrlInitFromDbAction struct {
 }
 
 func NewAgentCtrlInitFromDb(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentCtrlInitFromDbAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -54,6 +56,7 @@ func NewAgentCtrlInitFromDb(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentCtrlInitFromDbAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_RaftInitFromDb), []byte(self.Args[0]))
 
 	reply, err := msg.WithTimeout(self.timeout).SendForReply(ch)

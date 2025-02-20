@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type RaftMemberAddHandlerFunc func(RaftMemberAddParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn RaftMemberAddHandlerFunc) Handle(params RaftMemberAddParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type RaftMemberAddHandler interface {
 
 // NewRaftMemberAdd creates a new http.Handler for the raft member add operation
 func NewRaftMemberAdd(ctx *middleware.Context, handler RaftMemberAddHandler) *RaftMemberAdd {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAdd{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type RaftMemberAdd struct {
 }
 
 func (o *RaftMemberAdd) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

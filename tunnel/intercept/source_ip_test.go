@@ -4,6 +4,7 @@ import (
 	"net"
 	"testing"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/entities"
 
@@ -16,9 +17,11 @@ type testProvider struct {
 }
 
 func (self *testProvider) PrepForUse(serviceId string) {
+	logtrace.LogWithFunctionName()
 }
 
 func (self *testProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	cost := rest_model.TerminatorCost(0)
 	return &rest_model.IdentityDetail{
 		Name:               util.Ptr("foo.bar"),
@@ -34,18 +37,22 @@ func (self *testProvider) GetCurrentIdentity() (*rest_model.IdentityDetail, erro
 }
 
 func (self *testProvider) GetCurrentIdentityWithBackoff() (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.GetCurrentIdentity()
 }
 
 func (self *testProvider) TunnelService(service tunnel.Service, identity string, conn net.Conn, halfClose bool, appInfo []byte) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func (self *testProvider) HostService(hostCtx tunnel.HostingContext) (tunnel.HostControl, error) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func Test_SourceIp(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	svc := &entities.Service{}
 
 	sourceAddr := &net.TCPAddr{IP: net.ParseIP("1.2.3.4"), Port: 5432}
@@ -80,6 +87,7 @@ func Test_SourceIp(t *testing.T) {
 }
 
 func Test_TemplateIdentity(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	serviceId := uuid.NewString()
 	svc := &entities.Service{
 		ServiceDetail: rest_model.ServiceDetail{

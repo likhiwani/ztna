@@ -1,19 +1,22 @@
 package network
 
 import (
-	"ztna-core/ztna/controller/model"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/google/uuid"
-	"github.com/openziti/transport/v2/tcp"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/xt"
+
+	"github.com/google/uuid"
+	"github.com/openziti/transport/v2/tcp"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSmartRerouteMinCostDelta(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 

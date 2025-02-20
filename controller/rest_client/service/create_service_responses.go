@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type CreateServiceReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *CreateServiceReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 201:
 		result := NewCreateServiceCreated()
@@ -78,6 +80,7 @@ func (o *CreateServiceReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewCreateServiceCreated creates a CreateServiceCreated with default headers values
 func NewCreateServiceCreated() *CreateServiceCreated {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceCreated{}
 }
 
@@ -90,13 +93,16 @@ type CreateServiceCreated struct {
 }
 
 func (o *CreateServiceCreated) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /services][%d] createServiceCreated  %+v", 201, o.Payload)
 }
 func (o *CreateServiceCreated) GetPayload() *rest_model.CreateEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateServiceCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.CreateEnvelope)
 
@@ -110,6 +116,7 @@ func (o *CreateServiceCreated) readResponse(response runtime.ClientResponse, con
 
 // NewCreateServiceBadRequest creates a CreateServiceBadRequest with default headers values
 func NewCreateServiceBadRequest() *CreateServiceBadRequest {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceBadRequest{}
 }
 
@@ -122,13 +129,16 @@ type CreateServiceBadRequest struct {
 }
 
 func (o *CreateServiceBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /services][%d] createServiceBadRequest  %+v", 400, o.Payload)
 }
 func (o *CreateServiceBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateServiceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *CreateServiceBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewCreateServiceUnauthorized creates a CreateServiceUnauthorized with default headers values
 func NewCreateServiceUnauthorized() *CreateServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceUnauthorized{}
 }
 
@@ -154,13 +165,16 @@ type CreateServiceUnauthorized struct {
 }
 
 func (o *CreateServiceUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /services][%d] createServiceUnauthorized  %+v", 401, o.Payload)
 }
 func (o *CreateServiceUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateServiceUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *CreateServiceUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewCreateServiceTooManyRequests creates a CreateServiceTooManyRequests with default headers values
 func NewCreateServiceTooManyRequests() *CreateServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &CreateServiceTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type CreateServiceTooManyRequests struct {
 }
 
 func (o *CreateServiceTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /services][%d] createServiceTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *CreateServiceTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateServiceTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

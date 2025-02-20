@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/openziti/metrics/metrics_pb"
 	"google.golang.org/protobuf/proto"
 )
@@ -30,16 +32,19 @@ type metricsHandler struct {
 }
 
 func newMetricsHandler(network *network.Network) *metricsHandler {
+	logtrace.LogWithFunctionName()
 	return &metricsHandler{
 		dispatcher: network.GetEventDispatcher(),
 	}
 }
 
 func (h *metricsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(metrics_pb.ContentType_MetricsType)
 }
 
 func (h *metricsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	metricsMsg := &metrics_pb.MetricsMessage{}
 	if err := proto.Unmarshal(msg.Body, metricsMsg); err == nil {
 		h.dispatcher.AcceptMetricsMsg(metricsMsg)

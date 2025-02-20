@@ -1,14 +1,17 @@
 package xgress
 
 import (
+	"sync/atomic"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/metrics"
-	"sync/atomic"
 )
 
 var retransmitter *Retransmitter
 
 func InitRetransmitter(forwarder PayloadBufferForwarder, faultReporter RetransmitterFaultReporter, metrics metrics.Registry, closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	retransmitter = NewRetransmitter(forwarder, faultReporter, metrics, closeNotify)
 }
 
@@ -28,6 +31,7 @@ type Retransmitter struct {
 }
 
 func NewRetransmitter(forwarder PayloadBufferForwarder, faultReporter RetransmitterFaultReporter, metrics metrics.Registry, closeNotify <-chan struct{}) *Retransmitter {
+	logtrace.LogWithFunctionName()
 	ctrl := &Retransmitter{
 		forwarder:        forwarder,
 		retransmitIngest: make(chan *txPayload, 16),
@@ -47,10 +51,12 @@ func NewRetransmitter(forwarder PayloadBufferForwarder, faultReporter Retransmit
 }
 
 func (self *Retransmitter) queue(p *txPayload) {
+	logtrace.LogWithFunctionName()
 	self.retransmitIngest <- p
 }
 
 func (self *Retransmitter) popHead() *txPayload {
+	logtrace.LogWithFunctionName()
 	if self.retxHead == nil {
 		return nil
 	}
@@ -73,6 +79,7 @@ func (self *Retransmitter) popHead() *txPayload {
 }
 
 func (self *Retransmitter) pushTail(txp *txPayload) {
+	logtrace.LogWithFunctionName()
 	if txp.prev != nil || txp.next != nil || txp == self.retxHead {
 		return
 	}
@@ -88,6 +95,7 @@ func (self *Retransmitter) pushTail(txp *txPayload) {
 }
 
 func (self *Retransmitter) delete(txp *txPayload) {
+	logtrace.LogWithFunctionName()
 	if self.retxHead == txp {
 		self.popHead()
 	} else if txp == self.retxTail {
@@ -105,6 +113,7 @@ func (self *Retransmitter) delete(txp *txPayload) {
 }
 
 func (self *Retransmitter) retransmitIngester() {
+	logtrace.LogWithFunctionName()
 	var next *txPayload
 	for {
 		if next == nil {
@@ -132,6 +141,7 @@ func (self *Retransmitter) retransmitIngester() {
 }
 
 func (self *Retransmitter) acceptRetransmit(txp *txPayload) {
+	logtrace.LogWithFunctionName()
 	if txp.isAcked() {
 		self.delete(txp)
 	} else {
@@ -140,6 +150,7 @@ func (self *Retransmitter) acceptRetransmit(txp *txPayload) {
 }
 
 func (self *Retransmitter) retransmitSender() {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	for {
 		select {

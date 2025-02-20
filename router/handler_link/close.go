@@ -17,10 +17,12 @@
 package handler_link
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/forwarder"
 	"ztna-core/ztna/router/xlink"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type closeHandler struct {
@@ -30,6 +32,7 @@ type closeHandler struct {
 }
 
 func newCloseHandler(link xlink.Xlink, forwarder *forwarder.Forwarder, registry xlink.Registry) *closeHandler {
+	logtrace.LogWithFunctionName()
 	return &closeHandler{
 		link:          link,
 		forwarder:     forwarder,
@@ -38,6 +41,7 @@ func newCloseHandler(link xlink.Xlink, forwarder *forwarder.Forwarder, registry 
 }
 
 func (self *closeHandler) HandleClose(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.link.CloseOnce(func() {
 		log := pfxlog.ContextLogger(ch.Label()).
 			WithField("linkId", self.link.Id()).

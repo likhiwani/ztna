@@ -18,20 +18,22 @@ package network
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/goroutines"
-	"github.com/openziti/storage/boltz"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/xt"
-	"sync/atomic"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/goroutines"
+	"github.com/openziti/storage/boltz"
 )
 
 type routerUpdates struct {
@@ -41,6 +43,7 @@ type routerUpdates struct {
 }
 
 func (self *routerUpdates) stateUpdated(routerId string) {
+	logtrace.LogWithFunctionName()
 	self.version++
 	self.changedRouters[routerId] = struct{}{}
 }
@@ -61,6 +64,7 @@ type routerEvent interface {
 }
 
 func NewRouterMessaging(env model.Env, routerCommPool goroutines.Pool) *RouterMessaging {
+	logtrace.LogWithFunctionName()
 	result := &RouterMessaging{
 		env:                     env,
 		managers:                env.GetManagers(),
@@ -90,6 +94,7 @@ type RouterMessaging struct {
 }
 
 func (self *RouterMessaging) getNextMarker() uint64 {
+	logtrace.LogWithFunctionName()
 	result := self.markerCounter.Add(1)
 	for result == 0 {
 		result = self.markerCounter.Add(1)
@@ -98,24 +103,29 @@ func (self *RouterMessaging) getNextMarker() uint64 {
 }
 
 func (self *RouterMessaging) RouterConnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChanged(r.Id, true)
 }
 
 func (self *RouterMessaging) RouterDisconnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	self.routerChanged(r.Id, false)
 }
 
 func (self *RouterMessaging) RouterDeleted(routerId string) {
+	logtrace.LogWithFunctionName()
 	self.routerChanged(routerId, false)
 }
 
 func (self *RouterMessaging) TerminatorCreated(terminator *db.Terminator) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&terminatorCreatedEvent{
 		terminator: terminator,
 	})
 }
 
 func (self *RouterMessaging) routerChanged(routerId string, connected bool) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&routerChangedEvent{
 		routerId:  routerId,
 		connected: connected,
@@ -123,6 +133,7 @@ func (self *RouterMessaging) routerChanged(routerId string, connected bool) {
 }
 
 func (self *RouterMessaging) queueEvent(evt routerEvent) {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.eventsC <- evt:
 	case <-self.env.GetCloseNotifyChannel():
@@ -130,6 +141,7 @@ func (self *RouterMessaging) queueEvent(evt routerEvent) {
 }
 
 func (self *RouterMessaging) run() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(time.Second * 30)
 	defer ticker.Stop()
 
@@ -166,6 +178,7 @@ func (self *RouterMessaging) run() {
 }
 
 func (self *RouterMessaging) getRouterStates(routerId string) *routerUpdates {
+	logtrace.LogWithFunctionName()
 	result, found := self.routerUpdates[routerId]
 	if !found {
 		result = &routerUpdates{
@@ -177,6 +190,7 @@ func (self *RouterMessaging) getRouterStates(routerId string) *routerUpdates {
 }
 
 func (self *RouterMessaging) getTerminatorValidations(routerId string) *terminatorValidations {
+	logtrace.LogWithFunctionName()
 	result, found := self.terminatorValidations[routerId]
 	if !found {
 		result = &terminatorValidations{
@@ -188,6 +202,7 @@ func (self *RouterMessaging) getTerminatorValidations(routerId string) *terminat
 }
 
 func (self *RouterMessaging) syncStates() {
+	logtrace.LogWithFunctionName()
 	for k, v := range self.routerUpdates {
 		notifyRouterId := k
 		updates := v
@@ -273,12 +288,14 @@ func (self *RouterMessaging) syncStates() {
 }
 
 func (self *RouterMessaging) sendTerminatorValidationRequests() {
+	logtrace.LogWithFunctionName()
 	for routerId, updates := range self.terminatorValidations {
 		self.sendTerminatorValidationRequest(routerId, updates)
 	}
 }
 
 func (self *RouterMessaging) sendTerminatorValidationRequest(routerId string, updates *terminatorValidations) {
+	logtrace.LogWithFunctionName()
 	notifyRouter := self.managers.Router.GetConnected(routerId)
 	if notifyRouter == nil {
 		// if the router disconnected, we're going to sync everything anyway, so clear anything pending here
@@ -370,6 +387,7 @@ func (self *RouterMessaging) sendTerminatorValidationRequest(routerId string, up
 }
 
 func (self *RouterMessaging) generateMockTerminatorValidationResponse(r *model.Router, validations *terminatorValidations, onlyNonLocal bool) {
+	logtrace.LogWithFunctionName()
 	handler := &terminatorValidationRespReceived{
 		router: r,
 		resp: &ctrl_pb.ValidateTerminatorsV2Response{
@@ -392,6 +410,7 @@ func (self *RouterMessaging) generateMockTerminatorValidationResponse(r *model.R
 }
 
 func (self *RouterMessaging) processQueuedDeletes() {
+	logtrace.LogWithFunctionName()
 	if len(self.queuedTerminatorDeletes) == 0 {
 		return
 	}
@@ -451,6 +470,7 @@ func (self *RouterMessaging) processQueuedDeletes() {
 }
 
 func (self *RouterMessaging) NewValidationResponseHandler(n *Network, r *model.Router) channel.ReceiveHandlerF {
+	logtrace.LogWithFunctionName()
 	return func(m *channel.Message, ch channel.Channel) {
 		log := pfxlog.Logger().WithField("routerId", r.Id)
 		resp := &ctrl_pb.ValidateTerminatorsV2Response{}
@@ -469,12 +489,14 @@ func (self *RouterMessaging) NewValidationResponseHandler(n *Network, r *model.R
 }
 
 func (self *RouterMessaging) ValidateRouterTerminators(terminators []*model.Terminator) {
+	logtrace.LogWithFunctionName()
 	self.queueEvent(&validateTerminators{
 		terminators: terminators,
 	})
 }
 
 func (self *RouterMessaging) Inspect() (*inspect.RouterMessagingState, error) {
+	logtrace.LogWithFunctionName()
 	evt := &routerMessagingInspectEvent{
 		resultC: make(chan *inspect.RouterMessagingState, 1),
 	}
@@ -501,6 +523,7 @@ type routerChangedEvent struct {
 }
 
 func (self *routerChangedEvent) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("routerId", self.routerId).
 		WithField("connected", self.connected).
 		Info("calculating router updates for router")
@@ -528,6 +551,7 @@ type terminatorCreatedEvent struct {
 }
 
 func (self *terminatorCreatedEvent) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	routerStates := c.getTerminatorValidations(self.terminator.Router)
 	routerStates.terminators[self.terminator.Id] = terminatorInfo{
 		Terminator: self.terminator,
@@ -543,6 +567,7 @@ type routerPeerChangesSendDone struct {
 }
 
 func (self *routerPeerChangesSendDone) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	defer self.states.sendInProgress.Store(false)
 
 	if states, ok := c.routerUpdates[self.routerId]; ok {
@@ -557,6 +582,7 @@ type validateTerminators struct {
 }
 
 func (self *validateTerminators) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	var currentRouterId string
 	var validations *terminatorValidations
 
@@ -581,6 +607,7 @@ type terminatorValidationRespReceived struct {
 }
 
 func (self *terminatorValidationRespReceived) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	states := c.getTerminatorValidations(self.router.Id)
 	defer states.checkInProgress.Store(false)
 
@@ -605,6 +632,7 @@ type terminatorBatchDeleteCompleted struct {
 }
 
 func (self *terminatorBatchDeleteCompleted) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	for _, terminatorId := range self.deletedTerminatorIds {
 		delete(c.queuedTerminatorDeletes, terminatorId)
 	}
@@ -615,6 +643,7 @@ type routerMessagingInspectEvent struct {
 }
 
 func (self *routerMessagingInspectEvent) handle(c *RouterMessaging) {
+	logtrace.LogWithFunctionName()
 	result := &inspect.RouterMessagingState{}
 
 	getRouterName := func(routerId string) string {

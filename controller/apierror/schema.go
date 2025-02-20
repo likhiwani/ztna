@@ -3,6 +3,8 @@ package apierror
 import (
 	"encoding/json"
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/xeipuuv/gojsonschema"
 )
 
@@ -11,10 +13,12 @@ type ValidationErrors struct {
 }
 
 func (e ValidationErrors) Error() string {
+	logtrace.LogWithFunctionName()
 	return "schema validation failed"
 }
 
 func (e ValidationErrors) MarshalJSON() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	if len(e.Errors) > 1 {
 		errMap := map[string]interface{}{
 			"Reason": "multiple validation errors occurred",
@@ -39,10 +43,12 @@ type ValidationError struct {
 }
 
 func (e ValidationError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%s is invalid: %s", e.Field, e.Message)
 }
 
 func NewValidationError(err gojsonschema.ResultError) *ValidationError {
+	logtrace.LogWithFunctionName()
 	return &ValidationError{
 		Field:   err.Field(),
 		Type:    err.Type(),
@@ -53,6 +59,7 @@ func NewValidationError(err gojsonschema.ResultError) *ValidationError {
 }
 
 func NewValidationErrors(result *gojsonschema.Result) *ValidationErrors {
+	logtrace.LogWithFunctionName()
 	var errs []*ValidationError
 	for _, re := range result.Errors() {
 		errs = append(errs, NewValidationError(re))

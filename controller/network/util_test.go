@@ -22,13 +22,16 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/xt_smartrouting"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/ztna/controller/db"
 
 	"github.com/openziti/transport/v2"
 	"github.com/openziti/transport/v2/tcp"
-	"ztna-core/ztna/controller/db"
 )
 
 func newTestEntityHelper(ctx *model.TestContext, network *Network) *testEntityHelper {
+	logtrace.LogWithFunctionName()
 	addr := "tcp:0.0.0.0:0"
 	transportAddr, err := tcp.AddressParser{}.Parse(addr)
 	ctx.NoError(err)
@@ -50,6 +53,7 @@ type testEntityHelper struct {
 }
 
 func (self *testEntityHelper) addTestRouter() *model.Router {
+	logtrace.LogWithFunctionName()
 	router := model.NewRouterForTest(fmt.Sprintf("router-%03d", self.routerIdx), "", self.transportAddr, nil, 0, false)
 	self.network.Router.MarkConnected(router)
 	self.ctx.NoError(self.network.Router.Create(router, change.New()))
@@ -58,6 +62,7 @@ func (self *testEntityHelper) addTestRouter() *model.Router {
 }
 
 func (self *testEntityHelper) addTestTerminator(serviceName string, routerName string, instanceId string, isSystem bool) *model.Terminator {
+	logtrace.LogWithFunctionName()
 	id := fmt.Sprintf("terminator-#%d", self.terminatorIdx)
 	term := &model.Terminator{
 		BaseEntity: models.BaseEntity{
@@ -75,6 +80,7 @@ func (self *testEntityHelper) addTestTerminator(serviceName string, routerName s
 }
 
 func (self *testEntityHelper) addTestService(serviceName string) *model.Service {
+	logtrace.LogWithFunctionName()
 	id := fmt.Sprintf("service-#%d", self.serviceIdx)
 	svc := &model.Service{
 		BaseEntity:         models.BaseEntity{Id: id},
@@ -87,6 +93,7 @@ func (self *testEntityHelper) addTestService(serviceName string) *model.Service 
 }
 
 func (self *testEntityHelper) discardControllerEvents() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-self.network.assembleAndCleanC:

@@ -18,6 +18,8 @@ package jwtsigner
 
 import (
 	"crypto"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -34,6 +36,7 @@ type SignerImpl struct {
 }
 
 func New(sm jwt.SigningMethod, key crypto.PrivateKey, keyId string) *SignerImpl {
+	logtrace.LogWithFunctionName()
 	return &SignerImpl{
 		signingMethod: sm,
 		key:           key,
@@ -42,14 +45,17 @@ func New(sm jwt.SigningMethod, key crypto.PrivateKey, keyId string) *SignerImpl 
 }
 
 func (j *SignerImpl) SigningMethod() jwt.SigningMethod {
+	logtrace.LogWithFunctionName()
 	return j.signingMethod
 }
 
 func (j *SignerImpl) KeyId() string {
+	logtrace.LogWithFunctionName()
 	return j.keyId
 }
 
 func (j *SignerImpl) Generate(claims jwt.Claims) (string, error) {
+	logtrace.LogWithFunctionName()
 	token := jwt.NewWithClaims(j.signingMethod, claims)
 
 	if j.keyId != "" {

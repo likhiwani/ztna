@@ -17,14 +17,17 @@
 package model
 
 import (
-	"ztna-core/ztna/controller/db"
-	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestPostureCheckModelProcessMulti_Evaluate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("returns true for valid id, running, hash, and fingerprint", func(t *testing.T) {
 		processCheck, postureData := newMatchingProcessMultiCheckAndData()
@@ -151,6 +154,7 @@ func TestPostureCheckModelProcessMulti_Evaluate(t *testing.T) {
 }
 
 func newMatchingProcessMultiCheckAndData() (*PostureCheckProcessMulti, *PostureData) {
+	logtrace.LogWithFunctionName()
 	postureCheckId := "30qhj45"
 	binaryHash := "b4f3228217a2bae3f21f6b6df3750d0723a5c3973db9aad360a8f25bc31e3676d38180cf0abc89d7fca7a26e1919a1e52739ed3116011acc7e96630313da56b8"
 	signerFingerprint := "950248b9e8b0dd41938018a871a13dd92bed4614"

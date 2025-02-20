@@ -2,17 +2,20 @@ package api_impl
 
 import (
 	"fmt"
-	openApiErrors "github.com/go-openapi/errors"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
+	"net/http"
 	"ztna-core/ztna/controller/api"
 	apierror2 "ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/rest_model"
-	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	openApiErrors "github.com/go-openapi/errors"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
 )
 
 // Wrapper for the OpenAPI REST server to allow the the Edge API Error message responses to be used
 func ServeError(rw http.ResponseWriter, r *http.Request, inErr error) {
+	logtrace.LogWithFunctionName()
 	if openApiError, ok := inErr.(openApiErrors.Error); ok {
 		//openApiErrors from the Open API framework mean that we never hit any of the Edge logic and thus
 		//do not have any context established (i.e. no request id)
@@ -67,6 +70,7 @@ func ServeError(rw http.ResponseWriter, r *http.Request, inErr error) {
 }
 
 func ToRestModel(e *errorz.ApiError, requestId string) *rest_model.APIError {
+	logtrace.LogWithFunctionName()
 	ret := &rest_model.APIError{
 		Args:      nil,
 		Code:      e.Code,

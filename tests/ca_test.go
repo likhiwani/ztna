@@ -10,11 +10,13 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/Jeffail/gabs"
 )
 
 func Test_CA(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

@@ -24,6 +24,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
@@ -34,6 +35,7 @@ const EntityNameConfig = "configs"
 var ConfigLinkFactory = NewBasicLinkFactory(EntityNameConfig)
 
 func MapCreateConfigToModel(config *rest_model.ConfigCreate) (*model.Config, error) {
+	logtrace.LogWithFunctionName()
 	ret := &model.Config{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(config.Tags),
@@ -55,6 +57,7 @@ func MapCreateConfigToModel(config *rest_model.ConfigCreate) (*model.Config, err
 }
 
 func MapUpdateConfigToModel(id string, config *rest_model.ConfigUpdate) (*model.Config, error) {
+	logtrace.LogWithFunctionName()
 	ret := &model.Config{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(config.Tags),
@@ -76,6 +79,7 @@ func MapUpdateConfigToModel(id string, config *rest_model.ConfigUpdate) (*model.
 }
 
 func MapPatchConfigToModel(id string, config *rest_model.ConfigPatch) (*model.Config, error) {
+	logtrace.LogWithFunctionName()
 	ret := &model.Config{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(config.Tags),
@@ -99,10 +103,12 @@ func MapPatchConfigToModel(id string, config *rest_model.ConfigPatch) (*model.Co
 }
 
 func MapConfigToRestEntity(ae *env.AppEnv, _ *response.RequestContext, config *model.Config) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapConfigToRestModel(ae, config)
 }
 
 func MapConfigToRestModel(ae *env.AppEnv, config *model.Config) (*rest_model.ConfigDetail, error) {
+	logtrace.LogWithFunctionName()
 
 	configType, err := ae.Managers.ConfigType.Read(config.TypeId)
 
@@ -122,6 +128,7 @@ func MapConfigToRestModel(ae *env.AppEnv, config *model.Config) (*rest_model.Con
 }
 
 func resolveParsedNumber(v interface{}) interface{} {
+	logtrace.LogWithFunctionName()
 	if parsedNumber, ok := v.(ParsedNumber); ok {
 		//floats don't parse as int, try int first, then float, else give up
 		if intVal, err := parsedNumber.Int64(); err == nil {
@@ -138,6 +145,7 @@ func resolveParsedNumber(v interface{}) interface{} {
 }
 
 func narrowJsonTypesList(l []interface{}) {
+	logtrace.LogWithFunctionName()
 	for i, v := range l {
 		v = resolveParsedNumber(v)
 
@@ -153,6 +161,7 @@ func narrowJsonTypesList(l []interface{}) {
 }
 
 func narrowJsonTypesMap(m map[string]interface{}) {
+	logtrace.LogWithFunctionName()
 	for k, v := range m {
 		v = resolveParsedNumber(v)
 

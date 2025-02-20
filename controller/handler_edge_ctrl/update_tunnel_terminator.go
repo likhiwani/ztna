@@ -17,11 +17,13 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -31,6 +33,7 @@ type updateTunnelTerminatorHandler struct {
 }
 
 func NewUpdateTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &updateTunnelTerminatorHandler{
 		baseRequestHandler{
 			ch:     ch,
@@ -40,14 +43,17 @@ func NewUpdateTunnelTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) ch
 }
 
 func (self *updateTunnelTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_UpdateTunnelTerminatorRequestType)
 }
 
 func (self *updateTunnelTerminatorHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.update.terminator"
 }
 
 func (self *updateTunnelTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.UpdateTunnelTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal UpdateTerminator")
@@ -63,6 +69,7 @@ func (self *updateTunnelTerminatorHandler) HandleReceive(msg *channel.Message, c
 }
 
 func (self *updateTunnelTerminatorHandler) UpdateTerminator(ctx *UpdateTunnelTerminatorRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}

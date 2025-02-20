@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -54,6 +55,7 @@ type InspectRequest struct {
 
 // Validate validates this inspect request
 func (m *InspectRequest) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateAppRegex(formats); err != nil {
@@ -71,6 +73,7 @@ func (m *InspectRequest) Validate(formats strfmt.Registry) error {
 }
 
 func (m *InspectRequest) validateAppRegex(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("appRegex", "body", m.AppRegex); err != nil {
 		return err
@@ -80,6 +83,7 @@ func (m *InspectRequest) validateAppRegex(formats strfmt.Registry) error {
 }
 
 func (m *InspectRequest) validateRequestedValues(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("requestedValues", "body", m.RequestedValues); err != nil {
 		return err
@@ -90,11 +94,13 @@ func (m *InspectRequest) validateRequestedValues(formats strfmt.Registry) error 
 
 // ContextValidate validates this inspect request based on context it is used
 func (m *InspectRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *InspectRequest) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -103,6 +109,7 @@ func (m *InspectRequest) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *InspectRequest) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res InspectRequest
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewPatchLinkParams() *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	return &PatchLinkParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewPatchLinkParams() *PatchLinkParams {
 // NewPatchLinkParamsWithTimeout creates a new PatchLinkParams object
 // with the ability to set a timeout on a request.
 func NewPatchLinkParamsWithTimeout(timeout time.Duration) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	return &PatchLinkParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewPatchLinkParamsWithTimeout(timeout time.Duration) *PatchLinkParams {
 // NewPatchLinkParamsWithContext creates a new PatchLinkParams object
 // with the ability to set a context for a request.
 func NewPatchLinkParamsWithContext(ctx context.Context) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	return &PatchLinkParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewPatchLinkParamsWithContext(ctx context.Context) *PatchLinkParams {
 // NewPatchLinkParamsWithHTTPClient creates a new PatchLinkParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewPatchLinkParamsWithHTTPClient(client *http.Client) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	return &PatchLinkParams{
 		HTTPClient: client,
 	}
@@ -106,6 +111,7 @@ type PatchLinkParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *PatchLinkParams) WithDefaults() *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -114,66 +120,78 @@ func (o *PatchLinkParams) WithDefaults() *PatchLinkParams {
 //
 // All values with no default are reset to their zero value.
 func (o *PatchLinkParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the patch link params
 func (o *PatchLinkParams) WithTimeout(timeout time.Duration) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the patch link params
 func (o *PatchLinkParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the patch link params
 func (o *PatchLinkParams) WithContext(ctx context.Context) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the patch link params
 func (o *PatchLinkParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the patch link params
 func (o *PatchLinkParams) WithHTTPClient(client *http.Client) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the patch link params
 func (o *PatchLinkParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the patch link params
 func (o *PatchLinkParams) WithID(id string) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the patch link params
 func (o *PatchLinkParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WithLink adds the link to the patch link params
 func (o *PatchLinkParams) WithLink(link *rest_model.LinkPatch) *PatchLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetLink(link)
 	return o
 }
 
 // SetLink adds the link to the patch link params
 func (o *PatchLinkParams) SetLink(link *rest_model.LinkPatch) {
+    logtrace.LogWithFunctionName()
 	o.Link = link
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *PatchLinkParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

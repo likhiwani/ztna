@@ -26,6 +26,7 @@ import (
 	"strings"
 	"text/template"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/cmd/templates"
 	"ztna-core/ztna/ztna/constants"
@@ -75,11 +76,13 @@ type CreateConfigEnvironmentOptions struct {
 }
 
 func (options *CreateConfigEnvironmentOptions) addFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().BoolVar(&options.DisableOSVarDeclare, "no-shell", false, "Disable printing assignments prefixed with 'SET' (Windows) or 'export' (Unix)")
 }
 
 // NewCmdCreateConfigEnvironment creates a command object for the "environment" command
 func NewCmdCreateConfigEnvironment() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	environmentOptions = &CreateConfigEnvironmentOptions{}
 
 	data := &ConfigTemplateValues{}
@@ -241,6 +244,7 @@ func NewCmdCreateConfigEnvironment() *cobra.Command {
 
 // run implements the command
 func (options *CreateConfigEnvironmentOptions) run() error {
+	logtrace.LogWithFunctionName()
 
 	tmpl, err := template.New("environment-config").Parse(environmentConfigTemplate)
 	if err != nil {

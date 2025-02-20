@@ -18,17 +18,19 @@ package handler_mgmt
 
 import (
 	"fmt"
-	"ztna-core/ztna/controller/model"
 	"sync"
 	"time"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/openziti/channel/v3"
-	trace_pb "github.com/openziti/channel/v3/trace/pb"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/common/pb/mgmt_pb"
 	"ztna-core/ztna/common/trace"
 	"ztna-core/ztna/controller/network"
+
+	"github.com/openziti/channel/v3"
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -38,6 +40,7 @@ type traceTogglePipeHandler struct {
 }
 
 func newTogglePipeTracesHandler(network *network.Network) *traceTogglePipeHandler {
+	logtrace.LogWithFunctionName()
 	return &traceTogglePipeHandler{
 		eventHandler: network.GetTraceController(),
 		network:      network,
@@ -45,10 +48,12 @@ func newTogglePipeTracesHandler(network *network.Network) *traceTogglePipeHandle
 }
 
 func (*traceTogglePipeHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(mgmt_pb.ContentType_TogglePipeTracesRequestType)
 }
 
 func (handler *traceTogglePipeHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	request := &trace_pb.TogglePipeTracesRequest{}
 
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
@@ -108,6 +113,7 @@ func (handler *traceTogglePipeHandler) HandleReceive(msg *channel.Message, ch ch
 }
 
 func (handler *traceTogglePipeHandler) complete(msg *channel.Message, ch channel.Channel, result *trace.ToggleResult) {
+	logtrace.LogWithFunctionName()
 	if result.Success {
 		handler_common.SendSuccess(msg, ch, result.Message.String())
 	} else {
@@ -116,6 +122,7 @@ func (handler *traceTogglePipeHandler) complete(msg *channel.Message, ch channel
 }
 
 func checkMatch(appId string, matchers *trace.PipeToggleMatchers, verbosity trace.ToggleVerbosity, result *trace.ToggleResult) bool {
+	logtrace.LogWithFunctionName()
 	appMatches := matchers.AppMatcher.Matches(appId)
 	applyResult := &trace.ToggleApplyResultImpl{
 		Matched: appMatches,
@@ -126,6 +133,7 @@ func checkMatch(appId string, matchers *trace.PipeToggleMatchers, verbosity trac
 }
 
 func getApplyResults(resultChan chan trace.ToggleApplyResult, verbosity trace.ToggleVerbosity, result *trace.ToggleResult) {
+	logtrace.LogWithFunctionName()
 	timeout := time.After(time.Second * 5)
 	for {
 		select {
@@ -143,6 +151,7 @@ func getApplyResults(resultChan chan trace.ToggleApplyResult, verbosity trace.To
 }
 
 func handleResponse(router *model.Router, mgmtReq *channel.Message, msgsCh chan<- *remoteToggleResult, waitGroup *sync.WaitGroup) {
+	logtrace.LogWithFunctionName()
 	defer waitGroup.Done()
 
 	msg := channel.NewMessage(int32(ctrl_pb.ContentType_TogglePipeTracesRequestType), mgmtReq.Body)

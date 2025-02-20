@@ -21,6 +21,7 @@ import (
 	"io"
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -41,6 +42,7 @@ type updateServiceOptions struct {
 }
 
 func newUpdateServiceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateServiceOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -79,6 +81,7 @@ func newUpdateServiceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateService update a new service on the Ziti Edge Controller
 func runUpdateService(o *updateServiceOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("services", o.Args[0], o.Options)
 	if err != nil {
 		return err

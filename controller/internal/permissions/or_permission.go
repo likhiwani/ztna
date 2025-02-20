@@ -16,17 +16,21 @@
 
 package permissions
 
+import "ztna-core/ztna/logtrace"
+
 type RequireOneOf struct {
 	resolvers []Resolver
 }
 
 func HasOneOf(resolvers ...Resolver) *RequireOneOf {
+	logtrace.LogWithFunctionName()
 	return &RequireOneOf{
 		resolvers: resolvers,
 	}
 }
 
 func (ia *RequireOneOf) IsAllowed(identityPerms ...string) bool {
+	logtrace.LogWithFunctionName()
 	for _, resolver := range ia.resolvers {
 		if resolver.IsAllowed(identityPerms...) {
 			return true

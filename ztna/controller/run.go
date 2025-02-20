@@ -18,22 +18,25 @@ package controller
 
 import (
 	"fmt"
-	"ztna-core/ztna/controller/config"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/agent"
 	"ztna-core/ztna/common/version"
 	"ztna-core/ztna/controller"
 	"ztna-core/ztna/controller/server"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/agent"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 func NewRunCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:   "run <config>",
 		Short: "Run controller configuration",
@@ -43,6 +46,7 @@ func NewRunCmd() *cobra.Command {
 }
 
 func run(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	startLogger :=
 		logrus.WithField("version", version.GetVersion()).
 			WithField("go-version", version.GetGoVersion()).
@@ -98,6 +102,7 @@ func run(cmd *cobra.Command, args []string) {
 }
 
 func waitForShutdown(fabricController *controller.Controller, edgeController *server.Controller) {
+	logtrace.LogWithFunctionName()
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
 

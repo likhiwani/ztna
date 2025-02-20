@@ -23,6 +23,8 @@ import (
 
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
@@ -38,10 +40,12 @@ type PostureCheckProcess struct {
 }
 
 func (p *PostureCheckProcess) TypeId() string {
+	logtrace.LogWithFunctionName()
 	return db.PostureCheckTypeProcess
 }
 
 func (p *PostureCheckProcess) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	msg.Subtype = &edge_cmd_pb.PostureCheck_Process_{
 		Process: &edge_cmd_pb.PostureCheck_Process{
 			OsType:       p.OsType,
@@ -53,6 +57,7 @@ func (p *PostureCheckProcess) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
 }
 
 func (p *PostureCheckProcess) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	if process_, ok := msg.Subtype.(*edge_cmd_pb.PostureCheck_Process_); ok {
 		if process := process_.Process; process != nil {
 			p.PostureCheckId = msg.Id
@@ -73,18 +78,22 @@ func (p *PostureCheckProcess) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) er
 }
 
 func (p *PostureCheckProcess) LastUpdatedAt(id string, pd *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (p *PostureCheckProcess) GetTimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckProcess) GetTimeoutRemainingSeconds(_ string, _ *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckProcess) FailureValues(_ string, pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	ret := &PostureCheckFailureValuesProcess{
 		ActualValue: PostureResponseProcess{
 			PostureResponse:    nil,
@@ -105,6 +114,7 @@ func (p *PostureCheckProcess) FailureValues(_ string, pd *PostureData) PostureCh
 }
 
 func (p *PostureCheckProcess) Evaluate(_ string, pd *PostureData) bool {
+	logtrace.LogWithFunctionName()
 	for _, process := range pd.Processes {
 		if process.PostureCheckId == p.PostureCheckId {
 			if process.TimedOut {
@@ -146,10 +156,12 @@ func (p *PostureCheckProcess) Evaluate(_ string, pd *PostureData) bool {
 }
 
 func newPostureCheckProcess() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckProcess{}
 }
 
 func (p *PostureCheckProcess) fillFrom(_ Env, tx *bbolt.Tx, check *db.PostureCheck, subType db.PostureCheckSubType) error {
+	logtrace.LogWithFunctionName()
 	subCheck := subType.(*db.PostureCheckProcess)
 
 	if subCheck == nil {
@@ -165,6 +177,7 @@ func (p *PostureCheckProcess) fillFrom(_ Env, tx *bbolt.Tx, check *db.PostureChe
 }
 
 func (p *PostureCheckProcess) toBoltEntityForCreate(*bbolt.Tx, Env) (db.PostureCheckSubType, error) {
+	logtrace.LogWithFunctionName()
 	return &db.PostureCheckProcess{
 		OperatingSystem: p.OsType,
 		Path:            p.Path,
@@ -179,9 +192,11 @@ type PostureCheckFailureValuesProcess struct {
 }
 
 func (p PostureCheckFailureValuesProcess) Expected() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ExpectedValue
 }
 
 func (p PostureCheckFailureValuesProcess) Actual() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ActualValue
 }

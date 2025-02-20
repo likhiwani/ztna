@@ -25,12 +25,14 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/google/uuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/sdk-golang/ziti"
 )
 
 const (
@@ -42,6 +44,7 @@ type PermissionsApi []string
 var IdentityLinkFactory = NewIdentityLinkFactory(NewBasicLinkFactory(EntityNameIdentity))
 
 func NewIdentityLinkFactory(selfFactory *BasicLinkFactory) *IdentityLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &IdentityLinkFactoryImpl{
 		BasicLinkFactory: *selfFactory,
 	}
@@ -52,6 +55,7 @@ type IdentityLinkFactoryImpl struct {
 }
 
 func (factory *IdentityLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameEdgeRouterPolicy] = factory.NewNestedLink(entity, EntityNameEdgeRouterPolicy)
 	links[EntityNameEdgeRouter] = factory.NewNestedLink(entity, EntityNameEdgeRouter)
@@ -71,6 +75,7 @@ func (factory *IdentityLinkFactoryImpl) Links(entity models.Entity) rest_model.L
 }
 
 func getDefaultHostingCost(v *rest_model.TerminatorCost) uint16 {
+	logtrace.LogWithFunctionName()
 	if v == nil {
 		return 0
 	}
@@ -79,6 +84,7 @@ func getDefaultHostingCost(v *rest_model.TerminatorCost) uint16 {
 }
 
 func getServiceHostingPrecedences(v rest_model.TerminatorPrecedenceMap) map[string]ziti.Precedence {
+	logtrace.LogWithFunctionName()
 	result := map[string]ziti.Precedence{}
 	for k, v := range v {
 		result[k] = ziti.GetPrecedenceForLabel(string(v))
@@ -87,6 +93,7 @@ func getServiceHostingPrecedences(v rest_model.TerminatorPrecedenceMap) map[stri
 }
 
 func getRestServiceHostingPrecedences(v map[string]ziti.Precedence) rest_model.TerminatorPrecedenceMap {
+	logtrace.LogWithFunctionName()
 	result := rest_model.TerminatorPrecedenceMap{}
 	for k, v := range v {
 		result[k] = rest_model.TerminatorPrecedence(v.String())
@@ -95,6 +102,7 @@ func getRestServiceHostingPrecedences(v map[string]ziti.Precedence) rest_model.T
 }
 
 func getServiceHostingCosts(costMap rest_model.TerminatorCostMap) map[string]uint16 {
+	logtrace.LogWithFunctionName()
 	result := map[string]uint16{}
 	for key, cost := range costMap {
 		result[key] = uint16(*cost)
@@ -103,6 +111,7 @@ func getServiceHostingCosts(costMap rest_model.TerminatorCostMap) map[string]uin
 }
 
 func getRestServiceHostingCosts(costMap map[string]uint16) rest_model.TerminatorCostMap {
+	logtrace.LogWithFunctionName()
 	result := rest_model.TerminatorCostMap{}
 	for key, cost := range costMap {
 		val := rest_model.TerminatorCost(cost)
@@ -112,6 +121,7 @@ func getRestServiceHostingCosts(costMap map[string]uint16) rest_model.Terminator
 }
 
 func MapCreateIdentityToModel(identity *rest_model.IdentityCreate, identityTypeId string) (*model.Identity, []*model.Enrollment) {
+	logtrace.LogWithFunctionName()
 	var enrollments []*model.Enrollment
 
 	ret := &model.Identity{
@@ -162,6 +172,7 @@ func MapCreateIdentityToModel(identity *rest_model.IdentityCreate, identityTypeI
 }
 
 func MapUpdateIdentityToModel(id string, identity *rest_model.IdentityUpdate, identityTypeId string) *model.Identity {
+	logtrace.LogWithFunctionName()
 	ret := &model.Identity{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(identity.Tags),
@@ -184,6 +195,7 @@ func MapUpdateIdentityToModel(id string, identity *rest_model.IdentityUpdate, id
 }
 
 func MapPatchIdentityToModel(id string, identity *rest_model.IdentityPatch, identityTypeId string) *model.Identity {
+	logtrace.LogWithFunctionName()
 	ret := &model.Identity{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(identity.Tags),
@@ -206,10 +218,12 @@ func MapPatchIdentityToModel(id string, identity *rest_model.IdentityPatch, iden
 }
 
 func MapIdentityToRestEntity(ae *env.AppEnv, _ *response.RequestContext, entity *model.Identity) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapIdentityToRestModel(ae, entity)
 }
 
 func MapIdentityToRestModel(ae *env.AppEnv, identity *model.Identity) (*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	identityType, err := ae.Managers.IdentityType.ReadByIdOrName(identity.IdentityTypeId)
 
 	if err != nil {
@@ -373,6 +387,7 @@ func MapIdentityToRestModel(ae *env.AppEnv, identity *model.Identity) (*rest_mod
 }
 
 func fillInfo(identity *rest_model.IdentityDetail, envInfo *model.EnvInfo, sdkInfo *model.SdkInfo) {
+	logtrace.LogWithFunctionName()
 	if envInfo != nil {
 		identity.EnvInfo = &rest_model.EnvInfo{
 			Arch:      envInfo.Arch,
@@ -401,12 +416,14 @@ func fillInfo(identity *rest_model.IdentityDetail, envInfo *model.EnvInfo, sdkIn
 }
 
 func MapServiceConfigToModel(config rest_model.ServiceConfigAssign) model.ServiceConfig {
+	logtrace.LogWithFunctionName()
 	return model.ServiceConfig{
 		Service: stringz.OrEmpty(config.ServiceID),
 		Config:  stringz.OrEmpty(config.ConfigID),
 	}
 }
 func MapAdvisorServiceReachabilityToRestEntity(entity *model.AdvisorServiceReachability) *rest_model.PolicyAdvice {
+	logtrace.LogWithFunctionName()
 
 	var commonRouters []*rest_model.RouterEntityRef
 
@@ -433,6 +450,7 @@ func MapAdvisorServiceReachabilityToRestEntity(entity *model.AdvisorServiceReach
 }
 
 func GetNamedIdentityRoles(identityHandler *model.IdentityManager, roles []string) rest_model.NamedRoles {
+	logtrace.LogWithFunctionName()
 	result := rest_model.NamedRoles{}
 	for _, role := range roles {
 		if strings.HasPrefix(role, "@") {

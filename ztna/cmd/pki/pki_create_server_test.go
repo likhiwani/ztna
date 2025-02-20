@@ -17,13 +17,16 @@ package pki
 
 import (
 	"fmt"
-	"github.com/google/uuid"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestServerCertNoSpiffeIdFromIntermediate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	svr := NewCmdPKICreateServer(out, errOut)
 	name := uuid.New().String()
@@ -55,6 +58,7 @@ func TestServerCertNoSpiffeIdFromIntermediate(t *testing.T) {
 }
 
 func TestServerCertSpiffeIdFromIntermediate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	svr := NewCmdPKICreateServer(out, errOut)
 	name := uuid.New().String()
@@ -88,6 +92,7 @@ func TestServerCertSpiffeIdFromIntermediate(t *testing.T) {
 }
 
 func TestServerCertNoSpiffeIdFromIntermediateAddSpiffeId(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	svr := NewCmdPKICreateServer(out, errOut)
 	name := uuid.New().String()
@@ -115,6 +120,7 @@ func TestServerCertNoSpiffeIdFromIntermediateAddSpiffeId(t *testing.T) {
 }
 
 func TestServerCertSpiffeIdFromIntermediateAddSpiffeId(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	out, errOut := streams()
 	svr := NewCmdPKICreateServer(out, errOut)
 	name := uuid.New().String()

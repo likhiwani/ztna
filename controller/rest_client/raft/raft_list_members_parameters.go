@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewRaftListMembersParams() *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	return &RaftListMembersParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewRaftListMembersParams() *RaftListMembersParams {
 // NewRaftListMembersParamsWithTimeout creates a new RaftListMembersParams object
 // with the ability to set a timeout on a request.
 func NewRaftListMembersParamsWithTimeout(timeout time.Duration) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	return &RaftListMembersParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewRaftListMembersParamsWithTimeout(timeout time.Duration) *RaftListMembers
 // NewRaftListMembersParamsWithContext creates a new RaftListMembersParams object
 // with the ability to set a context for a request.
 func NewRaftListMembersParamsWithContext(ctx context.Context) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	return &RaftListMembersParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewRaftListMembersParamsWithContext(ctx context.Context) *RaftListMembersPa
 // NewRaftListMembersParamsWithHTTPClient creates a new RaftListMembersParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewRaftListMembersParamsWithHTTPClient(client *http.Client) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	return &RaftListMembersParams{
 		HTTPClient: client,
 	}
@@ -91,6 +96,7 @@ type RaftListMembersParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftListMembersParams) WithDefaults() *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -99,44 +105,52 @@ func (o *RaftListMembersParams) WithDefaults() *RaftListMembersParams {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftListMembersParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the raft list members params
 func (o *RaftListMembersParams) WithTimeout(timeout time.Duration) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the raft list members params
 func (o *RaftListMembersParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the raft list members params
 func (o *RaftListMembersParams) WithContext(ctx context.Context) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the raft list members params
 func (o *RaftListMembersParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the raft list members params
 func (o *RaftListMembersParams) WithHTTPClient(client *http.Client) *RaftListMembersParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the raft list members params
 func (o *RaftListMembersParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *RaftListMembersParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

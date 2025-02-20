@@ -1,10 +1,13 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
 func (stores *stores) migrateTerminatorIdentityFields(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	terminatorIds, _, err := stores.terminator.QueryIds(step.Ctx.Tx(), "true")
 	step.SetError(err)
 

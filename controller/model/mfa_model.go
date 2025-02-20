@@ -17,10 +17,12 @@
 package model
 
 import (
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -39,6 +41,7 @@ type Mfa struct {
 }
 
 func (entity *Mfa) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Mfa, error) {
+	logtrace.LogWithFunctionName()
 	if !env.GetStores().Identity.IsEntityPresent(tx, entity.IdentityId) {
 		return nil, errorz.NewFieldError("identity not found", "IdentityId", entity.IdentityId)
 	}
@@ -55,14 +58,17 @@ func (entity *Mfa) toBoltEntity(tx *bbolt.Tx, env Env) (*db.Mfa, error) {
 }
 
 func (entity *Mfa) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Mfa, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *Mfa) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Mfa, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(tx, env)
 }
 
 func (entity *Mfa) fillFrom(env Env, tx *bbolt.Tx, boltMfa *db.Mfa) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltMfa)
 	entity.IsVerified = boltMfa.IsVerified
 	entity.IdentityId = boltMfa.IdentityId

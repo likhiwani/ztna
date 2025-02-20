@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"crypto"
 	"crypto/x509"
 	"io"
@@ -39,6 +40,7 @@ const (
 
 // newListCmd creates a command object for the "controller list" command
 func newRenewCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &leOptions{}
 
 	cmd := &cobra.Command{
@@ -78,6 +80,7 @@ func newRenewCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runRenew(options *leOptions) (err error) {
+	logtrace.LogWithFunctionName()
 
 	if options.staging {
 		options.acmeserver = acmeStaging
@@ -99,6 +102,7 @@ func runRenew(options *leOptions) (err error) {
 }
 
 func renewForDomains(options *leOptions, client *lego.Client, certsStorage *CertificatesStorage, meta map[string]string) error {
+	logtrace.LogWithFunctionName()
 	domain := options.domain
 
 	// load the cert resource from files.
@@ -150,6 +154,7 @@ func renewForDomains(options *leOptions, client *lego.Client, certsStorage *Cert
 }
 
 func needRenewal(x509Cert *x509.Certificate, domain string, days int) bool {
+	logtrace.LogWithFunctionName()
 	if x509Cert.IsCA {
 		log.Fatalf("[%s] Certificate bundle starts with a CA certificate", domain)
 	}
@@ -167,6 +172,7 @@ func needRenewal(x509Cert *x509.Certificate, domain string, days int) bool {
 }
 
 func merge(prevDomains []string, nextDomain string) []string {
+	logtrace.LogWithFunctionName()
 	var found bool
 	for _, prev := range prevDomains {
 		if prev == nextDomain {

@@ -17,8 +17,10 @@
 package model
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 type PostureResponseEndpointState struct {
@@ -29,6 +31,7 @@ type PostureResponseEndpointState struct {
 }
 
 func (pr *PostureResponseEndpointState) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 
 	if postureData.ApiSessions == nil {
 		postureData.ApiSessions = map[string]*ApiSessionPostureData{}

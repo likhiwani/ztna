@@ -21,9 +21,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
@@ -37,10 +39,12 @@ type PostureCheckProcessMulti struct {
 }
 
 func (p *PostureCheckProcessMulti) TypeId() string {
+	logtrace.LogWithFunctionName()
 	return db.PostureCheckTypeProcessMulti
 }
 
 func (p *PostureCheckProcessMulti) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	processMultiMsg := &edge_cmd_pb.PostureCheck_ProcessMulti{
 		Semantic: p.Semantic,
 	}
@@ -60,6 +64,7 @@ func (p *PostureCheckProcessMulti) fillProtobuf(msg *edge_cmd_pb.PostureCheck) {
 }
 
 func (p *PostureCheckProcessMulti) fillFromProtobuf(msg *edge_cmd_pb.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	if processMulti_, ok := msg.Subtype.(*edge_cmd_pb.PostureCheck_ProcessMulti_); ok {
 		if processMulti := processMulti_.ProcessMulti; processMulti != nil {
 			p.PostureCheckId = msg.Id
@@ -80,14 +85,17 @@ func (p *PostureCheckProcessMulti) fillFromProtobuf(msg *edge_cmd_pb.PostureChec
 }
 
 func (p *PostureCheckProcessMulti) LastUpdatedAt(string, *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (p *PostureCheckProcessMulti) GetTimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
 func (p *PostureCheckProcessMulti) GetTimeoutRemainingSeconds(_ string, _ *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return PostureCheckNoTimeout
 }
 
@@ -99,6 +107,7 @@ type ProcessMulti struct {
 }
 
 func (p *PostureCheckProcessMulti) FailureValues(_ string, pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	ret := &PostureCheckFailureValuesProcessMulti{
 		ActualValue:   []PostureResponseProcess{},
 		ExpectedValue: *p,
@@ -114,10 +123,12 @@ func (p *PostureCheckProcessMulti) FailureValues(_ string, pd *PostureData) Post
 }
 
 func (p *PostureCheckProcessMulti) Evaluate(_ string, pd *PostureData) bool {
+	logtrace.LogWithFunctionName()
 	return p.evaluate(pd) == nil
 }
 
 func (p *PostureCheckProcessMulti) evaluate(pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	switch p.Semantic {
 	case db.SemanticAllOf:
 		return p.requireAll(pd)
@@ -130,6 +141,7 @@ func (p *PostureCheckProcessMulti) evaluate(pd *PostureData) PostureCheckFailure
 }
 
 func (p *PostureCheckProcessMulti) requireAll(pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	for _, process := range p.Processes {
 		if process.Path == "" {
 			pfxlog.Logger().Debug("invalid process path detected during posture check process multi AllOf evaluation")
@@ -158,6 +170,7 @@ func (p *PostureCheckProcessMulti) requireAll(pd *PostureData) PostureCheckFailu
 }
 
 func (p *PostureCheckProcessMulti) requireOne(pd *PostureData) PostureCheckFailureValues {
+	logtrace.LogWithFunctionName()
 	var actualValues []PostureResponseProcess
 
 	for _, process := range p.Processes {
@@ -182,10 +195,12 @@ func (p *PostureCheckProcessMulti) requireOne(pd *PostureData) PostureCheckFailu
 }
 
 func newPostureCheckProcessMulti() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckProcessMulti{}
 }
 
 func (p *PostureCheckProcessMulti) fillFrom(_ Env, _ *bbolt.Tx, check *db.PostureCheck, subType db.PostureCheckSubType) error {
+	logtrace.LogWithFunctionName()
 	subCheck := subType.(*db.PostureCheckProcessMulti)
 
 	if subCheck == nil {
@@ -210,6 +225,7 @@ func (p *PostureCheckProcessMulti) fillFrom(_ Env, _ *bbolt.Tx, check *db.Postur
 }
 
 func (p *PostureCheckProcessMulti) toBoltEntityForCreate(_ *bbolt.Tx, _ Env) (db.PostureCheckSubType, error) {
+	logtrace.LogWithFunctionName()
 	ret := &db.PostureCheckProcessMulti{
 		Semantic: p.Semantic,
 	}
@@ -234,9 +250,11 @@ type PostureCheckFailureValuesProcessMulti struct {
 }
 
 func (p PostureCheckFailureValuesProcessMulti) Expected() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ExpectedValue
 }
 
 func (p PostureCheckFailureValuesProcessMulti) Actual() interface{} {
+	logtrace.LogWithFunctionName()
 	return p.ActualValue
 }

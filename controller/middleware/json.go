@@ -18,9 +18,11 @@ package middleware
 
 import (
 	"net/http"
+	"ztna-core/ztna/logtrace"
 )
 
 func SetResponseTypeToJson(next http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("content-type", "application/json")
 		next.ServeHTTP(w, r)

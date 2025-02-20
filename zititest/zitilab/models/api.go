@@ -11,11 +11,13 @@ import (
 	"ztna-core/edge-api/rest_management_api_client/service"
 	"ztna-core/edge-api/rest_management_api_client/service_policy"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zitirest"
 	"ztna-core/ztna/ztna/util"
 )
 
 func ListServices(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -31,6 +33,7 @@ func ListServices(clients *zitirest.Clients, filter string, timeout time.Duratio
 }
 
 func CreateService(clients *zitirest.Clients, svc *rest_model.ServiceCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -43,6 +46,7 @@ func CreateService(clients *zitirest.Clients, svc *rest_model.ServiceCreate, tim
 }
 
 func DeleteService(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -55,6 +59,7 @@ func DeleteService(clients *zitirest.Clients, id string, timeout time.Duration) 
 }
 
 func UpdateServiceFromDetail(clients *zitirest.Clients, svc *rest_model.ServiceDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	svcUpdate := &rest_model.ServiceUpdate{
 		Configs:            svc.Configs,
 		EncryptionRequired: *svc.EncryptionRequired,
@@ -68,6 +73,7 @@ func UpdateServiceFromDetail(clients *zitirest.Clients, svc *rest_model.ServiceD
 }
 
 func UpdateService(clients *zitirest.Clients, id string, svc *rest_model.ServiceUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -81,6 +87,7 @@ func UpdateService(clients *zitirest.Clients, id string, svc *rest_model.Service
 }
 
 func ListIdentities(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.IdentityDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -96,6 +103,7 @@ func ListIdentities(clients *zitirest.Clients, filter string, timeout time.Durat
 }
 
 func CreateIdentity(clients *zitirest.Clients, entity *rest_model.IdentityCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -108,6 +116,7 @@ func CreateIdentity(clients *zitirest.Clients, entity *rest_model.IdentityCreate
 }
 
 func DeleteIdentity(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -120,6 +129,7 @@ func DeleteIdentity(clients *zitirest.Clients, id string, timeout time.Duration)
 }
 
 func UpdateIdentityFromDetail(clients *zitirest.Clients, entity *rest_model.IdentityDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	typeId := rest_model.IdentityType(entity.Type.ID)
 	identityUpdate := &rest_model.IdentityUpdate{
 		AppData:                   entity.AppData,
@@ -139,6 +149,7 @@ func UpdateIdentityFromDetail(clients *zitirest.Clients, entity *rest_model.Iden
 }
 
 func UpdateIdentity(clients *zitirest.Clients, id string, entity *rest_model.IdentityUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -152,6 +163,7 @@ func UpdateIdentity(clients *zitirest.Clients, id string, entity *rest_model.Ide
 }
 
 func ListServicePolicies(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ServicePolicyDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -167,6 +179,7 @@ func ListServicePolicies(clients *zitirest.Clients, filter string, timeout time.
 }
 
 func CreateServicePolicy(clients *zitirest.Clients, entity *rest_model.ServicePolicyCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -179,6 +192,7 @@ func CreateServicePolicy(clients *zitirest.Clients, entity *rest_model.ServicePo
 }
 
 func DeleteServicePolicy(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -191,6 +205,7 @@ func DeleteServicePolicy(clients *zitirest.Clients, id string, timeout time.Dura
 }
 
 func UpdateServicePolicyFromDetail(clients *zitirest.Clients, entity *rest_model.ServicePolicyDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	servicePolicyUpdate := &rest_model.ServicePolicyUpdate{
 		Name:              entity.Name,
 		IdentityRoles:     entity.IdentityRoles,
@@ -204,6 +219,7 @@ func UpdateServicePolicyFromDetail(clients *zitirest.Clients, entity *rest_model
 }
 
 func UpdateServicePolicy(clients *zitirest.Clients, id string, entity *rest_model.ServicePolicyUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -217,6 +233,7 @@ func UpdateServicePolicy(clients *zitirest.Clients, id string, entity *rest_mode
 }
 
 func ListConfigs(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ConfigDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -232,6 +249,7 @@ func ListConfigs(clients *zitirest.Clients, filter string, timeout time.Duration
 }
 
 func CreateConfig(clients *zitirest.Clients, entity *rest_model.ConfigCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -244,6 +262,7 @@ func CreateConfig(clients *zitirest.Clients, entity *rest_model.ConfigCreate, ti
 }
 
 func DeleteConfig(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -256,6 +275,7 @@ func DeleteConfig(clients *zitirest.Clients, id string, timeout time.Duration) e
 }
 
 func UpdateConfigFromDetail(clients *zitirest.Clients, entity *rest_model.ConfigDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	entityUpdate := &rest_model.ConfigUpdate{
 		Data: entity.Data,
 		Name: entity.Name,
@@ -265,6 +285,7 @@ func UpdateConfigFromDetail(clients *zitirest.Clients, entity *rest_model.Config
 }
 
 func UpdateConfig(clients *zitirest.Clients, id string, entity *rest_model.ConfigUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -278,6 +299,7 @@ func UpdateConfig(clients *zitirest.Clients, id string, entity *rest_model.Confi
 }
 
 func ListConfigTypes(clients *zitirest.Clients, filter string, timeout time.Duration) ([]*rest_model.ConfigTypeDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -293,6 +315,7 @@ func ListConfigTypes(clients *zitirest.Clients, filter string, timeout time.Dura
 }
 
 func ListConfigsOfConfigTypes(clients *zitirest.Clients, id string, timeout time.Duration) ([]*rest_model.ConfigDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -308,6 +331,7 @@ func ListConfigsOfConfigTypes(clients *zitirest.Clients, id string, timeout time
 }
 
 func CreateConfigType(clients *zitirest.Clients, entity *rest_model.ConfigTypeCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -320,6 +344,7 @@ func CreateConfigType(clients *zitirest.Clients, entity *rest_model.ConfigTypeCr
 }
 
 func DeleteConfigType(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -332,6 +357,7 @@ func DeleteConfigType(clients *zitirest.Clients, id string, timeout time.Duratio
 }
 
 func UpdateConfigTypeFromDetail(clients *zitirest.Clients, entity *rest_model.ConfigTypeDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	entityUpdate := &rest_model.ConfigTypeUpdate{
 		Schema: entity.Schema,
 		Name:   entity.Name,
@@ -341,6 +367,7 @@ func UpdateConfigTypeFromDetail(clients *zitirest.Clients, entity *rest_model.Co
 }
 
 func UpdateConfigType(clients *zitirest.Clients, id string, entity *rest_model.ConfigTypeUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -354,6 +381,7 @@ func UpdateConfigType(clients *zitirest.Clients, id string, entity *rest_model.C
 }
 
 func ListPostureChecks(clients *zitirest.Clients, filter string, timeout time.Duration) ([]rest_model.PostureCheckDetail, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -369,6 +397,7 @@ func ListPostureChecks(clients *zitirest.Clients, filter string, timeout time.Du
 }
 
 func CreatePostureCheck(clients *zitirest.Clients, entity rest_model.PostureCheckCreate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -381,6 +410,7 @@ func CreatePostureCheck(clients *zitirest.Clients, entity rest_model.PostureChec
 }
 
 func DeletePostureCheck(clients *zitirest.Clients, id string, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 
@@ -393,6 +423,7 @@ func DeletePostureCheck(clients *zitirest.Clients, id string, timeout time.Durat
 }
 
 func UpdatePostureCheckFromDetail(clients *zitirest.Clients, entity rest_model.PostureCheckDetail, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	var update rest_model.PostureCheckUpdate
 	switch p := entity.(type) {
 	case *rest_model.PostureCheckDomainDetail:
@@ -431,6 +462,7 @@ func UpdatePostureCheckFromDetail(clients *zitirest.Clients, entity rest_model.P
 }
 
 func UpdatePostureCheck(clients *zitirest.Clients, id string, entity rest_model.PostureCheckUpdate, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), timeout)
 	defer cancelF()
 

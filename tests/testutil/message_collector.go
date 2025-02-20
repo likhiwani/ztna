@@ -2,15 +2,18 @@ package testutil
 
 import (
 	"fmt"
-	"github.com/openziti/channel/v3"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
-	"time"
 )
 
 func NewMessageCollector(id string) *MessageCollector {
+	logtrace.LogWithFunctionName()
 	return &MessageCollector{
 		id:       id,
 		msgs:     make(chan *channel.Message, 16),
@@ -25,6 +28,7 @@ type MessageCollector struct {
 }
 
 func (self *MessageCollector) HandleReceive(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if m.ContentType == -33 || m.ContentType == 5 {
 		logrus.Debug("ignoring heartbeats and reconnect ping")
 		return
@@ -46,6 +50,7 @@ func (self *MessageCollector) HandleReceive(m *channel.Message, ch channel.Chann
 }
 
 func (self *MessageCollector) Next(timeout time.Duration) (*channel.Message, error) {
+	logtrace.LogWithFunctionName()
 	select {
 	case msg := <-self.msgs:
 		return msg, nil
@@ -55,6 +60,7 @@ func (self *MessageCollector) Next(timeout time.Duration) (*channel.Message, err
 }
 
 func (self *MessageCollector) NoMessages(timeout time.Duration, req require.Assertions) {
+	logtrace.LogWithFunctionName()
 	select {
 	case msg := <-self.msgs:
 		req.Nil(msg)

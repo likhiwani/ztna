@@ -21,11 +21,13 @@ package tests
 
 import (
 	"fmt"
-	"ztna-core/ztna/common/eid"
 	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_EdgeRouterPolicy(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

@@ -22,6 +22,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/errors"
 	"github.com/michaelquigley/pfxlog"
@@ -38,6 +39,7 @@ type Responder interface {
 type EdgeResponseMapper struct{}
 
 func (EdgeResponseMapper) EmptyOkData() interface{} {
+	logtrace.LogWithFunctionName()
 	return &rest_model.Empty{
 		Data: map[string]interface{}{},
 		Meta: &rest_model.Meta{},
@@ -45,6 +47,7 @@ func (EdgeResponseMapper) EmptyOkData() interface{} {
 }
 
 func (self EdgeResponseMapper) MapApiError(requestId string, apiError *errorz.ApiError) interface{} {
+	logtrace.LogWithFunctionName()
 	return &rest_model.APIErrorEnvelope{
 		Error: self.toRestModel(apiError, requestId),
 		Meta: &rest_model.Meta{
@@ -55,6 +58,7 @@ func (self EdgeResponseMapper) MapApiError(requestId string, apiError *errorz.Ap
 }
 
 func (self EdgeResponseMapper) toRestModel(e *errorz.ApiError, requestId string) *rest_model.APIError {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithError(e).WithField("code", e.Code).Debug("returning error to REST API")
 	ret := &rest_model.APIError{
 		Args:      nil,
@@ -136,6 +140,7 @@ func (self EdgeResponseMapper) toRestModel(e *errorz.ApiError, requestId string)
 }
 
 func NewResponder(rc *RequestContext) *ResponderImpl {
+	logtrace.LogWithFunctionName()
 	return &ResponderImpl{
 		Responder: api.NewResponder(rc, EdgeResponseMapper{}),
 	}
@@ -146,6 +151,7 @@ type ResponderImpl struct {
 }
 
 func (responder *ResponderImpl) RespondWithCreatedId(id string, link rest_model.Link) {
+	logtrace.LogWithFunctionName()
 	createEnvelope := &rest_model.CreateEnvelope{
 		Data: &rest_model.CreateLocation{
 			Links: rest_model.Links{
@@ -160,6 +166,7 @@ func (responder *ResponderImpl) RespondWithCreatedId(id string, link rest_model.
 }
 
 func (responder *ResponderImpl) RespondWithOk(data interface{}, meta *rest_model.Meta) {
+	logtrace.LogWithFunctionName()
 	responder.Respond(&rest_model.Empty{
 		Data: data,
 		Meta: meta,

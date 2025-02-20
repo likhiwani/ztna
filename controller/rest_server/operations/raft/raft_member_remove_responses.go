@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type RaftMemberRemoveOK struct {
 
 // NewRaftMemberRemoveOK creates RaftMemberRemoveOK with default headers values
 func NewRaftMemberRemoveOK() *RaftMemberRemoveOK {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberRemoveOK{}
 }
 
 // WithPayload adds the payload to the raft member remove o k response
 func (o *RaftMemberRemoveOK) WithPayload(payload *rest_model.Empty) *RaftMemberRemoveOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member remove o k response
 func (o *RaftMemberRemoveOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberRemoveOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type RaftMemberRemoveBadRequest struct {
 
 // NewRaftMemberRemoveBadRequest creates RaftMemberRemoveBadRequest with default headers values
 func NewRaftMemberRemoveBadRequest() *RaftMemberRemoveBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberRemoveBadRequest{}
 }
 
 // WithPayload adds the payload to the raft member remove bad request response
 func (o *RaftMemberRemoveBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberRemoveBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member remove bad request response
 func (o *RaftMemberRemoveBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberRemoveBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type RaftMemberRemoveUnauthorized struct {
 
 // NewRaftMemberRemoveUnauthorized creates RaftMemberRemoveUnauthorized with default headers values
 func NewRaftMemberRemoveUnauthorized() *RaftMemberRemoveUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberRemoveUnauthorized{}
 }
 
 // WithPayload adds the payload to the raft member remove unauthorized response
 func (o *RaftMemberRemoveUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberRemoveUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member remove unauthorized response
 func (o *RaftMemberRemoveUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberRemoveUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type RaftMemberRemoveNotFound struct {
 
 // NewRaftMemberRemoveNotFound creates RaftMemberRemoveNotFound with default headers values
 func NewRaftMemberRemoveNotFound() *RaftMemberRemoveNotFound {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberRemoveNotFound{}
 }
 
 // WithPayload adds the payload to the raft member remove not found response
 func (o *RaftMemberRemoveNotFound) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberRemoveNotFound {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member remove not found response
 func (o *RaftMemberRemoveNotFound) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberRemoveNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(404)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type RaftMemberRemoveTooManyRequests struct {
 
 // NewRaftMemberRemoveTooManyRequests creates RaftMemberRemoveTooManyRequests with default headers values
 func NewRaftMemberRemoveTooManyRequests() *RaftMemberRemoveTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &RaftMemberRemoveTooManyRequests{}
 }
 
 // WithPayload adds the payload to the raft member remove too many requests response
 func (o *RaftMemberRemoveTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *RaftMemberRemoveTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the raft member remove too many requests response
 func (o *RaftMemberRemoveTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *RaftMemberRemoveTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

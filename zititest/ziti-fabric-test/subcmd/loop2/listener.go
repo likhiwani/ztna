@@ -17,18 +17,21 @@
 package loop2
 
 import (
+	"net"
+	"strings"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/logtrace"
+	loop2_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 	"github.com/openziti/identity/dotziti"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop2/pb"
 	"github.com/spf13/cobra"
-	"net"
-	"strings"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	listenerCmd := newListenerCmd()
 	loop2Cmd.AddCommand(listenerCmd.cmd)
 }
@@ -41,6 +44,7 @@ type listenerCmd struct {
 }
 
 func newListenerCmd() *listenerCmd {
+	logtrace.LogWithFunctionName()
 	result := &listenerCmd{
 		cmd: &cobra.Command{
 			Use:   "listener",
@@ -60,6 +64,7 @@ func newListenerCmd() *listenerCmd {
 }
 
 func (cmd *listenerCmd) run(_ *cobra.Command, _ []string) {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(cmd.bindAddress, "edge") {
 		cmd.listenEdge()
 	} else {
@@ -78,6 +83,7 @@ func (cmd *listenerCmd) run(_ *cobra.Command, _ []string) {
 }
 
 func (cmd *listenerCmd) listenEdge() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(cmd.bindAddress)
 	defer log.Error("exited")
 	log.Info("started")
@@ -113,6 +119,7 @@ func (cmd *listenerCmd) listenEdge() {
 }
 
 func (cmd *listenerCmd) listen(bind transport.Address, i *identity.TokenId) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(bind.String())
 	defer log.Error("exited")
 	log.Info("started")
@@ -128,6 +135,7 @@ func (cmd *listenerCmd) listen(bind transport.Address, i *identity.TokenId) {
 }
 
 func (cmd *listenerCmd) handle(conn net.Conn, context string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(context)
 	if proto, err := newProtocol(conn); err == nil {
 		if test, err := proto.rxTest(); err == nil {

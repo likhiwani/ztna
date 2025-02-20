@@ -19,17 +19,19 @@ package model
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
-	"github.com/openziti/x509-claims/x509claims"
+	"net/url"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
+	"github.com/openziti/x509-claims/x509claims"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"net/url"
 )
 
 type Ca struct {
@@ -59,6 +61,7 @@ type ExternalIdClaim struct {
 type ExternalIdFieldType string
 
 func (entity *Ca) fillFrom(_ Env, _ *bbolt.Tx, boltCa *db.Ca) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltCa)
 	entity.Name = boltCa.Name
 	entity.Fingerprint = boltCa.Fingerprint
@@ -85,6 +88,7 @@ func (entity *Ca) fillFrom(_ Env, _ *bbolt.Tx, boltCa *db.Ca) error {
 }
 
 func (entity *Ca) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Ca, error) {
+	logtrace.LogWithFunctionName()
 	if entity.IdentityNameFormat == "" {
 		entity.IdentityNameFormat = DefaultCaIdentityNameFormat
 	}
@@ -170,6 +174,7 @@ func (entity *Ca) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Ca, error) {
 }
 
 func (entity *Ca) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db.Ca, error) {
+	logtrace.LogWithFunctionName()
 	if entity.IdentityNameFormat == "" {
 		entity.IdentityNameFormat = DefaultCaIdentityNameFormat
 	}
@@ -202,6 +207,7 @@ func (entity *Ca) toBoltEntityForUpdate(*bbolt.Tx, Env, boltz.FieldChecker) (*db
 // GetExternalId will attempt to retrieve a string claim from a x509 Certificate based on
 // location, matching, and parsing of various x509 Certificate fields.
 func (entity *Ca) GetExternalId(cert *x509.Certificate) (string, error) {
+	logtrace.LogWithFunctionName()
 	if entity.ExternalIdClaim == nil {
 		return "", nil
 	}
@@ -249,6 +255,7 @@ func (entity *Ca) GetExternalId(cert *x509.Certificate) (string, error) {
 
 // getUriDefinition returns an x509Claims.DefinitionLMP that will locate, match, and parse url.URL properties.
 func getUriDefinition(externalIdClaim *ExternalIdClaim) (*x509claims.DefinitionLMP[*url.URL], error) {
+	logtrace.LogWithFunctionName()
 	definition := &x509claims.DefinitionLMP[*url.URL]{}
 
 	switch externalIdClaim.Matcher {
@@ -276,6 +283,7 @@ func getUriDefinition(externalIdClaim *ExternalIdClaim) (*x509claims.DefinitionL
 
 // getStringDefinition returns an x509Claims.DefinitionLMP that will locate, match, and parse string properties.
 func getStringDefinition(externalIdClaim *ExternalIdClaim) (*x509claims.DefinitionLMP[string], error) {
+	logtrace.LogWithFunctionName()
 	definition := &x509claims.DefinitionLMP[string]{}
 
 	switch externalIdClaim.Matcher {
@@ -309,6 +317,7 @@ func getStringDefinition(externalIdClaim *ExternalIdClaim) (*x509claims.Definiti
 
 // getStringParser returns a x509claims.Parser that parses string values into claims
 func getStringParser(externalIdClaim *ExternalIdClaim) (x509claims.Parser, error) {
+	logtrace.LogWithFunctionName()
 	switch externalIdClaim.Parser {
 	case db.ExternalIdClaimParserNone:
 		return &x509claims.ParserNoOp{}, nil

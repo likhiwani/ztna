@@ -2,25 +2,28 @@ package webapis
 
 import (
 	"crypto/x509"
-	"github.com/go-openapi/runtime"
-	openApiMiddleware "github.com/go-openapi/runtime/middleware"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/identity"
+	"net/http"
+	"time"
 	"ztna-core/ztna/common/build"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/api_impl"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/rest_server"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime"
+	openApiMiddleware "github.com/go-openapi/runtime/middleware"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/identity"
 	"github.com/pkg/errors"
-	"net/http"
-	"time"
 )
 
 var requestWrapper api_impl.RequestWrapper
 
 func OverrideRequestWrapper(rw api_impl.RequestWrapper) {
+	logtrace.LogWithFunctionName()
 	if requestWrapper != nil {
 		pfxlog.Logger().Warn("requestWrapper overridden more than once")
 	}
@@ -33,6 +36,7 @@ type FabricRequestWrapper struct {
 }
 
 func (self *FabricRequestWrapper) WrapRequest(handler api_impl.RequestHandler, request *http.Request, entityId, entitySubId string) openApiMiddleware.Responder {
+	logtrace.LogWithFunctionName()
 	return openApiMiddleware.ResponderFunc(func(writer http.ResponseWriter, producer runtime.Producer) {
 		rc, err := api.GetRequestContextFromHttpContext(request)
 
@@ -55,6 +59,7 @@ func (self *FabricRequestWrapper) WrapRequest(handler api_impl.RequestHandler, r
 }
 
 func (self *FabricRequestWrapper) WrapHttpHandler(handler http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	wrapper := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == api_impl.FabricRestApiSpecUrl {
 			rw.Header().Set("content-type", "application/json")
@@ -85,6 +90,7 @@ func (self *FabricRequestWrapper) WrapHttpHandler(handler http.Handler) http.Han
 }
 
 func (self *FabricRequestWrapper) WrapWsHandler(handler http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	wrapper := http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		if err := self.verifyCert(r); err != nil {
 			rc := api_impl.NewRequestContext(rw, r)
@@ -99,6 +105,7 @@ func (self *FabricRequestWrapper) WrapWsHandler(handler http.Handler) http.Handl
 }
 
 func (self *FabricRequestWrapper) verifyCert(r *http.Request) error {
+	logtrace.LogWithFunctionName()
 	certificates := r.TLS.PeerCertificates
 	if len(certificates) == 0 {
 		return errors.New("no certificates provided, unable to verify dialer")

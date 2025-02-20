@@ -17,12 +17,14 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type dequiesceRouterHandler struct {
@@ -30,6 +32,7 @@ type dequiesceRouterHandler struct {
 }
 
 func newDequiesceRouterHandler(router *model.Router, network *network.Network) *dequiesceRouterHandler {
+	logtrace.LogWithFunctionName()
 	return &dequiesceRouterHandler{
 		baseHandler: baseHandler{
 			router:  router,
@@ -39,10 +42,12 @@ func newDequiesceRouterHandler(router *model.Router, network *network.Network) *
 }
 
 func (self *dequiesceRouterHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_DequiesceRouterRequestType)
 }
 
 func (self *dequiesceRouterHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).Entry
 	log = log.WithField("routerId", self.router.Id)
 

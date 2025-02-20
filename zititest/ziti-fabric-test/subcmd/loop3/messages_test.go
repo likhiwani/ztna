@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"crypto/rand"
 	"crypto/sha512"
-	"github.com/google/go-cmp/cmp"
-	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
-	"github.com/stretchr/testify/require"
 	"reflect"
 	"testing"
+	"ztna-core/ztna/logtrace"
+	loop3_pb "ztna-core/ztna/zititest/ziti-fabric-test/subcmd/loop3/pb"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 type testPeer struct {
@@ -16,10 +18,12 @@ type testPeer struct {
 }
 
 func (t *testPeer) Close() error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func Test_MessageSerDeser(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	req := require.New(t)
 	data := make([]byte, 4192)
 	_, err := rand.Read(data)

@@ -29,6 +29,7 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/google/uuid"
@@ -41,6 +42,7 @@ import (
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewAuthRouter()
 	env.AddRouter(r)
 }
@@ -51,10 +53,12 @@ type AuthRouter struct {
 }
 
 func NewAuthRouter() *AuthRouter {
+	logtrace.LogWithFunctionName()
 	return &AuthRouter{}
 }
 
 func (ro *AuthRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ro.createTimer = ae.GetHostController().GetNetwork().GetMetricsRegistry().Timer("api-session.create")
 	ae.ClientApi.AuthenticationAuthenticateHandler = clientApiAuthentication.AuthenticateHandlerFunc(func(params clientApiAuthentication.AuthenticateParams) middleware.Responder {
 		return ae.IsAllowed(func(ae *env.AppEnv, rc *response.RequestContext) {
@@ -78,6 +82,7 @@ func (ro *AuthRouter) Register(ae *env.AppEnv) {
 }
 
 func (ro *AuthRouter) authHandler(ae *env.AppEnv, rc *response.RequestContext, httpRequest *http.Request, method string, auth *rest_model.Authenticate) {
+	logtrace.LogWithFunctionName()
 	start := time.Now()
 	logger := pfxlog.Logger()
 	authContext := model.NewAuthContextHttp(httpRequest, method, auth, rc.NewChangeContext())
@@ -252,6 +257,7 @@ func (ro *AuthRouter) authHandler(ae *env.AppEnv, rc *response.RequestContext, h
 }
 
 func (ro *AuthRouter) authMfa(ae *env.AppEnv, rc *response.RequestContext, mfaCode *rest_model.MfaCode) {
+	logtrace.LogWithFunctionName()
 	mfa, err := ae.Managers.Mfa.ReadOneByIdentityId(rc.Identity.Id)
 
 	if err != nil {

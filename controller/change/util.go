@@ -16,9 +16,14 @@
 
 package change
 
-import "github.com/openziti/channel/v3"
+import (
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+)
 
 func NewControlChannelChange(routerId, routerName, method string, ch channel.Channel) *Context {
+	logtrace.LogWithFunctionName()
 	return New().
 		SetChangeAuthorId(routerId).
 		SetChangeAuthorName(routerName).

@@ -18,9 +18,11 @@ package trace
 
 import (
 	"fmt"
-	"github.com/openziti/channel/v3/trace/pb"
 	"regexp"
 	"strings"
+	logtrace "ztna-core/ztna/logtrace"
+
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
 )
 
 type SourceType int
@@ -39,6 +41,7 @@ const (
 )
 
 func (val ToggleVerbosity) Show(matched bool) bool {
+	logtrace.LogWithFunctionName()
 	if matched {
 		return val == ToggleVerbosityMatches || val == ToggleVerbosityAll
 	}
@@ -46,6 +49,7 @@ func (val ToggleVerbosity) Show(matched bool) bool {
 }
 
 func GetVerbosity(verbosity trace_pb.TraceToggleVerbosity) ToggleVerbosity {
+	logtrace.LogWithFunctionName()
 	switch verbosity {
 	case trace_pb.TraceToggleVerbosity_ReportNone:
 		return ToggleVerbosityNone
@@ -69,6 +73,7 @@ type PipeToggleMatchers struct {
 }
 
 func NewPipeToggleMatchers(request *trace_pb.TogglePipeTracesRequest) (*PipeToggleMatchers, *ToggleResult) {
+	logtrace.LogWithFunctionName()
 	result := &ToggleResult{Success: true, Message: &strings.Builder{}}
 
 	appRegex, err := regexp.Compile(request.AppRegex)
@@ -97,6 +102,7 @@ type ToggleResult struct {
 }
 
 func (result *ToggleResult) Append(msg string) {
+	logtrace.LogWithFunctionName()
 	result.Message.WriteString(msg)
 	result.Message.WriteString("\n")
 }
@@ -113,14 +119,17 @@ type ToggleApplyResultImpl struct {
 }
 
 func (applyResult *ToggleApplyResultImpl) IsMatched() bool {
+	logtrace.LogWithFunctionName()
 	return applyResult.Matched
 }
 
 func (applyResult *ToggleApplyResultImpl) GetMessage() string {
+	logtrace.LogWithFunctionName()
 	return applyResult.Message
 }
 
 func (applyResult *ToggleApplyResultImpl) Append(result *ToggleResult, verbosity ToggleVerbosity) {
+	logtrace.LogWithFunctionName()
 	if verbosity.Show(applyResult.Matched) {
 		result.Append(applyResult.Message)
 	}
@@ -131,10 +140,12 @@ type sourceRegexpMatcher struct {
 }
 
 func (matcher *sourceRegexpMatcher) Matches(source string) bool {
+	logtrace.LogWithFunctionName()
 	return matcher.regex.Match([]byte(source))
 }
 
 func NewSourceMatcher(regex *regexp.Regexp) SourceMatcher {
+	logtrace.LogWithFunctionName()
 	return &sourceRegexpMatcher{regex}
 }
 
@@ -151,6 +162,7 @@ type Controller interface {
 }
 
 func NewController(closeNotify <-chan struct{}) Controller {
+	logtrace.LogWithFunctionName()
 	controller := &controllerImpl{
 		events:      make(chan controllerEvent, 25),
 		sources:     make(map[Source]Source),
@@ -168,6 +180,7 @@ type enableSourcesEvent struct {
 }
 
 func (event *enableSourcesEvent) handle(controller *controllerImpl) {
+	logtrace.LogWithFunctionName()
 	for source := range controller.sources {
 		source.EnableTracing(event.sourceType, event.matcher, event.handler, event.resultChan)
 	}
@@ -182,6 +195,7 @@ type disableSourcesEvent struct {
 }
 
 func (event *disableSourcesEvent) handle(controller *controllerImpl) {
+	logtrace.LogWithFunctionName()
 	for handler := range controller.sources {
 		handler.DisableTracing(event.sourceType, event.matcher, event.handler, event.resultChan)
 	}
@@ -193,6 +207,7 @@ type sourceAddedEvent struct {
 }
 
 func (event *sourceAddedEvent) handle(controller *controllerImpl) {
+	logtrace.LogWithFunctionName()
 	controller.sources[event.source] = event.source
 }
 
@@ -201,6 +216,7 @@ type sourceRemovedEvent struct {
 }
 
 func (event *sourceRemovedEvent) handle(controller *controllerImpl) {
+	logtrace.LogWithFunctionName()
 	delete(controller.sources, event.source)
 }
 
@@ -215,6 +231,7 @@ type controllerImpl struct {
 }
 
 func (controller *controllerImpl) Accept(event *trace_pb.ChannelMessage) {
+	logtrace.LogWithFunctionName()
 	select {
 	case controller.events <- &eventWrapper{wrapped: event}:
 	case <-controller.closeNotify:
@@ -222,6 +239,7 @@ func (controller *controllerImpl) Accept(event *trace_pb.ChannelMessage) {
 }
 
 func (controller *controllerImpl) EnableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	select {
 	case controller.events <- &enableSourcesEvent{sourceType: sourceType, matcher: matcher, handler: handler, resultChan: resultChan}:
 	case <-controller.closeNotify:
@@ -229,6 +247,7 @@ func (controller *controllerImpl) EnableTracing(sourceType SourceType, matcher S
 }
 
 func (controller *controllerImpl) DisableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	select {
 	case controller.events <- &disableSourcesEvent{sourceType: sourceType, matcher: matcher, handler: handler, resultChan: resultChan}:
 	case <-controller.closeNotify:
@@ -236,6 +255,7 @@ func (controller *controllerImpl) DisableTracing(sourceType SourceType, matcher 
 }
 
 func (controller *controllerImpl) AddSource(source Source) {
+	logtrace.LogWithFunctionName()
 	select {
 	case controller.events <- &sourceAddedEvent{source}:
 	case <-controller.closeNotify:
@@ -243,6 +263,7 @@ func (controller *controllerImpl) AddSource(source Source) {
 }
 
 func (controller *controllerImpl) RemoveSource(source Source) {
+	logtrace.LogWithFunctionName()
 	select {
 	case controller.events <- &sourceRemovedEvent{source}:
 	case <-controller.closeNotify:
@@ -250,6 +271,7 @@ func (controller *controllerImpl) RemoveSource(source Source) {
 }
 
 func (controller *controllerImpl) run() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case <-controller.closeNotify:

@@ -18,10 +18,12 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
-	"github.com/sirupsen/logrus"
 	"strings"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 var _ model.ComponentType = (*EchoServerType)(nil)
@@ -36,18 +38,22 @@ type EchoServerType struct {
 }
 
 func (self *EchoServerType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "echo-server"
 }
 
 func (self *EchoServerType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *EchoServerType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 }
 
 func (self *EchoServerType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":    "echo-server",
 		"version":    self.Version,
@@ -56,14 +62,17 @@ func (self *EchoServerType) Dump() any {
 }
 
 func (self *EchoServerType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return stageziti.StageZitiOnce(r, c, self.Version, self.LocalPath)
 }
 
 func (self *EchoServerType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return getZitiProcessFilter(c, "echo-server")
 }
 
 func (self *EchoServerType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -72,6 +81,7 @@ func (self *EchoServerType) IsRunning(_ model.Run, c *model.Component) (bool, er
 }
 
 func (self *EchoServerType) Start(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	user := c.GetHost().GetSshUser()
 
 	binaryPath := GetZitiBinaryPath(c, self.Version)
@@ -109,5 +119,6 @@ func (self *EchoServerType) Start(run model.Run, c *model.Component) error {
 }
 
 func (self *EchoServerType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter(c))
 }

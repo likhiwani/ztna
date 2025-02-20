@@ -18,6 +18,8 @@ package db
 
 import (
 	"crypto/x509"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
@@ -34,6 +36,7 @@ type Migrations struct {
 }
 
 func RunMigrations(db boltz.Db, stores *Stores, signingCert *x509.Certificate) error {
+	logtrace.LogWithFunctionName()
 	migrations := &Migrations{
 		stores:      stores,
 		signingCert: signingCert,
@@ -44,6 +47,7 @@ func RunMigrations(db boltz.Db, stores *Stores, signingCert *x509.Certificate) e
 }
 
 func (m *Migrations) migrate(step *boltz.MigrationStep) int {
+	logtrace.LogWithFunctionName()
 	if step.CurrentVersion == 0 {
 		return m.initialize(step)
 	}
@@ -188,6 +192,7 @@ func (m *Migrations) migrate(step *boltz.MigrationStep) int {
 }
 
 func (m *Migrations) dropEntity(step *boltz.MigrationStep, entityType string) {
+	logtrace.LogWithFunctionName()
 	rootBucket := step.Ctx.Tx().Bucket([]byte(RootBucket))
 	if rootBucket == nil {
 		return

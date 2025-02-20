@@ -19,24 +19,27 @@ package router
 import (
 	"bytes"
 	"fmt"
-	"github.com/openziti/transport/v2/tls"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/router/env"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
+	"github.com/openziti/transport/v2/tls"
+
+	"ztna-core/ztna/common/config"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/router/forwarder"
+	"ztna-core/ztna/router/xgress"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/common/config"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/forwarder"
-	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 	"gopkg.in/yaml.v2"
@@ -107,6 +110,7 @@ var internalConfigKeys = []string{
 }
 
 func LoadConfigMap(path string) (map[interface{}]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	yamlBytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -125,6 +129,7 @@ func LoadConfigMap(path string) (map[interface{}]interface{}, error) {
 }
 
 func SetConfigMapFlags(cfgmap map[interface{}]interface{}, flags map[string]*pflag.Flag) {
+	logtrace.LogWithFunctionName()
 	cfgmap[FlagsCfgMapKey] = flags
 }
 
@@ -187,14 +192,17 @@ type Config struct {
 }
 
 func (config *Config) CurrentCtrlAddress() string {
+	logtrace.LogWithFunctionName()
 	return config.Ctrl.InitialEndpoints[0].String()
 }
 
 func (config *Config) Configure(sub config.Subconfig) error {
+	logtrace.LogWithFunctionName()
 	return sub.LoadConfig(config.src)
 }
 
 func (config *Config) SetFlags(flags map[string]*pflag.Flag) {
+	logtrace.LogWithFunctionName()
 	SetConfigMapFlags(config.src, flags)
 }
 
@@ -214,6 +222,7 @@ const (
 // CreateBackup will attempt to use the current path value to create a backup of
 // the file on disk. The resulting file path is returned.
 func (config *Config) CreateBackup() (string, error) {
+	logtrace.LogWithFunctionName()
 	source, err := os.Open(config.path)
 	if err != nil {
 		return "", fmt.Errorf("could not open path %s: %v", config.path, err)
@@ -235,6 +244,7 @@ func (config *Config) CreateBackup() (string, error) {
 }
 
 func deepCopyMap(src map[interface{}]interface{}, dest map[interface{}]interface{}) {
+	logtrace.LogWithFunctionName()
 	for key, value := range src {
 		switch src[key].(type) {
 		case map[interface{}]interface{}:
@@ -249,6 +259,7 @@ func deepCopyMap(src map[interface{}]interface{}, dest map[interface{}]interface
 // cleanSrcCopy returns a copy of the current src map[interface{}]interface{} without internal
 // keys like @FlagsCfgMapKey and @PathMapKey.
 func (config *Config) cleanSrcCopy() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	out := map[interface{}]interface{}{}
 	deepCopyMap(config.src, out)
 
@@ -262,6 +273,7 @@ func (config *Config) cleanSrcCopy() map[interface{}]interface{} {
 // Save attempts to take the current config's src attribute and Save it as
 // yaml to the path value.
 func (config *Config) Save() error {
+	logtrace.LogWithFunctionName()
 	if config.path == "" {
 		return errors.New("no path provided in configuration, cannot save")
 	}
@@ -293,6 +305,7 @@ func (config *Config) Save() error {
 // UpdateControllerEndpoint updates the runtime configuration address of the controller and the
 // internal map configuration.
 func (config *Config) UpdateControllerEndpoint(address string) error {
+	logtrace.LogWithFunctionName()
 	if parsedAddress, err := transport.ParseAddress(address); parsedAddress != nil && err == nil {
 		if config.Ctrl.InitialEndpoints[0].String() != address {
 			//config file update
@@ -328,6 +341,7 @@ var _ transport.Address = &UpdatableAddress{}
 // NewUpdatableAddress create a new *UpdatableAddress which implements transport.Address and allow
 // thread safe updating of the internal address
 func NewUpdatableAddress(address transport.Address) *UpdatableAddress {
+	logtrace.LogWithFunctionName()
 	ret := &UpdatableAddress{}
 	ret.wrapped.Store(address)
 	return ret
@@ -335,50 +349,60 @@ func NewUpdatableAddress(address transport.Address) *UpdatableAddress {
 
 // Listen implements transport.Address.Listen
 func (c *UpdatableAddress) Listen(name string, i *identity.TokenId, acceptF func(transport.Conn), tcfg transport.Configuration) (io.Closer, error) {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().Listen(name, i, acceptF, tcfg)
 }
 
 // MustListen implements transport.Address.MustListen
 func (c *UpdatableAddress) MustListen(name string, i *identity.TokenId, acceptF func(transport.Conn), tcfg transport.Configuration) io.Closer {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().MustListen(name, i, acceptF, tcfg)
 }
 
 // String implements transport.Address.String
 func (c *UpdatableAddress) String() string {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().String()
 }
 
 // Type implements transport.Address.Type
 func (c *UpdatableAddress) Type() string {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().Type()
 }
 
 // Dial implements transport.Address.Dial
 func (c *UpdatableAddress) Dial(name string, i *identity.TokenId, timeout time.Duration, tcfg transport.Configuration) (transport.Conn, error) {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().Dial(name, i, timeout, tcfg)
 }
 
 func (c *UpdatableAddress) DialWithLocalBinding(name string, binding string, i *identity.TokenId, timeout time.Duration, tcfg transport.Configuration) (transport.Conn, error) {
+	logtrace.LogWithFunctionName()
 	return c.getWrapped().DialWithLocalBinding(name, binding, i, timeout, tcfg)
 }
 
 // getWrapped loads the current transport.Address
 func (c *UpdatableAddress) getWrapped() transport.Address {
+	logtrace.LogWithFunctionName()
 	return c.wrapped.Load()
 }
 
 // Store updates the address currently used by this configuration instance
 func (c *UpdatableAddress) Store(address transport.Address) {
+	logtrace.LogWithFunctionName()
 	c.wrapped.Store(address)
 }
 
 // MarshalYAML handles serialization for the YAML format
 func (c *UpdatableAddress) MarshalYAML() (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return c.String(), nil
 }
 
 // UnmarshalYAML handled deserialization for the YAML format
 func (c *UpdatableAddress) UnmarshalYAML(value *yaml3.Node) error {
+	logtrace.LogWithFunctionName()
 	var yamlAddress string
 	err := value.Decode(&yamlAddress)
 	if err != nil {
@@ -395,6 +419,7 @@ func (c *UpdatableAddress) UnmarshalYAML(value *yaml3.Node) error {
 }
 
 func LoadConfig(path string) (*Config, error) {
+	logtrace.LogWithFunctionName()
 	cfgmap, err := LoadConfigMap(path)
 
 	if err != nil {
@@ -895,6 +920,7 @@ func LoadConfig(path string) (*Config, error) {
 }
 
 func (c *Config) loadCtrlRateLimiterConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	rateLimitConfig := &c.Ctrl.RateLimit
 	rateLimitConfig.SetDefaults()
 	rateLimitConfig.QueueSizeMetric = CtrlRateLimiterMetricOutstandingCount
@@ -932,6 +958,7 @@ func (c *Config) loadCtrlRateLimiterConfig(cfgmap map[interface{}]interface{}) e
 }
 
 func LoadIdentityConfigFromMap(cfgmap map[interface{}]interface{}) (*identity.Config, error) {
+	logtrace.LogWithFunctionName()
 	if value, found := cfgmap["identity"]; found {
 		subMap := value.(map[interface{}]interface{})
 		return identity.NewConfigFromMapWithPathContext(subMap, "identity")

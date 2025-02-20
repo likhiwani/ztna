@@ -1,13 +1,16 @@
 package db
 
 import (
+	"testing"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"testing"
 )
 
 func Test_EdgeRouterEvents(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()

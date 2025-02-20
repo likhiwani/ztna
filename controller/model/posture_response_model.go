@@ -18,19 +18,21 @@ package model
 
 import (
 	"bytes"
+	"regexp"
+	"strings"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/jinzhu/copier"
 	"github.com/kataras/go-events"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/db"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"go.etcd.io/bbolt"
-	"regexp"
-	"strings"
-	"sync/atomic"
-	"time"
 )
 
 const (
@@ -47,6 +49,7 @@ type PostureCache struct {
 }
 
 func newPostureCache(env Env) *PostureCache {
+	logtrace.LogWithFunctionName()
 	pc := &PostureCache{
 		identityToPostureData:    cmap.New[*PostureData](),
 		apiSessionIdToIdentityId: cmap.New[string](),
@@ -67,6 +70,7 @@ func newPostureCache(env Env) *PostureCache {
 }
 
 func (pc *PostureCache) run(closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for {
 			select {
@@ -81,6 +85,7 @@ func (pc *PostureCache) run(closeNotify <-chan struct{}) {
 }
 
 func (pc *PostureCache) evaluate() {
+	logtrace.LogWithFunctionName()
 	if !pc.isRunning.CompareAndSwap(false, true) {
 		return
 	}
@@ -173,6 +178,7 @@ func (pc *PostureCache) evaluate() {
 }
 
 func (pc *PostureCache) Add(identityId string, postureResponses []*PostureResponse) {
+	logtrace.LogWithFunctionName()
 	pc.Upsert(identityId, true, func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData {
 		var postureData *PostureData
 
@@ -196,6 +202,7 @@ func (pc *PostureCache) Add(identityId string, postureResponses []*PostureRespon
 // emitDataAltered is true, posture data listeners will be alerted: this will trigger
 // service update notifications and posture check evaluation.
 func (pc *PostureCache) Upsert(identityId string, emitDataAltered bool, cb func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData) {
+	logtrace.LogWithFunctionName()
 	pc.identityToPostureData.Upsert(identityId, newPostureData(), cb)
 
 	if emitDataAltered {
@@ -206,6 +213,7 @@ func (pc *PostureCache) Upsert(identityId string, emitDataAltered bool, cb func(
 const MaxPostureFailures = 100
 
 func (pc *PostureCache) AddSessionRequestFailure(identityId string, failure *PostureSessionRequestFailure) {
+	logtrace.LogWithFunctionName()
 	pc.identityToPostureData.Upsert(identityId, newPostureData(), func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData {
 		var postureData *PostureData
 
@@ -226,6 +234,7 @@ func (pc *PostureCache) AddSessionRequestFailure(identityId string, failure *Pos
 }
 
 func (pc *PostureCache) Evaluate(identityId, apiSessionId string, postureChecks []*PostureCheck) (bool, []*PostureCheckFailure) {
+	logtrace.LogWithFunctionName()
 	if postureData, found := pc.identityToPostureData.Get(identityId); found {
 		return postureData.Evaluate(apiSessionId, postureChecks)
 	}
@@ -247,6 +256,7 @@ func (pc *PostureCache) Evaluate(identityId, apiSessionId string, postureChecks 
 // PostureData returns a copy of the current posture data for an identity.
 // Suitable for read only rendering. To alter/update posture data see Upsert.
 func (pc *PostureCache) PostureData(identityId string) *PostureData {
+	logtrace.LogWithFunctionName()
 	var result *PostureData = nil
 
 	pc.Upsert(identityId, false, func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData {
@@ -265,6 +275,7 @@ func (pc *PostureCache) PostureData(identityId string) *PostureData {
 }
 
 func (pc *PostureCache) WithPostureData(identityId string, f func(data *PostureData)) {
+	logtrace.LogWithFunctionName()
 	pc.Upsert(identityId, false, func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData {
 		var pd *PostureData
 		if exist {
@@ -278,10 +289,12 @@ func (pc *PostureCache) WithPostureData(identityId string, f func(data *PostureD
 }
 
 func (pc *PostureCache) ApiSessionCreated(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	pc.apiSessionIdToIdentityId.Set(apiSession.Id, apiSession.IdentityId)
 }
 
 func (pc *PostureCache) ApiSessionDeleted(apiSession *db.ApiSession) {
+	logtrace.LogWithFunctionName()
 	pc.identityToPostureData.Upsert(apiSession.IdentityId, newPostureData(), func(exist bool, valueInMap *PostureData, newValue *PostureData) *PostureData {
 		if exist {
 			if valueInMap != nil && valueInMap.ApiSessions != nil {
@@ -298,12 +311,14 @@ func (pc *PostureCache) ApiSessionDeleted(apiSession *db.ApiSession) {
 }
 
 func (pc *PostureCache) IdentityDeleted(identity *db.Identity) {
+	logtrace.LogWithFunctionName()
 	pc.identityToPostureData.Remove(identity.Id)
 }
 
 // PostureCheckChanged notifies all associated identities that posture configuration has changed
 // and that endpoints may need to reevaluate posture queries.
 func (pc *PostureCache) PostureCheckChanged(entity boltz.Entity) {
+	logtrace.LogWithFunctionName()
 	servicePolicyLinks := pc.env.GetStores().PostureCheck.GetLinkCollection(db.EntityTypeServicePolicies)
 
 	if servicePolicyLinks == nil {
@@ -352,6 +367,7 @@ type ApiSessionPostureData struct {
 }
 
 func (self *ApiSessionPostureData) GetPassedMfaAt() *time.Time {
+	logtrace.LogWithFunctionName()
 	if self == nil || self.Mfa == nil {
 		return nil
 	}
@@ -371,6 +387,7 @@ type PostureCheckFailure struct {
 }
 
 func (self PostureCheckFailure) ToClientErrorData() interface{} {
+	logtrace.LogWithFunctionName()
 	return map[string]interface{}{
 		"id":        self.PostureCheckId,
 		"typeId":    self.PostureCheckType,
@@ -404,6 +421,7 @@ type PostureData struct {
 }
 
 func (pd *PostureData) Evaluate(apiSessionId string, checks []*PostureCheck) (bool, []*PostureCheckFailure) {
+	logtrace.LogWithFunctionName()
 
 	var failures []*PostureCheckFailure
 	for _, check := range checks {
@@ -416,12 +434,14 @@ func (pd *PostureData) Evaluate(apiSessionId string, checks []*PostureCheck) (bo
 }
 
 func (pd *PostureData) Copy() *PostureData {
+	logtrace.LogWithFunctionName()
 	dest := &PostureData{}
 	_ = copier.Copy(dest, pd)
 	return dest
 }
 
 func newPostureData() *PostureData {
+	logtrace.LogWithFunctionName()
 	ret := &PostureData{
 		Mac: PostureResponseMac{
 			PostureResponse: &PostureResponse{},
@@ -455,6 +475,7 @@ type PostureResponse struct {
 }
 
 func (pr *PostureResponse) Apply(postureData *PostureData) {
+	logtrace.LogWithFunctionName()
 	pr.SubType.Apply(postureData)
 }
 
@@ -465,5 +486,6 @@ type PostureResponseSubType interface {
 var macClean = regexp.MustCompile(`[^a-f\d]+`)
 
 func CleanHexString(hexString string) string {
+	logtrace.LogWithFunctionName()
 	return macClean.ReplaceAllString(strings.ToLower(hexString), "")
 }

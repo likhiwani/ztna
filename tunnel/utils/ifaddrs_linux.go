@@ -21,6 +21,7 @@ import (
 	"os"
 	"syscall"
 	"unsafe"
+	"ztna-core/ztna/logtrace"
 )
 
 // Return all IP addresses that are currently in use on the local host.
@@ -29,6 +30,7 @@ import (
 // for point-to-point interfaces are returned by this function, in addition
 // to local interface addresses.
 func AllInterfaceAddrs() ([]net.Addr, error) {
+	logtrace.LogWithFunctionName()
 	tab, err := syscall.NetlinkRIB(syscall.RTM_GETADDR, syscall.AF_INET)
 	if err != nil {
 		return nil, os.NewSyscallError("netlinkrib", err)
@@ -58,6 +60,7 @@ loop:
 }
 
 func newAddr(ifam *syscall.IfAddrmsg, attrs []syscall.NetlinkRouteAttr) []net.Addr {
+	logtrace.LogWithFunctionName()
 	var addrs []net.Addr
 	for _, a := range attrs {
 		switch a.Attr.Type {

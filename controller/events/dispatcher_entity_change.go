@@ -19,18 +19,20 @@ package events
 import (
 	"context"
 	"encoding/binary"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/genext"
-	"github.com/openziti/storage/boltz"
+	"reflect"
+	"strings"
+	"time"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/genext"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"reflect"
-	"strings"
-	"time"
 )
 
 const (
@@ -38,10 +40,12 @@ const (
 )
 
 func (self *Dispatcher) AddEntityChangeEventHandler(handler event.EntityChangeEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.entityChangeEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveEntityChangeEventHandler(handler event.EntityChangeEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.entityChangeEventHandlers.DeleteIf(func(val event.EntityChangeEventHandler) bool {
 		if val == handler {
 			return true
@@ -54,6 +58,7 @@ func (self *Dispatcher) RemoveEntityChangeEventHandler(handler event.EntityChang
 }
 
 func (self *Dispatcher) AcceptEntityChangeEvent(event *event.EntityChangeEvent) {
+	logtrace.LogWithFunctionName()
 	// don't do these in a separate goroutine to minimize the chance of losing events
 	// If we need to, the handler can spin up a separate goroutine
 	for _, handler := range self.entityChangeEventHandlers.Value() {
@@ -62,6 +67,7 @@ func (self *Dispatcher) AcceptEntityChangeEvent(event *event.EntityChangeEvent) 
 }
 
 func (self *Dispatcher) registerEntityChangeEventHandler(val interface{}, options map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.EntityChangeEventHandler)
 
 	if !ok {
@@ -129,12 +135,14 @@ func (self *Dispatcher) registerEntityChangeEventHandler(val interface{}, option
 }
 
 func (self *Dispatcher) unregisterEntityChangeEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.EntityChangeEventHandler); ok {
 		self.RemoveEntityChangeEventHandler(handler)
 	}
 }
 
 func (self *Dispatcher) initEntityChangeEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	self.entityChangeEventsDispatcher.network = n
 	for _, store := range n.GetStores().GetStoreList() {
 		self.AddEntityChangeSource(store)
@@ -144,19 +152,23 @@ func (self *Dispatcher) initEntityChangeEvents(n *network.Network) {
 }
 
 func (self *Dispatcher) AddEntityChangeSource(store boltz.Store) {
+	logtrace.LogWithFunctionName()
 	store.AddUntypedEntityConstraint(&self.entityChangeEventsDispatcher)
 	self.entityTypes = append(self.entityTypes, store.GetEntityType())
 }
 
 func (self *Dispatcher) AddGlobalEntityChangeMetadata(k string, v any) {
+	logtrace.LogWithFunctionName()
 	self.entityChangeEventsDispatcher.globalMetadata[k] = v
 }
 
 func txIdToBytes(txId uint64) []byte {
+	logtrace.LogWithFunctionName()
 	return binary.LittleEndian.AppendUint64(nil, txId)
 }
 
 func bytesToTxId(b []byte) uint64 {
+	logtrace.LogWithFunctionName()
 	return binary.LittleEndian.Uint64(b)
 }
 
@@ -169,6 +181,7 @@ type entityChangeEventDispatcher struct {
 }
 
 func (self *entityChangeEventDispatcher) logTxEvent(state boltz.UntypedEntityChangeState) error {
+	logtrace.LogWithFunctionName()
 	tx := state.GetCtx().Tx()
 	rowId := txIdToBytes(uint64(tx.ID()))
 	eventsBucket := boltz.GetOrCreatePath(tx, db.RootBucket, db.MetadataBucket, entityChangeEventsBucket)
@@ -180,6 +193,7 @@ func (self *entityChangeEventDispatcher) logTxEvent(state boltz.UntypedEntityCha
 }
 
 func (self *entityChangeEventDispatcher) processPreviousTxEvents(tx *bbolt.Tx, emit bool) {
+	logtrace.LogWithFunctionName()
 	currentTxId := uint64(tx.ID())
 
 	eventsBucket := boltz.GetOrCreatePath(tx, db.RootBucket, db.MetadataBucket, entityChangeEventsBucket)
@@ -219,6 +233,7 @@ func (self *entityChangeEventDispatcher) processPreviousTxEvents(tx *bbolt.Tx, e
 }
 
 func (self *entityChangeEventDispatcher) ProcessPreCommit(state boltz.UntypedEntityChangeState) error {
+	logtrace.LogWithFunctionName()
 	self.processPreviousTxEvents(state.GetCtx().Tx(), false)
 
 	var changeType event.EntityChangeEventType
@@ -264,6 +279,7 @@ func (self *entityChangeEventDispatcher) ProcessPreCommit(state boltz.UntypedEnt
 }
 
 func (self *entityChangeEventDispatcher) emitRecoveryEvent(eventId string, entityType string) {
+	logtrace.LogWithFunctionName()
 	evt := &event.EntityChangeEvent{
 		Namespace:       event.EntityChangeEventsNs,
 		EventType:       event.EntityChangeTypeCommitted,
@@ -277,6 +293,7 @@ func (self *entityChangeEventDispatcher) emitRecoveryEvent(eventId string, entit
 }
 
 func (self *entityChangeEventDispatcher) ProcessPostCommit(state boltz.UntypedEntityChangeState) {
+	logtrace.LogWithFunctionName()
 	isParentEvent := state.IsParentEvent()
 	evt := &event.EntityChangeEvent{
 		Namespace:          event.EntityChangeEventsNs,
@@ -293,6 +310,7 @@ func (self *entityChangeEventDispatcher) ProcessPostCommit(state boltz.UntypedEn
 }
 
 func (self *entityChangeEventDispatcher) notifyFlush() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.notifyCh <- struct{}{}:
 	default:
@@ -300,6 +318,7 @@ func (self *entityChangeEventDispatcher) notifyFlush() {
 }
 
 func (self *entityChangeEventDispatcher) flushLoop() {
+	logtrace.LogWithFunctionName()
 	for {
 		// wait to be notified of an event
 		select {
@@ -325,6 +344,7 @@ func (self *entityChangeEventDispatcher) flushLoop() {
 }
 
 func (self *entityChangeEventDispatcher) flushCommittedTxEvents(emit bool) {
+	logtrace.LogWithFunctionName()
 	err := self.network.GetDb().Update(nil, func(ctx boltz.MutateContext) error {
 		self.processPreviousTxEvents(ctx.Tx(), emit)
 		return nil
@@ -342,6 +362,7 @@ type entityChangeEventFilter struct {
 }
 
 func (self *entityChangeEventFilter) IsWrapping(value event.EntityChangeEventHandler) bool {
+	logtrace.LogWithFunctionName()
 	if self.EntityChangeEventHandler == value {
 		return true
 	}
@@ -352,6 +373,7 @@ func (self *entityChangeEventFilter) IsWrapping(value event.EntityChangeEventHan
 }
 
 func (self *entityChangeEventFilter) AcceptEntityChangeEvent(evt *event.EntityChangeEvent) {
+	logtrace.LogWithFunctionName()
 	if !evt.IsRecoveryEvent {
 		if !self.propagateAlways && !evt.PropagateIndicator {
 			return

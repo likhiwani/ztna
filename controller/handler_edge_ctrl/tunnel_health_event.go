@@ -17,12 +17,14 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
+	"time"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
 )
 
 type tunnelHealthEventHandler struct {
@@ -32,6 +34,7 @@ type tunnelHealthEventHandler struct {
 }
 
 func NewTunnelHealthEventHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	serviceEventMetrics := appEnv.GetHostController().GetNetwork().GetServiceEventsMetricsRegistry()
 	return &tunnelHealthEventHandler{
 		baseRequestHandler: baseRequestHandler{
@@ -44,14 +47,17 @@ func NewTunnelHealthEventHandler(appEnv *env.AppEnv, ch channel.Channel) channel
 }
 
 func (self *tunnelHealthEventHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_TunnelHealthEventType)
 }
 
 func (self *tunnelHealthEventHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.health.event"
 }
 
 func (self *tunnelHealthEventHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	terminatorId, _ := msg.GetStringHeader(int32(edge_ctrl_pb.Header_TerminatorId))
 	checkPassed, _ := msg.GetBoolHeader(int32(edge_ctrl_pb.Header_CheckPassed))
 
@@ -65,6 +71,7 @@ func (self *tunnelHealthEventHandler) HandleReceive(msg *channel.Message, _ chan
 }
 
 func (self *tunnelHealthEventHandler) handleHealthEvent(ctx *TunnelHealthEventRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}

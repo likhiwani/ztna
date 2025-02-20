@@ -1,15 +1,18 @@
 package model
 
 import (
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltztest"
+	"testing"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
-	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltztest"
 )
 
 func TestIdentityManager(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -19,6 +22,7 @@ func TestIdentityManager(t *testing.T) {
 }
 
 func (ctx *TestContext) testIdentityConfigOverridesServiceDelete(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.requireNewEdgeRouter()
 	identity := ctx.requireNewIdentity(false)
 
@@ -76,6 +80,7 @@ func (ctx *TestContext) testIdentityConfigOverridesServiceDelete(t *testing.T) {
 }
 
 func (ctx *TestContext) testIdentityConfigOverridesIdentityDelete(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.requireNewEdgeRouter()
 	identity := ctx.requireNewIdentity(false)
 

@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"github.com/Jeffail/gabs"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
@@ -31,6 +32,7 @@ type createServiceOptions struct {
 
 // newCreateServiceCmd creates the 'fabric create service' command for the given entity type
 func newCreateServiceCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createServiceOptions{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -57,6 +59,7 @@ func newCreateServiceCmd(p common.OptionsProvider) *cobra.Command {
 
 // createService implements the command to create a service
 func (o *createServiceOptions) createService(_ *cobra.Command, args []string) (err error) {
+	logtrace.LogWithFunctionName()
 	o.Args = args
 	entityData := gabs.New()
 	api.SetJSONValue(entityData, args[0], "name")

@@ -3,16 +3,18 @@ package oidc_auth
 import (
 	"context"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/michaelquigley/pfxlog"
+	"net"
+	"net/http"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/gorilla/mux"
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
 	"github.com/zitadel/oidc/v2/pkg/op"
 	"golang.org/x/text/language"
-	"net"
-	"net/http"
 )
 
 const (
@@ -31,6 +33,7 @@ const (
 
 // NewNativeOnlyOP creates an OIDC Provider that allows native clients and only the AutCode PKCE flow.
 func NewNativeOnlyOP(ctx context.Context, env model.Env, config Config) (http.Handler, error) {
+	logtrace.LogWithFunctionName()
 	cert, kid, method := env.GetServerCert()
 	config.Storage = NewStorage(kid, cert.Leaf.PublicKey, cert.PrivateKey, method, &config, env)
 
@@ -89,6 +92,7 @@ func NewNativeOnlyOP(ctx context.Context, env model.Env, config Config) (http.Ha
 }
 
 func getHandledHostnames(issuer string) []string {
+	logtrace.LogWithFunctionName()
 	const (
 		DefaultTlsPort = "443"
 		LocalhostName  = "localhost"
@@ -150,6 +154,7 @@ func getHandledHostnames(issuer string) []string {
 
 // newHttpRouter creates an OIDC HTTP router
 func newHttpRouter(provider op.OpenIDProvider, config Config) (*mux.Router, error) {
+	logtrace.LogWithFunctionName()
 	if config.TokenSecret == "" {
 		return nil, errors.New("token secret must not be empty")
 	}
@@ -177,6 +182,7 @@ func newHttpRouter(provider op.OpenIDProvider, config Config) (*mux.Router, erro
 
 // newOidcProvider will create an OpenID Provider that allows refresh tokens, authentication via form post and basic auth, and support request object params
 func newOidcProvider(_ context.Context, issuer string, oidcConfig Config) (op.OpenIDProvider, error) {
+	logtrace.LogWithFunctionName()
 	config := &op.Config{
 		CryptoKey:                oidcConfig.Secret(),
 		DefaultLogoutRedirectURI: pathLoggedOut,
@@ -198,6 +204,7 @@ func newOidcProvider(_ context.Context, issuer string, oidcConfig Config) (op.Op
 
 // newLoginResolver returns func capable of determining default login URLs based on authId
 func newLoginResolver(storage Storage) func(string) string {
+	logtrace.LogWithFunctionName()
 	return func(authId string) string {
 		authRequest, err := storage.GetAuthRequest(authId)
 

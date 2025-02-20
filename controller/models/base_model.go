@@ -17,14 +17,16 @@
 package models
 
 import (
+	"reflect"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"reflect"
-	"time"
 )
 
 const (
@@ -79,30 +81,37 @@ type BaseEntity struct {
 }
 
 func (entity *BaseEntity) GetId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Id
 }
 
 func (entity *BaseEntity) SetId(id string) {
+	logtrace.LogWithFunctionName()
 	entity.Id = id
 }
 
 func (entity *BaseEntity) GetCreatedAt() time.Time {
+	logtrace.LogWithFunctionName()
 	return entity.CreatedAt
 }
 
 func (entity *BaseEntity) GetUpdatedAt() time.Time {
+	logtrace.LogWithFunctionName()
 	return entity.UpdatedAt
 }
 
 func (entity *BaseEntity) GetTags() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return entity.Tags
 }
 
 func (entity *BaseEntity) IsSystemEntity() bool {
+	logtrace.LogWithFunctionName()
 	return entity.IsSystem
 }
 
 func (entity *BaseEntity) FillCommon(boltEntity boltz.ExtEntity) {
+	logtrace.LogWithFunctionName()
 	entity.Id = boltEntity.GetId()
 	entity.CreatedAt = boltEntity.GetCreatedAt()
 	entity.UpdatedAt = boltEntity.GetUpdatedAt()
@@ -111,6 +120,7 @@ func (entity *BaseEntity) FillCommon(boltEntity boltz.ExtEntity) {
 }
 
 func (entity *BaseEntity) ToBoltBaseExtEntity() *boltz.BaseExtEntity {
+	logtrace.LogWithFunctionName()
 	return &boltz.BaseExtEntity{
 		Id:        entity.Id,
 		CreatedAt: entity.CreatedAt,
@@ -129,14 +139,17 @@ type EntityListResult[T Entity] struct {
 }
 
 func (result *EntityListResult[T]) GetEntities() []T {
+	logtrace.LogWithFunctionName()
 	return result.Entities
 }
 
 func (result *EntityListResult[T]) GetMetaData() *QueryMetaData {
+	logtrace.LogWithFunctionName()
 	return &result.QueryMetaData
 }
 
 func (result *EntityListResult[T]) Collect(tx *bbolt.Tx, ids []string, queryMetaData *QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		entity, err := result.Loader.BaseLoadInTx(tx, key)
@@ -160,16 +173,19 @@ type BaseEntityManager[E boltz.ExtEntity] struct {
 }
 
 func (ctrl *BaseEntityManager[E]) GetStore() boltz.EntityStore[E] {
+	logtrace.LogWithFunctionName()
 	return ctrl.Store
 }
 
 func (ctrl *BaseEntityManager[E]) GetListStore() boltz.Store {
+	logtrace.LogWithFunctionName()
 	return ctrl.Store
 }
 
 type ListResultHandler func(tx *bbolt.Tx, ids []string, qmd *QueryMetaData) error
 
 func (ctrl *BaseEntityManager[E]) checkLimits(query ast.Query) {
+	logtrace.LogWithFunctionName()
 	if query.GetLimit() == nil || *query.GetLimit() < -1 || *query.GetLimit() == 0 {
 		query.SetLimit(ListLimitDefault)
 	} else if *query.GetLimit() > ListLimitMax {
@@ -184,6 +200,7 @@ func (ctrl *BaseEntityManager[E]) checkLimits(query ast.Query) {
 }
 
 func (ctrl *BaseEntityManager[E]) ListWithTx(tx *bbolt.Tx, queryString string, resultHandler ListResultHandler) error {
+	logtrace.LogWithFunctionName()
 	query, err := ast.Parse(ctrl.Store, queryString)
 	if err != nil {
 		return err
@@ -193,6 +210,7 @@ func (ctrl *BaseEntityManager[E]) ListWithTx(tx *bbolt.Tx, queryString string, r
 }
 
 func (ctrl *BaseEntityManager[E]) PreparedListWithTx(tx *bbolt.Tx, query ast.Query, resultHandler ListResultHandler) error {
+	logtrace.LogWithFunctionName()
 	ctrl.checkLimits(query)
 
 	keys, count, err := ctrl.Store.QueryIdsC(tx, query)
@@ -209,6 +227,7 @@ func (ctrl *BaseEntityManager[E]) PreparedListWithTx(tx *bbolt.Tx, query ast.Que
 }
 
 func (ctrl *BaseEntityManager[E]) PreparedListAssociatedWithTx(tx *bbolt.Tx, id, association string, query ast.Query, resultHandler ListResultHandler) error {
+	logtrace.LogWithFunctionName()
 	ctrl.checkLimits(query)
 
 	var count int64
@@ -243,6 +262,7 @@ func (ctrl *BaseEntityManager[E]) PreparedListAssociatedWithTx(tx *bbolt.Tx, id,
 }
 
 func (ctrl *BaseEntityManager[E]) PreparedListIndexedWithTx(tx *bbolt.Tx, cursorProvider ast.SetCursorProvider, query ast.Query, resultHandler ListResultHandler) error {
+	logtrace.LogWithFunctionName()
 	ctrl.checkLimits(query)
 
 	keys, count, err := ctrl.Store.QueryWithCursorC(tx, cursorProvider, query)
@@ -265,6 +285,7 @@ type Named interface {
 }
 
 func (ctrl *BaseEntityManager[E]) ValidateNameOnUpdate(ctx boltz.MutateContext, updatedEntity, existingEntity boltz.Entity, checker boltz.FieldChecker) error {
+	logtrace.LogWithFunctionName()
 	// validate name for named entities
 	if namedEntity, ok := updatedEntity.(boltz.NamedExtEntity); ok {
 		existingNamed := existingEntity.(boltz.NamedExtEntity)
@@ -285,12 +306,14 @@ func (ctrl *BaseEntityManager[E]) ValidateNameOnUpdate(ctx boltz.MutateContext, 
 }
 
 func (handler *BaseEntityManager[E]) ValidateName(db boltz.Db, boltEntity Named) error {
+	logtrace.LogWithFunctionName()
 	return db.View(func(tx *bbolt.Tx) error {
 		return handler.ValidateNameOnCreate(tx, boltEntity)
 	})
 }
 
 func (handler *BaseEntityManager[E]) ValidateNameOnCreate(tx *bbolt.Tx, entity interface{}) error {
+	logtrace.LogWithFunctionName()
 	// validate name for named entities
 	if namedEntity, ok := entity.(Named); ok {
 		if namedEntity.GetName() == "" {

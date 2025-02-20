@@ -18,13 +18,15 @@ package zitilab
 
 import (
 	"fmt"
+	"io/fs"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/pki"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
 	"github.com/openziti/fablab/kernel/lib"
 	"github.com/openziti/fablab/kernel/lib/actions/host"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/pki"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
 	"github.com/pkg/errors"
-	"io/fs"
 )
 
 var _ model.ComponentType = (*ControllerType)(nil)
@@ -47,24 +49,29 @@ type ControllerType struct {
 }
 
 func (self *ControllerType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "ziti-controller"
 }
 
 func (self *ControllerType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ControllerType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 }
 
 func (self *ControllerType) GetActions() map[string]model.ComponentAction {
+	logtrace.LogWithFunctionName()
 	return map[string]model.ComponentAction{
 		ControllerActionInitStandalone: model.ComponentActionF(self.InitStandalone),
 	}
 }
 
 func (self *ControllerType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":       "controller",
 		"config_source": self.ConfigSource,
@@ -75,6 +82,7 @@ func (self *ControllerType) Dump() any {
 }
 
 func (self *ControllerType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	configSource := self.ConfigSource
 	if configSource == "" {
 		configSource = "ctrl.yml.tmpl"
@@ -94,6 +102,7 @@ func (self *ControllerType) StageFiles(r model.Run, c *model.Component) error {
 }
 
 func (self *ControllerType) getConfigName(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	configName := self.ConfigName
 	if configName == "" {
 		configName = c.Id + ".yml"
@@ -102,10 +111,12 @@ func (self *ControllerType) getConfigName(c *model.Component) string {
 }
 
 func (self *ControllerType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return getZitiProcessFilter(c, "controller")
 }
 
 func (self *ControllerType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -114,6 +125,7 @@ func (self *ControllerType) IsRunning(_ model.Run, c *model.Component) (bool, er
 }
 
 func (self *ControllerType) Start(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	isRunninng, err := self.IsRunning(r, c)
 	if err != nil {
 		return err
@@ -130,14 +142,17 @@ func (self *ControllerType) Start(r model.Run, c *model.Component) error {
 }
 
 func (self *ControllerType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-TERM", self.getProcessFilter(c))
 }
 
 func (self *ControllerType) GetBinaryPath(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	return GetZitiBinaryPath(c, self.Version)
 }
 
 func (self *ControllerType) InitStandalone(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	username := c.MustStringVariable("credentials.edge.username")
 	password := c.MustStringVariable("credentials.edge.password")
 
@@ -160,6 +175,7 @@ func (self *ControllerType) InitStandalone(run model.Run, c *model.Component) er
 }
 
 func (self *ControllerType) InitRaft(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	count := 0
 	err := run.GetModel().ForEachComponent("*", 1, func(other *model.Component) error {
 		if _, ok := c.Type.(*ControllerType); ok {

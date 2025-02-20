@@ -19,8 +19,10 @@ package demo
 import (
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -32,6 +34,7 @@ type zitiEchoClientOptions struct {
 }
 
 func (self *zitiEchoClientOptions) run() error {
+	logtrace.LogWithFunctionName()
 	logrus.SetLevel(logrus.WarnLevel)
 	echoClient, err := NewZitiEchoClient(self.identity)
 	if err != nil {
@@ -41,6 +44,7 @@ func (self *zitiEchoClientOptions) run() error {
 }
 
 func newZitiEchoClientCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &zitiEchoClientOptions{
 		CommonOptions: p(),
 	}

@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/router/env"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -30,6 +32,7 @@ type peerStateChangeHandler struct {
 }
 
 func newPeerStateChangeHandler(env env.RouterEnv) *peerStateChangeHandler {
+	logtrace.LogWithFunctionName()
 	handler := &peerStateChangeHandler{
 		env: env,
 	}
@@ -38,10 +41,12 @@ func newPeerStateChangeHandler(env env.RouterEnv) *peerStateChangeHandler {
 }
 
 func (self *peerStateChangeHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_PeerStateChangeRequestType)
 }
 
 func (self *peerStateChangeHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	peerStateChanges := &ctrl_pb.PeerStateChanges{}
 	if err := proto.Unmarshal(msg.Body, peerStateChanges); err != nil {
 		logrus.WithError(err).Error("error unmarshalling peer state change message")
@@ -52,6 +57,7 @@ func (self *peerStateChangeHandler) HandleReceive(msg *channel.Message, ch chann
 }
 
 func (self *peerStateChangeHandler) DispatchChanges(changes *ctrl_pb.PeerStateChanges) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	for _, peerStateChange := range changes.Changes {
 		if peerStateChange.Id == self.env.GetRouterId().Token {

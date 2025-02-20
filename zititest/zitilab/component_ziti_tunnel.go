@@ -18,10 +18,12 @@ package zitilab
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/stageziti"
-	"github.com/sirupsen/logrus"
 	"strings"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/stageziti"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/sirupsen/logrus"
 )
 
 var _ model.ComponentType = (*ZitiTunnelType)(nil)
@@ -37,6 +39,7 @@ const (
 )
 
 func (self ZitiTunnelMode) String() string {
+	logtrace.LogWithFunctionName()
 	if self == ZitiTunnelModeTproxy {
 		return "tproxy"
 	}
@@ -59,20 +62,24 @@ type ZitiTunnelType struct {
 }
 
 func (self *ZitiTunnelType) Label() string {
+	logtrace.LogWithFunctionName()
 	return "ziti-tunnel"
 }
 
 func (self *ZitiTunnelType) GetVersion() string {
+	logtrace.LogWithFunctionName()
 	return self.Version
 }
 
 func (self *ZitiTunnelType) GetActions() map[string]model.ComponentAction {
+	logtrace.LogWithFunctionName()
 	return map[string]model.ComponentAction{
 		ZitiTunnelActionsReEnroll: model.ComponentActionF(self.ReEnroll),
 	}
 }
 
 func (self *ZitiTunnelType) InitType(*model.Component) {
+	logtrace.LogWithFunctionName()
 	canonicalizeGoAppVersion(&self.Version)
 	if self.Count < 1 {
 		self.Count = 1
@@ -80,6 +87,7 @@ func (self *ZitiTunnelType) InitType(*model.Component) {
 }
 
 func (self *ZitiTunnelType) Dump() any {
+	logtrace.LogWithFunctionName()
 	return map[string]string{
 		"type_id":    "ziti-tunnel",
 		"version":    self.Version,
@@ -88,10 +96,12 @@ func (self *ZitiTunnelType) Dump() any {
 }
 
 func (self *ZitiTunnelType) StageFiles(r model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return stageziti.StageZitiOnce(r, c, self.Version, self.LocalPath)
 }
 
 func (self *ZitiTunnelType) InitializeHost(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	if self.Mode == ZitiTunnelModeTproxy {
 		return setupDnsForTunneler(c)
 	}
@@ -99,10 +109,12 @@ func (self *ZitiTunnelType) InitializeHost(_ model.Run, c *model.Component) erro
 }
 
 func (self *ZitiTunnelType) getProcessFilter(c *model.Component) func(string) bool {
+	logtrace.LogWithFunctionName()
 	return getZitiProcessFilter(c, "tunnel")
 }
 
 func (self *ZitiTunnelType) IsRunning(_ model.Run, c *model.Component) (bool, error) {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return false, err
@@ -111,6 +123,7 @@ func (self *ZitiTunnelType) IsRunning(_ model.Run, c *model.Component) (bool, er
 }
 
 func (self *ZitiTunnelType) GetConfigPath(c *model.Component) string {
+	logtrace.LogWithFunctionName()
 	if self.ConfigPathF != nil {
 		return self.ConfigPathF(c)
 	}
@@ -118,6 +131,7 @@ func (self *ZitiTunnelType) GetConfigPath(c *model.Component) string {
 }
 
 func (self *ZitiTunnelType) Start(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	pids, err := c.GetHost().FindProcesses(self.getProcessFilter(c))
 	if err != nil {
 		return err
@@ -141,6 +155,7 @@ func (self *ZitiTunnelType) Start(_ model.Run, c *model.Component) error {
 }
 
 func (self *ZitiTunnelType) StartIndividual(c *model.Component, idx int) error {
+	logtrace.LogWithFunctionName()
 	mode := self.Mode
 
 	user := c.GetHost().GetSshUser()
@@ -177,9 +192,11 @@ func (self *ZitiTunnelType) StartIndividual(c *model.Component, idx int) error {
 }
 
 func (self *ZitiTunnelType) Stop(_ model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return c.GetHost().KillProcesses("-KILL", self.getProcessFilter(c))
 }
 
 func (self *ZitiTunnelType) ReEnroll(run model.Run, c *model.Component) error {
+	logtrace.LogWithFunctionName()
 	return reEnrollIdentity(run, c, GetZitiBinaryPath(c, self.Version), self.GetConfigPath(c))
 }

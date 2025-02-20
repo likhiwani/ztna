@@ -2,18 +2,23 @@ package cmd_pb
 
 import (
 	"encoding/binary"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"google.golang.org/protobuf/proto"
 )
 
 func (request *AddPeerRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_AddPeerRequestType)
 }
 
 func (request *RemovePeerRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_RemovePeerRequestType)
 }
 
 func (request *TransferLeadershipRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_TransferLeadershipRequestType)
 }
 
@@ -25,6 +30,7 @@ type TypedMessage interface {
 
 // EncodeProtobuf returns the encoded message, prefixed with the command type
 func EncodeProtobuf(v TypedMessage) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	b, err := proto.Marshal(v)
 	if err != nil {
 		return nil, err
@@ -36,30 +42,37 @@ func EncodeProtobuf(v TypedMessage) ([]byte, error) {
 }
 
 func (x *CreateEntityCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_CreateEntityType)
 }
 
 func (x *UpdateEntityCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_UpdateEntityType)
 }
 
 func (x *DeleteEntityCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_DeleteEntityType)
 }
 
 func (x *DeleteTerminatorsBatchCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_DeleteTerminatorsBatchType)
 }
 
 func (x *SyncSnapshotCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_SyncSnapshot)
 }
 
 func (x *InitClusterIdCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_InitClusterId)
 }
 
 func EncodeTags(tags map[string]interface{}) (map[string]*TagValue, error) {
+	logtrace.LogWithFunctionName()
 	if len(tags) == 0 {
 		return nil, nil
 	}
@@ -99,6 +112,7 @@ func EncodeTags(tags map[string]interface{}) (map[string]*TagValue, error) {
 }
 
 func DecodeTags(tags map[string]*TagValue) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if len(tags) == 0 {
 		return nil
 	}

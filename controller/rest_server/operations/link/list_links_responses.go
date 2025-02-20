@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type ListLinksOK struct {
 
 // NewListLinksOK creates ListLinksOK with default headers values
 func NewListLinksOK() *ListLinksOK {
+    logtrace.LogWithFunctionName()
 
 	return &ListLinksOK{}
 }
 
 // WithPayload adds the payload to the list links o k response
 func (o *ListLinksOK) WithPayload(payload *rest_model.ListLinksEnvelope) *ListLinksOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list links o k response
 func (o *ListLinksOK) SetPayload(payload *rest_model.ListLinksEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListLinksOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type ListLinksUnauthorized struct {
 
 // NewListLinksUnauthorized creates ListLinksUnauthorized with default headers values
 func NewListLinksUnauthorized() *ListLinksUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &ListLinksUnauthorized{}
 }
 
 // WithPayload adds the payload to the list links unauthorized response
 func (o *ListLinksUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *ListLinksUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list links unauthorized response
 func (o *ListLinksUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListLinksUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type ListLinksTooManyRequests struct {
 
 // NewListLinksTooManyRequests creates ListLinksTooManyRequests with default headers values
 func NewListLinksTooManyRequests() *ListLinksTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &ListLinksTooManyRequests{}
 }
 
 // WithPayload adds the payload to the list links too many requests response
 func (o *ListLinksTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *ListLinksTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the list links too many requests response
 func (o *ListLinksTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *ListLinksTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

@@ -17,8 +17,9 @@
 package xt_random
 
 import (
-	"ztna-core/ztna/controller/xt"
 	"math/rand"
+	"ztna-core/ztna/controller/xt"
+	logtrace "ztna-core/ztna/logtrace"
 )
 
 /**
@@ -27,22 +28,26 @@ match the precedence of the first terminator, which is presumably of the highest
 */
 
 func NewFactory() xt.Factory {
+	logtrace.LogWithFunctionName()
 	return &factory{}
 }
 
 type factory struct{}
 
 func (self *factory) GetStrategyName() string {
+	logtrace.LogWithFunctionName()
 	return "random"
 }
 
 func (self *factory) NewStrategy() xt.Strategy {
+	logtrace.LogWithFunctionName()
 	return &strategy{}
 }
 
 type strategy struct{}
 
 func (self *strategy) Select(_ xt.CreateCircuitParams, terminators []xt.CostedTerminator) (xt.CostedTerminator, xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	terminators = xt.GetRelatedTerminators(terminators)
 	count := len(terminators)
 	if count == 1 {
@@ -52,8 +57,11 @@ func (self *strategy) Select(_ xt.CreateCircuitParams, terminators []xt.CostedTe
 	return terminators[selected], nil, nil
 }
 
-func (self *strategy) NotifyEvent(xt.TerminatorEvent) {}
+func (self *strategy) NotifyEvent(xt.TerminatorEvent) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *strategy) HandleTerminatorChange(xt.StrategyChangeEvent) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }

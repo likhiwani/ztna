@@ -20,20 +20,22 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"github.com/hashicorp/raft"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/controller/db"
-	event2 "ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"go.etcd.io/bbolt"
 	"io"
 	"os"
 	"path"
 	"sync/atomic"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	event2 "ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/hashicorp/raft"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"go.etcd.io/bbolt"
 )
 
 const (
@@ -43,6 +45,7 @@ const (
 )
 
 func NewFsm(dataDir string, decoders command.Decoders, indexTracker IndexTracker, eventDispatcher event2.Dispatcher) *BoltDbFsm {
+	logtrace.LogWithFunctionName()
 	return &BoltDbFsm{
 		decoders:        decoders,
 		dbPath:          path.Join(dataDir, "ctrl-ha.db"),
@@ -67,6 +70,7 @@ type BoltDbFsm struct {
 }
 
 func (self *BoltDbFsm) Init() error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.WithField("dbPath", self.dbPath).Info("initializing fsm")
 
@@ -92,14 +96,17 @@ func (self *BoltDbFsm) Init() error {
 }
 
 func (self *BoltDbFsm) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return self.db
 }
 
 func (self *BoltDbFsm) loadCurrentIndex() (uint64, error) {
+	logtrace.LogWithFunctionName()
 	return self.loadDbIndex(self.db)
 }
 
 func (self *BoltDbFsm) loadDbIndex(zitiDb boltz.Db) (uint64, error) {
+	logtrace.LogWithFunctionName()
 	var result uint64
 	err := zitiDb.View(func(tx *bbolt.Tx) error {
 		result = db.LoadCurrentRaftIndex(tx)
@@ -109,6 +116,7 @@ func (self *BoltDbFsm) loadDbIndex(zitiDb boltz.Db) (uint64, error) {
 }
 
 func (self *BoltDbFsm) loadServers() error {
+	logtrace.LogWithFunctionName()
 	var result []raft.Server
 	err := self.db.View(func(tx *bbolt.Tx) error {
 		serversBucket := boltz.Path(tx, db.RootBucket, db.MetadataBucket, ServersBucket)
@@ -139,6 +147,7 @@ func (self *BoltDbFsm) loadServers() error {
 }
 
 func (self *BoltDbFsm) storeConfigurationInRaft(index uint64, servers []raft.Server) {
+	logtrace.LogWithFunctionName()
 	err := self.db.Update(nil, func(ctx boltz.MutateContext) error {
 		if err := self.updateIndexInTx(ctx.Tx(), index); err != nil {
 			return err
@@ -151,6 +160,7 @@ func (self *BoltDbFsm) storeConfigurationInRaft(index uint64, servers []raft.Ser
 	}
 }
 func (self *BoltDbFsm) storeServers(tx *bbolt.Tx, servers []raft.Server) error {
+	logtrace.LogWithFunctionName()
 	raftBucket := boltz.GetOrCreatePath(tx, db.RootBucket, db.MetadataBucket)
 	if err := raftBucket.DeleteBucket([]byte(ServersBucket)); err != nil {
 		return err
@@ -169,12 +179,14 @@ func (self *BoltDbFsm) storeServers(tx *bbolt.Tx, servers []raft.Server) error {
 }
 
 func (self *BoltDbFsm) updateIndexInTx(tx *bbolt.Tx, index uint64) error {
+	logtrace.LogWithFunctionName()
 	raftBucket := boltz.GetOrCreatePath(tx, db.RootBucket, db.MetadataBucket)
 	raftBucket.SetInt64(db.FieldRaftIndex, int64(index), nil)
 	return raftBucket.GetError()
 }
 
 func (self *BoltDbFsm) updateIndex(index uint64) {
+	logtrace.LogWithFunctionName()
 	err := self.db.Update(nil, func(ctx boltz.MutateContext) error {
 		return self.updateIndexInTx(ctx.Tx(), index)
 	})
@@ -184,6 +196,7 @@ func (self *BoltDbFsm) updateIndex(index uint64) {
 }
 
 func (self *BoltDbFsm) GetCurrentState(raft *raft.Raft) *ServersWithIndex {
+	logtrace.LogWithFunctionName()
 	currentState := self.currentState.Load()
 	if currentState == nil {
 		if err := raft.GetConfiguration().Error(); err != nil {
@@ -203,6 +216,7 @@ func (self *BoltDbFsm) GetCurrentState(raft *raft.Raft) *ServersWithIndex {
 }
 
 func (self *BoltDbFsm) StoreConfiguration(index uint64, configuration raft.Configuration) {
+	logtrace.LogWithFunctionName()
 	current := self.currentState.Load()
 	if current == nil || current.Index < index {
 		self.storeConfigurationInRaft(index, configuration.Servers)
@@ -223,6 +237,7 @@ func (self *BoltDbFsm) StoreConfiguration(index uint64, configuration raft.Confi
 }
 
 func (self *BoltDbFsm) Apply(log *raft.Log) interface{} {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("index", log.Index)
 	if log.Type == raft.LogCommand {
 		defer self.indexTracker.NotifyOfIndex(log.Index)
@@ -268,6 +283,7 @@ func (self *BoltDbFsm) Apply(log *raft.Log) interface{} {
 }
 
 func (self *BoltDbFsm) Snapshot() (raft.FSMSnapshot, error) {
+	logtrace.LogWithFunctionName()
 	logrus.Debug("creating snapshot")
 
 	buf := &bytes.Buffer{}
@@ -290,6 +306,7 @@ func (self *BoltDbFsm) Snapshot() (raft.FSMSnapshot, error) {
 }
 
 func (self *BoltDbFsm) Restore(snapshot io.ReadCloser) error {
+	logtrace.LogWithFunctionName()
 	var currentSnapshotId string
 	var currentIndex uint64
 
@@ -358,6 +375,7 @@ func (self *BoltDbFsm) Restore(snapshot io.ReadCloser) error {
 }
 
 func (self *BoltDbFsm) restoreSnapshotDbFile(path string, snapshot io.ReadCloser) error {
+	logtrace.LogWithFunctionName()
 	dbFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
@@ -391,6 +409,7 @@ func (self *BoltDbFsm) restoreSnapshotDbFile(path string, snapshot io.ReadCloser
 }
 
 func (self *BoltDbFsm) GetSnapshotMetadata(path string) (string, uint64, error) {
+	logtrace.LogWithFunctionName()
 	newDb, err := db.Open(path)
 	if err != nil {
 		return "", 0, err
@@ -425,10 +444,12 @@ type boltSnapshot struct {
 }
 
 func (self *boltSnapshot) Persist(sink raft.SnapshotSink) error {
+	logtrace.LogWithFunctionName()
 	_, err := sink.Write(self.snapshotData)
 	return err
 }
 
 func (self *boltSnapshot) Release() {
+	logtrace.LogWithFunctionName()
 	self.snapshotData = nil
 }

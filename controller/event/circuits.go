@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type CircuitEventType string
@@ -46,6 +47,7 @@ type CircuitPath struct {
 }
 
 func (self *CircuitPath) String() string {
+	logtrace.LogWithFunctionName()
 	if len(self.Nodes) < 1 {
 		return "{}"
 	}
@@ -81,6 +83,7 @@ type CircuitEvent struct {
 }
 
 func (event *CircuitEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v circuitId=%v clientId=%v serviceId=%v path=%v%s",
 		event.Namespace, event.EventType, event.CircuitId, event.ClientId, event.ServiceId, event.Path, func() (out string) {
 			if event.Path.TerminatorLocalAddr != "" {

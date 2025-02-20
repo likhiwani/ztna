@@ -1,34 +1,44 @@
 package edge_cmd_pb
 
+import logtrace "ztna-core/ztna/logtrace"
+
 func (x *CreateEdgeTerminatorCommand) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_CreateEdgeTerminatorType)
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_ReplaceEnrollmentWithAuthenticatorType)
 }
 
 func (x *CreateEdgeRouterCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_CreateEdgeRouterType)
 }
 
 func (x *CreateTransitRouterCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_CreateTransitRouterType)
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_CreateIdentityWithEnrollmentsType)
 }
 
 func (x *ReEnrollEdgeRouterCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_ReEnrollEdgeRouterType)
 }
 
 func (x *UpdateServiceConfigsCmd) GetCommandType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(CommandType_UpdateServiceConfigsType)
 }
 
 func EncodeTags(tags map[string]interface{}) (map[string]*TagValue, error) {
+	logtrace.LogWithFunctionName()
 	if len(tags) == 0 {
 		return nil, nil
 	}
@@ -68,6 +78,7 @@ func EncodeTags(tags map[string]interface{}) (map[string]*TagValue, error) {
 }
 
 func DecodeTags(tags map[string]*TagValue) map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	if len(tags) == 0 {
 		return nil
 	}

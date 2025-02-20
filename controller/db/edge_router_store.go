@@ -18,10 +18,12 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/eid"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
 )
@@ -37,6 +39,7 @@ const (
 )
 
 func newEdgeRouter(name string, roleAttributes ...string) *EdgeRouter {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouter{
 		Router: Router{
 			BaseExtEntity: boltz.BaseExtEntity{Id: eid.New()},
@@ -58,6 +61,7 @@ type EdgeRouter struct {
 }
 
 func (entity *EdgeRouter) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
@@ -71,6 +75,7 @@ type EdgeRouterStore interface {
 }
 
 func newEdgeRouterStore(stores *stores) *edgeRouterStoreImpl {
+	logtrace.LogWithFunctionName()
 	parentMapper := func(entity boltz.Entity) boltz.Entity {
 		if edgeRouter, ok := entity.(*EdgeRouter); ok {
 			return &edgeRouter.Router
@@ -105,6 +110,7 @@ type edgeRouterStoreImpl struct {
 }
 
 func (store *edgeRouterStoreImpl) HandleUpdate(ctx boltz.MutateContext, entity *Router, checker boltz.FieldChecker) (bool, error) {
+	logtrace.LogWithFunctionName()
 	er, found, err := store.FindById(ctx.Tx(), entity.Id)
 	if err != nil {
 		return false, err
@@ -118,18 +124,22 @@ func (store *edgeRouterStoreImpl) HandleUpdate(ctx boltz.MutateContext, entity *
 }
 
 func (store *edgeRouterStoreImpl) HandleDelete(ctx boltz.MutateContext, entity *Router) error {
+	logtrace.LogWithFunctionName()
 	return store.cleanupEdgeRouter(ctx, entity.Id)
 }
 
 func (store *edgeRouterStoreImpl) GetStore() boltz.Store {
+	logtrace.LogWithFunctionName()
 	return store
 }
 
 func (store *edgeRouterStoreImpl) GetRoleAttributesIndex() boltz.SetReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexRoleAttributes
 }
 
 func (store *edgeRouterStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.GetParentStore().GrantSymbols(store)
 
 	store.symbolRoleAttributes = store.AddPublicSetSymbol(FieldRoleAttributes, ast.NodeTypeString)
@@ -151,6 +161,7 @@ func (store *edgeRouterStoreImpl) initializeLocal() {
 }
 
 func (store *edgeRouterStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	store.AddLinkCollection(store.symbolEdgeRouterPolicies, store.stores.edgeRouterPolicy.symbolEdgeRouters)
 	store.AddLinkCollection(store.symbolServiceEdgeRouterPolicies, store.stores.serviceEdgeRouterPolicy.symbolEdgeRouters)
 
@@ -165,10 +176,12 @@ func (store *edgeRouterStoreImpl) initializeLinked() {
 }
 
 func (store *edgeRouterStoreImpl) NewEntity() *EdgeRouter {
+	logtrace.LogWithFunctionName()
 	return &EdgeRouter{}
 }
 
 func (store *edgeRouterStoreImpl) FillEntity(entity *EdgeRouter, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	store.stores.router.FillEntity(&entity.Router, store.getParentBucket(entity, bucket))
 
 	entity.CertPem = bucket.GetString(FieldEdgeRouterCertPEM)
@@ -184,6 +197,7 @@ func (store *edgeRouterStoreImpl) FillEntity(entity *EdgeRouter, bucket *boltz.T
 }
 
 func (store *edgeRouterStoreImpl) PersistEntity(entity *EdgeRouter, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	store.stores.router.PersistEntity(&entity.Router, ctx.GetParentContext())
 
 	ctx.SetStringP(FieldEdgeRouterCertPEM, entity.CertPem)
@@ -203,6 +217,7 @@ func (store *edgeRouterStoreImpl) PersistEntity(entity *EdgeRouter, ctx *boltz.P
 }
 
 func (store *edgeRouterStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, rowId []byte, _ []boltz.FieldTypeAndValue, new []boltz.FieldTypeAndValue, holder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	// Recalculate edge router policy links
 	ctx := &roleAttributeChangeContext{
 		mutateCtx:             mutateCtx,
@@ -227,10 +242,12 @@ func (store *edgeRouterStoreImpl) rolesChanged(mutateCtx boltz.MutateContext, ro
 }
 
 func (store *edgeRouterStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *edgeRouterStoreImpl) cleanupEdgeRouter(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	if entity, _ := store.LoadById(ctx.Tx(), id); entity != nil {
 		// Remove entity from EdgeRouterRoles in edge router policies
 		if err := store.deleteEntityReferences(ctx.Tx(), entity, store.stores.edgeRouterPolicy.symbolEdgeRouterRoles); err != nil {
@@ -251,6 +268,7 @@ func (store *edgeRouterStoreImpl) cleanupEdgeRouter(ctx boltz.MutateContext, id 
 }
 
 func (store *edgeRouterStoreImpl) GetRoleAttributesCursorProvider(values []string, semantic string) (ast.SetCursorProvider, error) {
+	logtrace.LogWithFunctionName()
 	return store.getRoleAttributesCursorProvider(store.indexRoleAttributes, values, semantic)
 }
 
@@ -261,10 +279,12 @@ type routerIdentityConstraint struct {
 }
 
 func (index *routerIdentityConstraint) Label() string {
+	logtrace.LogWithFunctionName()
 	return "router identity constraint"
 }
 
 func (self *routerIdentityConstraint) ProcessBeforeUpdate(ctx *boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.IsCreate {
 		t, v := self.routerNameSymbol.Eval(ctx.Tx(), ctx.RowId)
 		ctx.PushState(self, t, v)
@@ -275,6 +295,7 @@ func (self *routerIdentityConstraint) ProcessBeforeUpdate(ctx *boltz.IndexingCon
 }
 
 func (self *routerIdentityConstraint) ProcessAfterUpdate(ctx *boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
 	oldName := ctx.PopStateString(self)
 	oldTunnelerEnabled := ctx.PopStateBool(self)
 	_, currentName := self.routerNameSymbol.Eval(ctx.Tx(), ctx.RowId)
@@ -339,10 +360,12 @@ func (self *routerIdentityConstraint) ProcessAfterUpdate(ctx *boltz.IndexingCont
 }
 
 func (self *routerIdentityConstraint) ProcessBeforeDelete(ctx *boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
 	self.deleteAssociatedEntities(ctx)
 }
 
 func (self *routerIdentityConstraint) deleteAssociatedEntities(ctx *boltz.IndexingContext) {
+	logtrace.LogWithFunctionName()
 	routerId := string(ctx.RowId)
 
 	// cleanup associated auto-generated edge router policy
@@ -361,12 +384,16 @@ func (self *routerIdentityConstraint) deleteAssociatedEntities(ctx *boltz.Indexi
 	}
 }
 
-func (self *routerIdentityConstraint) Initialize(_ *bbolt.Tx, _ errorz.ErrorHolder) {}
+func (self *routerIdentityConstraint) Initialize(_ *bbolt.Tx, _ errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self *routerIdentityConstraint) CheckIntegrity(_ boltz.MutateContext, _ bool, _ func(err error, fixed bool)) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func getSystemEdgeRouterPolicyName(edgeRouterId string) string {
+	logtrace.LogWithFunctionName()
 	return "edge-router-" + edgeRouterId + "-system"
 }

@@ -19,11 +19,13 @@ package model
 import (
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestPostureCheckModelOs_Evaluate(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	t.Run("returns true for exactly matching valid os type and version", func(t *testing.T) {
 		osCheck, postureData := newMatchingOsCheckAndData()
@@ -315,6 +317,7 @@ const (
 // Returns a process check and posture data that will pass with matching os type, version, and build. Can
 // be altered to test various pass/fail states
 func newMatchingOsCheckAndData() (*PostureCheckOperatingSystem, *PostureData) {
+	logtrace.LogWithFunctionName()
 	postureCheckId := "30qhj45"
 
 	postureResponse := &PostureResponse{

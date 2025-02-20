@@ -1,16 +1,19 @@
 package tests
 
 import (
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/versions"
-	"github.com/openziti/transport/v2"
+	"math/big"
 	"ztna-core/ztna/common/capabilities"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/config"
-	"math/big"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/versions"
+	"github.com/openziti/transport/v2"
 )
 
 func (ctx *FabricTestContext) NewControlChannelListener() channel.UnderlayListener {
+	logtrace.LogWithFunctionName()
 	config, err := config.LoadConfig(FabricControllerConfFile)
 	ctx.Req.NoError(err)
 	ctx.Req.NoError(config.Db.Close())

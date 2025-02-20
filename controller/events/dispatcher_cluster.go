@@ -17,20 +17,25 @@
 package events
 
 import (
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddClusterEventHandler(handler event.ClusterEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.clusterEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveClusterEventHandler(handler event.ClusterEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.clusterEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AcceptClusterEvent(event *event.ClusterEvent) {
+	logtrace.LogWithFunctionName()
 	event.EventSrcId = self.ctrlId
 	go func() {
 		for _, handler := range self.clusterEventHandlers.Value() {
@@ -40,6 +45,7 @@ func (self *Dispatcher) AcceptClusterEvent(event *event.ClusterEvent) {
 }
 
 func (self *Dispatcher) registerClusterEventHandler(val interface{}, _ map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	handler, ok := val.(event.ClusterEventHandler)
 
 	if !ok {
@@ -52,6 +58,7 @@ func (self *Dispatcher) registerClusterEventHandler(val interface{}, _ map[strin
 }
 
 func (self *Dispatcher) unregisterClusterEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.ClusterEventHandler); ok {
 		self.RemoveClusterEventHandler(handler)
 	}

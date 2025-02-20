@@ -23,6 +23,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
@@ -40,16 +41,19 @@ type CurrentApiSessionLinkFactoryImpl struct {
 }
 
 func NewCurrentApiSessionLinkFactory() *CurrentApiSessionLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &CurrentApiSessionLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameCurrentSession),
 	}
 }
 
 func (factory *CurrentApiSessionLinkFactoryImpl) SelfLink(entity models.Entity) rest_model.Link {
+	logtrace.LogWithFunctionName()
 	return NewLink("./" + EntityNameCurrentSession)
 }
 
 func (factory *CurrentApiSessionLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	return rest_model.Links{
 		EntityNameSelf:            factory.SelfLink(entity),
 		EntityNameCurrentIdentity: CurrentIdentityLinkFactory.SelfLink(entity),
@@ -57,6 +61,7 @@ func (factory *CurrentApiSessionLinkFactoryImpl) Links(entity models.Entity) res
 }
 
 func MapToCurrentApiSessionRestModel(ae *env.AppEnv, rc *response.RequestContext, sessionTimeout time.Duration) *rest_model.CurrentAPISessionDetail {
+	logtrace.LogWithFunctionName()
 
 	detail, err := MapApiSessionToRestModel(ae, rc.ApiSession)
 
@@ -82,6 +87,7 @@ func MapToCurrentApiSessionRestModel(ae *env.AppEnv, rc *response.RequestContext
 }
 
 func MapApiSessionAuthQueriesToRestEntity(ae *env.AppEnv, rc *response.RequestContext, detail *rest_model.APISessionDetail) {
+	logtrace.LogWithFunctionName()
 	for _, authQuery := range rc.AuthQueries {
 		detail.AuthQueries = append(detail.AuthQueries, &rest_model.AuthQueryDetail{
 			Format:     authQuery.Format,
@@ -99,10 +105,12 @@ func MapApiSessionAuthQueriesToRestEntity(ae *env.AppEnv, rc *response.RequestCo
 }
 
 func MapApiSessionCertificateToRestEntity(appEnv *env.AppEnv, context *response.RequestContext, cert *model.ApiSessionCertificate) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapApiSessionCertificateToRestModel(cert)
 }
 
 func MapApiSessionCertificateToRestModel(apiSessionCert *model.ApiSessionCertificate) (*rest_model.CurrentAPISessionCertificateDetail, error) {
+	logtrace.LogWithFunctionName()
 
 	validFrom := strfmt.DateTime(*apiSessionCert.ValidAfter)
 	validTo := strfmt.DateTime(*apiSessionCert.ValidBefore)

@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -74,6 +75,7 @@ type RaftMemberListValue struct {
 
 // Validate validates this raft member list value
 func (m *RaftMemberListValue) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateAddress(formats); err != nil {
@@ -111,6 +113,7 @@ func (m *RaftMemberListValue) Validate(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateAddress(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("address", "body", m.Address); err != nil {
 		return err
@@ -120,6 +123,7 @@ func (m *RaftMemberListValue) validateAddress(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateConnected(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("connected", "body", m.Connected); err != nil {
 		return err
@@ -129,6 +133,7 @@ func (m *RaftMemberListValue) validateConnected(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateID(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
@@ -138,6 +143,7 @@ func (m *RaftMemberListValue) validateID(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateLeader(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("leader", "body", m.Leader); err != nil {
 		return err
@@ -147,6 +153,7 @@ func (m *RaftMemberListValue) validateLeader(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateReadOnly(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("readOnly", "body", m.ReadOnly); err != nil {
 		return err
@@ -156,6 +163,7 @@ func (m *RaftMemberListValue) validateReadOnly(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateVersion(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("version", "body", m.Version); err != nil {
 		return err
@@ -165,6 +173,7 @@ func (m *RaftMemberListValue) validateVersion(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberListValue) validateVoter(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("voter", "body", m.Voter); err != nil {
 		return err
@@ -175,11 +184,13 @@ func (m *RaftMemberListValue) validateVoter(formats strfmt.Registry) error {
 
 // ContextValidate validates this raft member list value based on context it is used
 func (m *RaftMemberListValue) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *RaftMemberListValue) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -188,6 +199,7 @@ func (m *RaftMemberListValue) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *RaftMemberListValue) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res RaftMemberListValue
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

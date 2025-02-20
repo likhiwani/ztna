@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"io"
 
 	"ztna-core/ztna/ztna/util"
@@ -26,6 +27,7 @@ import (
 
 // NewCmdLE creates a command object for the "le" sub-command of the "pki" cmd
 func NewCmdLE(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := util.NewEmptyParentCmd("le", "Interact with Let's Encrypt infra")
 	populateLECommands(out, errOut, cmd)
 
@@ -33,6 +35,7 @@ func NewCmdLE(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (options *leOptions) AddCommonFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().BoolVarP(&options.Verbose, "verbose", "", false, "Enable verbose logging")
 }
 
@@ -59,6 +62,7 @@ type leOptions struct {
 // }
 
 func populateLECommands(out io.Writer, errOut io.Writer, cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd.AddCommand(newCreateCmd(out, errOut))
 	cmd.AddCommand(newRevokeCmd(out, errOut))
 	cmd.AddCommand(newRenewCmd(out, errOut))

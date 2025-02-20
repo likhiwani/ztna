@@ -8,6 +8,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/openziti/foundation/v2/stringz"
@@ -18,6 +19,7 @@ const EntityNameTransitRouter = "transit-routers"
 var TransitRouterLinkFactory = NewBasicLinkFactory(EntityNameTransitRouter)
 
 func MapCreateRouterToModel(router *rest_model.RouterCreate) *model.TransitRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.TransitRouter{
 		BaseEntity:  models.BaseEntity{},
 		Name:        stringz.OrEmpty(router.Name),
@@ -29,6 +31,7 @@ func MapCreateRouterToModel(router *rest_model.RouterCreate) *model.TransitRoute
 }
 
 func MapUpdateTransitRouterToModel(id string, router *rest_model.RouterUpdate) *model.TransitRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.TransitRouter{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -44,6 +47,7 @@ func MapUpdateTransitRouterToModel(id string, router *rest_model.RouterUpdate) *
 }
 
 func MapPatchTransitRouterToModel(id string, router *rest_model.RouterPatch) *model.TransitRouter {
+	logtrace.LogWithFunctionName()
 	ret := &model.TransitRouter{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -59,10 +63,12 @@ func MapPatchTransitRouterToModel(id string, router *rest_model.RouterPatch) *mo
 }
 
 func MapTransitRouterToRestEntity(ae *env.AppEnv, _ *response.RequestContext, router *model.TransitRouter) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapTransitRouterToRestModel(ae, router)
 }
 
 func MapTransitRouterToRestModel(ae *env.AppEnv, router *model.TransitRouter) (*rest_model.RouterDetail, error) {
+	logtrace.LogWithFunctionName()
 	isConnected := ae.GetManagers().Router.IsConnected(router.GetId())
 	cost := int64(router.Cost)
 	ret := &rest_model.RouterDetail{

@@ -18,25 +18,31 @@ package events
 
 import (
 	"fmt"
-	"github.com/openziti/metrics/metrics_pb"
-	"ztna-core/ztna/controller/event"
-	"github.com/pkg/errors"
 	"reflect"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics/metrics_pb"
+	"github.com/pkg/errors"
 )
 
 func (self *Dispatcher) AddUsageEventHandler(handler event.UsageEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.usageEventHandlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveUsageEventHandler(handler event.UsageEventHandler) {
+	logtrace.LogWithFunctionName()
 	self.usageEventHandlers.Delete(handler)
 }
 
 func (self *Dispatcher) AddUsageEventV3Handler(handler event.UsageEventV3Handler) {
+	logtrace.LogWithFunctionName()
 	self.usageEventV3Handlers.Append(handler)
 }
 
 func (self *Dispatcher) RemoveUsageEventV3Handler(handler event.UsageEventV3Handler) {
+	logtrace.LogWithFunctionName()
 	self.usageEventV3Handlers.DeleteIf(func(val event.UsageEventV3Handler) bool {
 		if val == handler {
 			return true
@@ -49,6 +55,7 @@ func (self *Dispatcher) RemoveUsageEventV3Handler(handler event.UsageEventV3Hand
 }
 
 func (self *Dispatcher) AcceptUsageEvent(event *event.UsageEvent) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.usageEventHandlers.Value() {
 			handler.AcceptUsageEvent(event)
@@ -57,6 +64,7 @@ func (self *Dispatcher) AcceptUsageEvent(event *event.UsageEvent) {
 }
 
 func (self *Dispatcher) AcceptUsageEventV3(event *event.UsageEventV3) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for _, handler := range self.usageEventV3Handlers.Value() {
 			handler.AcceptUsageEventV3(event)
@@ -65,6 +73,7 @@ func (self *Dispatcher) AcceptUsageEventV3(event *event.UsageEventV3) {
 }
 
 func (self *Dispatcher) registerUsageEventHandler(val interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	version := 2
 
 	if configVal, found := config["version"]; found {
@@ -122,6 +131,7 @@ func (self *Dispatcher) registerUsageEventHandler(val interface{}, config map[st
 }
 
 func (self *Dispatcher) unregisterUsageEventHandler(val interface{}) {
+	logtrace.LogWithFunctionName()
 	if handler, ok := val.(event.UsageEventHandler); ok {
 		self.RemoveUsageEventHandler(handler)
 	}
@@ -132,6 +142,7 @@ func (self *Dispatcher) unregisterUsageEventHandler(val interface{}) {
 }
 
 func (self *Dispatcher) initUsageEvents() {
+	logtrace.LogWithFunctionName()
 	self.AddMetricsMessageHandler(&usageEventAdapter{
 		dispatcher: self,
 	})
@@ -142,6 +153,7 @@ type usageEventAdapter struct {
 }
 
 func (self *usageEventAdapter) AcceptMetricsMsg(message *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	if message.DoNotPropagate {
 		return
 	}
@@ -232,6 +244,7 @@ type filteredUsageV3EventHandler struct {
 }
 
 func (self *filteredUsageV3EventHandler) IsWrapping(value event.UsageEventV3Handler) bool {
+	logtrace.LogWithFunctionName()
 	if self.wrapped == value {
 		return true
 	}
@@ -242,6 +255,7 @@ func (self *filteredUsageV3EventHandler) IsWrapping(value event.UsageEventV3Hand
 }
 
 func (self *filteredUsageV3EventHandler) AcceptUsageEventV3(event *event.UsageEventV3) {
+	logtrace.LogWithFunctionName()
 	usage := map[string]uint64{}
 	for k, v := range event.Usage {
 		if _, found := self.include[k]; found {

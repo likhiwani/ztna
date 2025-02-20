@@ -3,20 +3,23 @@ package handler_edge_ctrl
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/google/uuid"
-	lru "github.com/hashicorp/golang-lru/v2"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/storage/boltz"
+	"sync"
+	"time"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
+	lru "github.com/hashicorp/golang-lru/v2"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/storage/boltz"
 	"github.com/sirupsen/logrus"
-	"sync"
-	"time"
 )
 
 func NewTunnelState() *TunnelState {
+	logtrace.LogWithFunctionName()
 	sessionCache, _ := lru.New[string, string](256)
 	return &TunnelState{
 		sessionCache: sessionCache,
@@ -31,14 +34,17 @@ type TunnelState struct {
 }
 
 func (self *TunnelState) getCurrentApiSessionId() string {
+	logtrace.LogWithFunctionName()
 	return self.currentApiSessionId.Load()
 }
 
 func (self *TunnelState) clearCurrentApiSessionId() {
+	logtrace.LogWithFunctionName()
 	self.currentApiSessionId.Store("")
 }
 
 func (self *TunnelState) setCurrentApiSessionId(val string) {
+	logtrace.LogWithFunctionName()
 	self.currentApiSessionId.Store(val)
 }
 
@@ -53,10 +59,12 @@ type baseTunnelRequestContext struct {
 }
 
 func (self *baseTunnelRequestContext) getTunnelState() *TunnelState {
+	logtrace.LogWithFunctionName()
 	return self.handler.(tunnelRequestHandler).getTunnelState()
 }
 
 func (self *baseTunnelRequestContext) loadIdentity() {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		var err error
 		self.identity, err = self.handler.getAppEnv().GetManagers().Identity.Read(self.sourceRouter.Id)
@@ -84,10 +92,12 @@ func (self *baseTunnelRequestContext) loadIdentity() {
 }
 
 func (self *baseTunnelRequestContext) ensureApiSession(configTypes []string) bool {
+	logtrace.LogWithFunctionName()
 	return self.ensureApiSessionLocking(configTypes, false)
 }
 
 func (self *baseTunnelRequestContext) ensureApiSessionLocking(configTypes []string, locked bool) bool {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		logger := logrus.
 			WithField("operation", self.handler.Label()).
@@ -183,6 +193,7 @@ func (self *baseTunnelRequestContext) ensureApiSessionLocking(configTypes []stri
 }
 
 func (self *baseTunnelRequestContext) loadServiceForId(id string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		var err error
 		self.service, err = self.handler.getAppEnv().Managers.EdgeService.Read(id)
@@ -206,6 +217,7 @@ func (self *baseTunnelRequestContext) loadServiceForId(id string) {
 }
 
 func (self *baseTunnelRequestContext) loadServiceForName(name string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		var err error
 		self.service, err = self.handler.getAppEnv().Managers.EdgeService.ReadByName(name)
@@ -229,6 +241,7 @@ func (self *baseTunnelRequestContext) loadServiceForName(name string) {
 }
 
 func (self *baseTunnelRequestContext) isSessionValid(sessionId, sessionType string) bool {
+	logtrace.LogWithFunctionName()
 	logger := logrus.
 		WithField("operation", self.handler.Label()).
 		WithField("router", self.sourceRouter.Name).
@@ -257,6 +270,7 @@ func (self *baseTunnelRequestContext) isSessionValid(sessionId, sessionType stri
 }
 
 func (self *baseTunnelRequestContext) ensureSessionForService(sessionId, sessionType string) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		logger := logrus.
 			WithField("operation", self.handler.Label()).
@@ -314,6 +328,7 @@ func (self *baseTunnelRequestContext) ensureSessionForService(sessionId, session
 }
 
 func (self *baseTunnelRequestContext) getCreateApiSessionResponse() (*edge_ctrl_pb.CreateApiSessionResponse, error) {
+	logtrace.LogWithFunctionName()
 	appDataJson, err := mapToJson(self.identity.AppData)
 	if err != nil {
 		return nil, err
@@ -344,6 +359,7 @@ func (self *baseTunnelRequestContext) getCreateApiSessionResponse() (*edge_ctrl_
 }
 
 func mapToJson(m map[string]interface{}) (string, error) {
+	logtrace.LogWithFunctionName()
 	if len(m) == 0 {
 		return "", nil
 	}
@@ -355,6 +371,7 @@ func mapToJson(m map[string]interface{}) (string, error) {
 }
 
 func (self *baseTunnelRequestContext) getCreateSessionResponse() *edge_ctrl_pb.CreateSessionResponse {
+	logtrace.LogWithFunctionName()
 	return &edge_ctrl_pb.CreateSessionResponse{
 		SessionId: self.session.Id,
 		Token:     self.session.Token,
@@ -362,6 +379,7 @@ func (self *baseTunnelRequestContext) getCreateSessionResponse() *edge_ctrl_pb.C
 }
 
 func (self *baseTunnelRequestContext) updateIdentityInfo(envInfo *edge_ctrl_pb.EnvInfo, sdkInfo *edge_ctrl_pb.SdkInfo) {
+	logtrace.LogWithFunctionName()
 	if self.err == nil {
 		updateIdentity := false
 		if envInfo != nil {

@@ -17,12 +17,15 @@
 package handler_edge_ctrl
 
 import (
+	"testing"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func Test_ErrorsIs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	err := error(InvalidSessionError{})
 	req := require.New(t)
 	req.True(errors.Is(err, InvalidSessionError{}))

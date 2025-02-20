@@ -19,14 +19,8 @@ package webapis
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/go-openapi/loads"
-	"github.com/gorilla/websocket"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/websockets"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/identity"
-	"github.com/openziti/xweb/v2"
+	"net/http"
+	"strings"
 	"ztna-core/ztna/controller/api_impl"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/handler_mgmt"
@@ -35,8 +29,16 @@ import (
 	"ztna-core/ztna/controller/rest_server"
 	"ztna-core/ztna/controller/rest_server/operations"
 	"ztna-core/ztna/controller/xmgmt"
-	"net/http"
-	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/loads"
+	"github.com/gorilla/websocket"
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/websockets"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/identity"
+	"github.com/openziti/xweb/v2"
 )
 
 const (
@@ -55,10 +57,12 @@ type FabricManagementApiFactory struct {
 }
 
 func (factory *FabricManagementApiFactory) Validate(_ *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func NewFabricManagementApiFactory(nodeId identity.Identity, env *env.AppEnv, network *network.Network, xmgmts *concurrenz.CopyOnWriteSlice[xmgmt.Xmgmt]) *FabricManagementApiFactory {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Infof("initializing management api factory with %d xmgmt instances", len(xmgmts.Value()))
 	return &FabricManagementApiFactory{
 		env:         env,
@@ -70,10 +74,12 @@ func NewFabricManagementApiFactory(nodeId identity.Identity, env *env.AppEnv, ne
 }
 
 func (factory *FabricManagementApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return api_impl.FabricApiBinding
 }
 
 func (factory *FabricManagementApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	managementSpec, err := loads.Embedded(rest_server.SwaggerJSON, rest_server.FlatSwaggerJSON)
 	if err != nil {
 		pfxlog.Logger().Fatalln(err)
@@ -111,6 +117,7 @@ func (factory *FabricManagementApiFactory) New(_ *xweb.ServerConfig, options map
 }
 
 func NewFabricManagementApiHandler(fabricApi *operations.ZitiFabricAPI, isDefault bool, options map[interface{}]interface{}) (*FabricManagementApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	managementApi := &FabricManagementApiHandler{
 		fabricApi: fabricApi,
 		options:   options,
@@ -135,22 +142,27 @@ type FabricManagementApiHandler struct {
 }
 
 func (managementApi *FabricManagementApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return api_impl.FabricApiBinding
 }
 
 func (managementApi *FabricManagementApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return managementApi.options
 }
 
 func (managementApi *FabricManagementApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return rest_client.DefaultBasePath
 }
 
 func (managementApi *FabricManagementApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, managementApi.RootPath())
 }
 
 func (managementApi *FabricManagementApiHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	if request.URL.Path == managementApi.wsUrl {
 		managementApi.wsHandler.ServeHTTP(writer, request)
 	} else {
@@ -159,15 +171,18 @@ func (managementApi *FabricManagementApiHandler) ServeHTTP(writer http.ResponseW
 }
 
 func (managementApi *FabricManagementApiHandler) newHandler() http.Handler {
+	logtrace.LogWithFunctionName()
 	innerManagementHandler := managementApi.fabricApi.Serve(nil)
 	return requestWrapper.WrapHttpHandler(innerManagementHandler)
 }
 
 func (managementApi *FabricManagementApiHandler) IsDefault() bool {
+	logtrace.LogWithFunctionName()
 	return managementApi.isDefault
 }
 
 func (managementApi *FabricManagementApiHandler) handleWebSocket(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Debug("handling mgmt channel websocket upgrade")
 	upgrader := websocket.Upgrader{}

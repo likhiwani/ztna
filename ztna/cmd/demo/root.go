@@ -19,13 +19,16 @@ package demo
 import (
 	"time"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/agentcli"
 	"ztna-core/ztna/ztna/cmd/common"
 	"ztna-core/ztna/ztna/cmd/helpers"
+
 	"github.com/spf13/cobra"
 )
 
 func NewDemoCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	demoCmd := &cobra.Command{
 		Use:   "demo",
 		Short: "Demos and examples for learning about Ziti",
@@ -103,13 +106,16 @@ type TutorialOptions struct {
 }
 
 func (self *TutorialOptions) GetControllerUrl() string {
+	logtrace.LogWithFunctionName()
 	return self.ControllerUrl
 }
 
 func (self *TutorialOptions) GetUsername() string {
+	logtrace.LogWithFunctionName()
 	return self.Username
 }
 
 func (self *TutorialOptions) GetPassword() string {
+	logtrace.LogWithFunctionName()
 	return self.Password
 }

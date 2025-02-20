@@ -2,6 +2,8 @@ package zitilib_runlevel_0_infrastructure
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/fablab/kernel/libssh"
 
 	"github.com/openziti/fablab/kernel/model"
@@ -16,6 +18,7 @@ type installMetricbeat struct {
 }
 
 func InstallMetricbeat(hostSpec, version string) model.Stage {
+	logtrace.LogWithFunctionName()
 	return &installMetricbeat{
 		hostSpec: hostSpec,
 		version:  version,
@@ -23,6 +26,7 @@ func InstallMetricbeat(hostSpec, version string) model.Stage {
 }
 
 func (imb *installMetricbeat) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	return run.GetModel().ForEachHost(imb.hostSpec, 25, func(host *model.Host) error {
 		ssh := host.NewSshConfigFactory()
 

@@ -2,9 +2,11 @@ package posture
 
 import (
 	"fmt"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"github.com/pkg/errors"
 	"time"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 )
 
 const (
@@ -18,6 +20,7 @@ type MfaCheck struct {
 }
 
 func (m *MfaCheck) Evaluate(state *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 
 	if state == nil {

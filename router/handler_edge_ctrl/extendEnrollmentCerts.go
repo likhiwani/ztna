@@ -19,16 +19,18 @@ package handler_edge_ctrl
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
 	nfpem "github.com/openziti/foundation/v2/pem"
 	"github.com/openziti/identity"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 type extendEnrollmentCertsHandler struct {
@@ -37,6 +39,7 @@ type extendEnrollmentCertsHandler struct {
 }
 
 func NewExtendEnrollmentCertsHandler(id *identity.TokenId, notifyCertUpdate func()) *extendEnrollmentCertsHandler {
+	logtrace.LogWithFunctionName()
 	return &extendEnrollmentCertsHandler{
 		id:               id,
 		notifyCertUpdate: notifyCertUpdate,
@@ -44,10 +47,12 @@ func NewExtendEnrollmentCertsHandler(id *identity.TokenId, notifyCertUpdate func
 }
 
 func (h *extendEnrollmentCertsHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.EnrollmentCertsResponseType
 }
 
 func (h *extendEnrollmentCertsHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		certs := ch.Underlay().Certificates()
 

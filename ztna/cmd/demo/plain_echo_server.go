@@ -18,9 +18,11 @@ package demo
 
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"net"
 	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/fatih/color"
 )
 
 type plainEchoServer struct {
@@ -29,6 +31,7 @@ type plainEchoServer struct {
 }
 
 func (s *plainEchoServer) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+	logtrace.LogWithFunctionName()
 	input := r.URL.Query().Get("input")
 	result := fmt.Sprintf("As you say, '%v', indeed!\n", input)
 	c := color.New(color.FgBlue, color.Bold)
@@ -40,6 +43,7 @@ func (s *plainEchoServer) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (s *plainEchoServer) run() (err error) {
+	logtrace.LogWithFunctionName()
 	bindAddr := fmt.Sprintf("127.0.0.1:%v", s.Port)
 	s.listener, err = net.Listen("tcp", bindAddr)
 	if err != nil {
@@ -57,5 +61,6 @@ func (s *plainEchoServer) run() (err error) {
 }
 
 func (s *plainEchoServer) stop() error {
+	logtrace.LogWithFunctionName()
 	return s.listener.Close()
 }

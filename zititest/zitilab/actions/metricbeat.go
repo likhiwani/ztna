@@ -2,6 +2,8 @@ package zitilib_actions
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/fablab/kernel/libssh"
 
 	"github.com/openziti/fablab/kernel/model"
@@ -16,6 +18,7 @@ type metricbeatStart struct {
 }
 
 func StartMetricbeat(hostSpec, configPath, dataPath, logPath string) model.Action {
+	logtrace.LogWithFunctionName()
 	return &metricbeatStart{
 		hostSpec:   hostSpec,
 		configPath: configPath,
@@ -25,6 +28,7 @@ func StartMetricbeat(hostSpec, configPath, dataPath, logPath string) model.Actio
 }
 
 func (mbs *metricbeatStart) Execute(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	return run.GetModel().ForEachHost(mbs.hostSpec, 24, func(host *model.Host) error {
 		ssh := host.NewSshConfigFactory()
 

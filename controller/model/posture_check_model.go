@@ -18,12 +18,14 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type PostureCheck struct {
@@ -77,6 +79,7 @@ var postureCheckSubTypeMap = map[string]newPostureCheckSubType{
 }
 
 func newSubType(typeId string) PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	if factory, ok := postureCheckSubTypeMap[typeId]; ok {
 		return factory()
 	}
@@ -84,6 +87,7 @@ func newSubType(typeId string) PostureCheckSubType {
 }
 
 func (entity *PostureCheck) fillFrom(env Env, tx *bbolt.Tx, boltPostureCheck *db.PostureCheck) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltPostureCheck)
 	entity.Name = boltPostureCheck.Name
 	entity.TypeId = boltPostureCheck.TypeId
@@ -106,6 +110,7 @@ func (entity *PostureCheck) fillFrom(env Env, tx *bbolt.Tx, boltPostureCheck *db
 }
 
 func (entity *PostureCheck) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	boltEntity := &db.PostureCheck{
 		BaseExtEntity:  *boltz.NewExtEntity(entity.Id, entity.Tags),
 		Name:           entity.Name,
@@ -123,10 +128,12 @@ func (entity *PostureCheck) toBoltEntityForCreate(tx *bbolt.Tx, env Env) (*db.Po
 }
 
 func (entity *PostureCheck) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.PostureCheck, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }
 
 func (entity *PostureCheck) Evaluate(apiSessionId string, pd *PostureData) (bool, *PostureCheckFailure) {
+	logtrace.LogWithFunctionName()
 	if !entity.SubType.Evaluate(apiSessionId, pd) {
 		return false, &PostureCheckFailure{
 			PostureCheckId:            entity.Id,
@@ -140,15 +147,18 @@ func (entity *PostureCheck) Evaluate(apiSessionId string, pd *PostureData) (bool
 }
 
 func (entity *PostureCheck) TimeoutSeconds() int64 {
+	logtrace.LogWithFunctionName()
 	return entity.SubType.GetTimeoutSeconds()
 }
 
 func (entity *PostureCheck) TimeoutRemainingSeconds(apiSessionId string, pd *PostureData) int64 {
+	logtrace.LogWithFunctionName()
 	return entity.SubType.GetTimeoutRemainingSeconds(apiSessionId, pd)
 }
 
 // LastUpdatedAt returns the last time posture state changed for a specific posture check.
 // If the posture state does not report changes, nil is returned.
 func (entity *PostureCheck) LastUpdatedAt(apiSessionId string, pd *PostureData) *time.Time {
+	logtrace.LogWithFunctionName()
 	return entity.SubType.LastUpdatedAt(apiSessionId, pd)
 }

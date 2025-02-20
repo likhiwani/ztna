@@ -24,6 +24,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/ascode/importer"
 
 	"ztna-core/ztna/common/version"
@@ -62,6 +63,7 @@ type RootCmd struct {
 }
 
 func GetRootCommand() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return rootCommand.cobraCommand
 }
 
@@ -77,23 +79,27 @@ var rootCommand = RootCmd{
 // exitWithError will terminate execution with an error result
 // It prints the error to stderr and exits with a non-zero exit code
 func exitWithError(err error) {
+	logtrace.LogWithFunctionName()
 	fmt.Fprintf(os.Stderr, "\n%v\n", err)
 	os.Exit(1)
 }
 
 // Execute is ...
 func Execute() {
+	logtrace.LogWithFunctionName()
 	if err := rootCommand.cobraCommand.Execute(); err != nil {
 		exitWithError(err)
 	}
 }
 
 func init() {
+	logtrace.LogWithFunctionName()
 	cobra.OnInitialize(initConfig)
 	NewCmdRoot(os.Stdin, os.Stdout, os.Stderr, rootCommand.cobraCommand)
 }
 
 func NewCmdRoot(in io.Reader, out, err io.Writer, cmd *cobra.Command) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	goflag.CommandLine.VisitAll(func(goflag *goflag.Flag) {
 		switch goflag.Name {
 		// Skip things that are dragged in by our dependencies
@@ -202,6 +208,7 @@ func NewCmdRoot(in io.Reader, out, err io.Writer, cmd *cobra.Command) *cobra.Com
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	logtrace.LogWithFunctionName()
 	// Config file precedence: --config flag, ${HOME}/.ziti.yaml ${HOME}/.ziti/config
 	configFile := rootCommand.configFile
 	if configFile == "" {
@@ -232,6 +239,7 @@ func initConfig() {
 }
 
 func NewRootCommand(in io.Reader, out, err io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	//need to make new CMD every time because the flags are not thread safe...
 	ret := &cobra.Command{
 		Use:   "ziti",

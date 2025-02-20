@@ -19,13 +19,15 @@ package webapis
 import (
 	"encoding/json"
 	"fmt"
-	gosundheit "github.com/AppsFlyer/go-sundheit"
-	"github.com/openziti/xweb/v2"
-	"ztna-core/ztna/controller/env"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
 	"time"
+	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	gosundheit "github.com/AppsFlyer/go-sundheit"
+	"github.com/openziti/xweb/v2"
+	"github.com/sirupsen/logrus"
 )
 
 var _ xweb.ApiHandlerFactory = &ControllerHealthCheckApiFactory{}
@@ -36,10 +38,12 @@ type ControllerHealthCheckApiFactory struct {
 }
 
 func (factory ControllerHealthCheckApiFactory) Validate(config *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func NewControllerHealthCheckApiFactory(appEnv *env.AppEnv, healthChecker gosundheit.Health) *ControllerHealthCheckApiFactory {
+	logtrace.LogWithFunctionName()
 	return &ControllerHealthCheckApiFactory{
 		appEnv:        appEnv,
 		healthChecker: healthChecker,
@@ -47,10 +51,12 @@ func NewControllerHealthCheckApiFactory(appEnv *env.AppEnv, healthChecker gosund
 }
 
 func (factory ControllerHealthCheckApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ControllerHealthCheckApiBinding
 }
 
 func (factory ControllerHealthCheckApiFactory) New(_ *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	healthCheckApiHandler, err := NewControllerHealthCheckApiHandler(factory.healthChecker, factory.appEnv, options)
 
 	if err != nil {
@@ -62,6 +68,7 @@ func (factory ControllerHealthCheckApiFactory) New(_ *xweb.ServerConfig, options
 }
 
 func NewControllerHealthCheckApiHandler(healthChecker gosundheit.Health, appEnv *env.AppEnv, options map[interface{}]interface{}) (*ControllerHealthCheckApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	healthCheckApi := &ControllerHealthCheckApiHandler{
 		healthChecker: healthChecker,
 		appEnv:        appEnv,
@@ -79,22 +86,27 @@ type ControllerHealthCheckApiHandler struct {
 }
 
 func (self ControllerHealthCheckApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return ControllerHealthCheckApiBinding
 }
 
 func (self ControllerHealthCheckApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return self.options
 }
 
 func (self ControllerHealthCheckApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return "/health-checks"
 }
 
 func (self ControllerHealthCheckApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, self.RootPath())
 }
 
 func (self *ControllerHealthCheckApiHandler) ServeHTTP(w http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	output := map[string]interface{}{}
 	output["meta"] = map[string]interface{}{}
 
@@ -156,5 +168,6 @@ func (self *ControllerHealthCheckApiHandler) ServeHTTP(w http.ResponseWriter, re
 }
 
 func (self ControllerHealthCheckApiHandler) IsDefault() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }

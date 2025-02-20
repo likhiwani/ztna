@@ -18,15 +18,17 @@ package model
 
 import (
 	"fmt"
+	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/openziti/foundation/v2/errorz"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"go.etcd.io/bbolt"
-	"time"
 )
 
 type Enrollment struct {
@@ -44,11 +46,13 @@ type Enrollment struct {
 }
 
 func (entity *Enrollment) FillJwtInfo(env Env, subject string) error {
+	logtrace.LogWithFunctionName()
 	expiresAt := time.Now().Add(env.GetConfig().Edge.Enrollment.EdgeIdentity.Duration).UTC()
 	return entity.FillJwtInfoWithExpiresAt(env, subject, expiresAt)
 }
 
 func (entity *Enrollment) FillJwtInfoWithExpiresAt(env Env, subject string, expiresAt time.Time) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now().UTC()
 	expiresAt = expiresAt.UTC()
 
@@ -94,6 +98,7 @@ func (entity *Enrollment) FillJwtInfoWithExpiresAt(env Env, subject string, expi
 }
 
 func (entity *Enrollment) fillFrom(_ Env, _ *bbolt.Tx, boltEnrollment *db.Enrollment) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltEnrollment)
 	entity.Method = boltEnrollment.Method
 	entity.IdentityId = boltEnrollment.IdentityId
@@ -110,6 +115,7 @@ func (entity *Enrollment) fillFrom(_ Env, _ *bbolt.Tx, boltEnrollment *db.Enroll
 }
 
 func (entity *Enrollment) toBoltEntity(env Env) (*db.Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	if entity.Method == db.MethodEnrollOttCa {
 		if entity.CaId == nil || *entity.CaId == "" {
 			apiErr := errorz.NewNotFound()
@@ -146,9 +152,11 @@ func (entity *Enrollment) toBoltEntity(env Env) (*db.Enrollment, error) {
 }
 
 func (entity *Enrollment) toBoltEntityForCreate(_ *bbolt.Tx, env Env) (*db.Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(env)
 }
 
 func (entity *Enrollment) toBoltEntityForUpdate(_ *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Enrollment, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(env)
 }

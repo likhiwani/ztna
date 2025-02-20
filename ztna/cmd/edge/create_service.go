@@ -20,9 +20,11 @@ import (
 	"io"
 	"time"
 
-	"github.com/Jeffail/gabs"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
+
+	"github.com/Jeffail/gabs"
 	"github.com/spf13/cobra"
 )
 
@@ -37,6 +39,7 @@ type createServiceOptions struct {
 
 // newCreateServiceCmd creates the 'edge controller create service local' command for the given entity type
 func newCreateServiceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createServiceOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -73,6 +76,7 @@ func newCreateServiceCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateService implements the command to create a service
 func runCreateService(o *createServiceOptions) (err error) {
+	logtrace.LogWithFunctionName()
 	configs, err := mapNamesToIDs("configs", o.Options, false, o.configs...)
 	if err != nil {
 		return err

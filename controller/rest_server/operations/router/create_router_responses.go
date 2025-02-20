@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type CreateRouterCreated struct {
 
 // NewCreateRouterCreated creates CreateRouterCreated with default headers values
 func NewCreateRouterCreated() *CreateRouterCreated {
+    logtrace.LogWithFunctionName()
 
 	return &CreateRouterCreated{}
 }
 
 // WithPayload adds the payload to the create router created response
 func (o *CreateRouterCreated) WithPayload(payload *rest_model.CreateEnvelope) *CreateRouterCreated {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create router created response
 func (o *CreateRouterCreated) SetPayload(payload *rest_model.CreateEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateRouterCreated) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(201)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type CreateRouterBadRequest struct {
 
 // NewCreateRouterBadRequest creates CreateRouterBadRequest with default headers values
 func NewCreateRouterBadRequest() *CreateRouterBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &CreateRouterBadRequest{}
 }
 
 // WithPayload adds the payload to the create router bad request response
 func (o *CreateRouterBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *CreateRouterBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create router bad request response
 func (o *CreateRouterBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateRouterBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type CreateRouterUnauthorized struct {
 
 // NewCreateRouterUnauthorized creates CreateRouterUnauthorized with default headers values
 func NewCreateRouterUnauthorized() *CreateRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &CreateRouterUnauthorized{}
 }
 
 // WithPayload adds the payload to the create router unauthorized response
 func (o *CreateRouterUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *CreateRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create router unauthorized response
 func (o *CreateRouterUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateRouterUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type CreateRouterTooManyRequests struct {
 
 // NewCreateRouterTooManyRequests creates CreateRouterTooManyRequests with default headers values
 func NewCreateRouterTooManyRequests() *CreateRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &CreateRouterTooManyRequests{}
 }
 
 // WithPayload adds the payload to the create router too many requests response
 func (o *CreateRouterTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *CreateRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the create router too many requests response
 func (o *CreateRouterTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *CreateRouterTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

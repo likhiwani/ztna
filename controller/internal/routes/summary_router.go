@@ -22,11 +22,13 @@ import (
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewSummaryRouter()
 	env.AddRouter(r)
 }
@@ -36,12 +38,14 @@ type SummaryRouter struct {
 }
 
 func NewSummaryRouter() *SummaryRouter {
+	logtrace.LogWithFunctionName()
 	return &SummaryRouter{
 		BasePath: "/summary",
 	}
 }
 
 func (r *SummaryRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.InformationalListSummaryHandler = informational.ListSummaryHandlerFunc(func(params informational.ListSummaryParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.List, params.HTTPRequest, "", "", permissions.IsAdmin())
 	})
@@ -49,6 +53,7 @@ func (r *SummaryRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *SummaryRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	data, err := ae.GetStores().GetEntityCounts(ae.GetDb())
 	if err != nil {
 		rc.RespondWithError(err)

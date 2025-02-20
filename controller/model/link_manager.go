@@ -17,16 +17,18 @@
 package model
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/info"
-	"github.com/openziti/storage/objectz"
-	"ztna-core/ztna/common/datastructures"
-	"ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/idgen"
-	"github.com/orcaman/concurrent-map/v2"
 	"math"
 	"sync"
 	"time"
+	"ztna-core/ztna/common/datastructures"
+	"ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/info"
+	"github.com/openziti/storage/objectz"
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 type LinkManager struct {
@@ -38,6 +40,7 @@ type LinkManager struct {
 }
 
 func NewLinkManager(env Env) *LinkManager {
+	logtrace.LogWithFunctionName()
 	initialLatency := config.DefaultOptionsInitialLinkLatency
 	if env != nil {
 		initialLatency = env.GetConfig().Network.InitialLinkLatency
@@ -97,10 +100,12 @@ func NewLinkManager(env Env) *LinkManager {
 }
 
 func (self *LinkManager) GetStore() *objectz.ObjectStore[*Link] {
+	logtrace.LogWithFunctionName()
 	return self.store
 }
 
 func (self *LinkManager) BuildRouterLinks(router *Router) {
+	logtrace.LogWithFunctionName()
 	self.linkTable.links.IterCb(func(_ string, link *Link) {
 		if link.DstId == router.Id {
 			router.routerLinks.Add(link, link.Src.Id)
@@ -110,6 +115,7 @@ func (self *LinkManager) BuildRouterLinks(router *Router) {
 }
 
 func (self *LinkManager) Add(link *Link) {
+	logtrace.LogWithFunctionName()
 	self.linkTable.add(link)
 	link.Src.routerLinks.Add(link, link.DstId)
 	if dest := link.GetDest(); dest != nil {
@@ -118,10 +124,12 @@ func (self *LinkManager) Add(link *Link) {
 }
 
 func (self *LinkManager) has(link *Link) bool {
+	logtrace.LogWithFunctionName()
 	return self.linkTable.has(link)
 }
 
 func (self *LinkManager) ScanForDeadLinks() {
+	logtrace.LogWithFunctionName()
 	var toRemove []*Link
 	self.linkTable.links.IterCb(func(_ string, link *Link) {
 		if !link.Src.Connected.Load() {
@@ -135,6 +143,7 @@ func (self *LinkManager) ScanForDeadLinks() {
 }
 
 func (self *LinkManager) RouterReportedLink(linkId string, iteration uint32, linkProtocol, dialAddress string, src, dst *Router, dstId string) (*Link, bool) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -166,14 +175,17 @@ func (self *LinkManager) RouterReportedLink(linkId string, iteration uint32, lin
 }
 
 func (self *LinkManager) Get(linkId string) (*Link, bool) {
+	logtrace.LogWithFunctionName()
 	return self.linkTable.get(linkId)
 }
 
 func (self *LinkManager) All() []*Link {
+	logtrace.LogWithFunctionName()
 	return self.linkTable.all()
 }
 
 func (self *LinkManager) GetLinkMap() map[string]*Link {
+	logtrace.LogWithFunctionName()
 	linkMap := make(map[string]*Link)
 	self.linkTable.links.IterCb(func(key string, link *Link) {
 		linkMap[key] = link
@@ -182,6 +194,7 @@ func (self *LinkManager) GetLinkMap() map[string]*Link {
 }
 
 func (self *LinkManager) Remove(link *Link) {
+	logtrace.LogWithFunctionName()
 	if self.linkTable.remove(link) {
 		link.Src.routerLinks.Remove(link, link.DstId)
 		if dest := link.GetDest(); dest != nil {
@@ -191,6 +204,7 @@ func (self *LinkManager) Remove(link *Link) {
 }
 
 func (self *LinkManager) ConnectedNeighborsOfRouter(router *Router) []*Router {
+	logtrace.LogWithFunctionName()
 	neighborMap := make(map[string]*Router)
 
 	links := router.routerLinks.GetLinks()
@@ -214,6 +228,7 @@ func (self *LinkManager) ConnectedNeighborsOfRouter(router *Router) []*Router {
 }
 
 func (self *LinkManager) LeastExpensiveLink(a, b *Router) (*Link, bool) {
+	logtrace.LogWithFunctionName()
 	var selected *Link
 	var cost int64 = math.MaxInt64
 
@@ -244,6 +259,7 @@ func (self *LinkManager) LeastExpensiveLink(a, b *Router) (*Link, bool) {
 }
 
 func (self *LinkManager) MissingLinks(routers []*Router, pendingTimeout time.Duration) ([]*Link, error) {
+	logtrace.LogWithFunctionName()
 	// When there's a flood of router connects at startup we can see the same link
 	// as missing multiple times as the new link will be marked as PENDING until it's
 	// connected. Give ourselves a little window to make the connection before we
@@ -276,6 +292,7 @@ func (self *LinkManager) MissingLinks(routers []*Router, pendingTimeout time.Dur
 }
 
 func (self *LinkManager) ClearExpiredPending(pendingTimeout time.Duration) {
+	logtrace.LogWithFunctionName()
 	pendingLimit := info.NowInMilliseconds() - pendingTimeout.Milliseconds()
 
 	toRemove := self.linkTable.matching(func(link *Link) bool {
@@ -289,10 +306,12 @@ func (self *LinkManager) ClearExpiredPending(pendingTimeout time.Duration) {
 }
 
 func (self *LinkManager) hasLink(a, b *Router, linkProtocol string, pendingLimit int64) bool {
+	logtrace.LogWithFunctionName()
 	return self.hasDirectedLink(a, b, linkProtocol, pendingLimit) || self.hasDirectedLink(b, a, linkProtocol, pendingLimit)
 }
 
 func (self *LinkManager) hasDirectedLink(a, b *Router, linkProtocol string, pendingLimit int64) bool {
+	logtrace.LogWithFunctionName()
 	links := a.routerLinks.GetLinks()
 	for _, link := range links {
 		state := link.CurrentState()
@@ -306,6 +325,7 @@ func (self *LinkManager) hasDirectedLink(a, b *Router, linkProtocol string, pend
 }
 
 func (self *LinkManager) LinksInMode(mode LinkMode) []*Link {
+	logtrace.LogWithFunctionName()
 	return self.linkTable.allInMode(mode)
 }
 
@@ -318,18 +338,22 @@ type linkTable struct {
 }
 
 func newLinkTable() *linkTable {
+	logtrace.LogWithFunctionName()
 	return &linkTable{links: cmap.New[*Link]()}
 }
 
 func (lt *linkTable) add(link *Link) {
+	logtrace.LogWithFunctionName()
 	lt.links.Set(link.Id, link)
 }
 
 func (lt *linkTable) get(linkId string) (*Link, bool) {
+	logtrace.LogWithFunctionName()
 	return lt.links.Get(linkId)
 }
 
 func (lt *linkTable) has(link *Link) bool {
+	logtrace.LogWithFunctionName()
 	if _, found := lt.links.Get(link.Id); found {
 		return true
 	}
@@ -337,6 +361,7 @@ func (lt *linkTable) has(link *Link) bool {
 }
 
 func (lt *linkTable) all() []*Link {
+	logtrace.LogWithFunctionName()
 	links := make([]*Link, 0, lt.links.Count())
 	lt.links.IterCb(func(_ string, link *Link) {
 		links = append(links, link)
@@ -345,6 +370,7 @@ func (lt *linkTable) all() []*Link {
 }
 
 func (lt *linkTable) allInMode(mode LinkMode) []*Link {
+	logtrace.LogWithFunctionName()
 	links := make([]*Link, 0)
 	lt.links.IterCb(func(_ string, link *Link) {
 		if link.CurrentState().Mode == mode {
@@ -355,6 +381,7 @@ func (lt *linkTable) allInMode(mode LinkMode) []*Link {
 }
 
 func (lt *linkTable) matching(f func(*Link) bool) []*Link {
+	logtrace.LogWithFunctionName()
 	var links []*Link
 	lt.links.IterCb(func(key string, link *Link) {
 		if f(link) {
@@ -365,6 +392,7 @@ func (lt *linkTable) matching(f func(*Link) bool) []*Link {
 }
 
 func (lt *linkTable) remove(link *Link) bool {
+	logtrace.LogWithFunctionName()
 	return lt.links.RemoveCb(link.Id, func(key string, v *Link, exists bool) bool {
 		return v != nil && v.Iteration == link.Iteration
 	})

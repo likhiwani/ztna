@@ -21,14 +21,17 @@ package tests
 
 import (
 	"encoding/json"
+	"net/http"
+	"testing"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/Jeffail/gabs"
 	"gopkg.in/resty.v1"
 	"gopkg.in/yaml.v2"
-	"net/http"
-	"testing"
 )
 
 func Test_Specs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

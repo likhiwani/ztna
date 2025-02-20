@@ -23,12 +23,14 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewConfigRouter()
 	env.AddRouter(r)
 }
@@ -38,12 +40,14 @@ type ConfigRouter struct {
 }
 
 func NewConfigRouter() *ConfigRouter {
+	logtrace.LogWithFunctionName()
 	return &ConfigRouter{
 		BasePath: "/" + EntityNameConfig,
 	}
 }
 
 func (r *ConfigRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.ConfigDeleteConfigHandler = config.DeleteConfigHandlerFunc(func(params config.DeleteConfigParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(r.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -75,14 +79,17 @@ func (r *ConfigRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *ConfigRouter) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.Config](ae, rc, ae.Managers.Config, MapConfigToRestEntity)
 }
 
 func (r *ConfigRouter) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.Config](ae, rc, ae.Managers.Config, MapConfigToRestEntity)
 }
 
 func (r *ConfigRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params config.CreateConfigParams) {
+	logtrace.LogWithFunctionName()
 	if params.Config.Data == nil {
 		ae.ManagementApi.ServeErrorFor("")(rc.ResponseWriter, rc.Request, errors.Required("data", "body", nil))
 		return
@@ -98,10 +105,12 @@ func (r *ConfigRouter) Create(ae *env.AppEnv, rc *response.RequestContext, param
 }
 
 func (r *ConfigRouter) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.Config)
 }
 
 func (r *ConfigRouter) Update(ae *env.AppEnv, rc *response.RequestContext, params config.UpdateConfigParams) {
+	logtrace.LogWithFunctionName()
 	if params.Config.Data == nil {
 		ae.ManagementApi.ServeErrorFor("")(rc.ResponseWriter, rc.Request, errors.Required("data", "body", nil))
 		return
@@ -119,6 +128,7 @@ func (r *ConfigRouter) Update(ae *env.AppEnv, rc *response.RequestContext, param
 }
 
 func (r *ConfigRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params config.PatchConfigParams) {
+	logtrace.LogWithFunctionName()
 	Patch(rc, func(id string, fields fields.UpdatedFields) error {
 		model, err := MapPatchConfigToModel(params.ID, params.Config)
 
@@ -130,5 +140,6 @@ func (r *ConfigRouter) Patch(ae *env.AppEnv, rc *response.RequestContext, params
 }
 
 func (r *ConfigRouter) ListServices(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListAssociationWithHandler[*model.Config, *model.ServiceDetail](ae, rc, ae.Managers.Config, ae.Managers.EdgeService.GetDetailLister(), MapServiceToRestEntity)
 }

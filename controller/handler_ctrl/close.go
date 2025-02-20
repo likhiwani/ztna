@@ -17,10 +17,12 @@
 package handler_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 )
 
 type closeHandler struct {
@@ -29,10 +31,12 @@ type closeHandler struct {
 }
 
 func newCloseHandler(r *model.Router, network *network.Network) *closeHandler {
+	logtrace.LogWithFunctionName()
 	return &closeHandler{r: r, network: network}
 }
 
 func (h *closeHandler) HandleClose(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("routerId", h.r.Id).Warn("disconnected")
 	h.network.DisconnectRouter(h.r)
 }
@@ -42,10 +46,12 @@ type xctrlCloseHandler struct {
 }
 
 func newXctrlCloseHandler(done chan struct{}) channel.CloseHandler {
+	logtrace.LogWithFunctionName()
 	return &xctrlCloseHandler{done: done}
 }
 
 func (h *xctrlCloseHandler) HandleClose(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.ContextLogger(ch.Label()).Info("closing Xctrl instances")
 	close(h.done)
 }

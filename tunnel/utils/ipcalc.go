@@ -20,9 +20,11 @@ import (
 	"fmt"
 	"net"
 	"net/netip"
+	"ztna-core/ztna/logtrace"
 )
 
 func GetCidr(ipOrCidr string) (*net.IPNet, error) {
+	logtrace.LogWithFunctionName()
 	ip, err := netip.ParseAddr(ipOrCidr)
 	if err == nil {
 		return &net.IPNet{

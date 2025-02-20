@@ -18,14 +18,16 @@ package handler_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"math"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
-	"math"
 )
 
 type createTerminatorHandler struct {
@@ -33,6 +35,7 @@ type createTerminatorHandler struct {
 }
 
 func newCreateTerminatorHandler(network *network.Network, router *model.Router) *createTerminatorHandler {
+	logtrace.LogWithFunctionName()
 	return &createTerminatorHandler{
 		baseHandler: baseHandler{
 			network: network,
@@ -42,10 +45,12 @@ func newCreateTerminatorHandler(network *network.Network, router *model.Router) 
 }
 
 func (self *createTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_CreateTerminatorRequestType)
 }
 
 func (self *createTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label())
 	request := &ctrl_pb.CreateTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
@@ -56,6 +61,7 @@ func (self *createTerminatorHandler) HandleReceive(msg *channel.Message, ch chan
 }
 
 func (self *createTerminatorHandler) handleCreateTerminator(msg *channel.Message, ch channel.Channel, request *ctrl_pb.CreateTerminatorRequest) {
+	logtrace.LogWithFunctionName()
 	if request.Cost > math.MaxUint16 {
 		handler_common.SendFailure(msg, ch, fmt.Sprintf("invalid cost %v. cost must be between 0 and %v inclusive", request.Cost, math.MaxUint16))
 		return

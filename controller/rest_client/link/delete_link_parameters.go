@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDeleteLinkParams() *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDeleteLinkParams() *DeleteLinkParams {
 // NewDeleteLinkParamsWithTimeout creates a new DeleteLinkParams object
 // with the ability to set a timeout on a request.
 func NewDeleteLinkParamsWithTimeout(timeout time.Duration) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDeleteLinkParamsWithTimeout(timeout time.Duration) *DeleteLinkParams {
 // NewDeleteLinkParamsWithContext creates a new DeleteLinkParams object
 // with the ability to set a context for a request.
 func NewDeleteLinkParamsWithContext(ctx context.Context) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDeleteLinkParamsWithContext(ctx context.Context) *DeleteLinkParams {
 // NewDeleteLinkParamsWithHTTPClient creates a new DeleteLinkParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDeleteLinkParamsWithHTTPClient(client *http.Client) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	return &DeleteLinkParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DeleteLinkParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteLinkParams) WithDefaults() *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DeleteLinkParams) WithDefaults() *DeleteLinkParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DeleteLinkParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the delete link params
 func (o *DeleteLinkParams) WithTimeout(timeout time.Duration) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the delete link params
 func (o *DeleteLinkParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the delete link params
 func (o *DeleteLinkParams) WithContext(ctx context.Context) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the delete link params
 func (o *DeleteLinkParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the delete link params
 func (o *DeleteLinkParams) WithHTTPClient(client *http.Client) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the delete link params
 func (o *DeleteLinkParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the delete link params
 func (o *DeleteLinkParams) WithID(id string) *DeleteLinkParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the delete link params
 func (o *DeleteLinkParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DeleteLinkParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

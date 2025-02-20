@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"time"
@@ -39,6 +40,7 @@ type validateIdentityConnectionStatusesAction struct {
 }
 
 func NewValidateIdentityConnectionStatusesCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := validateIdentityConnectionStatusesAction{
 		Options: api.Options{
 			CommonOptions: p(),
@@ -59,6 +61,7 @@ func NewValidateIdentityConnectionStatusesCmd(p common.OptionsProvider) *cobra.C
 }
 
 func (self *validateIdentityConnectionStatusesAction) validateRouterDataModel(_ *cobra.Command, args []string) error {
+	logtrace.LogWithFunctionName()
 	closeNotify := make(chan struct{})
 	self.eventNotify = make(chan *mgmt_pb.RouterIdentityConnectionStatusesDetails, 1)
 
@@ -139,6 +142,7 @@ func (self *validateIdentityConnectionStatusesAction) validateRouterDataModel(_ 
 }
 
 func (self *validateIdentityConnectionStatusesAction) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	detail := &mgmt_pb.RouterIdentityConnectionStatusesDetails{}
 	if err := proto.Unmarshal(msg.Body, detail); err != nil {
 		pfxlog.Logger().WithError(err).Error("unable to unmarshal router data model details")

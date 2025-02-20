@@ -1,8 +1,12 @@
 package env
 
-import "time"
+import (
+	"time"
+	"ztna-core/ztna/logtrace"
+)
 
 func init() {
+	logtrace.LogWithFunctionName()
 	IntervalSize = time.Minute
 }
 

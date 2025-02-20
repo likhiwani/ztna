@@ -30,6 +30,7 @@ package inspect
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new inspect API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -66,6 +68,7 @@ type ClientService interface {
 
 */
 func (a *Client) Inspect(params *InspectParams, opts ...ClientOption) (*InspectOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewInspectParams()
@@ -102,5 +105,6 @@ func (a *Client) Inspect(params *InspectParams, opts ...ClientOption) (*InspectO
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

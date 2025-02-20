@@ -19,9 +19,11 @@ package xgress_transport
 import (
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/identity"
 	"github.com/openziti/transport/v2"
 )
@@ -35,6 +37,7 @@ type listener struct {
 }
 
 func newListener(id *identity.TokenId, ctrl env.NetworkControllers, options *xgress.Options, tcfg transport.Configuration) xgress.Listener {
+	logtrace.LogWithFunctionName()
 	return &listener{
 		id:          id,
 		ctrl:        ctrl,
@@ -45,6 +48,7 @@ func newListener(id *identity.TokenId, ctrl env.NetworkControllers, options *xgr
 }
 
 func (listener *listener) Listen(address string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	if address == "" {
 		return errors.New("address must be specified for transport listeners")
 	}
@@ -62,10 +66,12 @@ func (listener *listener) Listen(address string, bindHandler xgress.BindHandler)
 }
 
 func (listener *listener) Close() error {
+	logtrace.LogWithFunctionName()
 	return listener.closeHelper.Close()
 }
 
 func (listener *listener) handleConnect(peer transport.Conn, bindHandler xgress.BindHandler) {
+	logtrace.LogWithFunctionName()
 	conn := &transportXgressConn{Conn: peer}
 	log := pfxlog.ContextLogger(conn.LogContext())
 

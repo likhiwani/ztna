@@ -1,11 +1,13 @@
 package importer
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func Test_InputArgs(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	importer := Importer{}
 

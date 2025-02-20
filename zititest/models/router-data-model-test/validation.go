@@ -29,6 +29,7 @@ import (
 
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/pb/mgmt_pb"
+	logtrace "ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zitirest"
 	"ztna-core/ztna/zititest/zitilab/chaos"
 	"ztna-core/ztna/zititest/zitilab/models"
@@ -53,6 +54,7 @@ type CtrlClients struct {
 }
 
 func (self *CtrlClients) init(run model.Run, selector string) error {
+	logtrace.LogWithFunctionName()
 	self.ctrlMap = map[string]*zitirest.Clients{}
 	ctrls := run.GetModel().SelectComponents(selector)
 	resultC := make(chan struct {
@@ -88,10 +90,12 @@ func (self *CtrlClients) init(run model.Run, selector string) error {
 }
 
 func (self *CtrlClients) getRandomCtrl() *zitirest.Clients {
+	logtrace.LogWithFunctionName()
 	return self.ctrls[rand.Intn(len(self.ctrls))]
 }
 
 func (self *CtrlClients) getCtrl(id string) *zitirest.Clients {
+	logtrace.LogWithFunctionName()
 	return self.ctrlMap[id]
 }
 
@@ -99,6 +103,7 @@ func (self *CtrlClients) getCtrl(id string) *zitirest.Clients {
 var scenarioCounter = rand.Intn(7)
 
 func sowChaos(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ctrls := &CtrlClients{}
 	if err := ctrls.init(run, ".ctrl"); err != nil {
 		return err
@@ -173,6 +178,7 @@ func sowChaos(run model.Run) error {
 }
 
 func getRestartTasks(run model.Run, _ *CtrlClients) ([]parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	var controllers []*model.Component
 	var err error
 
@@ -210,6 +216,7 @@ func getRestartTasks(run model.Run, _ *CtrlClients) ([]parallel.LabeledTask, err
 }
 
 func getRoles(n int) []string {
+	logtrace.LogWithFunctionName()
 	roles := getRoleAttributes(n)
 	for i, role := range roles {
 		roles[i] = "#" + role
@@ -218,6 +225,7 @@ func getRoles(n int) []string {
 }
 
 func getRoleAttributes(n int) []string {
+	logtrace.LogWithFunctionName()
 	attr := map[string]struct{}{}
 	count := rand.Intn(n) + 1
 	for i := 0; i < count; i++ {
@@ -232,16 +240,19 @@ func getRoleAttributes(n int) []string {
 }
 
 func getRoleAttributesAsAttrPtr(n int) *rest_model.Attributes {
+	logtrace.LogWithFunctionName()
 	result := getRoleAttributes(n)
 	return (*rest_model.Attributes)(&result)
 }
 
 func newId() *string {
+	logtrace.LogWithFunctionName()
 	id := uuid.NewString()
 	return &id
 }
 
 func newBoolPtr() *bool {
+	logtrace.LogWithFunctionName()
 	b := rand.Int()%2 == 0
 	return &b
 }
@@ -266,6 +277,7 @@ type taskGenerationContext struct {
 }
 
 func (self *taskGenerationContext) loadEntities() {
+	logtrace.LogWithFunctionName()
 	self.configTypes, self.err = models.ListConfigTypes(self.ctrls.getRandomCtrl(), `not (name contains ".v1" or id = "host.v2") limit none`, 15*time.Second)
 	if self.err != nil {
 		return
@@ -286,6 +298,7 @@ func (self *taskGenerationContext) loadEntities() {
 }
 
 func (self *taskGenerationContext) getConfigTypeId() string {
+	logtrace.LogWithFunctionName()
 	if len(self.configTypes)-len(self.configTypesDeleted) < 1 {
 		return ""
 	}
@@ -300,6 +313,7 @@ func (self *taskGenerationContext) getConfigTypeId() string {
 }
 
 func (self *taskGenerationContext) getTwoValidConfigs() []string {
+	logtrace.LogWithFunctionName()
 	if len(self.configs)-len(self.configsDeleted) < 1 {
 		return nil
 	}
@@ -328,6 +342,7 @@ func (self *taskGenerationContext) getTwoValidConfigs() []string {
 }
 
 func (self *taskGenerationContext) generateConfigTypeTasks() {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -358,6 +373,7 @@ func (self *taskGenerationContext) generateConfigTypeTasks() {
 }
 
 func (self *taskGenerationContext) generateConfigTasks() {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -415,6 +431,7 @@ func (self *taskGenerationContext) generateConfigTasks() {
 }
 
 func (self *taskGenerationContext) generatePostureCheckTasks() {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -472,6 +489,7 @@ func (self *taskGenerationContext) generatePostureCheckTasks() {
 }
 
 func (self *taskGenerationContext) generateServiceTasks() {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return
 	}
@@ -517,6 +535,7 @@ func (self *taskGenerationContext) generateServiceTasks() {
 }
 
 func (self *taskGenerationContext) getResults() ([]parallel.LabeledTask, []parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	if self.err != nil {
 		return nil, nil, self.err
 	}
@@ -527,6 +546,7 @@ func (self *taskGenerationContext) getResults() ([]parallel.LabeledTask, []paral
 }
 
 func getServiceAndConfigChaosTasks(_ model.Run, ctrls *CtrlClients) ([]parallel.LabeledTask, []parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	ctx := &taskGenerationContext{
 		ctrls:              ctrls,
 		configTypesDeleted: map[string]struct{}{},
@@ -544,6 +564,7 @@ func getServiceAndConfigChaosTasks(_ model.Run, ctrls *CtrlClients) ([]parallel.
 }
 
 func getIdentityChaosTasks(r model.Run, ctrls *CtrlClients) ([]parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	tunnelerCount := len(r.GetModel().SelectComponents("tunneler"))
 	entities, err := models.ListIdentities(ctrls.getRandomCtrl(), "not isAdmin limit none", 15*time.Second)
 	if err != nil {
@@ -584,6 +605,7 @@ func getIdentityChaosTasks(r model.Run, ctrls *CtrlClients) ([]parallel.LabeledT
 }
 
 func getPostureTasks(r model.Run, ctrls *CtrlClients) ([]parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	entities, err := models.ListPostureChecks(ctrls.getRandomCtrl(), "limit none", 15*time.Second)
 	if err != nil {
 		return nil, err
@@ -641,6 +663,7 @@ func getPostureTasks(r model.Run, ctrls *CtrlClients) ([]parallel.LabeledTask, e
 }
 
 func getRandomSemantic() rest_model.Semantic {
+	logtrace.LogWithFunctionName()
 	if rand.Int()%2 == 0 {
 		return rest_model.SemanticAnyOf
 	}
@@ -648,10 +671,12 @@ func getRandomSemantic() rest_model.Semantic {
 }
 
 func getRandomOperatingSystems() []*rest_model.OperatingSystem {
+	logtrace.LogWithFunctionName()
 	return getRandom(1, 3, getRandomOperatingSystem)
 }
 
 func getRandomOperatingSystem() *rest_model.OperatingSystem {
+	logtrace.LogWithFunctionName()
 	return &rest_model.OperatingSystem{
 		Type:     ptrutil.Ptr(getRandomOsType()),
 		Versions: getRandom(1, 3, getRandomVersion),
@@ -659,14 +684,17 @@ func getRandomOperatingSystem() *rest_model.OperatingSystem {
 }
 
 func getRandomVersion() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%d.%d.%d", rand.Intn(100), rand.Intn(100), rand.Intn(100))
 }
 
 func getRandomProcessMultis() []*rest_model.ProcessMulti {
+	logtrace.LogWithFunctionName()
 	return getRandom(1, 3, getRandomProcessMulti)
 }
 
 func getRandomProcessMulti() *rest_model.ProcessMulti {
+	logtrace.LogWithFunctionName()
 	return &rest_model.ProcessMulti{
 		Hashes:             []string{uuid.NewString(), uuid.NewString()},
 		OsType:             ptrutil.Ptr(getRandomOsType()),
@@ -676,6 +704,7 @@ func getRandomProcessMulti() *rest_model.ProcessMulti {
 }
 
 func getRandomProcess() *rest_model.Process {
+	logtrace.LogWithFunctionName()
 	return &rest_model.Process{
 		Hashes:            []string{uuid.NewString(), uuid.NewString()},
 		OsType:            ptrutil.Ptr(getRandomOsType()),
@@ -685,6 +714,7 @@ func getRandomProcess() *rest_model.Process {
 }
 
 func getRandom[T any](min, max int, f func() T) []T {
+	logtrace.LogWithFunctionName()
 	var result []T
 	count := min
 	if max > min {
@@ -706,10 +736,12 @@ var osTypes = []rest_model.OsType{
 }
 
 func getRandomOsType() rest_model.OsType {
+	logtrace.LogWithFunctionName()
 	return osTypes[rand.Intn(len(osTypes))]
 }
 
 func createNewPostureCheck(ctrl *zitirest.Clients) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	var create rest_model.PostureCheckCreate
 
 	switch rand.Intn(6) {
@@ -756,6 +788,7 @@ func createNewPostureCheck(ctrl *zitirest.Clients) parallel.LabeledTask {
 }
 
 func getServicePolicyChaosTasks(_ model.Run, ctrls *CtrlClients) ([]parallel.LabeledTask, error) {
+	logtrace.LogWithFunctionName()
 	entities, err := models.ListServicePolicies(ctrls.getRandomCtrl(), "limit none", 15*time.Second)
 	if err != nil {
 		return nil, err
@@ -789,6 +822,7 @@ func getServicePolicyChaosTasks(_ model.Run, ctrls *CtrlClients) ([]parallel.Lab
 }
 
 func createNewService(ctrl *zitirest.Clients, configs []string) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	return parallel.TaskWithLabel("create.service", "create new service", func() error {
 		svc := &rest_model.ServiceCreate{
 			Configs:            configs,
@@ -802,6 +836,7 @@ func createNewService(ctrl *zitirest.Clients, configs []string) parallel.Labeled
 }
 
 func createNewConfigType(ctrl *zitirest.Clients) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	return parallel.TaskWithLabel("create.config-type", "create new config type", func() error {
 		entity := &rest_model.ConfigTypeCreate{
 			Name: newId(),
@@ -840,6 +875,7 @@ func createNewConfigType(ctrl *zitirest.Clients) parallel.LabeledTask {
 }
 
 func createNewConfig(ctrl *zitirest.Clients, configTypeId string) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	return parallel.TaskWithLabel("create.config", "create new config", func() error {
 		entity := &rest_model.ConfigCreate{
 			Name:         newId(),
@@ -860,6 +896,7 @@ func createNewConfig(ctrl *zitirest.Clients, configTypeId string) parallel.Label
 }
 
 func createNewIdentity(ctrl *zitirest.Clients) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	isAdmin := false
 	identityType := rest_model.IdentityTypeDefault
 	return parallel.TaskWithLabel("create.identity", "create new identity", func() error {
@@ -879,6 +916,7 @@ func createNewIdentity(ctrl *zitirest.Clients) parallel.LabeledTask {
 }
 
 func createNewServicePolicy(ctrl *zitirest.Clients) parallel.LabeledTask {
+	logtrace.LogWithFunctionName()
 	return parallel.TaskWithLabel("create.service-policy", "create new service policy", func() error {
 		policyType := rest_model.DialBindDial
 		if rand.Int()%2 == 0 {
@@ -897,6 +935,7 @@ func createNewServicePolicy(ctrl *zitirest.Clients) parallel.LabeledTask {
 }
 
 func validateRouterDataModel(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ctrls := run.GetModel().SelectComponents(".ctrl")
 	errC := make(chan error, len(ctrls))
 	deadline := time.Now().Add(15 * time.Minute)
@@ -916,10 +955,12 @@ func validateRouterDataModel(run model.Run) error {
 }
 
 func validateRouterDataModelForCtrlWithChan(run model.Run, c *model.Component, deadline time.Time, errC chan<- error) {
+	logtrace.LogWithFunctionName()
 	errC <- validateRouterDataModelForCtrl(run, c, deadline)
 }
 
 func validateRouterDataModelForCtrl(run model.Run, c *model.Component, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	clients, err := chaos.EnsureLoggedIntoCtrl(run, c, time.Minute)
 	if err != nil {
 		return err
@@ -950,6 +991,7 @@ func validateRouterDataModelForCtrl(run model.Run, c *model.Component, deadline 
 }
 
 func validateRouterDataModelForCtrlOnce(id string, clients *zitirest.Clients) (int, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("ctrl", id)
 
 	closeNotify := make(chan struct{})

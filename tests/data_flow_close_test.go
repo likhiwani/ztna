@@ -22,14 +22,16 @@ package tests
 import (
 	"errors"
 	"fmt"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/ztna/common/eid"
 	"io"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
 )
 
 func Test_ServerConnClosePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -94,6 +96,7 @@ func Test_ServerConnClosePropagation(t *testing.T) {
 }
 
 func Test_ServerContextClosePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -162,6 +165,7 @@ func Test_ServerContextClosePropagation(t *testing.T) {
 
 // closing the listener should _not_ close open connections
 func Test_ServerCloseListenerPropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -222,6 +226,7 @@ func Test_ServerCloseListenerPropagation(t *testing.T) {
 }
 
 func Test_ClientConnClosePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -286,6 +291,7 @@ func Test_ClientConnClosePropagation(t *testing.T) {
 }
 
 func Test_ClientContextClosePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -351,6 +357,7 @@ func Test_ClientContextClosePropagation(t *testing.T) {
 }
 
 func Test_ServerConnCloseWritePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -421,6 +428,7 @@ func Test_ServerConnCloseWritePropagation(t *testing.T) {
 }
 
 func Test_ClientConnCloseWritePropagation(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

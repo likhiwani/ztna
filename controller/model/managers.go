@@ -24,6 +24,8 @@ import (
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/ioc"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"google.golang.org/protobuf/proto"
 )
 
@@ -75,12 +77,14 @@ type Managers struct {
 }
 
 func NewManagers() *Managers {
+	logtrace.LogWithFunctionName()
 	return &Managers{
 		Registry: ioc.NewRegistry(),
 	}
 }
 
 func (managers *Managers) Init(env Env) *Managers {
+	logtrace.LogWithFunctionName()
 	managers.Dispatcher = env.GetCommandDispatcher()
 	managers.Circuit = NewCircuitController()
 	managers.Command = newCommandManager(env, managers.Registry)
@@ -141,6 +145,7 @@ type decodableCommand[T any, M any] interface {
 // We only have both types specified so that we can enforce that each is a pointer type. If didn't
 // enforce that the instances were pointer types, we couldn't use new to instantiate new instances.
 func RegisterCommand[MT any, CT any, M CommandMsg[MT], C decodableCommand[CT, M]](env Env, _ C, _ M) {
+	logtrace.LogWithFunctionName()
 	decoder := func(commandType int32, data []byte) (command.Command, error) {
 		var msg M = new(MT)
 		if err := proto.Unmarshal(data, msg); err != nil {
@@ -161,6 +166,7 @@ func RegisterCommand[MT any, CT any, M CommandMsg[MT], C decodableCommand[CT, M]
 type createDecoderF func(cmd *cmd_pb.CreateEntityCommand) (command.Command, error)
 
 func RegisterCreateDecoder[T models.Entity](env Env, creator command.EntityCreator[T]) {
+	logtrace.LogWithFunctionName()
 	entityType := creator.GetEntityTypeId()
 	env.GetManagers().Registry.RegisterSingleton(entityType+CreateDecoder, createDecoderF(func(cmd *cmd_pb.CreateEntityCommand) (command.Command, error) {
 		entity, err := creator.Unmarshall(cmd.EntityData)
@@ -179,6 +185,7 @@ func RegisterCreateDecoder[T models.Entity](env Env, creator command.EntityCreat
 type updateDecoderF func(cmd *cmd_pb.UpdateEntityCommand) (command.Command, error)
 
 func RegisterUpdateDecoder[T models.Entity](env Env, updater command.EntityUpdater[T]) {
+	logtrace.LogWithFunctionName()
 	entityType := updater.GetEntityTypeId()
 	env.GetManagers().Registry.RegisterSingleton(entityType+UpdateDecoder, updateDecoderF(func(cmd *cmd_pb.UpdateEntityCommand) (command.Command, error) {
 		entity, err := updater.Unmarshall(cmd.EntityData)
@@ -198,6 +205,7 @@ func RegisterUpdateDecoder[T models.Entity](env Env, updater command.EntityUpdat
 type deleteDecoderF func(cmd *cmd_pb.DeleteEntityCommand) (command.Command, error)
 
 func RegisterDeleteDecoder(env Env, deleter command.EntityDeleter) {
+	logtrace.LogWithFunctionName()
 	entityType := deleter.GetEntityTypeId()
 	env.GetManagers().Registry.RegisterSingleton(entityType+DeleteDecoder, deleteDecoderF(func(cmd *cmd_pb.DeleteEntityCommand) (command.Command, error) {
 		return &command.DeleteEntityCommand{
@@ -209,6 +217,7 @@ func RegisterDeleteDecoder(env Env, deleter command.EntityDeleter) {
 }
 
 func RegisterManagerDecoder[T models.Entity](env Env, ctrl command.EntityManager[T]) {
+	logtrace.LogWithFunctionName()
 	RegisterCreateDecoder[T](env, ctrl)
 	RegisterUpdateDecoder[T](env, ctrl)
 	RegisterDeleteDecoder(env, ctrl)

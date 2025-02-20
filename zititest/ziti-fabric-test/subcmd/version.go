@@ -19,10 +19,13 @@ package subcmd
 import (
 	"fmt"
 	"ztna-core/ztna/common/version"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	Root.AddCommand(versionCmd)
 }
 

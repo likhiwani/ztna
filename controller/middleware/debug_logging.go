@@ -17,11 +17,14 @@
 package middleware
 
 import (
-	"github.com/michaelquigley/pfxlog"
 	"net/http"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 func RequestDebugLogger(next http.Handler) http.Handler {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Debug(r.RequestURI)

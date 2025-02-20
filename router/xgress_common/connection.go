@@ -17,19 +17,21 @@
 package xgress_common
 
 import (
+	"io"
+	"net"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/sdk-golang/ziti/edge/network"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/foundation/v2/concurrenz"
 	"github.com/openziti/foundation/v2/info"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/sdk-golang/ziti/edge/network"
 	"github.com/openziti/secretstream"
 	"github.com/openziti/secretstream/kx"
-	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"io"
-	"net"
 )
 
 const (
@@ -65,6 +67,7 @@ type XgressConn struct {
 }
 
 func NewXgressConn(conn net.Conn, halfClose bool, isTransport bool) *XgressConn {
+	logtrace.LogWithFunctionName()
 	result := &XgressConn{
 		Conn:        conn,
 		outOfBandTx: make(chan *outOfBand, 1),
@@ -82,6 +85,7 @@ func NewXgressConn(conn net.Conn, halfClose bool, isTransport bool) *XgressConn 
 }
 
 func (self *XgressConn) CloseWrite() error {
+	logtrace.LogWithFunctionName()
 	if self.flags.IsSet(halfCloseFlag) {
 		if self.flags.CompareAndSet(sentFinFlag, false, true) {
 			self.outOfBandTx <- &outOfBand{
@@ -96,10 +100,12 @@ func (self *XgressConn) CloseWrite() error {
 }
 
 func (self *XgressConn) SetupClientCrypto(keyPair *kx.KeyPair, peerKey []byte) error {
+	logtrace.LogWithFunctionName()
 	return self.setupCrypto(keyPair, peerKey, true)
 }
 
 func (self *XgressConn) SetupServerCrypto(peerKey []byte) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	keyPair, err := kx.NewKeyPair()
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to setup encryption for connection")
@@ -111,6 +117,7 @@ func (self *XgressConn) SetupServerCrypto(peerKey []byte) ([]byte, error) {
 }
 
 func (self *XgressConn) setupCrypto(keyPair *kx.KeyPair, peerKey []byte, client bool) error {
+	logtrace.LogWithFunctionName()
 	var rx, tx []byte
 	var err error
 
@@ -139,6 +146,7 @@ func (self *XgressConn) setupCrypto(keyPair *kx.KeyPair, peerKey []byte, client 
 }
 
 func (self *XgressConn) LogContext() string {
+	logtrace.LogWithFunctionName()
 	if self == nil {
 		return "xgress-conn/nil"
 	}
@@ -152,14 +160,17 @@ func (self *XgressConn) LogContext() string {
 }
 
 func (self *XgressConn) IsClosed() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.IsSet(closedFlag)
 }
 
 func (self *XgressConn) IsWriteClosed() bool {
+	logtrace.LogWithFunctionName()
 	return self.flags.IsSet(sentFinFlag)
 }
 
 func (self *XgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	// First thing we need to do is send the encryption header, if one exists
 
 	if self.flags.Load() != 0 {
@@ -209,6 +220,7 @@ func (self *XgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
 }
 
 func (self *XgressConn) WritePayload(p []byte, headers map[uint8][]byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	if self.flags.IsSet(recvFinFlag) {
 		return 0, errors.New("calling WritePayload() after CloseWrite()")
 	}
@@ -260,6 +272,7 @@ func (self *XgressConn) WritePayload(p []byte, headers map[uint8][]byte) (int, e
 }
 
 func (self *XgressConn) notifyWriteDone() {
+	logtrace.LogWithFunctionName()
 	if self.flags.CompareAndSet(writeClosedFlag, false, true) {
 		self.flags.Set(recvFinFlag, true)
 		close(self.writeDone)
@@ -267,6 +280,7 @@ func (self *XgressConn) notifyWriteDone() {
 }
 
 func (self *XgressConn) Close() error {
+	logtrace.LogWithFunctionName()
 	if self.flags.CompareAndSet(closedFlag, false, true) {
 		self.notifyWriteDone()
 		return self.Conn.Close()
@@ -275,6 +289,7 @@ func (self *XgressConn) Close() error {
 }
 
 func (self *XgressConn) HandleControlMsg(controlType xgress.ControlType, headers channel.Headers, responder xgress.ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	if controlType == xgress.ControlTypeTraceRoute {
 		hopType := "xgress/edge_transport"
 		if !self.flags.IsSet(xgressTypeFlag) {

@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewRaftTransferLeadershipParams() *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	return &RaftTransferLeadershipParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewRaftTransferLeadershipParams() *RaftTransferLeadershipParams {
 // NewRaftTransferLeadershipParamsWithTimeout creates a new RaftTransferLeadershipParams object
 // with the ability to set a timeout on a request.
 func NewRaftTransferLeadershipParamsWithTimeout(timeout time.Duration) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	return &RaftTransferLeadershipParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewRaftTransferLeadershipParamsWithTimeout(timeout time.Duration) *RaftTran
 // NewRaftTransferLeadershipParamsWithContext creates a new RaftTransferLeadershipParams object
 // with the ability to set a context for a request.
 func NewRaftTransferLeadershipParamsWithContext(ctx context.Context) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	return &RaftTransferLeadershipParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewRaftTransferLeadershipParamsWithContext(ctx context.Context) *RaftTransf
 // NewRaftTransferLeadershipParamsWithHTTPClient creates a new RaftTransferLeadershipParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewRaftTransferLeadershipParamsWithHTTPClient(client *http.Client) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	return &RaftTransferLeadershipParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type RaftTransferLeadershipParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *RaftTransferLeadershipParams) WithDefaults() *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *RaftTransferLeadershipParams) WithDefaults() *RaftTransferLeadershipPar
 //
 // All values with no default are reset to their zero value.
 func (o *RaftTransferLeadershipParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) WithTimeout(timeout time.Duration) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) WithContext(ctx context.Context) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) WithHTTPClient(client *http.Client) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithMember adds the member to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) WithMember(member *rest_model.RaftTransferLeadership) *RaftTransferLeadershipParams {
+    logtrace.LogWithFunctionName()
 	o.SetMember(member)
 	return o
 }
 
 // SetMember adds the member to the raft transfer leadership params
 func (o *RaftTransferLeadershipParams) SetMember(member *rest_model.RaftTransferLeadership) {
+    logtrace.LogWithFunctionName()
 	o.Member = member
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *RaftTransferLeadershipParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

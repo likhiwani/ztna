@@ -17,6 +17,7 @@
 package tests
 
 import (
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/models/smoke"
 
 	"github.com/openziti/fablab"
@@ -28,6 +29,7 @@ import (
 var run model.Run
 
 func init() {
+	logtrace.LogWithFunctionName()
 	cfg := model.GetConfig()
 	instance, found := cfg.Instances[cfg.GetSelectedInstanceId()]
 	if !found {

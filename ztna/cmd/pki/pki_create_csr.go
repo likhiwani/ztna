@@ -20,11 +20,13 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	cmd2 "ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/internal/log"
 	"ztna-core/ztna/ztna/pki/pki"
 	"ztna-core/ztna/ztna/pki/store"
+
 	"github.com/spf13/cobra"
 )
 
@@ -35,6 +37,7 @@ type PKICreateCSROptions struct {
 
 // NewCmdPKICreateCSR creates a command object for the "create" command
 func NewCmdPKICreateCSR(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &PKICreateCSROptions{
 		PKICreateOptions: PKICreateOptions{
 			PKIOptions: PKIOptions{
@@ -62,6 +65,7 @@ func NewCmdPKICreateCSR(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func (o *PKICreateCSROptions) addPKICreateCSRFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	cmd.Flags().StringVarP(&o.Flags.CSRFile, "csr-file", "", "csr", "File in which to store new CSR")
 	cmd.Flags().StringVarP(&o.Flags.CSRName, "csr-name", "", "NetFoundry Inc. CSR", "Name of CSR")
 	cmd.Flags().StringVarP(&o.Flags.KeyName, "key-name", "", "", "Name of file that contains private key for CSR")
@@ -71,6 +75,7 @@ func (o *PKICreateCSROptions) addPKICreateCSRFlags(cmd *cobra.Command) {
 
 // Run implements this command
 func (o *PKICreateCSROptions) Run() error {
+	logtrace.LogWithFunctionName()
 
 	pkiRoot, err := o.ObtainPKIRoot()
 	if err != nil {

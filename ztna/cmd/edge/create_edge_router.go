@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"os"
@@ -39,6 +40,7 @@ type createEdgeRouterOptions struct {
 }
 
 func NewCreateEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createEdgeRouterOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -75,6 +77,7 @@ func NewCreateEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateEdgeRouter implements the command to create a gateway on the edge controller
 func runCreateEdgeRouter(o *createEdgeRouterOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	api.SetJSONValue(entityData, o.Args[0], "name")
 	api.SetJSONValue(entityData, o.isTunnelerEnabled, "isTunnelerEnabled")
@@ -100,6 +103,7 @@ func runCreateEdgeRouter(o *createEdgeRouterOptions) error {
 }
 
 func getEdgeRouterJwt(o api.Options, jwtOutputFile string, id string) error {
+	logtrace.LogWithFunctionName()
 	newRouter, err := DetailEntityOfType("edge-routers", id, o.OutputJSONResponse, o.Out, o.Timeout, o.Verbose)
 	if err != nil {
 		return err

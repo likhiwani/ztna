@@ -17,11 +17,14 @@
 package main
 
 import (
-	"github.com/openziti/fablab"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/models/smoke"
+
+	"github.com/openziti/fablab"
 )
 
 func main() {
+	logtrace.LogWithFunctionName()
 	smoke.InitBootstrapExtensions()
 	fablab.InitModel(smoke.Model)
 	fablab.Run()

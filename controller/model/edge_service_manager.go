@@ -17,21 +17,24 @@
 package model
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 func NewEdgeServiceManager(env Env) *EdgeServiceManager {
+	logtrace.LogWithFunctionName()
 	manager := &EdgeServiceManager{
 		baseEntityManager: newBaseEntityManager[*EdgeService, *db.EdgeService](env, env.GetStores().EdgeService),
 		detailLister:      &ServiceDetailLister{},
@@ -50,27 +53,33 @@ type EdgeServiceManager struct {
 }
 
 func (self *EdgeServiceManager) GetDetailLister() *ServiceDetailLister {
+	logtrace.LogWithFunctionName()
 	return self.detailLister
 }
 
 func (self *EdgeServiceManager) GetEntityTypeId() string {
+	logtrace.LogWithFunctionName()
 	return "edgeServices"
 }
 
 func (self *EdgeServiceManager) newModelEntity() *EdgeService {
+	logtrace.LogWithFunctionName()
 	return &EdgeService{}
 }
 
 func (self *EdgeServiceManager) Create(entity *EdgeService, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*EdgeService](self, entity, ctx)
 }
 
 func (self *EdgeServiceManager) ApplyCreate(cmd *command.CreateEntityCommand[*EdgeService], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *EdgeServiceManager) Update(entity *EdgeService, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if checker != nil {
 		checker = checker.RemoveFields("encryptionRequired")
 	}
@@ -78,10 +87,12 @@ func (self *EdgeServiceManager) Update(entity *EdgeService, checker fields.Updat
 }
 
 func (self *EdgeServiceManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*EdgeService], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx)
 }
 
 func (self *EdgeServiceManager) ReadByName(name string) (*EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	entity := &EdgeService{}
 	nameIndex := self.env.GetStores().EdgeService.GetNameIndex()
 	if err := self.readEntityWithIndex("name", []byte(name), nameIndex, entity); err != nil {
@@ -91,6 +102,7 @@ func (self *EdgeServiceManager) ReadByName(name string) (*EdgeService, error) {
 }
 
 func (self *EdgeServiceManager) readInTx(tx *bbolt.Tx, id string) (*ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	entity := &ServiceDetail{}
 	boltEntity := self.GetStore().GetEntityStrategy().NewEntity()
 	found, err := self.GetStore().LoadEntity(tx, id, boltEntity)
@@ -108,6 +120,7 @@ func (self *EdgeServiceManager) readInTx(tx *bbolt.Tx, id string) (*ServiceDetai
 }
 
 func (self *EdgeServiceManager) ReadForIdentity(id string, identityId string, configTypes map[string]struct{}) (*ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	var service *ServiceDetail
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		var err error
@@ -118,6 +131,7 @@ func (self *EdgeServiceManager) ReadForIdentity(id string, identityId string, co
 }
 
 func (self *EdgeServiceManager) IsDialableByIdentity(id string, identityId string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	result := false
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		var err error
@@ -128,6 +142,7 @@ func (self *EdgeServiceManager) IsDialableByIdentity(id string, identityId strin
 }
 
 func (self *EdgeServiceManager) IsBindableByIdentity(id string, identityId string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	result := false
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		var err error
@@ -138,6 +153,7 @@ func (self *EdgeServiceManager) IsBindableByIdentity(id string, identityId strin
 }
 
 func (self *EdgeServiceManager) ReadForIdentityInTx(tx *bbolt.Tx, id string, identityId string, configTypes map[string]struct{}) (*ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	edgeServiceStore := self.env.GetStores().EdgeService
 	identity, err := self.GetEnv().GetManagers().Identity.readInTx(tx, identityId)
 	if err != nil {
@@ -177,6 +193,7 @@ func (self *EdgeServiceManager) ReadForIdentityInTx(tx *bbolt.Tx, id string, ide
 }
 
 func (self *EdgeServiceManager) PublicQueryForIdentity(sessionIdentity *Identity, configTypes map[string]struct{}, query ast.Query) (*ServiceListResult, error) {
+	logtrace.LogWithFunctionName()
 	if sessionIdentity.IsAdmin {
 		return self.queryServices(query, sessionIdentity.Id, configTypes, true)
 	}
@@ -184,10 +201,12 @@ func (self *EdgeServiceManager) PublicQueryForIdentity(sessionIdentity *Identity
 }
 
 func (self *EdgeServiceManager) QueryForIdentity(identityId string, configTypes map[string]struct{}, query ast.Query) (*ServiceListResult, error) {
+	logtrace.LogWithFunctionName()
 	return self.queryServices(query, identityId, configTypes, false)
 }
 
 func (self *EdgeServiceManager) queryServices(query ast.Query, identityId string, configTypes map[string]struct{}, isAdmin bool) (*ServiceListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &ServiceListResult{
 		manager:     self,
 		identityId:  identityId,
@@ -208,11 +227,13 @@ func (self *EdgeServiceManager) queryServices(query ast.Query, identityId string
 }
 
 func (self *EdgeServiceManager) QueryRoleAttributes(queryString string) ([]string, *models.QueryMetaData, error) {
+	logtrace.LogWithFunctionName()
 	index := self.env.GetStores().EdgeService.GetRoleAttributesIndex()
 	return self.queryRoleAttributes(index, queryString)
 }
 
 func (self *EdgeServiceManager) Marshall(entity *EdgeService) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -233,6 +254,7 @@ func (self *EdgeServiceManager) Marshall(entity *EdgeService) ([]byte, error) {
 }
 
 func (self *EdgeServiceManager) Unmarshall(bytes []byte) (*EdgeService, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.Service{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -262,6 +284,7 @@ type ServiceListResult struct {
 }
 
 func (result *ServiceListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	var service *ServiceDetail
 	var err error
@@ -282,6 +305,7 @@ func (result *ServiceListResult) collect(tx *bbolt.Tx, ids []string, queryMetaDa
 
 func (self *EdgeServiceManager) mergeConfigs(tx *bbolt.Tx, configTypes map[string]struct{}, service *ServiceDetail,
 	identityServiceConfigs map[string]map[string]map[string]interface{}) {
+	logtrace.LogWithFunctionName()
 	service.Config = map[string]map[string]interface{}{}
 
 	_, wantsAll := configTypes["all"]
@@ -332,6 +356,7 @@ type PolicyPostureChecks struct {
 }
 
 func (self *EdgeServiceManager) GetPolicyPostureChecks(identityId, serviceId string) map[string]*PolicyPostureChecks {
+	logtrace.LogWithFunctionName()
 	policyIdToChecks := map[string]*PolicyPostureChecks{}
 
 	postureCheckCache := map[string]*PostureCheck{}
@@ -395,14 +420,17 @@ type ServiceDetailLister struct {
 }
 
 func (self *ServiceDetailLister) GetListStore() boltz.Store {
+	logtrace.LogWithFunctionName()
 	return self.manager.GetListStore()
 }
 
 func (self *ServiceDetailLister) BaseLoadInTx(tx *bbolt.Tx, id string) (*ServiceDetail, error) {
+	logtrace.LogWithFunctionName()
 	return self.manager.readInTx(tx, id)
 }
 
 func (self *ServiceDetailLister) BasePreparedList(query ast.Query) (*models.EntityListResult[*ServiceDetail], error) {
+	logtrace.LogWithFunctionName()
 	result := &models.EntityListResult[*ServiceDetail]{
 		Loader: self,
 	}
@@ -415,6 +443,7 @@ func (self *ServiceDetailLister) BasePreparedList(query ast.Query) (*models.Enti
 }
 
 func (self *ServiceDetailLister) BasePreparedListIndexed(cursorProvider ast.SetCursorProvider, query ast.Query) (*models.EntityListResult[*ServiceDetail], error) {
+	logtrace.LogWithFunctionName()
 	result := &models.EntityListResult[*ServiceDetail]{
 		Loader: self,
 	}

@@ -2,18 +2,21 @@ package db
 
 import (
 	"fmt"
+	"math/rand"
+	"sort"
+	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
 	"go.etcd.io/bbolt"
-	"math/rand"
-	"sort"
-	"testing"
 )
 
 func Test_ServicePolicyStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -25,6 +28,7 @@ func Test_ServicePolicyStore(t *testing.T) {
 }
 
 func newServicePolicy(name string) *ServicePolicy {
+	logtrace.LogWithFunctionName()
 	policyType := PolicyTypeDial
 	/* #nosec */
 	if rand.Int()%2 == 0 {
@@ -39,6 +43,7 @@ func newServicePolicy(name string) *ServicePolicy {
 }
 
 func (ctx *TestContext) testCreateServicePolicy(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	policy := newServicePolicy(eid.New())
@@ -60,6 +65,7 @@ func (ctx *TestContext) testCreateServicePolicy(_ *testing.T) {
 }
 
 func (ctx *TestContext) testServicePolicyInvalidValues(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	// test identity roles
@@ -118,6 +124,7 @@ func (ctx *TestContext) testServicePolicyInvalidValues(_ *testing.T) {
 }
 
 func (ctx *TestContext) testServicePolicyUpdateDeleteRefs(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	// test identity roles
@@ -180,6 +187,7 @@ func (ctx *TestContext) testServicePolicyUpdateDeleteRefs(_ *testing.T) {
 }
 
 func (ctx *TestContext) testServicePolicyRoleEvaluation(_ *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	// create some identities, edge routers for reference by id
@@ -355,6 +363,7 @@ func (ctx *TestContext) testServicePolicyRoleEvaluation(_ *testing.T) {
 }
 
 func (ctx *TestContext) createServicePolicies(identityRoles, serviceRoles []string, identities []*Identity, services []*EdgeService, oncreate bool) []*ServicePolicy {
+	logtrace.LogWithFunctionName()
 	var policies []*ServicePolicy
 	for i := 0; i < 9; i++ {
 		policy := newServicePolicy(eid.New())
@@ -407,12 +416,14 @@ func (ctx *TestContext) createServicePolicies(identityRoles, serviceRoles []stri
 }
 
 func (ctx *TestContext) validateServicePolicies(identities []*Identity, services []*EdgeService, policies []*ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	ctx.validateServicePolicyIdentities(identities, policies)
 	ctx.validateServicePolicyServices(services, policies)
 	ctx.validateServicePolicyDenormalization()
 }
 
 func (ctx *TestContext) validateServicePolicyIdentities(identities []*Identity, policies []*ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	for _, policy := range policies {
 		count := 0
 		relatedIdentities := ctx.getRelatedIds(policy, EntityTypeIdentities)
@@ -435,6 +446,7 @@ func (ctx *TestContext) validateServicePolicyIdentities(identities []*Identity, 
 }
 
 func (ctx *TestContext) validateServicePolicyServices(services []*EdgeService, policies []*ServicePolicy) {
+	logtrace.LogWithFunctionName()
 	for _, policy := range policies {
 		count := 0
 		relatedServices := ctx.getRelatedIds(policy, EntityTypeServices)
@@ -456,6 +468,7 @@ func (ctx *TestContext) validateServicePolicyServices(services []*EdgeService, p
 }
 
 func (ctx *TestContext) validateServicePolicyDenormalization() {
+	logtrace.LogWithFunctionName()
 	errorHolder := &errorz.ErrorHolderImpl{}
 	errorHolder.SetError(ctx.GetDb().View(func(tx *bbolt.Tx) error {
 		return ctx.stores.ServicePolicy.CheckIntegrity(ctx.newViewTestCtx(tx), false, func(err error, _ bool) {

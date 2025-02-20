@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -49,6 +50,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewCreateRouterParams() *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &CreateRouterParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -57,6 +59,7 @@ func NewCreateRouterParams() *CreateRouterParams {
 // NewCreateRouterParamsWithTimeout creates a new CreateRouterParams object
 // with the ability to set a timeout on a request.
 func NewCreateRouterParamsWithTimeout(timeout time.Duration) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &CreateRouterParams{
 		timeout: timeout,
 	}
@@ -65,6 +68,7 @@ func NewCreateRouterParamsWithTimeout(timeout time.Duration) *CreateRouterParams
 // NewCreateRouterParamsWithContext creates a new CreateRouterParams object
 // with the ability to set a context for a request.
 func NewCreateRouterParamsWithContext(ctx context.Context) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &CreateRouterParams{
 		Context: ctx,
 	}
@@ -73,6 +77,7 @@ func NewCreateRouterParamsWithContext(ctx context.Context) *CreateRouterParams {
 // NewCreateRouterParamsWithHTTPClient creates a new CreateRouterParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewCreateRouterParamsWithHTTPClient(client *http.Client) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	return &CreateRouterParams{
 		HTTPClient: client,
 	}
@@ -100,6 +105,7 @@ type CreateRouterParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateRouterParams) WithDefaults() *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -108,55 +114,65 @@ func (o *CreateRouterParams) WithDefaults() *CreateRouterParams {
 //
 // All values with no default are reset to their zero value.
 func (o *CreateRouterParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the create router params
 func (o *CreateRouterParams) WithTimeout(timeout time.Duration) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the create router params
 func (o *CreateRouterParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the create router params
 func (o *CreateRouterParams) WithContext(ctx context.Context) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the create router params
 func (o *CreateRouterParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the create router params
 func (o *CreateRouterParams) WithHTTPClient(client *http.Client) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the create router params
 func (o *CreateRouterParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithRouter adds the router to the create router params
 func (o *CreateRouterParams) WithRouter(router *rest_model.RouterCreate) *CreateRouterParams {
+    logtrace.LogWithFunctionName()
 	o.SetRouter(router)
 	return o
 }
 
 // SetRouter adds the router to the create router params
 func (o *CreateRouterParams) SetRouter(router *rest_model.RouterCreate) {
+    logtrace.LogWithFunctionName()
 	o.Router = router
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *CreateRouterParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

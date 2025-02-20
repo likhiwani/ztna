@@ -17,14 +17,17 @@
 package xgress
 
 import (
-	"github.com/stretchr/testify/assert"
 	"reflect"
 	"sync/atomic"
 	"testing"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // A simple test to check for failure of alignment on atomic operations for 64 bit variables in a struct
 func Test64BitAlignment(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("One of the variables that was tested is not properly 64-bit aligned.")
@@ -43,6 +46,7 @@ func Test64BitAlignment(t *testing.T) {
 }
 
 func TestSetOriginatorFlag(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	type args struct {
 		flags      uint32
 		originator Originator
@@ -92,6 +96,7 @@ func TestSetOriginatorFlag(t *testing.T) {
 }
 
 func TestAcknowledgement_marshallSequence(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	tests := []struct {
 		name     string
 		sequence []int32

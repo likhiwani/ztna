@@ -18,13 +18,15 @@ package trace
 
 import (
 	"fmt"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/trace/pb"
-	"ztna-core/ztna/router/xgress"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/identity"
 	"sync/atomic"
 	"time"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
+	"github.com/openziti/channel/v3"
+	trace_pb "github.com/openziti/channel/v3/trace/pb"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/identity"
 )
 
 type XgressPeekHandler struct {
@@ -36,14 +38,17 @@ type XgressPeekHandler struct {
 }
 
 func (self *XgressPeekHandler) EnableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	self.ToggleTracing(sourceType, matcher, true, handler, resultChan)
 }
 
 func (self *XgressPeekHandler) DisableTracing(sourceType SourceType, matcher SourceMatcher, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	self.ToggleTracing(sourceType, matcher, false, handler, resultChan)
 }
 
 func (self *XgressPeekHandler) ToggleTracing(sourceType SourceType, matcher SourceMatcher, enable bool, handler EventHandler, resultChan chan<- ToggleApplyResult) {
+	logtrace.LogWithFunctionName()
 	name := "xgress"
 	matched := sourceType == SourceTypePipe && matcher.Matches(name)
 	prevState := self.IsEnabled()
@@ -68,18 +73,22 @@ func (self *XgressPeekHandler) ToggleTracing(sourceType SourceType, matcher Sour
 }
 
 func (self *XgressPeekHandler) Rx(x *xgress.Xgress, payload *xgress.Payload) {
+	logtrace.LogWithFunctionName()
 	self.trace(x, payload, true)
 }
 
 func (self *XgressPeekHandler) Tx(x *xgress.Xgress, payload *xgress.Payload) {
+	logtrace.LogWithFunctionName()
 	self.trace(x, payload, false)
 }
 
 func (self *XgressPeekHandler) Close(*xgress.Xgress) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
 func NewXgressPeekHandler(appId *identity.TokenId, controller Controller) *XgressPeekHandler {
+	logtrace.LogWithFunctionName()
 	handler := &XgressPeekHandler{
 		appId:      appId,
 		controller: controller,
@@ -90,10 +99,12 @@ func NewXgressPeekHandler(appId *identity.TokenId, controller Controller) *Xgres
 }
 
 func (self *XgressPeekHandler) IsEnabled() bool {
+	logtrace.LogWithFunctionName()
 	return self.enabled.Load()
 }
 
 func (self *XgressPeekHandler) trace(x *xgress.Xgress, payload *xgress.Payload, rx bool) {
+	logtrace.LogWithFunctionName()
 	decode, _ := xgress.DecodePayload(payload)
 
 	traceMsg := &trace_pb.ChannelMessage{

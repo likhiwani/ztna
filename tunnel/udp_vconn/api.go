@@ -17,12 +17,14 @@
 package udp_vconn
 
 import (
-	"ztna-core/ztna/tunnel"
-	"ztna-core/ztna/tunnel/entities"
-	"github.com/openziti/foundation/v2/mempool"
 	"io"
 	"net"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/tunnel"
+	"ztna-core/ztna/tunnel/entities"
+
+	"github.com/openziti/foundation/v2/mempool"
 )
 
 type UDPWriterTo interface {
@@ -68,14 +70,17 @@ type ConnExpirationPolicy interface {
 type UnpooledBuffer []byte
 
 func (u UnpooledBuffer) GetPayload() []byte {
+	logtrace.LogWithFunctionName()
 	return u
 }
 
 func (u UnpooledBuffer) Release() {
+	logtrace.LogWithFunctionName()
 	// does nothing
 }
 
 func NewManager(provider tunnel.FabricProvider, newConnPolicy NewConnPolicy, expirationPolicy ConnExpirationPolicy) Manager {
+	logtrace.LogWithFunctionName()
 	manager := &manager{
 		eventC:           make(chan Event, 4),
 		provider:         provider,

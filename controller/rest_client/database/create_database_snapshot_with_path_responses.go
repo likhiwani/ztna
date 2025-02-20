@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type CreateDatabaseSnapshotWithPathReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *CreateDatabaseSnapshotWithPathReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewCreateDatabaseSnapshotWithPathOK()
@@ -72,6 +74,7 @@ func (o *CreateDatabaseSnapshotWithPathReader) ReadResponse(response runtime.Cli
 
 // NewCreateDatabaseSnapshotWithPathOK creates a CreateDatabaseSnapshotWithPathOK with default headers values
 func NewCreateDatabaseSnapshotWithPathOK() *CreateDatabaseSnapshotWithPathOK {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathOK{}
 }
 
@@ -84,13 +87,16 @@ type CreateDatabaseSnapshotWithPathOK struct {
 }
 
 func (o *CreateDatabaseSnapshotWithPathOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/snapshot][%d] createDatabaseSnapshotWithPathOK  %+v", 200, o.Payload)
 }
 func (o *CreateDatabaseSnapshotWithPathOK) GetPayload() *rest_model.DatabaseSnapshotCreateResultEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotWithPathOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.DatabaseSnapshotCreateResultEnvelope)
 
@@ -104,6 +110,7 @@ func (o *CreateDatabaseSnapshotWithPathOK) readResponse(response runtime.ClientR
 
 // NewCreateDatabaseSnapshotWithPathUnauthorized creates a CreateDatabaseSnapshotWithPathUnauthorized with default headers values
 func NewCreateDatabaseSnapshotWithPathUnauthorized() *CreateDatabaseSnapshotWithPathUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type CreateDatabaseSnapshotWithPathUnauthorized struct {
 }
 
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/snapshot][%d] createDatabaseSnapshotWithPathUnauthorized  %+v", 401, o.Payload)
 }
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotWithPathUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *CreateDatabaseSnapshotWithPathUnauthorized) readResponse(response runti
 
 // NewCreateDatabaseSnapshotWithPathTooManyRequests creates a CreateDatabaseSnapshotWithPathTooManyRequests with default headers values
 func NewCreateDatabaseSnapshotWithPathTooManyRequests() *CreateDatabaseSnapshotWithPathTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &CreateDatabaseSnapshotWithPathTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type CreateDatabaseSnapshotWithPathTooManyRequests struct {
 }
 
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /database/snapshot][%d] createDatabaseSnapshotWithPathTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *CreateDatabaseSnapshotWithPathTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

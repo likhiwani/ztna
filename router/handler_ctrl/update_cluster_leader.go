@@ -1,9 +1,11 @@
 package handler_ctrl
 
 import (
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/common/pb/ctrl_pb"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
 )
@@ -16,10 +18,12 @@ type updateClusterLeaderHandler struct {
 }
 
 func (handler *updateClusterLeaderHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_UpdateClusterLeaderRequestType)
 }
 
 func (handler *updateClusterLeaderHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(ch.Label()).Entry
 	upd := &ctrl_pb.UpdateClusterLeader{}
 	if err := proto.Unmarshal(msg.Body, upd); err != nil {
@@ -42,6 +46,7 @@ func (handler *updateClusterLeaderHandler) HandleReceive(msg *channel.Message, c
 }
 
 func newUpdateClusterLeaderHandler(callback CtrlAddressUpdater) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	if updateClusterLeaderHandlerInstance == nil {
 		updateClusterLeaderHandlerInstance = &updateClusterLeaderHandler{
 			callback: callback,

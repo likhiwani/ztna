@@ -25,6 +25,7 @@ import (
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	routerEnv "ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/xgress"
 	"ztna-core/ztna/tunnel/dns"
@@ -33,8 +34,9 @@ import (
 	"ztna-core/ztna/tunnel/intercept/proxy"
 	"ztna-core/ztna/tunnel/intercept/tproxy"
 
-	"github.com/michaelquigley/pfxlog"
 	"ztna-core/sdk-golang/ziti"
+
+	"github.com/michaelquigley/pfxlog"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/pkg/errors"
 )
@@ -53,6 +55,7 @@ type tunneler struct {
 }
 
 func newTunneler(factory *Factory) *tunneler {
+	logtrace.LogWithFunctionName()
 	result := &tunneler{
 		env:             factory.env,
 		terminators:     cmap.New[*tunnelTerminator](),
@@ -67,6 +70,7 @@ func newTunneler(factory *Factory) *tunneler {
 }
 
 func (self *tunneler) Start(notifyClose <-chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	var err error
 
 	log := pfxlog.Logger()
@@ -122,6 +126,7 @@ func (self *tunneler) Start(notifyClose <-chan struct{}) error {
 }
 
 func (self *tunneler) removeStaleConnections(notifyClose <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 
@@ -150,16 +155,19 @@ func (self *tunneler) removeStaleConnections(notifyClose <-chan struct{}) {
 }
 
 func (self *tunneler) Listen(_ string, bindHandler xgress.BindHandler) error {
+	logtrace.LogWithFunctionName()
 	self.bindHandler = bindHandler
 	return nil
 }
 
 func (self *tunneler) Close() error {
+	logtrace.LogWithFunctionName()
 	self.interceptor.Stop()
 	return nil
 }
 
 func (self *tunneler) HandleReconnect() {
+	logtrace.LogWithFunctionName()
 	terminators := self.terminators.Items()
 	for _, terminator := range terminators {
 		terminator.created.Store(false)
@@ -172,6 +180,7 @@ func (self *tunneler) HandleReconnect() {
 }
 
 func (self *tunneler) ReestablishmentRunner() {
+	logtrace.LogWithFunctionName()
 	for {
 		<-self.notifyReconnect
 		self.ReestablishTerminators()
@@ -179,6 +188,7 @@ func (self *tunneler) ReestablishmentRunner() {
 }
 
 func (self *tunneler) ReestablishTerminators() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	terminators := self.terminators.Items()
 
@@ -215,6 +225,7 @@ func (self *tunneler) ReestablishTerminators() {
 }
 
 func (self *tunneler) NotifyIdentityEvent(state *common.IdentityState, eventType common.IdentityEventType) {
+	logtrace.LogWithFunctionName()
 	if eventType == common.EventIdentityDeleted || state.Identity.Disabled {
 		self.fabricProvider.updateIdentity(self.mapRdmIdentityToRest(state.Identity))
 		self.serviceListener.Reset()
@@ -228,6 +239,7 @@ func (self *tunneler) NotifyIdentityEvent(state *common.IdentityState, eventType
 }
 
 func (self *tunneler) NotifyServiceChange(_ *common.IdentityState, service *common.IdentityService, eventType common.ServiceEventType) {
+	logtrace.LogWithFunctionName()
 	tunSvc := self.mapRdmServiceToRest(service)
 	switch eventType {
 	case common.EventAccessGained:
@@ -240,6 +252,7 @@ func (self *tunneler) NotifyServiceChange(_ *common.IdentityState, service *comm
 }
 
 func (self *tunneler) mapRdmServiceToRest(svc *common.IdentityService) *rest_model.ServiceDetail {
+	logtrace.LogWithFunctionName()
 	id := svc.Service.Id
 	name := svc.Service.Name
 	encyrptionRequired := svc.Service.EncryptionRequired
@@ -274,6 +287,7 @@ func (self *tunneler) mapRdmServiceToRest(svc *common.IdentityService) *rest_mod
 }
 
 func (self *tunneler) mapRdmIdentityToRest(i *common.Identity) *rest_model.IdentityDetail {
+	logtrace.LogWithFunctionName()
 	id := i.Id
 	name := i.Name
 	disabled := i.Disabled

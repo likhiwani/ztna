@@ -19,11 +19,13 @@ package intercept
 import (
 	"encoding/json"
 	"errors"
-	"github.com/michaelquigley/pfxlog"
 	"io"
 	"net"
 	"strings"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 // record type
@@ -72,10 +74,12 @@ type resolvConnAddr struct {
 }
 
 func (r *resolvConnAddr) Network() string {
+	logtrace.LogWithFunctionName()
 	return "ziti-resolve"
 }
 
 func (r *resolvConnAddr) String() string {
+	logtrace.LogWithFunctionName()
 	return r.service
 }
 
@@ -87,6 +91,7 @@ type resolvConn struct {
 }
 
 func newResolvConn(hostCtx *hostingContext) (net.Conn, bool, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", hostCtx.service.Name)
 	log.Infof("starting resolver connection")
 	r := &resolvConn{ctx: hostCtx, respQueue: make(chan *DnsMessage, 16)}
@@ -94,6 +99,7 @@ func newResolvConn(hostCtx *hostingContext) (net.Conn, bool, error) {
 }
 
 func (r *resolvConn) Read(b []byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 
 	msg, ok := <-r.respQueue
 	if !ok {
@@ -111,6 +117,7 @@ func (r *resolvConn) Read(b []byte) (n int, err error) {
 }
 
 func (r *resolvConn) Write(b []byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("service", r.ctx.service.Name)
 	dnsMessage := &DnsMessage{}
 	var matchName string
@@ -220,6 +227,7 @@ done:
 }
 
 func (r *resolvConn) Close() error {
+	logtrace.LogWithFunctionName()
 	if r.closed {
 		return nil
 	}
@@ -231,28 +239,33 @@ func (r *resolvConn) Close() error {
 }
 
 func (r *resolvConn) LocalAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return &resolvConnAddr{
 		service: r.ctx.ServiceName(),
 	}
 }
 
 func (r *resolvConn) RemoteAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return &resolvConnAddr{
 		service: r.ctx.ServiceName(),
 	}
 }
 
 func (r *resolvConn) SetDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Warn("not implemented")
 	return nil
 }
 
 func (r *resolvConn) SetReadDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Warn("not implemented")
 	return nil
 }
 
 func (r *resolvConn) SetWriteDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Warn("not implemented")
 	return nil
 }

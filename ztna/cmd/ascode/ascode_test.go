@@ -17,6 +17,7 @@
 package cmd
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"context"
 	"crypto/tls"
 	"fmt"
@@ -37,6 +38,7 @@ import (
 var log = pfxlog.Logger()
 
 func TestYamlUploadAndDownload(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx, cancel := context.WithCancel(context.Background())
 	cmdComplete := make(chan bool)
 	qsCmd := edge.NewQuickStartCmd(os.Stdout, os.Stderr, ctx)
@@ -82,6 +84,7 @@ func TestYamlUploadAndDownload(t *testing.T) {
 }
 
 func waitForController(ctrlUrl string, done chan struct{}) {
+	logtrace.LogWithFunctionName()
 	tr := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	client := &http.Client{Transport: tr}
 	for {
@@ -97,6 +100,7 @@ func waitForController(ctrlUrl string, done chan struct{}) {
 }
 
 func performTest(t *testing.T) {
+	logtrace.LogWithFunctionName()
 
 	errWriter := strings.Builder{}
 

@@ -20,23 +20,25 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/metrics"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/common/cert"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/common/spiffehlp"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/state"
-	cmap "github.com/orcaman/concurrent-map/v2"
 	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/cert"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/common/spiffehlp"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/state"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/metrics"
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 type identityConnect struct {
@@ -51,6 +53,7 @@ type reportData struct {
 }
 
 func (self *reportData) hasReportData() bool {
+	logtrace.LogWithFunctionName()
 	return len(self.connects) > 0 || self.stateChanged
 }
 
@@ -62,6 +65,7 @@ type identityState struct {
 }
 
 func (self *identityState) markConnect(ch channel.Channel, queueEvent bool) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	if queueEvent {
@@ -77,6 +81,7 @@ func (self *identityState) markConnect(ch channel.Channel, queueEvent bool) {
 }
 
 func (self *identityState) markDisconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	startLen := len(self.connections)
@@ -89,6 +94,7 @@ func (self *identityState) markDisconnect(ch channel.Channel) {
 }
 
 func (self *identityState) getConnectedStateEvent(id string) *edge_ctrl_pb.ConnectEvents_IdentityConnectEvents {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	return &edge_ctrl_pb.ConnectEvents_IdentityConnectEvents{
@@ -98,6 +104,7 @@ func (self *identityState) getConnectedStateEvent(id string) *edge_ctrl_pb.Conne
 }
 
 func (self *identityState) getStateEvent(id string, fullSync bool) (*edge_ctrl_pb.ConnectEvents_IdentityConnectEvents, bool) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -143,6 +150,7 @@ func (self *identityState) getStateEvent(id string, fullSync bool) (*edge_ctrl_p
 }
 
 func (self *identityState) clearReported() int {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	count := len(self.beingReported.connects)
@@ -166,6 +174,7 @@ type connectionTracker struct {
 }
 
 func newConnectionTracker(env env.RouterEnv) *connectionTracker {
+	logtrace.LogWithFunctionName()
 	result := &connectionTracker{
 		enabled:          env.GetConnectEventsConfig().Enabled,
 		controllers:      env.GetNetworkControllers(),
@@ -183,6 +192,7 @@ func newConnectionTracker(env env.RouterEnv) *connectionTracker {
 }
 
 func (self *connectionTracker) runLoop(closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(self.batchInterval)
 	defer ticker.Stop()
 
@@ -200,6 +210,7 @@ func (self *connectionTracker) runLoop(closeNotify <-chan struct{}) {
 }
 
 func (self *connectionTracker) notifyNeedsFullSync() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.notifyFullSync <- struct{}{}:
 	default:
@@ -207,6 +218,7 @@ func (self *connectionTracker) notifyNeedsFullSync() {
 }
 
 func (self *connectionTracker) markConnected(identityId string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("identityId", identityId).Trace("marking connected")
 	queueEvent := self.enabled && self.queuedEventCounter.Load() < self.maxQueuedEvents
 	self.states.Upsert(identityId, nil, func(exist bool, valueInMap *identityState, newValue *identityState) *identityState {
@@ -223,6 +235,7 @@ func (self *connectionTracker) markConnected(identityId string, ch channel.Chann
 }
 
 func (self *connectionTracker) markDisconnected(identityId string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("identityId", identityId).Trace("marking disconnected")
 	self.states.Upsert(identityId, nil, func(exist bool, valueInMap *identityState, newValue *identityState) *identityState {
 		if valueInMap == nil {
@@ -234,6 +247,7 @@ func (self *connectionTracker) markDisconnected(identityId string, ch channel.Ch
 }
 
 func (self *connectionTracker) report() {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -286,6 +300,7 @@ func (self *connectionTracker) report() {
 }
 
 func (self *connectionTracker) sendEvents(evts *edge_ctrl_pb.ConnectEvents) bool {
+	logtrace.LogWithFunctionName()
 	successfulSend := false
 	self.controllers.ForEach(func(ctrlId string, ch channel.Channel) {
 		pfxlog.Logger().WithField("ctrlId", ch.Id()).WithField("fullSync", evts.FullState).Trace("sending connect events")
@@ -305,6 +320,7 @@ func (self *connectionTracker) sendEvents(evts *edge_ctrl_pb.ConnectEvents) bool
 }
 
 func (self *connectionTracker) sendFullSync() {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -344,6 +360,7 @@ func (self *connectionTracker) sendFullSync() {
 }
 
 func (self *connectionTracker) NotifyOfReconnect(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 
@@ -353,6 +370,7 @@ func (self *connectionTracker) NotifyOfReconnect(ch channel.Channel) {
 }
 
 func (self *connectionTracker) Inspect(_ string, _ time.Duration) any {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	result := &inspect.RouterIdentityConnections{
 		IdentityConnections: map[string]*inspect.RouterIdentityConnectionDetail{},
@@ -399,6 +417,7 @@ type sessionConnectionHandler struct {
 }
 
 func newSessionConnectHandler(stateManager state.Manager, options *Options, metricsRegistry metrics.Registry) *sessionConnectionHandler {
+	logtrace.LogWithFunctionName()
 	return &sessionConnectionHandler{
 		stateManager:                     stateManager,
 		options:                          options,
@@ -408,6 +427,7 @@ func newSessionConnectHandler(stateManager state.Manager, options *Options, metr
 }
 
 func (handler *sessionConnectionHandler) validateApiSession(binding channel.Binding, edgeConn *edgeClientConn) error {
+	logtrace.LogWithFunctionName()
 	ch := binding.GetChannel()
 	binding.AddCloseHandler(handler)
 
@@ -465,6 +485,7 @@ func (handler *sessionConnectionHandler) validateApiSession(binding channel.Bind
 }
 
 func (handler *sessionConnectionHandler) completeBinding(binding channel.Binding, edgeConn *edgeClientConn) {
+	logtrace.LogWithFunctionName()
 	ch := binding.GetChannel()
 	apiSession := edgeConn.apiSession
 	byteToken := ch.Underlay().Headers()[edge.SessionTokenHeader]
@@ -488,6 +509,7 @@ func (handler *sessionConnectionHandler) completeBinding(binding channel.Binding
 }
 
 func (handler *sessionConnectionHandler) validateByFingerprint(apiSession *state.ApiSession, clientFingerprint string) bool {
+	logtrace.LogWithFunctionName()
 	for _, fingerprint := range apiSession.CertFingerprints {
 		if clientFingerprint == fingerprint {
 			return true
@@ -498,6 +520,7 @@ func (handler *sessionConnectionHandler) validateByFingerprint(apiSession *state
 }
 
 func (handler *sessionConnectionHandler) HandleClose(ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	token := ""
 	if byteToken, ok := ch.Underlay().Headers()[edge.SessionTokenHeader]; ok {
 		token = string(byteToken)
@@ -511,6 +534,7 @@ func (handler *sessionConnectionHandler) HandleClose(ch channel.Channel) {
 }
 
 func (handler *sessionConnectionHandler) validateBySpiffeId(apiSession *state.ApiSession, clientCert *x509.Certificate) bool {
+	logtrace.LogWithFunctionName()
 	spiffeId, err := spiffehlp.GetSpiffeIdFromCert(clientCert)
 
 	if err != nil {

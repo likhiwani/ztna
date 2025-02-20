@@ -2,11 +2,14 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
 )
 
 func (m *Migrations) addIdentityIdToSessions(step *boltz.MigrationStep) {
+	logtrace.LogWithFunctionName()
 	cursor := m.stores.Session.IterateIds(step.Ctx.Tx(), ast.BoolNodeTrue)
 
 	fieldChecker := boltz.MapFieldChecker{

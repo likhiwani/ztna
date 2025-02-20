@@ -17,13 +17,15 @@
 package common
 
 import (
+	"sync"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	cmap "github.com/orcaman/concurrent-map/v2"
-	"sync"
 )
 
 type IdentityConfig struct {
@@ -40,6 +42,7 @@ type IdentityService struct {
 }
 
 func (self *IdentityService) Equals(other *IdentityService) bool {
+	logtrace.LogWithFunctionName()
 	if self.Service.index != other.Service.index {
 		return false
 	}
@@ -94,6 +97,7 @@ type IdentitySubscription struct {
 }
 
 func (self *IdentitySubscription) Diff(rdm *RouterDataModel, sink DiffSink) {
+	logtrace.LogWithFunctionName()
 	currentState := &IdentitySubscription{IdentityId: self.IdentityId}
 	identity, found := rdm.Identities.Get(currentState.IdentityId)
 	if found {
@@ -128,6 +132,7 @@ func (self *IdentitySubscription) Diff(rdm *RouterDataModel, sink DiffSink) {
 }
 
 func (self *IdentitySubscription) getState() *IdentityState {
+	logtrace.LogWithFunctionName()
 	return &IdentityState{
 		Identity:      self.Identity,
 		PostureChecks: self.Checks,
@@ -136,6 +141,7 @@ func (self *IdentitySubscription) getState() *IdentityState {
 }
 
 func (self *IdentitySubscription) identityUpdated(identity *Identity) {
+	logtrace.LogWithFunctionName()
 	notify := false
 	present := false
 	var state *IdentityState
@@ -162,6 +168,7 @@ func (self *IdentitySubscription) identityUpdated(identity *Identity) {
 }
 
 func (self *IdentitySubscription) identityRemoved() {
+	logtrace.LogWithFunctionName()
 	notify := false
 	self.Lock()
 	var state *IdentityState
@@ -182,6 +189,7 @@ func (self *IdentitySubscription) identityRemoved() {
 }
 
 func (self *IdentitySubscription) initialize(rdm *RouterDataModel, identity *Identity) *IdentityState {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 	if self.Identity == nil {
@@ -194,6 +202,7 @@ func (self *IdentitySubscription) initialize(rdm *RouterDataModel, identity *Ide
 }
 
 func (self *IdentitySubscription) checkForChanges(rdm *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	idx, _ := rdm.CurrentIndex()
 	log := pfxlog.Logger().
 		WithField("index", idx).
@@ -329,6 +338,7 @@ type identityRemoveEvent struct {
 }
 
 func (self identityRemoveEvent) process(rdm *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	if sub, found := rdm.subscriptions.Get(self.identityId); found {
 		sub.identityRemoved()
 	}
@@ -339,6 +349,7 @@ type identityCreatedEvent struct {
 }
 
 func (self identityCreatedEvent) process(rdm *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().
 		WithField("subs", rdm.subscriptions.Count()).
 		WithField("identityId", self.identity.Id).
@@ -357,6 +368,7 @@ type identityUpdatedEvent struct {
 }
 
 func (self identityUpdatedEvent) process(rdm *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	if sub, found := rdm.subscriptions.Get(self.identity.Id); found {
 		sub.identityUpdated(self.identity)
 	}
@@ -365,6 +377,7 @@ func (self identityUpdatedEvent) process(rdm *RouterDataModel) {
 type syncAllSubscribersEvent struct{}
 
 func (self syncAllSubscribersEvent) process(rdm *RouterDataModel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("subs", rdm.subscriptions.Count()).Info("sync all subscribers")
 	rdm.subscriptions.IterCb(func(key string, v *IdentitySubscription) {
 		v.checkForChanges(rdm)

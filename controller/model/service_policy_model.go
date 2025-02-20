@@ -18,12 +18,14 @@ package model
 
 import (
 	"fmt"
-	"github.com/openziti/foundation/v2/errorz"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/foundation/v2/errorz"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
-	"strings"
 )
 
 type ServicePolicy struct {
@@ -37,6 +39,7 @@ type ServicePolicy struct {
 }
 
 func (entity *ServicePolicy) validatePolicyType() error {
+	logtrace.LogWithFunctionName()
 	if !strings.EqualFold(entity.PolicyType, db.PolicyTypeDialName) && !strings.EqualFold(entity.PolicyType, db.PolicyTypeBindName) {
 		msg := fmt.Sprintf("invalid policy type. valid types are '%v' and '%v'", db.PolicyTypeDialName, db.PolicyTypeBindName)
 		return errorz.NewFieldError(msg, "policyType", entity.PolicyType)
@@ -45,6 +48,7 @@ func (entity *ServicePolicy) validatePolicyType() error {
 }
 
 func (entity *ServicePolicy) toBoltEntity(checker boltz.FieldChecker) (*db.ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	if checker == nil || checker.IsUpdated(db.FieldServicePolicyType) {
 		if err := entity.validatePolicyType(); err != nil {
 			return nil, err
@@ -70,14 +74,17 @@ func (entity *ServicePolicy) toBoltEntity(checker boltz.FieldChecker) (*db.Servi
 }
 
 func (entity *ServicePolicy) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(nil)
 }
 
 func (entity *ServicePolicy) toBoltEntityForUpdate(_ *bbolt.Tx, _ Env, checker boltz.FieldChecker) (*db.ServicePolicy, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntity(checker)
 }
 
 func (entity *ServicePolicy) fillFrom(_ Env, _ *bbolt.Tx, boltServicePolicy *db.ServicePolicy) error {
+	logtrace.LogWithFunctionName()
 	entity.FillCommon(boltServicePolicy)
 	entity.Name = boltServicePolicy.Name
 	entity.PolicyType = string(boltServicePolicy.PolicyType)

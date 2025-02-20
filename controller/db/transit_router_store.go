@@ -18,6 +18,8 @@ package db
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
@@ -37,6 +39,7 @@ type TransitRouter struct {
 }
 
 func (entity *TransitRouter) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
@@ -48,6 +51,7 @@ type TransitRouterStore interface {
 }
 
 func newTransitRouterStore(stores *stores) *transitRouterStoreImpl {
+	logtrace.LogWithFunctionName()
 	parentMapper := func(entity boltz.Entity) boltz.Entity {
 		if transitRouter, ok := entity.(*TransitRouter); ok {
 			return &transitRouter.Router
@@ -71,6 +75,7 @@ type transitRouterStoreImpl struct {
 }
 
 func (store *transitRouterStoreImpl) HandleUpdate(ctx boltz.MutateContext, entity *Router, checker boltz.FieldChecker) (bool, error) {
+	logtrace.LogWithFunctionName()
 	er, found, err := store.FindById(ctx.Tx(), entity.Id)
 	if err != nil {
 		return false, err
@@ -84,31 +89,38 @@ func (store *transitRouterStoreImpl) HandleUpdate(ctx boltz.MutateContext, entit
 }
 
 func (store *transitRouterStoreImpl) HandleDelete(ctx boltz.MutateContext, entity *Router) error {
+	logtrace.LogWithFunctionName()
 	return store.cleanupEnrollments(ctx, entity.Id)
 }
 
 func (store *transitRouterStoreImpl) GetStore() boltz.Store {
+	logtrace.LogWithFunctionName()
 	return store
 }
 
 func (store *transitRouterStoreImpl) NewEntity() *TransitRouter {
+	logtrace.LogWithFunctionName()
 	return &TransitRouter{}
 }
 
 func (store *transitRouterStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.GetParentStore().GrantSymbols(store)
 	store.indexName = store.GetParentStore().(RouterStore).GetNameIndex()
 	store.symbolEnrollments = store.AddFkSetSymbol(FieldTransitRouterEnrollments, store.stores.enrollment)
 }
 
 func (store *transitRouterStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 }
 
 func (store *transitRouterStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *transitRouterStoreImpl) FillEntity(entity *TransitRouter, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	store.stores.router.FillEntity(&entity.Router, store.getParentBucket(entity, bucket))
 
 	if bucket.Bucket == nil {
@@ -124,6 +136,7 @@ func (store *transitRouterStoreImpl) FillEntity(entity *TransitRouter, bucket *b
 }
 
 func (store *transitRouterStoreImpl) PersistEntity(entity *TransitRouter, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	store.stores.router.PersistEntity(&entity.Router, ctx.GetParentContext())
 	if ctx.Bucket != nil {
 		ctx.SetBool(FieldTransitRouterIsVerified, entity.IsVerified)
@@ -133,6 +146,7 @@ func (store *transitRouterStoreImpl) PersistEntity(entity *TransitRouter, ctx *b
 }
 
 func (store *transitRouterStoreImpl) cleanupEnrollments(ctx boltz.MutateContext, id string) error {
+	logtrace.LogWithFunctionName()
 	if entity, _ := store.LoadById(ctx.Tx(), id); entity != nil {
 		// Remove outstanding enrollments
 		if err := store.stores.enrollment.DeleteWhere(ctx, fmt.Sprintf(`transitRouter="%s"`, entity.Id)); err != nil {

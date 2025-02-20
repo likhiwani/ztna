@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"github.com/Jeffail/gabs"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
@@ -32,6 +33,7 @@ type deleteOptions struct {
 }
 
 func (self *deleteOptions) AddCommonFlags(cmd *cobra.Command) {
+	logtrace.LogWithFunctionName()
 	self.Options.AddCommonFlags(cmd)
 	if self.isCircuit {
 		if self.isCircuit {
@@ -41,6 +43,7 @@ func (self *deleteOptions) AddCommonFlags(cmd *cobra.Command) {
 }
 
 func (self *deleteOptions) GetBody() string {
+	logtrace.LogWithFunctionName()
 	if self.isCircuit {
 		c := gabs.New()
 		api.SetJSONValue(c, self.immediate, "immediate")
@@ -51,6 +54,7 @@ func (self *deleteOptions) GetBody() string {
 
 // newDeleteCmd creates a command object for the "edge controller delete" command
 func newDeleteCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "deletes various entities managed by the Ziti Controller",
@@ -78,6 +82,7 @@ func newDeleteCmd(p common.OptionsProvider) *cobra.Command {
 
 // newDeleteCmdForEntityType creates the delete command for the given entity type
 func newDeleteCmdForEntityType(entityType string, options *deleteOptions, aliases ...string) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     entityType + " <id>",
 		Short:   "deletes " + api.GetPlural(entityType) + " managed by the Ziti Controller",
@@ -102,6 +107,7 @@ func newDeleteCmdForEntityType(entityType string, options *deleteOptions, aliase
 }
 
 func newDeleteWhereCmdForEntityType(entityType string, options *deleteOptions) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:   "where <filter>",
 		Short: "deletes " + api.GetPlural(entityType) + " matching the filter managed by the Ziti Controller",
@@ -124,6 +130,7 @@ func newDeleteWhereCmdForEntityType(entityType string, options *deleteOptions) *
 
 // runDeleteEntityOfType implements the commands to delete various entity types
 func runDeleteEntityOfType(o *deleteOptions, entityType string) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	ids := o.Args
 	if entityType != "terminators" && entityType != "links" && entityType != "circuits" {

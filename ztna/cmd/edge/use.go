@@ -19,10 +19,12 @@ package edge
 import (
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/util"
+
 	"github.com/spf13/cobra"
 )
 
@@ -33,6 +35,7 @@ type useOptions struct {
 
 // newUseCmd creates the command
 func newUseCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &useOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{Out: out, Err: errOut},
@@ -61,6 +64,7 @@ func newUseCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // Run implements this command
 func (o *useOptions) Run() error {
+	logtrace.LogWithFunctionName()
 	config, configFile, err := util.LoadRestClientConfig()
 	if err != nil {
 		return err

@@ -17,10 +17,12 @@
 package db
 
 import (
-	"github.com/openziti/storage/ast"
-	"github.com/openziti/storage/boltz"
 	"strconv"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/ast"
+	"github.com/openziti/storage/boltz"
 )
 
 const (
@@ -51,10 +53,12 @@ type ApiAddress struct {
 }
 
 func (entity *Controller) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *Controller) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeControllers
 }
 
@@ -66,6 +70,7 @@ type ControllerStore interface {
 }
 
 func newControllerStore(stores *stores) *controllerStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &controllerStoreImpl{}
 	store.baseStore = newBaseStore[*Controller](stores, store)
 	store.InitImpl(store)
@@ -78,10 +83,12 @@ type controllerStoreImpl struct {
 }
 
 func (store *controllerStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *controllerStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 
@@ -92,13 +99,17 @@ func (store *controllerStoreImpl) initializeLocal() {
 	store.AddSymbol(FieldControllerLastJoinedAt, ast.NodeTypeDatetime)
 }
 
-func (store *controllerStoreImpl) initializeLinked() {}
+func (store *controllerStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
+}
 
 func (store *controllerStoreImpl) NewEntity() *Controller {
+	logtrace.LogWithFunctionName()
 	return &Controller{}
 }
 
 func (store *controllerStoreImpl) FillEntity(entity *Controller, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 	entity.CtrlAddress = bucket.GetStringWithDefault(FieldControllerCtrlAddress, "")
@@ -125,6 +136,7 @@ func (store *controllerStoreImpl) FillEntity(entity *Controller, bucket *boltz.T
 }
 
 func (store *controllerStoreImpl) PersistEntity(entity *Controller, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 	ctx.SetString(FieldControllerCtrlAddress, entity.CtrlAddress)

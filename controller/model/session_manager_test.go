@@ -1,16 +1,19 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltztest"
+	"testing"
+	"time"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltztest"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestSessionManager(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -19,6 +22,7 @@ func TestSessionManager(t *testing.T) {
 }
 
 func (ctx *TestContext) testSessionIdempotency(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.requireNewEdgeRouter()
 	identity := ctx.requireNewIdentity(false)
 	service := ctx.requireNewService()

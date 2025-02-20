@@ -19,9 +19,11 @@ package mesh
 import (
 	"sync"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 func newDeadline() *deadline {
+	logtrace.LogWithFunctionName()
 	return &deadline{
 		C: make(chan struct{}, 1),
 	}
@@ -34,6 +36,7 @@ type deadline struct {
 }
 
 func (self *deadline) Trigger() {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.C <- struct{}{}:
 	default:
@@ -41,6 +44,7 @@ func (self *deadline) Trigger() {
 }
 
 func (self *deadline) SetTimeout(t time.Duration) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 

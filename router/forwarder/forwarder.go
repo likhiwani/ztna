@@ -17,19 +17,21 @@
 package forwarder
 
 import (
+	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/trace"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xlink"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/info"
 	"github.com/openziti/metrics"
-	"ztna-core/ztna/common/inspect"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/trace"
-	"ztna-core/ztna/router/env"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xlink"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 type Forwarder struct {
@@ -59,6 +61,7 @@ type XgressDestination interface {
 }
 
 func NewForwarder(metricsRegistry metrics.UsageRegistry, faulter FaultReceiver, options *Options, closeNotify <-chan struct{}) *Forwarder {
+	logtrace.LogWithFunctionName()
 	f := &Forwarder{
 		circuits:        newCircuitTable(),
 		destinations:    newDestinationTable(),
@@ -72,6 +75,7 @@ func NewForwarder(metricsRegistry metrics.UsageRegistry, faulter FaultReceiver, 
 }
 
 func (forwarder *Forwarder) StartScanner(ctrls env.NetworkControllers) {
+	logtrace.LogWithFunctionName()
 	scanner := newScanner(ctrls, forwarder.Options, forwarder.CloseNotify)
 	scanner.setCircuitTable(forwarder.circuits)
 
@@ -83,19 +87,23 @@ func (forwarder *Forwarder) StartScanner(ctrls env.NetworkControllers) {
 }
 
 func (forwarder *Forwarder) MetricsRegistry() metrics.UsageRegistry {
+	logtrace.LogWithFunctionName()
 	return forwarder.metricsRegistry
 }
 
 func (forwarder *Forwarder) TraceController() trace.Controller {
+	logtrace.LogWithFunctionName()
 	return forwarder.traceController
 }
 
 func (forwarder *Forwarder) RegisterDestination(circuitId string, address xgress.Address, destination Destination) {
+	logtrace.LogWithFunctionName()
 	forwarder.destinations.addDestination(address, destination)
 	forwarder.destinations.linkDestinationToCircuit(circuitId, address)
 }
 
 func (forwarder *Forwarder) UnregisterDestinations(circuitId string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("circuitId", circuitId)
 	if addresses, found := forwarder.destinations.getAddressesForCircuit(circuitId); found {
 		for _, address := range addresses {
@@ -114,20 +122,24 @@ func (forwarder *Forwarder) UnregisterDestinations(circuitId string) {
 }
 
 func (forwarder *Forwarder) HasDestination(address xgress.Address) bool {
+	logtrace.LogWithFunctionName()
 	_, found := forwarder.destinations.getDestination(address)
 	return found
 }
 
 func (forwarder *Forwarder) RegisterLink(link xlink.LinkDestination) error {
+	logtrace.LogWithFunctionName()
 	forwarder.destinations.addDestination(xgress.Address(link.Id()), link)
 	return nil
 }
 
 func (forwarder *Forwarder) UnregisterLink(link xlink.LinkDestination) {
+	logtrace.LogWithFunctionName()
 	forwarder.destinations.removeDestinationIfMatches(xgress.Address(link.Id()), link)
 }
 
 func (forwarder *Forwarder) Route(ctrlId string, route *ctrl_pb.Route) error {
+	logtrace.LogWithFunctionName()
 	circuitId := route.CircuitId
 	var circuitFt *forwardTable
 	if ft, found := forwarder.circuits.getForwardTable(circuitId, true); found {
@@ -153,6 +165,7 @@ func (forwarder *Forwarder) Route(ctrlId string, route *ctrl_pb.Route) error {
 }
 
 func (forwarder *Forwarder) Unroute(circuitId string, now bool) {
+	logtrace.LogWithFunctionName()
 	if now {
 		forwarder.circuits.removeForwardTable(circuitId)
 		forwarder.EndCircuit(circuitId)
@@ -162,18 +175,22 @@ func (forwarder *Forwarder) Unroute(circuitId string, now bool) {
 }
 
 func (forwarder *Forwarder) EndCircuit(circuitId string) {
+	logtrace.LogWithFunctionName()
 	forwarder.UnregisterDestinations(circuitId)
 }
 
 func (forwarder *Forwarder) ForwardPayload(srcAddr xgress.Address, payload *xgress.Payload, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	return forwarder.forwardPayload(srcAddr, payload, true, timeout)
 }
 
 func (forwarder *Forwarder) RetransmitPayload(srcAddr xgress.Address, payload *xgress.Payload) error {
+	logtrace.LogWithFunctionName()
 	return forwarder.forwardPayload(srcAddr, payload, false, 0)
 }
 
 func (forwarder *Forwarder) forwardPayload(srcAddr xgress.Address, payload *xgress.Payload, markActive bool, timeout time.Duration) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(string(srcAddr))
 
 	circuitId := payload.GetCircuitId()
@@ -203,6 +220,7 @@ func (forwarder *Forwarder) forwardPayload(srcAddr xgress.Address, payload *xgre
 }
 
 func (forwarder *Forwarder) ForwardAcknowledgement(srcAddr xgress.Address, acknowledgement *xgress.Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(string(srcAddr))
 
 	circuitId := acknowledgement.CircuitId
@@ -229,6 +247,7 @@ func (forwarder *Forwarder) ForwardAcknowledgement(srcAddr xgress.Address, ackno
 }
 
 func (forwarder *Forwarder) ForwardControl(srcAddr xgress.Address, control *xgress.Control) error {
+	logtrace.LogWithFunctionName()
 	circuitId := control.CircuitId
 	log := pfxlog.ContextLogger(string(srcAddr)).WithField("circuitId", circuitId)
 
@@ -272,6 +291,7 @@ func (forwarder *Forwarder) ForwardControl(srcAddr xgress.Address, control *xgre
 }
 
 func (forwarder *Forwarder) ReportForwardingFault(circuitId string, ctrlId string) {
+	logtrace.LogWithFunctionName()
 	if forwarder.faulter != nil {
 		forwarder.faulter.Report(circuitId, ctrlId)
 	} else {
@@ -280,6 +300,7 @@ func (forwarder *Forwarder) ReportForwardingFault(circuitId string, ctrlId strin
 }
 
 func (forwarder *Forwarder) Debug() string {
+	logtrace.LogWithFunctionName()
 	return forwarder.circuits.debug() + forwarder.destinations.debug()
 }
 
@@ -287,6 +308,7 @@ func (forwarder *Forwarder) Debug() string {
 // for a circuit, it will be checked repeatedly, looking to see if the circuit has crossed the inactivity threshold.
 // Once it crosses the inactivity threshold, it gets removed.
 func (forwarder *Forwarder) unrouteTimeout(circuitId string, interval time.Duration) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger("c/" + circuitId)
 	log.Debug("scheduled")
 	defer log.Debug("timeout")
@@ -316,6 +338,7 @@ func (forwarder *Forwarder) unrouteTimeout(circuitId string, interval time.Durat
 }
 
 func (forwarder *Forwarder) getXgressForCircuit(circuitId string) XgressDestination {
+	logtrace.LogWithFunctionName()
 	if addresses, found := forwarder.destinations.getAddressesForCircuit(circuitId); found {
 		for _, address := range addresses {
 			if destination, found := forwarder.destinations.getDestination(address); found {
@@ -327,6 +350,7 @@ func (forwarder *Forwarder) getXgressForCircuit(circuitId string) XgressDestinat
 }
 
 func (forwarder *Forwarder) InspectCircuit(circuitId string, getRelatedGoroutines bool) *inspect.CircuitInspectDetail {
+	logtrace.LogWithFunctionName()
 	if ft, found := forwarder.circuits.circuits.Get(circuitId); found {
 		result := &inspect.CircuitInspectDetail{
 			CircuitId:     circuitId,

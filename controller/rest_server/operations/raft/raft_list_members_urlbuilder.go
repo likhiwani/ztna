@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
@@ -44,6 +45,7 @@ type RaftListMembersURL struct {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *RaftListMembersURL) WithBasePath(bp string) *RaftListMembersURL {
+    logtrace.LogWithFunctionName()
 	o.SetBasePath(bp)
 	return o
 }
@@ -52,11 +54,13 @@ func (o *RaftListMembersURL) WithBasePath(bp string) *RaftListMembersURL {
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
 func (o *RaftListMembersURL) SetBasePath(bp string) {
+    logtrace.LogWithFunctionName()
 	o._basePath = bp
 }
 
 // Build a url path and query string
 func (o *RaftListMembersURL) Build() (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	var _result url.URL
 
 	var _path = "/raft/list-members"
@@ -72,6 +76,7 @@ func (o *RaftListMembersURL) Build() (*url.URL, error) {
 
 // Must is a helper function to panic when the url builder returns an error
 func (o *RaftListMembersURL) Must(u *url.URL, err error) *url.URL {
+    logtrace.LogWithFunctionName()
 	if err != nil {
 		panic(err)
 	}
@@ -83,11 +88,13 @@ func (o *RaftListMembersURL) Must(u *url.URL, err error) *url.URL {
 
 // String returns the string representation of the path with query string
 func (o *RaftListMembersURL) String() string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
 func (o *RaftListMembersURL) BuildFull(scheme, host string) (*url.URL, error) {
+    logtrace.LogWithFunctionName()
 	if scheme == "" {
 		return nil, errors.New("scheme is required for a full url on RaftListMembersURL")
 	}
@@ -107,5 +114,6 @@ func (o *RaftListMembersURL) BuildFull(scheme, host string) (*url.URL, error) {
 
 // StringFull returns the string representation of a complete url
 func (o *RaftListMembersURL) StringFull(scheme, host string) string {
+    logtrace.LogWithFunctionName()
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

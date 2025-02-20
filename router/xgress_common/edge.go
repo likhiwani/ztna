@@ -16,13 +16,17 @@
 
 package xgress_common
 
-import "strings"
+import (
+	"strings"
+	"ztna-core/ztna/logtrace"
+)
 
 const JwtTokenPrefix = "ey"
 const JwtExpectedDelimCount = 2
 
 // IsBearerToken checks to see if a string has the basic structure required of a JWT.
 func IsBearerToken(s string) bool {
+	logtrace.LogWithFunctionName()
 	if strings.HasPrefix(s, JwtTokenPrefix) {
 		sectionCount := 0
 		for _, ch := range s {

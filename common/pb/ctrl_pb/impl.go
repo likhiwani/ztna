@@ -18,73 +18,91 @@ package ctrl_pb
 
 import (
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
 )
 
 func (request *CircuitConfirmation) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_CircuitConfirmationType)
 }
 
 func (request *LinkConnected) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_LinkConnectedType)
 }
 
 func (request *RouterLinks) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_RouterLinksType)
 }
 
 func (request *VerifyRouter) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_VerifyRouterType)
 }
 
 func (request *Fault) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_FaultType)
 }
 
 func (request *Route) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_RouteType)
 }
 
 func (request *Unroute) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_UnrouteType)
 }
 
 func (request *ValidateTerminatorsRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_ValidateTerminatorsRequestType)
 }
 
 func (request *ValidateTerminatorsV2Request) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_ValidateTerminatorsV2RequestType)
 }
 
 func (request *ValidateTerminatorsV2Response) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_ValidateTerminatorsV2ResponseType)
 }
 
 func (request *Dial) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_DialType)
 }
 
 func (request *CircuitRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_CircuitRequestType)
 }
 
 func (request *RemoveTerminatorRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_RemoveTerminatorRequestType)
 }
 
 func (request *RemoveTerminatorsRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_RemoveTerminatorsRequestType)
 }
 
 func (request *InspectRequest) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_InspectRequestType)
 }
 
 func (response *InspectResponse) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_InspectResponseType)
 }
 
 func (response *InspectResponse) AddValue(name, value string) {
+	logtrace.LogWithFunctionName()
 	newValue := &InspectResponse_InspectValue{
 		Name:  name,
 		Value: value,
@@ -93,6 +111,7 @@ func (response *InspectResponse) AddValue(name, value string) {
 }
 
 func (request *CreateTerminatorRequest) GetXtPrecedence() xt.Precedence {
+	logtrace.LogWithFunctionName()
 	if request.GetPrecedence() == TerminatorPrecedence_Failed {
 		return xt.Precedences.Failed
 	}
@@ -103,13 +122,16 @@ func (request *CreateTerminatorRequest) GetXtPrecedence() xt.Precedence {
 }
 
 func (request *UpdateCtrlAddresses) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_UpdateCtrlAddressesType)
 }
 
 func (request *PeerStateChanges) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_PeerStateChangeRequestType)
 }
 
 func (request *UpdateClusterLeader) GetContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ContentType_UpdateClusterLeaderRequestType)
 }

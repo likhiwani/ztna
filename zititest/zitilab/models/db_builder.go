@@ -2,14 +2,16 @@ package models
 
 import (
 	"fmt"
-	"github.com/openziti/fablab/kernel/model"
-	"github.com/openziti/storage/boltz"
+	"strings"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/zititest/zitilab"
+
+	"github.com/openziti/fablab/kernel/model"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
-	"strings"
 )
 
 type ZitiDbBuilderStrategy interface {
@@ -29,14 +31,17 @@ type ZitiDbBuilder struct {
 }
 
 func (self *ZitiDbBuilder) GetDb() boltz.Db {
+	logtrace.LogWithFunctionName()
 	return self.zitiDb
 }
 
 func (self *ZitiDbBuilder) GetStores() *db.Stores {
+	logtrace.LogWithFunctionName()
 	return self.stores
 }
 
 func (self *ZitiDbBuilder) Build(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	dbFile := self.Strategy.GetDbFile(m)
 
 	var err error
@@ -62,6 +67,7 @@ func (self *ZitiDbBuilder) Build(m *model.Model) error {
 }
 
 func (self *ZitiDbBuilder) CreateEdgeRouterHosts(tx *bbolt.Tx, m *model.Model, erStrategy ZitiEdgeRouterStrategy) error {
+	logtrace.LogWithFunctionName()
 	ids, _, err := self.stores.EdgeRouter.QueryIds(tx, "true limit none")
 	if err != nil {
 		return err
@@ -119,6 +125,7 @@ func (self *ZitiDbBuilder) CreateEdgeRouterHosts(tx *bbolt.Tx, m *model.Model, e
 }
 
 func (self *ZitiDbBuilder) DefaultGetSite(er *db.EdgeRouter) (string, bool) {
+	logtrace.LogWithFunctionName()
 	if val, found := er.Tags["fablab.site"]; found {
 		return fmt.Sprintf("%v", val), true
 	}

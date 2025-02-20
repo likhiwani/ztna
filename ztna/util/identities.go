@@ -18,6 +18,7 @@ import (
 	"ztna-core/edge-api/rest_management_api_client"
 	"ztna-core/ztna/controller/env"
 	fabric_rest_client "ztna-core/ztna/controller/rest_client"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/common"
 
 	httptransport "github.com/go-openapi/runtime/client"
@@ -38,6 +39,7 @@ type RestClientConfig struct {
 }
 
 func (self *RestClientConfig) GetIdentity() string {
+	logtrace.LogWithFunctionName()
 	if common.CliIdentity != "" {
 		return common.CliIdentity
 	}
@@ -59,6 +61,7 @@ type RestClientIdentity interface {
 }
 
 func NewRequest(restClientIdentity RestClientIdentity, timeoutInSeconds int, verbose bool) (*resty.Request, error) {
+	logtrace.LogWithFunctionName()
 	client, err := restClientIdentity.NewClient(time.Duration(timeoutInSeconds)*time.Second, verbose)
 	if err != nil {
 		return nil, err
@@ -76,10 +79,12 @@ type RestClientEdgeIdentity struct {
 }
 
 func (self *RestClientEdgeIdentity) IsReadOnly() bool {
+	logtrace.LogWithFunctionName()
 	return self.ReadOnly
 }
 
 func (self *RestClientEdgeIdentity) NewTlsClientConfig() (*tls.Config, error) {
+	logtrace.LogWithFunctionName()
 	rootCaPool := x509.NewCertPool()
 
 	if self.CaCert != "" {
@@ -103,6 +108,7 @@ func (self *RestClientEdgeIdentity) NewTlsClientConfig() (*tls.Config, error) {
 }
 
 func (self *RestClientEdgeIdentity) NewClient(timeout time.Duration, verbose bool) (*resty.Client, error) {
+	logtrace.LogWithFunctionName()
 	client := NewClient()
 	if self.CaCert != "" {
 		client.SetRootCertificate(self.CaCert)
@@ -113,12 +119,14 @@ func (self *RestClientEdgeIdentity) NewClient(timeout time.Duration, verbose boo
 }
 
 func (self *RestClientEdgeIdentity) NewRequest(client *resty.Client) *resty.Request {
+	logtrace.LogWithFunctionName()
 	r := client.R()
 	r.SetHeader(env.ZitiSession, self.Token)
 	return r
 }
 
 func (self *RestClientEdgeIdentity) GetBaseUrlForApi(api API) (string, error) {
+	logtrace.LogWithFunctionName()
 	if api == EdgeAPI {
 		return self.Url, nil
 	}
@@ -133,6 +141,7 @@ func (self *RestClientEdgeIdentity) GetBaseUrlForApi(api API) (string, error) {
 }
 
 func (self *RestClientEdgeIdentity) NewEdgeManagementClient(clientOpts ClientOpts) (*rest_management_api_client.ZitiEdgeManagement, error) {
+	logtrace.LogWithFunctionName()
 	httpClient, err := newRestClientTransport(clientOpts, self)
 	if err != nil {
 		return nil, err
@@ -153,6 +162,7 @@ func (self *RestClientEdgeIdentity) NewEdgeManagementClient(clientOpts ClientOpt
 }
 
 func (self *RestClientEdgeIdentity) NewFabricManagementClient(clientOpts ClientOpts) (*fabric_rest_client.ZitiFabric, error) {
+	logtrace.LogWithFunctionName()
 	httpClient, err := newRestClientTransport(clientOpts, self)
 	if err != nil {
 		return nil, err
@@ -173,12 +183,14 @@ func (self *RestClientEdgeIdentity) NewFabricManagementClient(clientOpts ClientO
 }
 
 func (self *RestClientEdgeIdentity) NewWsHeader() http.Header {
+	logtrace.LogWithFunctionName()
 	result := http.Header{}
 	result.Set(env.ZitiSession, self.Token)
 	return result
 }
 
 func LoadRestClientConfig() (*RestClientConfig, string, error) {
+	logtrace.LogWithFunctionName()
 	config := &RestClientConfig{}
 
 	cfgDir, err := ConfigDir()
@@ -211,6 +223,7 @@ func LoadRestClientConfig() (*RestClientConfig, string, error) {
 }
 
 func PersistRestClientConfig(config *RestClientConfig) error {
+	logtrace.LogWithFunctionName()
 	if config.Default == "" {
 		config.Default = "default"
 	}
@@ -242,6 +255,7 @@ var selectedIdentity RestClientIdentity
 var selectIdentityLock sync.Mutex
 
 func ReloadConfig() {
+	logtrace.LogWithFunctionName()
 	selectIdentityLock.Lock()
 	defer selectIdentityLock.Unlock()
 
@@ -249,6 +263,7 @@ func ReloadConfig() {
 }
 
 func LoadSelectedIdentity() (RestClientIdentity, error) {
+	logtrace.LogWithFunctionName()
 	selectIdentityLock.Lock()
 	defer selectIdentityLock.Unlock()
 
@@ -272,6 +287,7 @@ func LoadSelectedIdentity() (RestClientIdentity, error) {
 }
 
 func LoadSelectedRWIdentity() (RestClientIdentity, error) {
+	logtrace.LogWithFunctionName()
 	id, err := LoadSelectedIdentity()
 	if err != nil {
 		return nil, err
@@ -283,6 +299,7 @@ func LoadSelectedRWIdentity() (RestClientIdentity, error) {
 }
 
 func newRestClientResponseF(clientOpts ClientOpts) func(*http.Response, error) {
+	logtrace.LogWithFunctionName()
 	return func(resp *http.Response, err error) {
 		if clientOpts.OutputResponseJson() {
 			if resp == nil || resp.Body == nil {
@@ -303,6 +320,7 @@ func newRestClientResponseF(clientOpts ClientOpts) func(*http.Response, error) {
 }
 
 func newRestClientRequestF(clientOpts ClientOpts, readOnly bool) func(*http.Request) error {
+	logtrace.LogWithFunctionName()
 	return func(request *http.Request) error {
 		if readOnly && !strings.EqualFold(request.Method, "get") {
 			return errors.New("this login is marked read-only, only GET operations are allowed")
@@ -330,6 +348,7 @@ func newRestClientRequestF(clientOpts ClientOpts, readOnly bool) func(*http.Requ
 }
 
 func newRestClientTransport(clientOpts ClientOpts, clientIdentity RestClientIdentity) (*http.Client, error) {
+	logtrace.LogWithFunctionName()
 	httpClientTransport := &edgeTransport{
 		Transport: &http.Transport{
 			Proxy: http.ProxyFromEnvironment,

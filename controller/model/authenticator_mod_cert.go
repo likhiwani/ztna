@@ -20,17 +20,19 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/foundation/v2/errorz"
-	nfpem "github.com/openziti/foundation/v2/pem"
+	"net/http"
+	"time"
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/foundation/v2/errorz"
+	nfpem "github.com/openziti/foundation/v2/pem"
 	cmap "github.com/orcaman/concurrent-map/v2"
-	"net/http"
-	"time"
 )
 
 const (
@@ -49,6 +51,7 @@ type AuthModuleCert struct {
 }
 
 func NewAuthModuleCert(env Env, caChain []byte) *AuthModuleCert {
+	logtrace.LogWithFunctionName()
 	return &AuthModuleCert{
 		env:                  env,
 		method:               db.MethodAuthenticatorCert,
@@ -59,6 +62,7 @@ func NewAuthModuleCert(env Env, caChain []byte) *AuthModuleCert {
 }
 
 func (module *AuthModuleCert) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
@@ -71,6 +75,7 @@ func (module *AuthModuleCert) CanHandle(method string) bool {
 // certificates are allowed by authentication policy. Due to the way certificate authentication works, we may
 // not know the authentication policy until after the signing root CA is determined.
 func (module *AuthModuleCert) verifyClientCerts(clientCerts []*x509.Certificate, roots *x509.CertPool) ([][]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	clientCert := clientCerts[0]
 
 	//time checks are done manually based on authentication policy
@@ -100,6 +105,7 @@ func (module *AuthModuleCert) verifyClientCerts(clientCerts []*x509.Certificate,
 
 // isCertExpirationValid returns true if the provided certificates validations period is currently valid.
 func (module *AuthModuleCert) isCertExpirationValid(clientCert *x509.Certificate) bool {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	return now.Before(clientCert.NotAfter) && now.After(clientCert.NotBefore)
 }
@@ -115,6 +121,7 @@ func (module *AuthModuleCert) isCertExpirationValid(clientCert *x509.Certificate
 // 6) obtain the target identity's auth policy
 // 7) verify according to auth policy
 func (module *AuthModuleCert) Process(context AuthContext) (AuthResult, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("authMethod", module.method)
 
 	certs, err := module.getClientCerts(context)
@@ -237,6 +244,7 @@ func (module *AuthModuleCert) Process(context AuthContext) (AuthResult, error) {
 // CAs. The result is a caPool which has both a root x509.CertPool and a map of the CA certificates indexed by
 // their fingerprint.
 func (module *AuthModuleCert) getCas() *caPool {
+	logtrace.LogWithFunctionName()
 	result := &caPool{
 		roots: x509.NewCertPool(),
 		cas:   map[string]*Ca{},
@@ -284,6 +292,7 @@ func (module *AuthModuleCert) getCas() *caPool {
 }
 
 func (module *AuthModuleCert) isEdgeRouter(clientCert *x509.Certificate) bool {
+	logtrace.LogWithFunctionName()
 
 	fingerprint := module.fingerprintGenerator.FromCert(clientCert)
 
@@ -304,6 +313,7 @@ func (module *AuthModuleCert) isEdgeRouter(clientCert *x509.Certificate) bool {
 // request. The client certificates may be directly provided by the TLS handshake or proxied from a trusted
 // source (i.e. edge routers)
 func (module *AuthModuleCert) getClientCerts(ctx AuthContext) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	peerCerts := ctx.GetCerts()
 
 	if len(peerCerts) == 0 {
@@ -320,6 +330,7 @@ func (module *AuthModuleCert) getClientCerts(ctx AuthContext) ([]*x509.Certifica
 // ensureAuthenticatorCertPem ensures that a client's certificate is stored in `cert` authenticators. Older versions
 // of Ziti did not store this information on enrollment.
 func (module *AuthModuleCert) ensureAuthenticatorCertPem(authenticator *Authenticator, clientCert *x509.Certificate, ctx *change.Context) {
+	logtrace.LogWithFunctionName()
 	if authCert, ok := authenticator.SubType.(*AuthenticatorCert); ok {
 		if authCert.Pem == "" {
 			certPem := pem.EncodeToMemory(&pem.Block{
@@ -338,6 +349,7 @@ func (module *AuthModuleCert) ensureAuthenticatorCertPem(authenticator *Authenti
 // authenticatorExternalId returns an authenticator that represents a cert based CA authentication that uses
 // `externalId` lookups.
 func (module *AuthModuleCert) authenticatorExternalId(identityId string, clientCert *x509.Certificate) *Authenticator {
+	logtrace.LogWithFunctionName()
 	authenticator := &Authenticator{
 		BaseEntity: models.BaseEntity{
 			Id:        "internal",
@@ -360,6 +372,7 @@ func (module *AuthModuleCert) authenticatorExternalId(identityId string, clientC
 }
 
 func (module *AuthModuleCert) getProxiedClientCerts(ctx AuthContext) ([]*x509.Certificate, error) {
+	logtrace.LogWithFunctionName()
 	peerCerts := ctx.GetCerts()
 
 	if len(peerCerts) == 0 {
@@ -412,6 +425,7 @@ type caPool struct {
 }
 
 func (c *caPool) getCaByChain(chains [][]*x509.Certificate, generator cert.FingerprintGenerator) *Ca {
+	logtrace.LogWithFunctionName()
 	for _, chain := range chains {
 		for _, curCert := range chain {
 			fingerprint := generator.FromCert(curCert)
@@ -426,6 +440,7 @@ func (c *caPool) getCaByChain(chains [][]*x509.Certificate, generator cert.Finge
 }
 
 func getAuthPolicyByIdentityId(env Env, authMethod string, authenticatorId string, identityId string) (*AuthPolicy, *Identity, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().
 		WithField("authenticatorId", authenticatorId).
 		WithField("identityId", identityId).
@@ -455,6 +470,7 @@ func getAuthPolicyByIdentityId(env Env, authMethod string, authenticatorId strin
 }
 
 func getAuthPolicyByExternalId(env Env, authMethod string, authenticatorId string, externalId string) (*AuthPolicy, *Identity, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().
 		WithField("authenticatorId", authenticatorId).
 		WithField("externalId", externalId).

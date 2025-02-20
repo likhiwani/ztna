@@ -19,22 +19,25 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math/rand"
+	"time"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zitirest"
+	"ztna-core/ztna/zititest/zitilab/chaos"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/zitirest"
-	"ztna-core/ztna/zititest/zitilab/chaos"
 	"google.golang.org/protobuf/proto"
-	"math/rand"
-	"time"
 )
 
 // start with a random scenario then cycle through them
 var scenarioCounter = rand.Intn(7)
 
 func sowChaos(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	var controllers []*model.Component
 	var err error
 
@@ -76,6 +79,7 @@ func sowChaos(run model.Run) error {
 }
 
 func validateSdkStatus(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ctrls := run.GetModel().SelectComponents(".ctrl")
 	errC := make(chan error, len(ctrls))
 	deadline := time.Now().Add(8 * time.Minute)
@@ -95,10 +99,12 @@ func validateSdkStatus(run model.Run) error {
 }
 
 func validateSdkStatusForCtrlWithChan(run model.Run, c *model.Component, deadline time.Time, errC chan<- error) {
+	logtrace.LogWithFunctionName()
 	errC <- validateSdkStatusForCtrl(run, c, deadline)
 }
 
 func validateSdkStatusForCtrl(run model.Run, c *model.Component, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	clients, err := chaos.EnsureLoggedIntoCtrl(run, c, time.Minute)
 	if err != nil {
 		return err
@@ -131,6 +137,7 @@ func validateSdkStatusForCtrl(run model.Run, c *model.Component, deadline time.T
 }
 
 func validateSdkStatuses(id string, clients *zitirest.Clients) (int, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("ctrl", id)
 
 	closeNotify := make(chan struct{})

@@ -7,6 +7,7 @@
 package edge_cmd_pb
 
 import (
+	"ztna-core/ztna/logtrace"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -59,29 +60,35 @@ var (
 )
 
 func (x CommandType) Enum() *CommandType {
+    logtrace.LogWithFunctionName()
 	p := new(CommandType)
 	*p = x
 	return p
 }
 
 func (x CommandType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
 func (CommandType) Descriptor() protoreflect.EnumDescriptor {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_enumTypes[0].Descriptor()
 }
 
 func (CommandType) Type() protoreflect.EnumType {
+    logtrace.LogWithFunctionName()
 	return &file_edge_cmd_proto_enumTypes[0]
 }
 
 func (x CommandType) Number() protoreflect.EnumNumber {
+    logtrace.LogWithFunctionName()
 	return protoreflect.EnumNumber(x)
 }
 
 // Deprecated: Use CommandType.Descriptor instead.
 func (CommandType) EnumDescriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{0}
 }
 
@@ -95,6 +102,7 @@ type ChangeContext struct {
 }
 
 func (x *ChangeContext) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ChangeContext{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[0]
@@ -104,12 +112,16 @@ func (x *ChangeContext) Reset() {
 }
 
 func (x *ChangeContext) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ChangeContext) ProtoMessage() {}
+func (*ChangeContext) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ChangeContext) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -123,10 +135,12 @@ func (x *ChangeContext) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeContext.ProtoReflect.Descriptor instead.
 func (*ChangeContext) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ChangeContext) GetAttributes() map[string]string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Attributes
 	}
@@ -134,6 +148,7 @@ func (x *ChangeContext) GetAttributes() map[string]string {
 }
 
 func (x *ChangeContext) GetRaftIndex() uint64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RaftIndex
 	}
@@ -150,6 +165,7 @@ type CreateEdgeTerminatorCommand struct {
 }
 
 func (x *CreateEdgeTerminatorCommand) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateEdgeTerminatorCommand{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[1]
@@ -159,12 +175,16 @@ func (x *CreateEdgeTerminatorCommand) Reset() {
 }
 
 func (x *CreateEdgeTerminatorCommand) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateEdgeTerminatorCommand) ProtoMessage() {}
+func (*CreateEdgeTerminatorCommand) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CreateEdgeTerminatorCommand) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -178,10 +198,12 @@ func (x *CreateEdgeTerminatorCommand) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEdgeTerminatorCommand.ProtoReflect.Descriptor instead.
 func (*CreateEdgeTerminatorCommand) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CreateEdgeTerminatorCommand) GetTerminatorData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorData
 	}
@@ -189,6 +211,7 @@ func (x *CreateEdgeTerminatorCommand) GetTerminatorData() []byte {
 }
 
 func (x *CreateEdgeTerminatorCommand) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -210,6 +233,7 @@ type TagValue struct {
 }
 
 func (x *TagValue) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = TagValue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[2]
@@ -219,12 +243,16 @@ func (x *TagValue) Reset() {
 }
 
 func (x *TagValue) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TagValue) ProtoMessage() {}
+func (*TagValue) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *TagValue) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -238,10 +266,12 @@ func (x *TagValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagValue.ProtoReflect.Descriptor instead.
 func (*TagValue) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{2}
 }
 
 func (m *TagValue) GetValue() isTagValue_Value {
+    logtrace.LogWithFunctionName()
 	if m != nil {
 		return m.Value
 	}
@@ -249,6 +279,7 @@ func (m *TagValue) GetValue() isTagValue_Value {
 }
 
 func (x *TagValue) GetBoolValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_BoolValue); ok {
 		return x.BoolValue
 	}
@@ -256,6 +287,7 @@ func (x *TagValue) GetBoolValue() bool {
 }
 
 func (x *TagValue) GetStringValue() string {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_StringValue); ok {
 		return x.StringValue
 	}
@@ -263,6 +295,7 @@ func (x *TagValue) GetStringValue() string {
 }
 
 func (x *TagValue) GetFpValue() float64 {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_FpValue); ok {
 		return x.FpValue
 	}
@@ -270,6 +303,7 @@ func (x *TagValue) GetFpValue() float64 {
 }
 
 func (x *TagValue) GetNilValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*TagValue_NilValue); ok {
 		return x.NilValue
 	}
@@ -296,13 +330,21 @@ type TagValue_NilValue struct {
 	NilValue bool `protobuf:"varint,4,opt,name=nilValue,proto3,oneof"`
 }
 
-func (*TagValue_BoolValue) isTagValue_Value() {}
+func (*TagValue_BoolValue) isTagValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_StringValue) isTagValue_Value() {}
+func (*TagValue_StringValue) isTagValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_FpValue) isTagValue_Value() {}
+func (*TagValue_FpValue) isTagValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*TagValue_NilValue) isTagValue_Value() {}
+func (*TagValue_NilValue) isTagValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
 type JsonMap struct {
 	state         protoimpl.MessageState
@@ -313,6 +355,7 @@ type JsonMap struct {
 }
 
 func (x *JsonMap) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = JsonMap{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[3]
@@ -322,12 +365,16 @@ func (x *JsonMap) Reset() {
 }
 
 func (x *JsonMap) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JsonMap) ProtoMessage() {}
+func (*JsonMap) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *JsonMap) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -341,10 +388,12 @@ func (x *JsonMap) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonMap.ProtoReflect.Descriptor instead.
 func (*JsonMap) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *JsonMap) GetValue() map[string]*JsonValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Value
 	}
@@ -360,6 +409,7 @@ type JsonList struct {
 }
 
 func (x *JsonList) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = JsonList{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[4]
@@ -369,12 +419,16 @@ func (x *JsonList) Reset() {
 }
 
 func (x *JsonList) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JsonList) ProtoMessage() {}
+func (*JsonList) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *JsonList) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -388,10 +442,12 @@ func (x *JsonList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonList.ProtoReflect.Descriptor instead.
 func (*JsonList) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *JsonList) GetValue() []*JsonValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Value
 	}
@@ -416,6 +472,7 @@ type JsonValue struct {
 }
 
 func (x *JsonValue) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = JsonValue{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[5]
@@ -425,12 +482,16 @@ func (x *JsonValue) Reset() {
 }
 
 func (x *JsonValue) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JsonValue) ProtoMessage() {}
+func (*JsonValue) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *JsonValue) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -444,10 +505,12 @@ func (x *JsonValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JsonValue.ProtoReflect.Descriptor instead.
 func (*JsonValue) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{5}
 }
 
 func (m *JsonValue) GetValue() isJsonValue_Value {
+    logtrace.LogWithFunctionName()
 	if m != nil {
 		return m.Value
 	}
@@ -455,6 +518,7 @@ func (m *JsonValue) GetValue() isJsonValue_Value {
 }
 
 func (x *JsonValue) GetBoolValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_BoolValue); ok {
 		return x.BoolValue
 	}
@@ -462,6 +526,7 @@ func (x *JsonValue) GetBoolValue() bool {
 }
 
 func (x *JsonValue) GetStringValue() string {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_StringValue); ok {
 		return x.StringValue
 	}
@@ -469,6 +534,7 @@ func (x *JsonValue) GetStringValue() string {
 }
 
 func (x *JsonValue) GetFpValue() float64 {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_FpValue); ok {
 		return x.FpValue
 	}
@@ -476,6 +542,7 @@ func (x *JsonValue) GetFpValue() float64 {
 }
 
 func (x *JsonValue) GetInt64Value() int64 {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_Int64Value); ok {
 		return x.Int64Value
 	}
@@ -483,6 +550,7 @@ func (x *JsonValue) GetInt64Value() int64 {
 }
 
 func (x *JsonValue) GetNilValue() bool {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_NilValue); ok {
 		return x.NilValue
 	}
@@ -490,6 +558,7 @@ func (x *JsonValue) GetNilValue() bool {
 }
 
 func (x *JsonValue) GetMapValue() *JsonMap {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_MapValue); ok {
 		return x.MapValue
 	}
@@ -497,6 +566,7 @@ func (x *JsonValue) GetMapValue() *JsonMap {
 }
 
 func (x *JsonValue) GetListValue() *JsonList {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetValue().(*JsonValue_ListValue); ok {
 		return x.ListValue
 	}
@@ -535,19 +605,33 @@ type JsonValue_ListValue struct {
 	ListValue *JsonList `protobuf:"bytes,7,opt,name=listValue,proto3,oneof"`
 }
 
-func (*JsonValue_BoolValue) isJsonValue_Value() {}
+func (*JsonValue_BoolValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_StringValue) isJsonValue_Value() {}
+func (*JsonValue_StringValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_FpValue) isJsonValue_Value() {}
+func (*JsonValue_FpValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_Int64Value) isJsonValue_Value() {}
+func (*JsonValue_Int64Value) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_NilValue) isJsonValue_Value() {}
+func (*JsonValue_NilValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_MapValue) isJsonValue_Value() {}
+func (*JsonValue_MapValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*JsonValue_ListValue) isJsonValue_Value() {}
+func (*JsonValue_ListValue) isJsonValue_Value() {
+    logtrace.LogWithFunctionName()
+}
 
 // Authenticators
 type Authenticator struct {
@@ -566,6 +650,7 @@ type Authenticator struct {
 }
 
 func (x *Authenticator) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Authenticator{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[6]
@@ -575,12 +660,16 @@ func (x *Authenticator) Reset() {
 }
 
 func (x *Authenticator) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Authenticator) ProtoMessage() {}
+func (*Authenticator) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Authenticator) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -594,10 +683,12 @@ func (x *Authenticator) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Authenticator.ProtoReflect.Descriptor instead.
 func (*Authenticator) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Authenticator) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -605,6 +696,7 @@ func (x *Authenticator) GetId() string {
 }
 
 func (x *Authenticator) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -612,6 +704,7 @@ func (x *Authenticator) GetTags() map[string]*TagValue {
 }
 
 func (x *Authenticator) GetIdentityId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityId
 	}
@@ -619,6 +712,7 @@ func (x *Authenticator) GetIdentityId() string {
 }
 
 func (m *Authenticator) GetSubtype() isAuthenticator_Subtype {
+    logtrace.LogWithFunctionName()
 	if m != nil {
 		return m.Subtype
 	}
@@ -626,6 +720,7 @@ func (m *Authenticator) GetSubtype() isAuthenticator_Subtype {
 }
 
 func (x *Authenticator) GetCert() *Authenticator_Cert {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*Authenticator_Cert_); ok {
 		return x.Cert
 	}
@@ -633,6 +728,7 @@ func (x *Authenticator) GetCert() *Authenticator_Cert {
 }
 
 func (x *Authenticator) GetUpdb() *Authenticator_Updb {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*Authenticator_Updb_); ok {
 		return x.Updb
 	}
@@ -651,9 +747,13 @@ type Authenticator_Updb_ struct {
 	Updb *Authenticator_Updb `protobuf:"bytes,5,opt,name=updb,proto3,oneof"`
 }
 
-func (*Authenticator_Cert_) isAuthenticator_Subtype() {}
+func (*Authenticator_Cert_) isAuthenticator_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*Authenticator_Updb_) isAuthenticator_Subtype() {}
+func (*Authenticator_Updb_) isAuthenticator_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
 // Auth Policies
 type AuthPolicy struct {
@@ -669,6 +769,7 @@ type AuthPolicy struct {
 }
 
 func (x *AuthPolicy) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[7]
@@ -678,12 +779,16 @@ func (x *AuthPolicy) Reset() {
 }
 
 func (x *AuthPolicy) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy) ProtoMessage() {}
+func (*AuthPolicy) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -697,10 +802,12 @@ func (x *AuthPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy.ProtoReflect.Descriptor instead.
 func (*AuthPolicy) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AuthPolicy) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -708,6 +815,7 @@ func (x *AuthPolicy) GetId() string {
 }
 
 func (x *AuthPolicy) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -715,6 +823,7 @@ func (x *AuthPolicy) GetName() string {
 }
 
 func (x *AuthPolicy) GetPrimary() *AuthPolicy_Primary {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Primary
 	}
@@ -722,6 +831,7 @@ func (x *AuthPolicy) GetPrimary() *AuthPolicy_Primary {
 }
 
 func (x *AuthPolicy) GetSecondary() *AuthPolicy_Secondary {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Secondary
 	}
@@ -729,6 +839,7 @@ func (x *AuthPolicy) GetSecondary() *AuthPolicy_Secondary {
 }
 
 func (x *AuthPolicy) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -757,6 +868,7 @@ type Ca struct {
 }
 
 func (x *Ca) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Ca{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[8]
@@ -766,12 +878,16 @@ func (x *Ca) Reset() {
 }
 
 func (x *Ca) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Ca) ProtoMessage() {}
+func (*Ca) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Ca) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -785,10 +901,12 @@ func (x *Ca) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ca.ProtoReflect.Descriptor instead.
 func (*Ca) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Ca) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -796,6 +914,7 @@ func (x *Ca) GetId() string {
 }
 
 func (x *Ca) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -803,6 +922,7 @@ func (x *Ca) GetName() string {
 }
 
 func (x *Ca) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -810,6 +930,7 @@ func (x *Ca) GetTags() map[string]*TagValue {
 }
 
 func (x *Ca) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprint
 	}
@@ -817,6 +938,7 @@ func (x *Ca) GetFingerprint() string {
 }
 
 func (x *Ca) GetCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CertPem
 	}
@@ -824,6 +946,7 @@ func (x *Ca) GetCertPem() string {
 }
 
 func (x *Ca) GetIsVerified() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVerified
 	}
@@ -831,6 +954,7 @@ func (x *Ca) GetIsVerified() bool {
 }
 
 func (x *Ca) GetVerificationToken() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.VerificationToken
 	}
@@ -838,6 +962,7 @@ func (x *Ca) GetVerificationToken() string {
 }
 
 func (x *Ca) GetIsAutoCaEnrollmentEnabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsAutoCaEnrollmentEnabled
 	}
@@ -845,6 +970,7 @@ func (x *Ca) GetIsAutoCaEnrollmentEnabled() bool {
 }
 
 func (x *Ca) GetIsOttCaEnrollmentEnabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsOttCaEnrollmentEnabled
 	}
@@ -852,6 +978,7 @@ func (x *Ca) GetIsOttCaEnrollmentEnabled() bool {
 }
 
 func (x *Ca) GetIsAuthEnabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsAuthEnabled
 	}
@@ -859,6 +986,7 @@ func (x *Ca) GetIsAuthEnabled() bool {
 }
 
 func (x *Ca) GetIdentityRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityRoles
 	}
@@ -866,6 +994,7 @@ func (x *Ca) GetIdentityRoles() []string {
 }
 
 func (x *Ca) GetIdentityNameFormat() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityNameFormat
 	}
@@ -873,6 +1002,7 @@ func (x *Ca) GetIdentityNameFormat() string {
 }
 
 func (x *Ca) GetExternalIdClaim() *Ca_ExternalIdClaim {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ExternalIdClaim
 	}
@@ -893,6 +1023,7 @@ type Config struct {
 }
 
 func (x *Config) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Config{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[9]
@@ -902,12 +1033,16 @@ func (x *Config) Reset() {
 }
 
 func (x *Config) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Config) ProtoMessage() {}
+func (*Config) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Config) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -921,10 +1056,12 @@ func (x *Config) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Config.ProtoReflect.Descriptor instead.
 func (*Config) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Config) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -932,6 +1069,7 @@ func (x *Config) GetId() string {
 }
 
 func (x *Config) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -939,6 +1077,7 @@ func (x *Config) GetName() string {
 }
 
 func (x *Config) GetConfigTypeId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ConfigTypeId
 	}
@@ -946,6 +1085,7 @@ func (x *Config) GetConfigTypeId() string {
 }
 
 func (x *Config) GetData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Data
 	}
@@ -953,6 +1093,7 @@ func (x *Config) GetData() []byte {
 }
 
 func (x *Config) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -972,6 +1113,7 @@ type ConfigType struct {
 }
 
 func (x *ConfigType) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ConfigType{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[10]
@@ -981,12 +1123,16 @@ func (x *ConfigType) Reset() {
 }
 
 func (x *ConfigType) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ConfigType) ProtoMessage() {}
+func (*ConfigType) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ConfigType) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1000,10 +1146,12 @@ func (x *ConfigType) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigType.ProtoReflect.Descriptor instead.
 func (*ConfigType) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ConfigType) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1011,6 +1159,7 @@ func (x *ConfigType) GetId() string {
 }
 
 func (x *ConfigType) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -1018,6 +1167,7 @@ func (x *ConfigType) GetName() string {
 }
 
 func (x *ConfigType) GetSchema() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Schema
 	}
@@ -1025,6 +1175,7 @@ func (x *ConfigType) GetSchema() []byte {
 }
 
 func (x *ConfigType) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1049,6 +1200,7 @@ type Controller struct {
 }
 
 func (x *Controller) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Controller{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[11]
@@ -1058,12 +1210,16 @@ func (x *Controller) Reset() {
 }
 
 func (x *Controller) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Controller) ProtoMessage() {}
+func (*Controller) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Controller) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1077,10 +1233,12 @@ func (x *Controller) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Controller.ProtoReflect.Descriptor instead.
 func (*Controller) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Controller) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1088,6 +1246,7 @@ func (x *Controller) GetId() string {
 }
 
 func (x *Controller) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -1095,6 +1254,7 @@ func (x *Controller) GetName() string {
 }
 
 func (x *Controller) GetAddress() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Address
 	}
@@ -1102,6 +1262,7 @@ func (x *Controller) GetAddress() string {
 }
 
 func (x *Controller) GetCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CertPem
 	}
@@ -1109,6 +1270,7 @@ func (x *Controller) GetCertPem() string {
 }
 
 func (x *Controller) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprint
 	}
@@ -1116,6 +1278,7 @@ func (x *Controller) GetFingerprint() string {
 }
 
 func (x *Controller) GetIsOnline() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsOnline
 	}
@@ -1123,6 +1286,7 @@ func (x *Controller) GetIsOnline() bool {
 }
 
 func (x *Controller) GetLastJoinedAt() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LastJoinedAt
 	}
@@ -1130,6 +1294,7 @@ func (x *Controller) GetLastJoinedAt() *timestamppb.Timestamp {
 }
 
 func (x *Controller) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1137,6 +1302,7 @@ func (x *Controller) GetTags() map[string]*TagValue {
 }
 
 func (x *Controller) GetApiAddresses() map[string]*ApiAddressList {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ApiAddresses
 	}
@@ -1152,6 +1318,7 @@ type ApiAddressList struct {
 }
 
 func (x *ApiAddressList) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ApiAddressList{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[12]
@@ -1161,12 +1328,16 @@ func (x *ApiAddressList) Reset() {
 }
 
 func (x *ApiAddressList) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApiAddressList) ProtoMessage() {}
+func (*ApiAddressList) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ApiAddressList) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1180,10 +1351,12 @@ func (x *ApiAddressList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiAddressList.ProtoReflect.Descriptor instead.
 func (*ApiAddressList) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ApiAddressList) GetAddresses() []*ApiAddress {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Addresses
 	}
@@ -1200,6 +1373,7 @@ type ApiAddress struct {
 }
 
 func (x *ApiAddress) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ApiAddress{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[13]
@@ -1209,12 +1383,16 @@ func (x *ApiAddress) Reset() {
 }
 
 func (x *ApiAddress) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ApiAddress) ProtoMessage() {}
+func (*ApiAddress) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ApiAddress) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1228,10 +1406,12 @@ func (x *ApiAddress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApiAddress.ProtoReflect.Descriptor instead.
 func (*ApiAddress) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ApiAddress) GetUrl() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Url
 	}
@@ -1239,6 +1419,7 @@ func (x *ApiAddress) GetUrl() string {
 }
 
 func (x *ApiAddress) GetVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Version
 	}
@@ -1269,6 +1450,7 @@ type EdgeRouter struct {
 }
 
 func (x *EdgeRouter) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = EdgeRouter{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[14]
@@ -1278,12 +1460,16 @@ func (x *EdgeRouter) Reset() {
 }
 
 func (x *EdgeRouter) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EdgeRouter) ProtoMessage() {}
+func (*EdgeRouter) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *EdgeRouter) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1297,10 +1483,12 @@ func (x *EdgeRouter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EdgeRouter.ProtoReflect.Descriptor instead.
 func (*EdgeRouter) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *EdgeRouter) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1308,6 +1496,7 @@ func (x *EdgeRouter) GetId() string {
 }
 
 func (x *EdgeRouter) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -1315,6 +1504,7 @@ func (x *EdgeRouter) GetName() string {
 }
 
 func (x *EdgeRouter) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1322,6 +1512,7 @@ func (x *EdgeRouter) GetTags() map[string]*TagValue {
 }
 
 func (x *EdgeRouter) GetRoleAttributes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RoleAttributes
 	}
@@ -1329,6 +1520,7 @@ func (x *EdgeRouter) GetRoleAttributes() []string {
 }
 
 func (x *EdgeRouter) GetIsVerified() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVerified
 	}
@@ -1336,6 +1528,7 @@ func (x *EdgeRouter) GetIsVerified() bool {
 }
 
 func (x *EdgeRouter) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Fingerprint != nil {
 		return *x.Fingerprint
 	}
@@ -1343,6 +1536,7 @@ func (x *EdgeRouter) GetFingerprint() string {
 }
 
 func (x *EdgeRouter) GetCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.CertPem != nil {
 		return *x.CertPem
 	}
@@ -1350,6 +1544,7 @@ func (x *EdgeRouter) GetCertPem() string {
 }
 
 func (x *EdgeRouter) GetHostname() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Hostname != nil {
 		return *x.Hostname
 	}
@@ -1357,6 +1552,7 @@ func (x *EdgeRouter) GetHostname() string {
 }
 
 func (x *EdgeRouter) GetIsTunnelerEnabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsTunnelerEnabled
 	}
@@ -1364,6 +1560,7 @@ func (x *EdgeRouter) GetIsTunnelerEnabled() bool {
 }
 
 func (x *EdgeRouter) GetAppData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppData
 	}
@@ -1371,6 +1568,7 @@ func (x *EdgeRouter) GetAppData() []byte {
 }
 
 func (x *EdgeRouter) GetUnverifiedFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.UnverifiedFingerprint != nil {
 		return *x.UnverifiedFingerprint
 	}
@@ -1378,6 +1576,7 @@ func (x *EdgeRouter) GetUnverifiedFingerprint() string {
 }
 
 func (x *EdgeRouter) GetUnverifiedCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.UnverifiedCertPem != nil {
 		return *x.UnverifiedCertPem
 	}
@@ -1385,6 +1584,7 @@ func (x *EdgeRouter) GetUnverifiedCertPem() string {
 }
 
 func (x *EdgeRouter) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -1392,6 +1592,7 @@ func (x *EdgeRouter) GetCost() uint32 {
 }
 
 func (x *EdgeRouter) GetNoTraversal() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NoTraversal
 	}
@@ -1399,6 +1600,7 @@ func (x *EdgeRouter) GetNoTraversal() bool {
 }
 
 func (x *EdgeRouter) GetDisabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Disabled
 	}
@@ -1415,6 +1617,7 @@ type ReEnrollEdgeRouterCmd struct {
 }
 
 func (x *ReEnrollEdgeRouterCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ReEnrollEdgeRouterCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[15]
@@ -1424,12 +1627,16 @@ func (x *ReEnrollEdgeRouterCmd) Reset() {
 }
 
 func (x *ReEnrollEdgeRouterCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReEnrollEdgeRouterCmd) ProtoMessage() {}
+func (*ReEnrollEdgeRouterCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ReEnrollEdgeRouterCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1443,10 +1650,12 @@ func (x *ReEnrollEdgeRouterCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReEnrollEdgeRouterCmd.ProtoReflect.Descriptor instead.
 func (*ReEnrollEdgeRouterCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ReEnrollEdgeRouterCmd) GetEdgeRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EdgeRouterId
 	}
@@ -1454,6 +1663,7 @@ func (x *ReEnrollEdgeRouterCmd) GetEdgeRouterId() string {
 }
 
 func (x *ReEnrollEdgeRouterCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -1471,6 +1681,7 @@ type CreateEdgeRouterCmd struct {
 }
 
 func (x *CreateEdgeRouterCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateEdgeRouterCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[16]
@@ -1480,12 +1691,16 @@ func (x *CreateEdgeRouterCmd) Reset() {
 }
 
 func (x *CreateEdgeRouterCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateEdgeRouterCmd) ProtoMessage() {}
+func (*CreateEdgeRouterCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CreateEdgeRouterCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1499,10 +1714,12 @@ func (x *CreateEdgeRouterCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateEdgeRouterCmd.ProtoReflect.Descriptor instead.
 func (*CreateEdgeRouterCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CreateEdgeRouterCmd) GetEdgeRouter() *EdgeRouter {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EdgeRouter
 	}
@@ -1510,6 +1727,7 @@ func (x *CreateEdgeRouterCmd) GetEdgeRouter() *EdgeRouter {
 }
 
 func (x *CreateEdgeRouterCmd) GetEnrollment() *Enrollment {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Enrollment
 	}
@@ -1517,6 +1735,7 @@ func (x *CreateEdgeRouterCmd) GetEnrollment() *Enrollment {
 }
 
 func (x *CreateEdgeRouterCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -1538,6 +1757,7 @@ type EdgeRouterPolicy struct {
 }
 
 func (x *EdgeRouterPolicy) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = EdgeRouterPolicy{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[17]
@@ -1547,12 +1767,16 @@ func (x *EdgeRouterPolicy) Reset() {
 }
 
 func (x *EdgeRouterPolicy) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EdgeRouterPolicy) ProtoMessage() {}
+func (*EdgeRouterPolicy) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *EdgeRouterPolicy) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1566,10 +1790,12 @@ func (x *EdgeRouterPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EdgeRouterPolicy.ProtoReflect.Descriptor instead.
 func (*EdgeRouterPolicy) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *EdgeRouterPolicy) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1577,6 +1803,7 @@ func (x *EdgeRouterPolicy) GetId() string {
 }
 
 func (x *EdgeRouterPolicy) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -1584,6 +1811,7 @@ func (x *EdgeRouterPolicy) GetName() string {
 }
 
 func (x *EdgeRouterPolicy) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1591,6 +1819,7 @@ func (x *EdgeRouterPolicy) GetTags() map[string]*TagValue {
 }
 
 func (x *EdgeRouterPolicy) GetSemantic() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Semantic
 	}
@@ -1598,6 +1827,7 @@ func (x *EdgeRouterPolicy) GetSemantic() string {
 }
 
 func (x *EdgeRouterPolicy) GetEdgeRouterRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EdgeRouterRoles
 	}
@@ -1605,6 +1835,7 @@ func (x *EdgeRouterPolicy) GetEdgeRouterRoles() []string {
 }
 
 func (x *EdgeRouterPolicy) GetIdentityRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityRoles
 	}
@@ -1632,6 +1863,7 @@ type Enrollment struct {
 }
 
 func (x *Enrollment) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Enrollment{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[18]
@@ -1641,12 +1873,16 @@ func (x *Enrollment) Reset() {
 }
 
 func (x *Enrollment) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Enrollment) ProtoMessage() {}
+func (*Enrollment) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Enrollment) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1660,10 +1896,12 @@ func (x *Enrollment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Enrollment.ProtoReflect.Descriptor instead.
 func (*Enrollment) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Enrollment) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1671,6 +1909,7 @@ func (x *Enrollment) GetId() string {
 }
 
 func (x *Enrollment) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1678,6 +1917,7 @@ func (x *Enrollment) GetTags() map[string]*TagValue {
 }
 
 func (x *Enrollment) GetMethod() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Method
 	}
@@ -1685,6 +1925,7 @@ func (x *Enrollment) GetMethod() string {
 }
 
 func (x *Enrollment) GetIdentityId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.IdentityId != nil {
 		return *x.IdentityId
 	}
@@ -1692,6 +1933,7 @@ func (x *Enrollment) GetIdentityId() string {
 }
 
 func (x *Enrollment) GetTransitRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.TransitRouterId != nil {
 		return *x.TransitRouterId
 	}
@@ -1699,6 +1941,7 @@ func (x *Enrollment) GetTransitRouterId() string {
 }
 
 func (x *Enrollment) GetEdgeRouterId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.EdgeRouterId != nil {
 		return *x.EdgeRouterId
 	}
@@ -1706,6 +1949,7 @@ func (x *Enrollment) GetEdgeRouterId() string {
 }
 
 func (x *Enrollment) GetToken() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Token
 	}
@@ -1713,6 +1957,7 @@ func (x *Enrollment) GetToken() string {
 }
 
 func (x *Enrollment) GetIssuedAt() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IssuedAt
 	}
@@ -1720,6 +1965,7 @@ func (x *Enrollment) GetIssuedAt() *timestamppb.Timestamp {
 }
 
 func (x *Enrollment) GetExpiresAt() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ExpiresAt
 	}
@@ -1727,6 +1973,7 @@ func (x *Enrollment) GetExpiresAt() *timestamppb.Timestamp {
 }
 
 func (x *Enrollment) GetJwt() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Jwt
 	}
@@ -1734,6 +1981,7 @@ func (x *Enrollment) GetJwt() string {
 }
 
 func (x *Enrollment) GetCaId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.CaId != nil {
 		return *x.CaId
 	}
@@ -1741,6 +1989,7 @@ func (x *Enrollment) GetCaId() string {
 }
 
 func (x *Enrollment) GetUsername() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Username != nil {
 		return *x.Username
 	}
@@ -1758,6 +2007,7 @@ type ReplaceEnrollmentWithAuthenticatorCmd struct {
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ReplaceEnrollmentWithAuthenticatorCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[19]
@@ -1767,12 +2017,16 @@ func (x *ReplaceEnrollmentWithAuthenticatorCmd) Reset() {
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReplaceEnrollmentWithAuthenticatorCmd) ProtoMessage() {}
+func (*ReplaceEnrollmentWithAuthenticatorCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1786,10 +2040,12 @@ func (x *ReplaceEnrollmentWithAuthenticatorCmd) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use ReplaceEnrollmentWithAuthenticatorCmd.ProtoReflect.Descriptor instead.
 func (*ReplaceEnrollmentWithAuthenticatorCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetEnrollmentId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EnrollmentId
 	}
@@ -1797,6 +2053,7 @@ func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetEnrollmentId() string {
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetAuthenticator() *Authenticator {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Authenticator
 	}
@@ -1804,6 +2061,7 @@ func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetAuthenticator() *Authenticato
 }
 
 func (x *ReplaceEnrollmentWithAuthenticatorCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -1837,6 +2095,7 @@ type ExternalJwtSigner struct {
 }
 
 func (x *ExternalJwtSigner) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ExternalJwtSigner{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[20]
@@ -1846,12 +2105,16 @@ func (x *ExternalJwtSigner) Reset() {
 }
 
 func (x *ExternalJwtSigner) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ExternalJwtSigner) ProtoMessage() {}
+func (*ExternalJwtSigner) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ExternalJwtSigner) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1865,10 +2128,12 @@ func (x *ExternalJwtSigner) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExternalJwtSigner.ProtoReflect.Descriptor instead.
 func (*ExternalJwtSigner) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ExternalJwtSigner) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -1876,6 +2141,7 @@ func (x *ExternalJwtSigner) GetId() string {
 }
 
 func (x *ExternalJwtSigner) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -1883,6 +2149,7 @@ func (x *ExternalJwtSigner) GetName() string {
 }
 
 func (x *ExternalJwtSigner) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -1890,6 +2157,7 @@ func (x *ExternalJwtSigner) GetTags() map[string]*TagValue {
 }
 
 func (x *ExternalJwtSigner) GetCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.CertPem != nil {
 		return *x.CertPem
 	}
@@ -1897,6 +2165,7 @@ func (x *ExternalJwtSigner) GetCertPem() string {
 }
 
 func (x *ExternalJwtSigner) GetJwksEndpoint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.JwksEndpoint != nil {
 		return *x.JwksEndpoint
 	}
@@ -1904,6 +2173,7 @@ func (x *ExternalJwtSigner) GetJwksEndpoint() string {
 }
 
 func (x *ExternalJwtSigner) GetKid() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Kid != nil {
 		return *x.Kid
 	}
@@ -1911,6 +2181,7 @@ func (x *ExternalJwtSigner) GetKid() string {
 }
 
 func (x *ExternalJwtSigner) GetEnabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Enabled
 	}
@@ -1918,6 +2189,7 @@ func (x *ExternalJwtSigner) GetEnabled() bool {
 }
 
 func (x *ExternalJwtSigner) GetExternalAuthUrl() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.ExternalAuthUrl != nil {
 		return *x.ExternalAuthUrl
 	}
@@ -1925,6 +2197,7 @@ func (x *ExternalJwtSigner) GetExternalAuthUrl() string {
 }
 
 func (x *ExternalJwtSigner) GetUseExternalId() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UseExternalId
 	}
@@ -1932,6 +2205,7 @@ func (x *ExternalJwtSigner) GetUseExternalId() bool {
 }
 
 func (x *ExternalJwtSigner) GetClaimsProperty() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.ClaimsProperty != nil {
 		return *x.ClaimsProperty
 	}
@@ -1939,6 +2213,7 @@ func (x *ExternalJwtSigner) GetClaimsProperty() string {
 }
 
 func (x *ExternalJwtSigner) GetIssuer() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Issuer != nil {
 		return *x.Issuer
 	}
@@ -1946,6 +2221,7 @@ func (x *ExternalJwtSigner) GetIssuer() string {
 }
 
 func (x *ExternalJwtSigner) GetAudience() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Audience != nil {
 		return *x.Audience
 	}
@@ -1953,6 +2229,7 @@ func (x *ExternalJwtSigner) GetAudience() string {
 }
 
 func (x *ExternalJwtSigner) GetCommonName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.CommonName
 	}
@@ -1960,6 +2237,7 @@ func (x *ExternalJwtSigner) GetCommonName() string {
 }
 
 func (x *ExternalJwtSigner) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Fingerprint != nil {
 		return *x.Fingerprint
 	}
@@ -1967,6 +2245,7 @@ func (x *ExternalJwtSigner) GetFingerprint() string {
 }
 
 func (x *ExternalJwtSigner) GetNotAfter() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NotAfter
 	}
@@ -1974,6 +2253,7 @@ func (x *ExternalJwtSigner) GetNotAfter() *timestamppb.Timestamp {
 }
 
 func (x *ExternalJwtSigner) GetNotBefore() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NotBefore
 	}
@@ -1981,6 +2261,7 @@ func (x *ExternalJwtSigner) GetNotBefore() *timestamppb.Timestamp {
 }
 
 func (x *ExternalJwtSigner) GetClientId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.ClientId != nil {
 		return *x.ClientId
 	}
@@ -1988,6 +2269,7 @@ func (x *ExternalJwtSigner) GetClientId() string {
 }
 
 func (x *ExternalJwtSigner) GetScopes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Scopes
 	}
@@ -2023,6 +2305,7 @@ type Identity struct {
 }
 
 func (x *Identity) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Identity{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[21]
@@ -2032,12 +2315,16 @@ func (x *Identity) Reset() {
 }
 
 func (x *Identity) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Identity) ProtoMessage() {}
+func (*Identity) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Identity) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2051,10 +2338,12 @@ func (x *Identity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Identity.ProtoReflect.Descriptor instead.
 func (*Identity) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *Identity) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2062,6 +2351,7 @@ func (x *Identity) GetId() string {
 }
 
 func (x *Identity) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2069,6 +2359,7 @@ func (x *Identity) GetName() string {
 }
 
 func (x *Identity) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2076,6 +2367,7 @@ func (x *Identity) GetTags() map[string]*TagValue {
 }
 
 func (x *Identity) GetIdentityTypeId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityTypeId
 	}
@@ -2083,6 +2375,7 @@ func (x *Identity) GetIdentityTypeId() string {
 }
 
 func (x *Identity) GetIsDefaultAdmin() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsDefaultAdmin
 	}
@@ -2090,6 +2383,7 @@ func (x *Identity) GetIsDefaultAdmin() bool {
 }
 
 func (x *Identity) GetIsAdmin() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsAdmin
 	}
@@ -2097,6 +2391,7 @@ func (x *Identity) GetIsAdmin() bool {
 }
 
 func (x *Identity) GetRoleAttributes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RoleAttributes
 	}
@@ -2104,6 +2399,7 @@ func (x *Identity) GetRoleAttributes() []string {
 }
 
 func (x *Identity) GetEnvInfo() *Identity_EnvInfo {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EnvInfo
 	}
@@ -2111,6 +2407,7 @@ func (x *Identity) GetEnvInfo() *Identity_EnvInfo {
 }
 
 func (x *Identity) GetSdkInfo() *Identity_SdkInfo {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.SdkInfo
 	}
@@ -2118,6 +2415,7 @@ func (x *Identity) GetSdkInfo() *Identity_SdkInfo {
 }
 
 func (x *Identity) GetDefaultHostingPrecedence() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DefaultHostingPrecedence
 	}
@@ -2125,6 +2423,7 @@ func (x *Identity) GetDefaultHostingPrecedence() uint32 {
 }
 
 func (x *Identity) GetDefaultHostingCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DefaultHostingCost
 	}
@@ -2132,6 +2431,7 @@ func (x *Identity) GetDefaultHostingCost() uint32 {
 }
 
 func (x *Identity) GetServiceHostingPrecedences() map[string]uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceHostingPrecedences
 	}
@@ -2139,6 +2439,7 @@ func (x *Identity) GetServiceHostingPrecedences() map[string]uint32 {
 }
 
 func (x *Identity) GetServiceHostingCosts() map[string]uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceHostingCosts
 	}
@@ -2146,6 +2447,7 @@ func (x *Identity) GetServiceHostingCosts() map[string]uint32 {
 }
 
 func (x *Identity) GetAppData() []byte {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppData
 	}
@@ -2153,6 +2455,7 @@ func (x *Identity) GetAppData() []byte {
 }
 
 func (x *Identity) GetAuthPolicyId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AuthPolicyId
 	}
@@ -2160,6 +2463,7 @@ func (x *Identity) GetAuthPolicyId() string {
 }
 
 func (x *Identity) GetExternalId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.ExternalId != nil {
 		return *x.ExternalId
 	}
@@ -2167,6 +2471,7 @@ func (x *Identity) GetExternalId() string {
 }
 
 func (x *Identity) GetDisabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Disabled
 	}
@@ -2174,6 +2479,7 @@ func (x *Identity) GetDisabled() bool {
 }
 
 func (x *Identity) GetDisabledAt() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DisabledAt
 	}
@@ -2181,6 +2487,7 @@ func (x *Identity) GetDisabledAt() *timestamppb.Timestamp {
 }
 
 func (x *Identity) GetDisabledUntil() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.DisabledUntil
 	}
@@ -2188,6 +2495,7 @@ func (x *Identity) GetDisabledUntil() *timestamppb.Timestamp {
 }
 
 func (x *Identity) GetServiceConfigs() []*Identity_ServiceConfig {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceConfigs
 	}
@@ -2205,6 +2513,7 @@ type CreateIdentityWithEnrollmentsCmd struct {
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateIdentityWithEnrollmentsCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[22]
@@ -2214,12 +2523,16 @@ func (x *CreateIdentityWithEnrollmentsCmd) Reset() {
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateIdentityWithEnrollmentsCmd) ProtoMessage() {}
+func (*CreateIdentityWithEnrollmentsCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CreateIdentityWithEnrollmentsCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2233,10 +2546,12 @@ func (x *CreateIdentityWithEnrollmentsCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateIdentityWithEnrollmentsCmd.ProtoReflect.Descriptor instead.
 func (*CreateIdentityWithEnrollmentsCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) GetIdentity() *Identity {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Identity
 	}
@@ -2244,6 +2559,7 @@ func (x *CreateIdentityWithEnrollmentsCmd) GetIdentity() *Identity {
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) GetEnrollments() []*Enrollment {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Enrollments
 	}
@@ -2251,6 +2567,7 @@ func (x *CreateIdentityWithEnrollmentsCmd) GetEnrollments() []*Enrollment {
 }
 
 func (x *CreateIdentityWithEnrollmentsCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -2272,6 +2589,7 @@ type Mfa struct {
 }
 
 func (x *Mfa) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Mfa{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[23]
@@ -2281,12 +2599,16 @@ func (x *Mfa) Reset() {
 }
 
 func (x *Mfa) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Mfa) ProtoMessage() {}
+func (*Mfa) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Mfa) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2300,10 +2622,12 @@ func (x *Mfa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Mfa.ProtoReflect.Descriptor instead.
 func (*Mfa) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *Mfa) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2311,6 +2635,7 @@ func (x *Mfa) GetId() string {
 }
 
 func (x *Mfa) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2318,6 +2643,7 @@ func (x *Mfa) GetTags() map[string]*TagValue {
 }
 
 func (x *Mfa) GetIsVerified() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVerified
 	}
@@ -2325,6 +2651,7 @@ func (x *Mfa) GetIsVerified() bool {
 }
 
 func (x *Mfa) GetIdentityId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityId
 	}
@@ -2332,6 +2659,7 @@ func (x *Mfa) GetIdentityId() string {
 }
 
 func (x *Mfa) GetSecret() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Secret
 	}
@@ -2339,6 +2667,7 @@ func (x *Mfa) GetSecret() string {
 }
 
 func (x *Mfa) GetRecoveryCodes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RecoveryCodes
 	}
@@ -2368,6 +2697,7 @@ type PostureCheck struct {
 }
 
 func (x *PostureCheck) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[24]
@@ -2377,12 +2707,16 @@ func (x *PostureCheck) Reset() {
 }
 
 func (x *PostureCheck) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck) ProtoMessage() {}
+func (*PostureCheck) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2396,10 +2730,12 @@ func (x *PostureCheck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck.ProtoReflect.Descriptor instead.
 func (*PostureCheck) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *PostureCheck) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2407,6 +2743,7 @@ func (x *PostureCheck) GetId() string {
 }
 
 func (x *PostureCheck) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2414,6 +2751,7 @@ func (x *PostureCheck) GetName() string {
 }
 
 func (x *PostureCheck) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2421,6 +2759,7 @@ func (x *PostureCheck) GetTags() map[string]*TagValue {
 }
 
 func (x *PostureCheck) GetTypeId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TypeId
 	}
@@ -2428,6 +2767,7 @@ func (x *PostureCheck) GetTypeId() string {
 }
 
 func (x *PostureCheck) GetVersion() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Version
 	}
@@ -2435,6 +2775,7 @@ func (x *PostureCheck) GetVersion() int64 {
 }
 
 func (x *PostureCheck) GetRoleAttributes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RoleAttributes
 	}
@@ -2442,6 +2783,7 @@ func (x *PostureCheck) GetRoleAttributes() []string {
 }
 
 func (m *PostureCheck) GetSubtype() isPostureCheck_Subtype {
+    logtrace.LogWithFunctionName()
 	if m != nil {
 		return m.Subtype
 	}
@@ -2449,6 +2791,7 @@ func (m *PostureCheck) GetSubtype() isPostureCheck_Subtype {
 }
 
 func (x *PostureCheck) GetMac() *PostureCheck_Mac {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_Mac_); ok {
 		return x.Mac
 	}
@@ -2456,6 +2799,7 @@ func (x *PostureCheck) GetMac() *PostureCheck_Mac {
 }
 
 func (x *PostureCheck) GetMfa() *PostureCheck_Mfa {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_Mfa_); ok {
 		return x.Mfa
 	}
@@ -2463,6 +2807,7 @@ func (x *PostureCheck) GetMfa() *PostureCheck_Mfa {
 }
 
 func (x *PostureCheck) GetOsList() *PostureCheck_OsList {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_OsList_); ok {
 		return x.OsList
 	}
@@ -2470,6 +2815,7 @@ func (x *PostureCheck) GetOsList() *PostureCheck_OsList {
 }
 
 func (x *PostureCheck) GetProcess() *PostureCheck_Process {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_Process_); ok {
 		return x.Process
 	}
@@ -2477,6 +2823,7 @@ func (x *PostureCheck) GetProcess() *PostureCheck_Process {
 }
 
 func (x *PostureCheck) GetProcessMulti() *PostureCheck_ProcessMulti {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_ProcessMulti_); ok {
 		return x.ProcessMulti
 	}
@@ -2484,6 +2831,7 @@ func (x *PostureCheck) GetProcessMulti() *PostureCheck_ProcessMulti {
 }
 
 func (x *PostureCheck) GetDomains() *PostureCheck_Domains {
+    logtrace.LogWithFunctionName()
 	if x, ok := x.GetSubtype().(*PostureCheck_Domains_); ok {
 		return x.Domains
 	}
@@ -2518,17 +2866,29 @@ type PostureCheck_Domains_ struct {
 	Domains *PostureCheck_Domains `protobuf:"bytes,12,opt,name=domains,proto3,oneof"`
 }
 
-func (*PostureCheck_Mac_) isPostureCheck_Subtype() {}
+func (*PostureCheck_Mac_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*PostureCheck_Mfa_) isPostureCheck_Subtype() {}
+func (*PostureCheck_Mfa_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*PostureCheck_OsList_) isPostureCheck_Subtype() {}
+func (*PostureCheck_OsList_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*PostureCheck_Process_) isPostureCheck_Subtype() {}
+func (*PostureCheck_Process_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*PostureCheck_ProcessMulti_) isPostureCheck_Subtype() {}
+func (*PostureCheck_ProcessMulti_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
-func (*PostureCheck_Domains_) isPostureCheck_Subtype() {}
+func (*PostureCheck_Domains_) isPostureCheck_Subtype() {
+    logtrace.LogWithFunctionName()
+}
 
 type Revocation struct {
 	state         protoimpl.MessageState
@@ -2541,6 +2901,7 @@ type Revocation struct {
 }
 
 func (x *Revocation) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Revocation{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[25]
@@ -2550,12 +2911,16 @@ func (x *Revocation) Reset() {
 }
 
 func (x *Revocation) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Revocation) ProtoMessage() {}
+func (*Revocation) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Revocation) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2569,10 +2934,12 @@ func (x *Revocation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Revocation.ProtoReflect.Descriptor instead.
 func (*Revocation) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Revocation) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2580,6 +2947,7 @@ func (x *Revocation) GetId() string {
 }
 
 func (x *Revocation) GetExpiresAt() *timestamppb.Timestamp {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ExpiresAt
 	}
@@ -2587,6 +2955,7 @@ func (x *Revocation) GetExpiresAt() *timestamppb.Timestamp {
 }
 
 func (x *Revocation) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2610,6 +2979,7 @@ type Service struct {
 }
 
 func (x *Service) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Service{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[26]
@@ -2619,12 +2989,16 @@ func (x *Service) Reset() {
 }
 
 func (x *Service) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Service) ProtoMessage() {}
+func (*Service) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Service) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2638,10 +3012,12 @@ func (x *Service) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Service.ProtoReflect.Descriptor instead.
 func (*Service) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *Service) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2649,6 +3025,7 @@ func (x *Service) GetId() string {
 }
 
 func (x *Service) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2656,6 +3033,7 @@ func (x *Service) GetName() string {
 }
 
 func (x *Service) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2663,6 +3041,7 @@ func (x *Service) GetTags() map[string]*TagValue {
 }
 
 func (x *Service) GetTerminatorStrategy() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TerminatorStrategy
 	}
@@ -2670,6 +3049,7 @@ func (x *Service) GetTerminatorStrategy() string {
 }
 
 func (x *Service) GetRoleAttributes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RoleAttributes
 	}
@@ -2677,6 +3057,7 @@ func (x *Service) GetRoleAttributes() []string {
 }
 
 func (x *Service) GetConfigs() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Configs
 	}
@@ -2684,6 +3065,7 @@ func (x *Service) GetConfigs() []string {
 }
 
 func (x *Service) GetEncryptionRequired() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EncryptionRequired
 	}
@@ -2691,6 +3073,7 @@ func (x *Service) GetEncryptionRequired() bool {
 }
 
 func (x *Service) GetMaxIdleTime() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MaxIdleTime
 	}
@@ -2712,6 +3095,7 @@ type ServiceEdgeRouterPolicy struct {
 }
 
 func (x *ServiceEdgeRouterPolicy) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ServiceEdgeRouterPolicy{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[27]
@@ -2721,12 +3105,16 @@ func (x *ServiceEdgeRouterPolicy) Reset() {
 }
 
 func (x *ServiceEdgeRouterPolicy) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ServiceEdgeRouterPolicy) ProtoMessage() {}
+func (*ServiceEdgeRouterPolicy) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ServiceEdgeRouterPolicy) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2740,10 +3128,12 @@ func (x *ServiceEdgeRouterPolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceEdgeRouterPolicy.ProtoReflect.Descriptor instead.
 func (*ServiceEdgeRouterPolicy) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ServiceEdgeRouterPolicy) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2751,6 +3141,7 @@ func (x *ServiceEdgeRouterPolicy) GetId() string {
 }
 
 func (x *ServiceEdgeRouterPolicy) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2758,6 +3149,7 @@ func (x *ServiceEdgeRouterPolicy) GetName() string {
 }
 
 func (x *ServiceEdgeRouterPolicy) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2765,6 +3157,7 @@ func (x *ServiceEdgeRouterPolicy) GetTags() map[string]*TagValue {
 }
 
 func (x *ServiceEdgeRouterPolicy) GetSemantic() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Semantic
 	}
@@ -2772,6 +3165,7 @@ func (x *ServiceEdgeRouterPolicy) GetSemantic() string {
 }
 
 func (x *ServiceEdgeRouterPolicy) GetEdgeRouterRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.EdgeRouterRoles
 	}
@@ -2779,6 +3173,7 @@ func (x *ServiceEdgeRouterPolicy) GetEdgeRouterRoles() []string {
 }
 
 func (x *ServiceEdgeRouterPolicy) GetServiceRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceRoles
 	}
@@ -2802,6 +3197,7 @@ type ServicePolicy struct {
 }
 
 func (x *ServicePolicy) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = ServicePolicy{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[28]
@@ -2811,12 +3207,16 @@ func (x *ServicePolicy) Reset() {
 }
 
 func (x *ServicePolicy) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ServicePolicy) ProtoMessage() {}
+func (*ServicePolicy) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *ServicePolicy) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2830,10 +3230,12 @@ func (x *ServicePolicy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServicePolicy.ProtoReflect.Descriptor instead.
 func (*ServicePolicy) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ServicePolicy) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2841,6 +3243,7 @@ func (x *ServicePolicy) GetId() string {
 }
 
 func (x *ServicePolicy) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2848,6 +3251,7 @@ func (x *ServicePolicy) GetName() string {
 }
 
 func (x *ServicePolicy) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2855,6 +3259,7 @@ func (x *ServicePolicy) GetTags() map[string]*TagValue {
 }
 
 func (x *ServicePolicy) GetSemantic() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Semantic
 	}
@@ -2862,6 +3267,7 @@ func (x *ServicePolicy) GetSemantic() string {
 }
 
 func (x *ServicePolicy) GetIdentityRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityRoles
 	}
@@ -2869,6 +3275,7 @@ func (x *ServicePolicy) GetIdentityRoles() []string {
 }
 
 func (x *ServicePolicy) GetServiceRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceRoles
 	}
@@ -2876,6 +3283,7 @@ func (x *ServicePolicy) GetServiceRoles() []string {
 }
 
 func (x *ServicePolicy) GetPostureCheckRoles() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PostureCheckRoles
 	}
@@ -2883,6 +3291,7 @@ func (x *ServicePolicy) GetPostureCheckRoles() []string {
 }
 
 func (x *ServicePolicy) GetPolicyType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PolicyType
 	}
@@ -2908,6 +3317,7 @@ type TransitRouter struct {
 }
 
 func (x *TransitRouter) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = TransitRouter{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[29]
@@ -2917,12 +3327,16 @@ func (x *TransitRouter) Reset() {
 }
 
 func (x *TransitRouter) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*TransitRouter) ProtoMessage() {}
+func (*TransitRouter) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *TransitRouter) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2936,10 +3350,12 @@ func (x *TransitRouter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransitRouter.ProtoReflect.Descriptor instead.
 func (*TransitRouter) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *TransitRouter) GetId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Id
 	}
@@ -2947,6 +3363,7 @@ func (x *TransitRouter) GetId() string {
 }
 
 func (x *TransitRouter) GetName() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Name
 	}
@@ -2954,6 +3371,7 @@ func (x *TransitRouter) GetName() string {
 }
 
 func (x *TransitRouter) GetTags() map[string]*TagValue {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Tags
 	}
@@ -2961,6 +3379,7 @@ func (x *TransitRouter) GetTags() map[string]*TagValue {
 }
 
 func (x *TransitRouter) GetIsVerified() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsVerified
 	}
@@ -2968,6 +3387,7 @@ func (x *TransitRouter) GetIsVerified() bool {
 }
 
 func (x *TransitRouter) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.Fingerprint != nil {
 		return *x.Fingerprint
 	}
@@ -2975,6 +3395,7 @@ func (x *TransitRouter) GetFingerprint() string {
 }
 
 func (x *TransitRouter) GetUnverifiedFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.UnverifiedFingerprint != nil {
 		return *x.UnverifiedFingerprint
 	}
@@ -2982,6 +3403,7 @@ func (x *TransitRouter) GetUnverifiedFingerprint() string {
 }
 
 func (x *TransitRouter) GetUnverifiedCertPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.UnverifiedCertPem != nil {
 		return *x.UnverifiedCertPem
 	}
@@ -2989,6 +3411,7 @@ func (x *TransitRouter) GetUnverifiedCertPem() string {
 }
 
 func (x *TransitRouter) GetCost() uint32 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cost
 	}
@@ -2996,6 +3419,7 @@ func (x *TransitRouter) GetCost() uint32 {
 }
 
 func (x *TransitRouter) GetNoTraversal() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.NoTraversal
 	}
@@ -3003,6 +3427,7 @@ func (x *TransitRouter) GetNoTraversal() bool {
 }
 
 func (x *TransitRouter) GetDisabled() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Disabled
 	}
@@ -3020,6 +3445,7 @@ type CreateTransitRouterCmd struct {
 }
 
 func (x *CreateTransitRouterCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = CreateTransitRouterCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[30]
@@ -3029,12 +3455,16 @@ func (x *CreateTransitRouterCmd) Reset() {
 }
 
 func (x *CreateTransitRouterCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateTransitRouterCmd) ProtoMessage() {}
+func (*CreateTransitRouterCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *CreateTransitRouterCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3048,10 +3478,12 @@ func (x *CreateTransitRouterCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTransitRouterCmd.ProtoReflect.Descriptor instead.
 func (*CreateTransitRouterCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *CreateTransitRouterCmd) GetRouter() *TransitRouter {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Router
 	}
@@ -3059,6 +3491,7 @@ func (x *CreateTransitRouterCmd) GetRouter() *TransitRouter {
 }
 
 func (x *CreateTransitRouterCmd) GetEnrollment() *Enrollment {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Enrollment
 	}
@@ -3066,6 +3499,7 @@ func (x *CreateTransitRouterCmd) GetEnrollment() *Enrollment {
 }
 
 func (x *CreateTransitRouterCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -3084,6 +3518,7 @@ type UpdateServiceConfigsCmd struct {
 }
 
 func (x *UpdateServiceConfigsCmd) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateServiceConfigsCmd{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[31]
@@ -3093,12 +3528,16 @@ func (x *UpdateServiceConfigsCmd) Reset() {
 }
 
 func (x *UpdateServiceConfigsCmd) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateServiceConfigsCmd) ProtoMessage() {}
+func (*UpdateServiceConfigsCmd) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateServiceConfigsCmd) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3112,10 +3551,12 @@ func (x *UpdateServiceConfigsCmd) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateServiceConfigsCmd.ProtoReflect.Descriptor instead.
 func (*UpdateServiceConfigsCmd) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *UpdateServiceConfigsCmd) GetIdentityId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IdentityId
 	}
@@ -3123,6 +3564,7 @@ func (x *UpdateServiceConfigsCmd) GetIdentityId() string {
 }
 
 func (x *UpdateServiceConfigsCmd) GetAdd() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Add
 	}
@@ -3130,6 +3572,7 @@ func (x *UpdateServiceConfigsCmd) GetAdd() bool {
 }
 
 func (x *UpdateServiceConfigsCmd) GetServiceConfigs() []*UpdateServiceConfigsCmd_ServiceConfig {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceConfigs
 	}
@@ -3137,6 +3580,7 @@ func (x *UpdateServiceConfigsCmd) GetServiceConfigs() []*UpdateServiceConfigsCmd
 }
 
 func (x *UpdateServiceConfigsCmd) GetCtx() *ChangeContext {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Ctx
 	}
@@ -3156,6 +3600,7 @@ type Authenticator_Cert struct {
 }
 
 func (x *Authenticator_Cert) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Authenticator_Cert{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[34]
@@ -3165,12 +3610,16 @@ func (x *Authenticator_Cert) Reset() {
 }
 
 func (x *Authenticator_Cert) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Authenticator_Cert) ProtoMessage() {}
+func (*Authenticator_Cert) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Authenticator_Cert) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3184,10 +3633,12 @@ func (x *Authenticator_Cert) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Authenticator_Cert.ProtoReflect.Descriptor instead.
 func (*Authenticator_Cert) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{6, 0}
 }
 
 func (x *Authenticator_Cert) GetFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprint
 	}
@@ -3195,6 +3646,7 @@ func (x *Authenticator_Cert) GetFingerprint() string {
 }
 
 func (x *Authenticator_Cert) GetPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Pem
 	}
@@ -3202,6 +3654,7 @@ func (x *Authenticator_Cert) GetPem() string {
 }
 
 func (x *Authenticator_Cert) GetUnverifiedFingerprint() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UnverifiedFingerprint
 	}
@@ -3209,6 +3662,7 @@ func (x *Authenticator_Cert) GetUnverifiedFingerprint() string {
 }
 
 func (x *Authenticator_Cert) GetUnverifiedPem() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.UnverifiedPem
 	}
@@ -3216,6 +3670,7 @@ func (x *Authenticator_Cert) GetUnverifiedPem() string {
 }
 
 func (x *Authenticator_Cert) GetIsIssuedByNetwork() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IsIssuedByNetwork
 	}
@@ -3233,6 +3688,7 @@ type Authenticator_Updb struct {
 }
 
 func (x *Authenticator_Updb) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Authenticator_Updb{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[35]
@@ -3242,12 +3698,16 @@ func (x *Authenticator_Updb) Reset() {
 }
 
 func (x *Authenticator_Updb) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Authenticator_Updb) ProtoMessage() {}
+func (*Authenticator_Updb) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Authenticator_Updb) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3261,10 +3721,12 @@ func (x *Authenticator_Updb) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Authenticator_Updb.ProtoReflect.Descriptor instead.
 func (*Authenticator_Updb) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{6, 1}
 }
 
 func (x *Authenticator_Updb) GetUsername() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Username
 	}
@@ -3272,6 +3734,7 @@ func (x *Authenticator_Updb) GetUsername() string {
 }
 
 func (x *Authenticator_Updb) GetPassword() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Password
 	}
@@ -3279,6 +3742,7 @@ func (x *Authenticator_Updb) GetPassword() string {
 }
 
 func (x *Authenticator_Updb) GetSalt() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Salt
 	}
@@ -3296,6 +3760,7 @@ type AuthPolicy_Primary struct {
 }
 
 func (x *AuthPolicy_Primary) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy_Primary{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[37]
@@ -3305,12 +3770,16 @@ func (x *AuthPolicy_Primary) Reset() {
 }
 
 func (x *AuthPolicy_Primary) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy_Primary) ProtoMessage() {}
+func (*AuthPolicy_Primary) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy_Primary) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3324,10 +3793,12 @@ func (x *AuthPolicy_Primary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy_Primary.ProtoReflect.Descriptor instead.
 func (*AuthPolicy_Primary) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7, 0}
 }
 
 func (x *AuthPolicy_Primary) GetCert() *AuthPolicy_Primary_Cert {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Cert
 	}
@@ -3335,6 +3806,7 @@ func (x *AuthPolicy_Primary) GetCert() *AuthPolicy_Primary_Cert {
 }
 
 func (x *AuthPolicy_Primary) GetUpdb() *AuthPolicy_Primary_Updb {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Updb
 	}
@@ -3342,6 +3814,7 @@ func (x *AuthPolicy_Primary) GetUpdb() *AuthPolicy_Primary_Updb {
 }
 
 func (x *AuthPolicy_Primary) GetExtJwt() *AuthPolicy_Primary_ExtJwt {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ExtJwt
 	}
@@ -3358,6 +3831,7 @@ type AuthPolicy_Secondary struct {
 }
 
 func (x *AuthPolicy_Secondary) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy_Secondary{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[38]
@@ -3367,12 +3841,16 @@ func (x *AuthPolicy_Secondary) Reset() {
 }
 
 func (x *AuthPolicy_Secondary) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy_Secondary) ProtoMessage() {}
+func (*AuthPolicy_Secondary) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy_Secondary) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3386,10 +3864,12 @@ func (x *AuthPolicy_Secondary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy_Secondary.ProtoReflect.Descriptor instead.
 func (*AuthPolicy_Secondary) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7, 1}
 }
 
 func (x *AuthPolicy_Secondary) GetRequireTotp() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequireTotp
 	}
@@ -3397,6 +3877,7 @@ func (x *AuthPolicy_Secondary) GetRequireTotp() bool {
 }
 
 func (x *AuthPolicy_Secondary) GetRequiredExtJwtSigner() string {
+    logtrace.LogWithFunctionName()
 	if x != nil && x.RequiredExtJwtSigner != nil {
 		return *x.RequiredExtJwtSigner
 	}
@@ -3413,6 +3894,7 @@ type AuthPolicy_Primary_Cert struct {
 }
 
 func (x *AuthPolicy_Primary_Cert) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy_Primary_Cert{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[40]
@@ -3422,12 +3904,16 @@ func (x *AuthPolicy_Primary_Cert) Reset() {
 }
 
 func (x *AuthPolicy_Primary_Cert) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy_Primary_Cert) ProtoMessage() {}
+func (*AuthPolicy_Primary_Cert) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy_Primary_Cert) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3441,10 +3927,12 @@ func (x *AuthPolicy_Primary_Cert) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy_Primary_Cert.ProtoReflect.Descriptor instead.
 func (*AuthPolicy_Primary_Cert) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7, 0, 0}
 }
 
 func (x *AuthPolicy_Primary_Cert) GetAllowed() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Allowed
 	}
@@ -3452,6 +3940,7 @@ func (x *AuthPolicy_Primary_Cert) GetAllowed() bool {
 }
 
 func (x *AuthPolicy_Primary_Cert) GetAllowExpiredCerts() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AllowExpiredCerts
 	}
@@ -3473,6 +3962,7 @@ type AuthPolicy_Primary_Updb struct {
 }
 
 func (x *AuthPolicy_Primary_Updb) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy_Primary_Updb{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[41]
@@ -3482,12 +3972,16 @@ func (x *AuthPolicy_Primary_Updb) Reset() {
 }
 
 func (x *AuthPolicy_Primary_Updb) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy_Primary_Updb) ProtoMessage() {}
+func (*AuthPolicy_Primary_Updb) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy_Primary_Updb) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3501,10 +3995,12 @@ func (x *AuthPolicy_Primary_Updb) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy_Primary_Updb.ProtoReflect.Descriptor instead.
 func (*AuthPolicy_Primary_Updb) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7, 0, 1}
 }
 
 func (x *AuthPolicy_Primary_Updb) GetAllowed() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Allowed
 	}
@@ -3512,6 +4008,7 @@ func (x *AuthPolicy_Primary_Updb) GetAllowed() bool {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetMinPasswordLength() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MinPasswordLength
 	}
@@ -3519,6 +4016,7 @@ func (x *AuthPolicy_Primary_Updb) GetMinPasswordLength() int64 {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetRequireSpecialChar() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequireSpecialChar
 	}
@@ -3526,6 +4024,7 @@ func (x *AuthPolicy_Primary_Updb) GetRequireSpecialChar() bool {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetRequireNumberChar() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequireNumberChar
 	}
@@ -3533,6 +4032,7 @@ func (x *AuthPolicy_Primary_Updb) GetRequireNumberChar() bool {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetRequireMixedCase() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.RequireMixedCase
 	}
@@ -3540,6 +4040,7 @@ func (x *AuthPolicy_Primary_Updb) GetRequireMixedCase() bool {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetMaxAttempts() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MaxAttempts
 	}
@@ -3547,6 +4048,7 @@ func (x *AuthPolicy_Primary_Updb) GetMaxAttempts() int64 {
 }
 
 func (x *AuthPolicy_Primary_Updb) GetLockoutDurationMinutes() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.LockoutDurationMinutes
 	}
@@ -3564,6 +4066,7 @@ type AuthPolicy_Primary_ExtJwt struct {
 }
 
 func (x *AuthPolicy_Primary_ExtJwt) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = AuthPolicy_Primary_ExtJwt{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[42]
@@ -3573,12 +4076,16 @@ func (x *AuthPolicy_Primary_ExtJwt) Reset() {
 }
 
 func (x *AuthPolicy_Primary_ExtJwt) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AuthPolicy_Primary_ExtJwt) ProtoMessage() {}
+func (*AuthPolicy_Primary_ExtJwt) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *AuthPolicy_Primary_ExtJwt) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3592,10 +4099,12 @@ func (x *AuthPolicy_Primary_ExtJwt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthPolicy_Primary_ExtJwt.ProtoReflect.Descriptor instead.
 func (*AuthPolicy_Primary_ExtJwt) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{7, 0, 2}
 }
 
 func (x *AuthPolicy_Primary_ExtJwt) GetAllowed() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Allowed
 	}
@@ -3603,6 +4112,7 @@ func (x *AuthPolicy_Primary_ExtJwt) GetAllowed() bool {
 }
 
 func (x *AuthPolicy_Primary_ExtJwt) GetAllowAllSigners() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AllowAllSigners
 	}
@@ -3610,6 +4120,7 @@ func (x *AuthPolicy_Primary_ExtJwt) GetAllowAllSigners() bool {
 }
 
 func (x *AuthPolicy_Primary_ExtJwt) GetAllowedExtJwtSigners() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AllowedExtJwtSigners
 	}
@@ -3630,6 +4141,7 @@ type Ca_ExternalIdClaim struct {
 }
 
 func (x *Ca_ExternalIdClaim) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Ca_ExternalIdClaim{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[43]
@@ -3639,12 +4151,16 @@ func (x *Ca_ExternalIdClaim) Reset() {
 }
 
 func (x *Ca_ExternalIdClaim) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Ca_ExternalIdClaim) ProtoMessage() {}
+func (*Ca_ExternalIdClaim) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Ca_ExternalIdClaim) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3658,10 +4174,12 @@ func (x *Ca_ExternalIdClaim) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ca_ExternalIdClaim.ProtoReflect.Descriptor instead.
 func (*Ca_ExternalIdClaim) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{8, 0}
 }
 
 func (x *Ca_ExternalIdClaim) GetLocation() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Location
 	}
@@ -3669,6 +4187,7 @@ func (x *Ca_ExternalIdClaim) GetLocation() string {
 }
 
 func (x *Ca_ExternalIdClaim) GetMatcher() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Matcher
 	}
@@ -3676,6 +4195,7 @@ func (x *Ca_ExternalIdClaim) GetMatcher() string {
 }
 
 func (x *Ca_ExternalIdClaim) GetMatcherCriteria() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MatcherCriteria
 	}
@@ -3683,6 +4203,7 @@ func (x *Ca_ExternalIdClaim) GetMatcherCriteria() string {
 }
 
 func (x *Ca_ExternalIdClaim) GetParser() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Parser
 	}
@@ -3690,6 +4211,7 @@ func (x *Ca_ExternalIdClaim) GetParser() string {
 }
 
 func (x *Ca_ExternalIdClaim) GetParserCriteria() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ParserCriteria
 	}
@@ -3697,6 +4219,7 @@ func (x *Ca_ExternalIdClaim) GetParserCriteria() string {
 }
 
 func (x *Ca_ExternalIdClaim) GetIndex() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Index
 	}
@@ -3717,6 +4240,7 @@ type Identity_EnvInfo struct {
 }
 
 func (x *Identity_EnvInfo) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Identity_EnvInfo{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[53]
@@ -3726,12 +4250,16 @@ func (x *Identity_EnvInfo) Reset() {
 }
 
 func (x *Identity_EnvInfo) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Identity_EnvInfo) ProtoMessage() {}
+func (*Identity_EnvInfo) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Identity_EnvInfo) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[53]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3745,10 +4273,12 @@ func (x *Identity_EnvInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Identity_EnvInfo.ProtoReflect.Descriptor instead.
 func (*Identity_EnvInfo) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{21, 0}
 }
 
 func (x *Identity_EnvInfo) GetArch() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Arch
 	}
@@ -3756,6 +4286,7 @@ func (x *Identity_EnvInfo) GetArch() string {
 }
 
 func (x *Identity_EnvInfo) GetOs() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Os
 	}
@@ -3763,6 +4294,7 @@ func (x *Identity_EnvInfo) GetOs() string {
 }
 
 func (x *Identity_EnvInfo) GetOsRelease() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsRelease
 	}
@@ -3770,6 +4302,7 @@ func (x *Identity_EnvInfo) GetOsRelease() string {
 }
 
 func (x *Identity_EnvInfo) GetOsVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsVersion
 	}
@@ -3777,6 +4310,7 @@ func (x *Identity_EnvInfo) GetOsVersion() string {
 }
 
 func (x *Identity_EnvInfo) GetDomain() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Domain
 	}
@@ -3784,6 +4318,7 @@ func (x *Identity_EnvInfo) GetDomain() string {
 }
 
 func (x *Identity_EnvInfo) GetHostname() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Hostname
 	}
@@ -3804,6 +4339,7 @@ type Identity_SdkInfo struct {
 }
 
 func (x *Identity_SdkInfo) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Identity_SdkInfo{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[54]
@@ -3813,12 +4349,16 @@ func (x *Identity_SdkInfo) Reset() {
 }
 
 func (x *Identity_SdkInfo) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Identity_SdkInfo) ProtoMessage() {}
+func (*Identity_SdkInfo) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Identity_SdkInfo) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[54]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3832,10 +4372,12 @@ func (x *Identity_SdkInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Identity_SdkInfo.ProtoReflect.Descriptor instead.
 func (*Identity_SdkInfo) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{21, 1}
 }
 
 func (x *Identity_SdkInfo) GetAppId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppId
 	}
@@ -3843,6 +4385,7 @@ func (x *Identity_SdkInfo) GetAppId() string {
 }
 
 func (x *Identity_SdkInfo) GetAppVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.AppVersion
 	}
@@ -3850,6 +4393,7 @@ func (x *Identity_SdkInfo) GetAppVersion() string {
 }
 
 func (x *Identity_SdkInfo) GetBranch() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Branch
 	}
@@ -3857,6 +4401,7 @@ func (x *Identity_SdkInfo) GetBranch() string {
 }
 
 func (x *Identity_SdkInfo) GetRevision() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Revision
 	}
@@ -3864,6 +4409,7 @@ func (x *Identity_SdkInfo) GetRevision() string {
 }
 
 func (x *Identity_SdkInfo) GetType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Type
 	}
@@ -3871,6 +4417,7 @@ func (x *Identity_SdkInfo) GetType() string {
 }
 
 func (x *Identity_SdkInfo) GetVersion() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Version
 	}
@@ -3888,6 +4435,7 @@ type Identity_ServiceConfig struct {
 }
 
 func (x *Identity_ServiceConfig) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = Identity_ServiceConfig{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[55]
@@ -3897,12 +4445,16 @@ func (x *Identity_ServiceConfig) Reset() {
 }
 
 func (x *Identity_ServiceConfig) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Identity_ServiceConfig) ProtoMessage() {}
+func (*Identity_ServiceConfig) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *Identity_ServiceConfig) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[55]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3916,10 +4468,12 @@ func (x *Identity_ServiceConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Identity_ServiceConfig.ProtoReflect.Descriptor instead.
 func (*Identity_ServiceConfig) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{21, 2}
 }
 
 func (x *Identity_ServiceConfig) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -3927,6 +4481,7 @@ func (x *Identity_ServiceConfig) GetServiceId() string {
 }
 
 func (x *Identity_ServiceConfig) GetConfigTypeId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ConfigTypeId
 	}
@@ -3934,6 +4489,7 @@ func (x *Identity_ServiceConfig) GetConfigTypeId() string {
 }
 
 func (x *Identity_ServiceConfig) GetConfigId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ConfigId
 	}
@@ -3949,6 +4505,7 @@ type PostureCheck_Mac struct {
 }
 
 func (x *PostureCheck_Mac) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_Mac{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[60]
@@ -3958,12 +4515,16 @@ func (x *PostureCheck_Mac) Reset() {
 }
 
 func (x *PostureCheck_Mac) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_Mac) ProtoMessage() {}
+func (*PostureCheck_Mac) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_Mac) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[60]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -3977,10 +4538,12 @@ func (x *PostureCheck_Mac) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_Mac.ProtoReflect.Descriptor instead.
 func (*PostureCheck_Mac) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 0}
 }
 
 func (x *PostureCheck_Mac) GetMacAddresses() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.MacAddresses
 	}
@@ -3999,6 +4562,7 @@ type PostureCheck_Mfa struct {
 }
 
 func (x *PostureCheck_Mfa) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_Mfa{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[61]
@@ -4008,12 +4572,16 @@ func (x *PostureCheck_Mfa) Reset() {
 }
 
 func (x *PostureCheck_Mfa) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_Mfa) ProtoMessage() {}
+func (*PostureCheck_Mfa) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_Mfa) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[61]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4027,10 +4595,12 @@ func (x *PostureCheck_Mfa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_Mfa.ProtoReflect.Descriptor instead.
 func (*PostureCheck_Mfa) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 1}
 }
 
 func (x *PostureCheck_Mfa) GetTimeoutSeconds() int64 {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.TimeoutSeconds
 	}
@@ -4038,6 +4608,7 @@ func (x *PostureCheck_Mfa) GetTimeoutSeconds() int64 {
 }
 
 func (x *PostureCheck_Mfa) GetPromptOnWake() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PromptOnWake
 	}
@@ -4045,6 +4616,7 @@ func (x *PostureCheck_Mfa) GetPromptOnWake() bool {
 }
 
 func (x *PostureCheck_Mfa) GetPromptOnUnlock() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.PromptOnUnlock
 	}
@@ -4052,6 +4624,7 @@ func (x *PostureCheck_Mfa) GetPromptOnUnlock() bool {
 }
 
 func (x *PostureCheck_Mfa) GetIgnoreLegacyEndpoints() bool {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.IgnoreLegacyEndpoints
 	}
@@ -4068,6 +4641,7 @@ type PostureCheck_Os struct {
 }
 
 func (x *PostureCheck_Os) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_Os{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[62]
@@ -4077,12 +4651,16 @@ func (x *PostureCheck_Os) Reset() {
 }
 
 func (x *PostureCheck_Os) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_Os) ProtoMessage() {}
+func (*PostureCheck_Os) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_Os) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[62]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4096,10 +4674,12 @@ func (x *PostureCheck_Os) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_Os.ProtoReflect.Descriptor instead.
 func (*PostureCheck_Os) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 2}
 }
 
 func (x *PostureCheck_Os) GetOsType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsType
 	}
@@ -4107,6 +4687,7 @@ func (x *PostureCheck_Os) GetOsType() string {
 }
 
 func (x *PostureCheck_Os) GetOsVersions() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsVersions
 	}
@@ -4122,6 +4703,7 @@ type PostureCheck_OsList struct {
 }
 
 func (x *PostureCheck_OsList) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_OsList{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[63]
@@ -4131,12 +4713,16 @@ func (x *PostureCheck_OsList) Reset() {
 }
 
 func (x *PostureCheck_OsList) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_OsList) ProtoMessage() {}
+func (*PostureCheck_OsList) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_OsList) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[63]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4150,10 +4736,12 @@ func (x *PostureCheck_OsList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_OsList.ProtoReflect.Descriptor instead.
 func (*PostureCheck_OsList) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 3}
 }
 
 func (x *PostureCheck_OsList) GetOsList() []*PostureCheck_Os {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsList
 	}
@@ -4172,6 +4760,7 @@ type PostureCheck_Process struct {
 }
 
 func (x *PostureCheck_Process) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_Process{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[64]
@@ -4181,12 +4770,16 @@ func (x *PostureCheck_Process) Reset() {
 }
 
 func (x *PostureCheck_Process) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_Process) ProtoMessage() {}
+func (*PostureCheck_Process) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_Process) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[64]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4200,10 +4793,12 @@ func (x *PostureCheck_Process) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_Process.ProtoReflect.Descriptor instead.
 func (*PostureCheck_Process) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 4}
 }
 
 func (x *PostureCheck_Process) GetOsType() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.OsType
 	}
@@ -4211,6 +4806,7 @@ func (x *PostureCheck_Process) GetOsType() string {
 }
 
 func (x *PostureCheck_Process) GetPath() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Path
 	}
@@ -4218,6 +4814,7 @@ func (x *PostureCheck_Process) GetPath() string {
 }
 
 func (x *PostureCheck_Process) GetHashes() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Hashes
 	}
@@ -4225,6 +4822,7 @@ func (x *PostureCheck_Process) GetHashes() []string {
 }
 
 func (x *PostureCheck_Process) GetFingerprints() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Fingerprints
 	}
@@ -4241,6 +4839,7 @@ type PostureCheck_ProcessMulti struct {
 }
 
 func (x *PostureCheck_ProcessMulti) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_ProcessMulti{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[65]
@@ -4250,12 +4849,16 @@ func (x *PostureCheck_ProcessMulti) Reset() {
 }
 
 func (x *PostureCheck_ProcessMulti) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_ProcessMulti) ProtoMessage() {}
+func (*PostureCheck_ProcessMulti) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_ProcessMulti) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[65]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4269,10 +4872,12 @@ func (x *PostureCheck_ProcessMulti) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_ProcessMulti.ProtoReflect.Descriptor instead.
 func (*PostureCheck_ProcessMulti) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 5}
 }
 
 func (x *PostureCheck_ProcessMulti) GetSemantic() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Semantic
 	}
@@ -4280,6 +4885,7 @@ func (x *PostureCheck_ProcessMulti) GetSemantic() string {
 }
 
 func (x *PostureCheck_ProcessMulti) GetProcesses() []*PostureCheck_Process {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Processes
 	}
@@ -4295,6 +4901,7 @@ type PostureCheck_Domains struct {
 }
 
 func (x *PostureCheck_Domains) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = PostureCheck_Domains{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[66]
@@ -4304,12 +4911,16 @@ func (x *PostureCheck_Domains) Reset() {
 }
 
 func (x *PostureCheck_Domains) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostureCheck_Domains) ProtoMessage() {}
+func (*PostureCheck_Domains) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *PostureCheck_Domains) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4323,10 +4934,12 @@ func (x *PostureCheck_Domains) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostureCheck_Domains.ProtoReflect.Descriptor instead.
 func (*PostureCheck_Domains) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{24, 6}
 }
 
 func (x *PostureCheck_Domains) GetDomains() []string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.Domains
 	}
@@ -4343,6 +4956,7 @@ type UpdateServiceConfigsCmd_ServiceConfig struct {
 }
 
 func (x *UpdateServiceConfigsCmd_ServiceConfig) Reset() {
+    logtrace.LogWithFunctionName()
 	*x = UpdateServiceConfigsCmd_ServiceConfig{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_edge_cmd_proto_msgTypes[73]
@@ -4352,12 +4966,16 @@ func (x *UpdateServiceConfigsCmd_ServiceConfig) Reset() {
 }
 
 func (x *UpdateServiceConfigsCmd_ServiceConfig) String() string {
+    logtrace.LogWithFunctionName()
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateServiceConfigsCmd_ServiceConfig) ProtoMessage() {}
+func (*UpdateServiceConfigsCmd_ServiceConfig) ProtoMessage() {
+    logtrace.LogWithFunctionName()
+}
 
 func (x *UpdateServiceConfigsCmd_ServiceConfig) ProtoReflect() protoreflect.Message {
+    logtrace.LogWithFunctionName()
 	mi := &file_edge_cmd_proto_msgTypes[73]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4371,10 +4989,12 @@ func (x *UpdateServiceConfigsCmd_ServiceConfig) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdateServiceConfigsCmd_ServiceConfig.ProtoReflect.Descriptor instead.
 func (*UpdateServiceConfigsCmd_ServiceConfig) Descriptor() ([]byte, []int) {
+    logtrace.LogWithFunctionName()
 	return file_edge_cmd_proto_rawDescGZIP(), []int{31, 0}
 }
 
 func (x *UpdateServiceConfigsCmd_ServiceConfig) GetServiceId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ServiceId
 	}
@@ -4382,6 +5002,7 @@ func (x *UpdateServiceConfigsCmd_ServiceConfig) GetServiceId() string {
 }
 
 func (x *UpdateServiceConfigsCmd_ServiceConfig) GetConfigId() string {
+    logtrace.LogWithFunctionName()
 	if x != nil {
 		return x.ConfigId
 	}
@@ -5289,6 +5910,7 @@ var (
 )
 
 func file_edge_cmd_proto_rawDescGZIP() []byte {
+    logtrace.LogWithFunctionName()
 	file_edge_cmd_proto_rawDescOnce.Do(func() {
 		file_edge_cmd_proto_rawDescData = protoimpl.X.CompressGZIP(file_edge_cmd_proto_rawDescData)
 	})
@@ -5472,8 +6094,12 @@ var file_edge_cmd_proto_depIdxs = []int32{
 	0,  // [0:89] is the sub-list for field type_name
 }
 
-func init() { file_edge_cmd_proto_init() }
+func init() { 
+	file_edge_cmd_proto_init() 
+    logtrace.LogWithFunctionName()
+}
 func file_edge_cmd_proto_init() {
+    logtrace.LogWithFunctionName()
 	if File_edge_cmd_proto != nil {
 		return
 	}

@@ -24,11 +24,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewPostureResponseRouter()
 	env.AddRouter(r)
 }
@@ -38,12 +40,14 @@ type PostureResponseRouter struct {
 }
 
 func NewPostureResponseRouter() *PostureResponseRouter {
+	logtrace.LogWithFunctionName()
 	return &PostureResponseRouter{
 		BasePath: "/" + EntityNamePostureResponse,
 	}
 }
 
 func (r *PostureResponseRouter) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ClientApi.PostureChecksCreatePostureResponseHandler = posture_checks.CreatePostureResponseHandlerFunc(func(params posture_checks.CreatePostureResponseParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(func(ae *env.AppEnv, rc *response.RequestContext) { r.Create(ae, rc, params) }, params.HTTPRequest, "", "", permissions.IsAuthenticated())
 	})
@@ -54,6 +58,7 @@ func (r *PostureResponseRouter) Register(ae *env.AppEnv) {
 }
 
 func (r *PostureResponseRouter) Create(ae *env.AppEnv, rc *response.RequestContext, params posture_checks.CreatePostureResponseParams) {
+	logtrace.LogWithFunctionName()
 	bulkParams := posture_checks.CreatePostureResponseBulkParams{
 		HTTPRequest:     params.HTTPRequest,
 		PostureResponse: []rest_model.PostureResponseCreate{params.PostureResponse},
@@ -62,6 +67,7 @@ func (r *PostureResponseRouter) Create(ae *env.AppEnv, rc *response.RequestConte
 }
 
 func (r *PostureResponseRouter) CreateBulk(ae *env.AppEnv, rc *response.RequestContext, params posture_checks.CreatePostureResponseBulkParams) {
+	logtrace.LogWithFunctionName()
 	responder := &PostureResponseResponder{
 		Responder: rc,
 		ae:        ae,
@@ -120,6 +126,7 @@ func (r *PostureResponseRouter) CreateBulk(ae *env.AppEnv, rc *response.RequestC
 }
 
 func (r *PostureResponseRouter) handlePostureResponse(ae *env.AppEnv, rc *response.RequestContext, apiPostureResponse rest_model.PostureResponseCreate) {
+	logtrace.LogWithFunctionName()
 	switch apiPostureResponse := apiPostureResponse.(type) {
 	case *rest_model.PostureResponseDomainCreate:
 		postureResponse := &model.PostureResponse{

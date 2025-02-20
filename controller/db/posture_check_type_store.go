@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
@@ -31,10 +33,12 @@ type PostureCheckType struct {
 }
 
 func (entity *PostureCheckType) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *PostureCheckType) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypePostureCheckTypes
 }
 
@@ -46,6 +50,7 @@ type PostureCheckTypeStore interface {
 }
 
 func newPostureCheckTypeStore(stores *stores) *postureCheckTypeStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &postureCheckTypeStoreImpl{}
 	store.baseStore = newBaseStore[*PostureCheckType](stores, store)
 	store.InitImpl(store)
@@ -58,23 +63,28 @@ type postureCheckTypeStoreImpl struct {
 }
 
 func (store *postureCheckTypeStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 }
 
 func (store *postureCheckTypeStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	// no links
 }
 
 func (store *postureCheckTypeStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (*postureCheckTypeStoreImpl) NewEntity() *PostureCheckType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckType{}
 }
 
 func (*postureCheckTypeStoreImpl) FillEntity(entity *PostureCheckType, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 
@@ -98,6 +108,7 @@ func (*postureCheckTypeStoreImpl) FillEntity(entity *PostureCheckType, bucket *b
 }
 
 func (*postureCheckTypeStoreImpl) PersistEntity(entity *PostureCheckType, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 

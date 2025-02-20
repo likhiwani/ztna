@@ -17,6 +17,7 @@
 package fabric
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"strings"
 	"time"
@@ -40,6 +41,7 @@ import (
 
 // newListCmd creates a command object for the "controller list" command
 func newListCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	listCmd := &cobra.Command{
 		Use:     "list",
 		Short:   "Lists various entities managed by the Ziti Controller",
@@ -67,6 +69,7 @@ type listCommandRunner func(*api.Options) error
 
 // newListCmdForEntityType creates the list command for the given entity type
 func newListCmdForEntityType(entityType string, command listCommandRunner, options *api.Options, aliases ...string) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use:     entityType + " <filter>?",
 		Short:   "lists " + entityType + " managed by the Ziti Controller",
@@ -90,6 +93,7 @@ func newListCmdForEntityType(entityType string, command listCommandRunner, optio
 }
 
 func runListCircuits(o *api.Options) error {
+	logtrace.LogWithFunctionName()
 	return WithFabricClient(o, func(client *fabric_rest_client.ZitiFabric) error {
 		ctx, cancelF := o.GetContext()
 		defer cancelF()
@@ -102,6 +106,7 @@ func runListCircuits(o *api.Options) error {
 }
 
 func outputCircuits(o *api.Options, results *circuit.ListCircuitsOK) error {
+	logtrace.LogWithFunctionName()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleRounded)
 	t.AppendHeader(table.Row{"ID", "Client", "Service", "Terminator", "CreatedAt", "Path"})
@@ -139,6 +144,7 @@ func outputCircuits(o *api.Options, results *circuit.ListCircuitsOK) error {
 }
 
 func runListLinks(o *api.Options) error {
+	logtrace.LogWithFunctionName()
 	return WithFabricClient(o, func(client *fabric_rest_client.ZitiFabric) error {
 		ctx, cancelF := o.GetContext()
 		defer cancelF()
@@ -151,6 +157,7 @@ func runListLinks(o *api.Options) error {
 }
 
 func outputLinks(o *api.Options, results *link.ListLinksOK) error {
+	logtrace.LogWithFunctionName()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleRounded)
 	columnConfigs := []table.ColumnConfig{
@@ -189,6 +196,7 @@ func outputLinks(o *api.Options, results *link.ListLinksOK) error {
 }
 
 func runListTerminators(o *api.Options) error {
+	logtrace.LogWithFunctionName()
 	return WithFabricClient(o, func(client *fabric_rest_client.ZitiFabric) error {
 		ctx, cancelF := o.GetContext()
 		defer cancelF()
@@ -202,6 +210,7 @@ func runListTerminators(o *api.Options) error {
 }
 
 func outputTerminators(o *api.Options, result *terminator.ListTerminatorsOK) error {
+	logtrace.LogWithFunctionName()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleRounded)
 	t.AppendHeader(table.Row{"ID", "Service", "Router", "Binding", "Address", "Instance", "Cost", "Precedence", "Dynamic Cost", "Host ID"})
@@ -226,6 +235,7 @@ func outputTerminators(o *api.Options, result *terminator.ListTerminatorsOK) err
 }
 
 func runListServices(o *api.Options) error {
+	logtrace.LogWithFunctionName()
 	return WithFabricClient(o, func(client *fabric_rest_client.ZitiFabric) error {
 		ctx, cancelF := o.GetContext()
 		defer cancelF()
@@ -239,6 +249,7 @@ func runListServices(o *api.Options) error {
 }
 
 func outputServices(o *api.Options, result *service.ListServicesOK) error {
+	logtrace.LogWithFunctionName()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleRounded)
 	t.AppendHeader(table.Row{"ID", "Name", "Terminator Strategy"})
@@ -257,6 +268,7 @@ func outputServices(o *api.Options, result *service.ListServicesOK) error {
 }
 
 func runListRouters(o *api.Options) error {
+	logtrace.LogWithFunctionName()
 	return WithFabricClient(o, func(client *fabric_rest_client.ZitiFabric) error {
 		ctx, cancelF := o.GetContext()
 		defer cancelF()
@@ -270,6 +282,7 @@ func runListRouters(o *api.Options) error {
 }
 
 func outputRouters(o *api.Options, result *router.ListRoutersOK) error {
+	logtrace.LogWithFunctionName()
 	t := table.NewWriter()
 	t.SetStyle(table.StyleRounded)
 	t.AppendHeader(table.Row{"ID", "Name", "Online", "Cost", "No Traversal", "Disabled", "Version", "Listeners"})
@@ -301,6 +314,7 @@ func outputRouters(o *api.Options, result *router.ListRoutersOK) error {
 }
 
 func getPaging(meta *rest_model.Meta) *api.Paging {
+	logtrace.LogWithFunctionName()
 	return &api.Paging{
 		Limit:  *meta.Pagination.Limit,
 		Offset: *meta.Pagination.Offset,
@@ -309,6 +323,7 @@ func getPaging(meta *rest_model.Meta) *api.Paging {
 }
 
 func outputResult[T any](val T, err error, o *api.Options, f func(o *api.Options, val T) error) error {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		return err
 	}
@@ -319,6 +334,7 @@ func outputResult[T any](val T, err error, o *api.Options, f func(o *api.Options
 }
 
 func valOrDefault[V any, T *V](val T) V {
+	logtrace.LogWithFunctionName()
 	var result V
 	if val != nil {
 		result = *val

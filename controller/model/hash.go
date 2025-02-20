@@ -19,6 +19,8 @@ package model
 import (
 	"crypto/rand"
 	"encoding/binary"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"golang.org/x/crypto/argon2"
 )
@@ -29,6 +31,7 @@ type HashResult struct {
 }
 
 func salt() []byte {
+	logtrace.LogWithFunctionName()
 	buf := make([]byte, binary.MaxVarintLen64)
 	_, err := rand.Read(buf)
 
@@ -40,11 +43,13 @@ func salt() []byte {
 }
 
 func Hash(password string) *HashResult {
+	logtrace.LogWithFunctionName()
 	s := salt()
 	return ReHash(password, s)
 }
 
 func ReHash(password string, s []byte) *HashResult {
+	logtrace.LogWithFunctionName()
 	h := argon2.IDKey([]byte(password), s, 1, 3*1024, 4, 32)
 
 	return &HashResult{

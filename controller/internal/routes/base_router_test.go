@@ -18,10 +18,11 @@ package routes
 
 import (
 	"encoding/json"
-	"ztna-core/ztna/controller/api"
-	"ztna-core/ztna/controller/fields"
 	"reflect"
 	"testing"
+	"ztna-core/ztna/controller/api"
+	"ztna-core/ztna/controller/fields"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/stretchr/testify/require"
 )
@@ -35,6 +36,7 @@ var test = `
 `
 
 func Test_getFields(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	assert := require.New(t)
 	test2 := map[string]interface{}{
 		"roleAttributes":     []string{"foo", "bar"},
@@ -96,6 +98,7 @@ func Test_getFields(t *testing.T) {
 }
 
 func TestJsonFields_ConcatNestedNames(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	tests := []struct {
 		name string
 		j    fields.UpdatedFieldsMap

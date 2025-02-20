@@ -19,6 +19,8 @@ package xctrl_example
 import (
 	"bytes"
 	"encoding/binary"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 )
@@ -26,14 +28,17 @@ import (
 type receiveHandler struct{}
 
 func newReceiveHandler() channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &receiveHandler{}
 }
 
 func (h *receiveHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return contentType
 }
 
 func (h *receiveHandler) HandleReceive(msg *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if len(msg.Body) == 4 {
 		buf := bytes.NewBuffer(msg.Body)
 		var count int32

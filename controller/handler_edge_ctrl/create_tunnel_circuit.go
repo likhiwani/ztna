@@ -17,11 +17,13 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -31,6 +33,7 @@ type createCircuitForServiceHandler struct {
 }
 
 func NewCreateCircuitForTunnelHandler(appEnv *env.AppEnv, ch channel.Channel, tunnelState *TunnelState) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createCircuitForServiceHandler{
 		baseRequestHandler: baseRequestHandler{ch: ch, appEnv: appEnv},
 		TunnelState:        tunnelState,
@@ -38,18 +41,22 @@ func NewCreateCircuitForTunnelHandler(appEnv *env.AppEnv, ch channel.Channel, tu
 }
 
 func (self *createCircuitForServiceHandler) getTunnelState() *TunnelState {
+	logtrace.LogWithFunctionName()
 	return self.TunnelState
 }
 
 func (self *createCircuitForServiceHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateCircuitForServiceRequestType)
 }
 
 func (self *createCircuitForServiceHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "tunnel.create.circuit"
 }
 
 func (self *createCircuitForServiceHandler) sendResponse(ctx *CreateCircuitForServiceRequestContext, response *edge_ctrl_pb.CreateCircuitForServiceResponse) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.ch.Label())
 
 	body, err := proto.Marshal(response)
@@ -66,6 +73,7 @@ func (self *createCircuitForServiceHandler) sendResponse(ctx *CreateCircuitForSe
 }
 
 func (self *createCircuitForServiceHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.CreateCircuitForServiceRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal CreateCircuitForServiceRequest")
@@ -83,6 +91,7 @@ func (self *createCircuitForServiceHandler) HandleReceive(msg *channel.Message, 
 }
 
 func (self *createCircuitForServiceHandler) CreateCircuit(ctx *CreateCircuitForServiceRequestContext) {
+	logtrace.LogWithFunctionName()
 	if !ctx.loadRouter() {
 		return
 	}

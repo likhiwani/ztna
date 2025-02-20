@@ -19,20 +19,22 @@ package network
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/channel/v3/protobufs"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/debugz"
+	"regexp"
+	"strings"
+	"sync"
+	"time"
 	"ztna-core/ztna/common/inspect"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/raft"
 	"ztna-core/ztna/controller/xt"
-	"regexp"
-	"strings"
-	"sync"
-	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/channel/v3/protobufs"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/debugz"
 )
 
 type InspectResultValue struct {
@@ -48,6 +50,7 @@ type InspectResult struct {
 }
 
 func NewInspectionsManager(network *Network) *InspectionsManager {
+	logtrace.LogWithFunctionName()
 	return &InspectionsManager{
 		network: network,
 	}
@@ -58,6 +61,7 @@ type InspectionsManager struct {
 }
 
 func (self *InspectionsManager) Inspect(appRegex string, values []string) *InspectResult {
+	logtrace.LogWithFunctionName()
 	ctx := &inspectRequestContext{
 		network:         self.network,
 		timeout:         time.Second * 10,
@@ -91,6 +95,7 @@ type inspectRequestContext struct {
 }
 
 func (ctx *inspectRequestContext) RunInspections() *InspectResult {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("appRegex", ctx.appRegex).
 		WithField("values", ctx.requestedValues).
@@ -118,6 +123,7 @@ func (ctx *inspectRequestContext) RunInspections() *InspectResult {
 }
 
 func (ctx *inspectRequestContext) inspectLocal() {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("appRegex", ctx.appRegex).
 		WithField("appId", ctx.network.GetAppId()).
@@ -140,6 +146,7 @@ func (ctx *inspectRequestContext) inspectLocal() {
 }
 
 func (ctx *inspectRequestContext) InspectLocal(name string) {
+	logtrace.LogWithFunctionName()
 	lc := strings.ToLower(name)
 
 	if lc == "stackdump" {
@@ -204,6 +211,7 @@ func (ctx *inspectRequestContext) InspectLocal(name string) {
 }
 
 func (ctx *inspectRequestContext) handleLocalJsonResponse(key string, val interface{}) {
+	logtrace.LogWithFunctionName()
 	js, err := json.Marshal(val)
 	if err != nil {
 		ctx.appendError(ctx.network.GetAppId(), fmt.Errorf("failed to marshall %s to json (%w)", key, err).Error())
@@ -213,6 +221,7 @@ func (ctx *inspectRequestContext) handleLocalJsonResponse(key string, val interf
 }
 
 func (ctx *inspectRequestContext) handleLocalStringResponse(key string, val *string, err error) {
+	logtrace.LogWithFunctionName()
 	if err != nil {
 		ctx.appendError(ctx.network.GetAppId(), err.Error())
 	} else if val != nil {
@@ -221,6 +230,7 @@ func (ctx *inspectRequestContext) handleLocalStringResponse(key string, val *str
 }
 
 func (ctx *inspectRequestContext) inspectRouter(router *model.Router) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("appRegex", ctx.appRegex).
 		WithField("routerId", router.Id).
@@ -239,6 +249,7 @@ func (ctx *inspectRequestContext) inspectRouter(router *model.Router) {
 }
 
 func (ctx *inspectRequestContext) inspectPeer(id string, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().
 		WithField("appRegex", ctx.appRegex).
 		WithField("ctrlId", id).
@@ -257,6 +268,7 @@ func (ctx *inspectRequestContext) inspectPeer(id string, ch channel.Channel) {
 }
 
 func (ctx *inspectRequestContext) handleCtrlChanMessaging(id string, ch channel.Channel, notifier chan struct{}) {
+	logtrace.LogWithFunctionName()
 	defer close(notifier)
 
 	request := &ctrl_pb.InspectRequest{RequestedValues: ctx.requestedValues}
@@ -278,6 +290,7 @@ func (ctx *inspectRequestContext) handleCtrlChanMessaging(id string, ch channel.
 }
 
 func (ctx *inspectRequestContext) appendValue(appId string, name string, value string) {
+	logtrace.LogWithFunctionName()
 	ctx.lock.Lock()
 	defer ctx.lock.Unlock()
 	if !ctx.complete {
@@ -290,6 +303,7 @@ func (ctx *inspectRequestContext) appendValue(appId string, name string, value s
 }
 
 func (ctx *inspectRequestContext) appendError(appId string, err string) {
+	logtrace.LogWithFunctionName()
 	ctx.lock.Lock()
 	defer ctx.lock.Unlock()
 	if !ctx.complete {

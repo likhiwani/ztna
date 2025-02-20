@@ -22,11 +22,13 @@ import (
 	"ztna-core/ztna/controller/internal/permissions"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	r := NewApiSessionRouter()
 	env.AddRouter(r)
 }
@@ -36,12 +38,14 @@ type ApiSessionHandler struct {
 }
 
 func NewApiSessionRouter() *ApiSessionHandler {
+	logtrace.LogWithFunctionName()
 	return &ApiSessionHandler{
 		BasePath: "/" + EntityNameApiSession,
 	}
 }
 
 func (ir *ApiSessionHandler) Register(ae *env.AppEnv) {
+	logtrace.LogWithFunctionName()
 	ae.ManagementApi.APISessionDeleteAPISessionsHandler = api_session.DeleteAPISessionsHandlerFunc(func(params api_session.DeleteAPISessionsParams, _ interface{}) middleware.Responder {
 		return ae.IsAllowed(ir.Delete, params.HTTPRequest, params.ID, "", permissions.IsAdmin())
 	})
@@ -56,13 +60,16 @@ func (ir *ApiSessionHandler) Register(ae *env.AppEnv) {
 }
 
 func (ir *ApiSessionHandler) List(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	ListWithHandler[*model.ApiSession](ae, rc, ae.Managers.ApiSession, MapApiSessionToRestInterface)
 }
 
 func (ir *ApiSessionHandler) Detail(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DetailWithHandler[*model.ApiSession](ae, rc, ae.Managers.ApiSession, MapApiSessionToRestInterface)
 }
 
 func (ir *ApiSessionHandler) Delete(ae *env.AppEnv, rc *response.RequestContext) {
+	logtrace.LogWithFunctionName()
 	DeleteWithHandler(rc, ae.Managers.ApiSession)
 }

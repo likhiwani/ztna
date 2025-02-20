@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"os"
 	"strings"
@@ -35,6 +36,7 @@ type AgentSetLogLevelAction struct {
 }
 
 func NewSetLogLevelCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentSetLogLevelAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -60,6 +62,7 @@ func NewSetLogLevelCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements the command
 func (self *AgentSetLogLevelAction) Run() error {
+	logtrace.LogWithFunctionName()
 	if self.Cmd.Flags().Changed("timeout") {
 		time.AfterFunc(self.timeout, func() {
 			fmt.Println("operation timed out")

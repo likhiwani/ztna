@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new raft API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -71,6 +73,7 @@ type ClientService interface {
   Returns all members of a cluster and their current status
 */
 func (a *Client) RaftListMembers(params *RaftListMembersParams, opts ...ClientOption) (*RaftListMembersOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewRaftListMembersParams()
@@ -111,6 +114,7 @@ func (a *Client) RaftListMembers(params *RaftListMembersParams, opts ...ClientOp
   Add a member to the raft cluster. Requires admin access.
 */
 func (a *Client) RaftMemberAdd(params *RaftMemberAddParams, opts ...ClientOption) (*RaftMemberAddOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewRaftMemberAddParams()
@@ -151,6 +155,7 @@ func (a *Client) RaftMemberAdd(params *RaftMemberAddParams, opts ...ClientOption
   Remove a member from the raft cluster. Requires admin access.
 */
 func (a *Client) RaftMemberRemove(params *RaftMemberRemoveParams, opts ...ClientOption) (*RaftMemberRemoveOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewRaftMemberRemoveParams()
@@ -191,6 +196,7 @@ func (a *Client) RaftMemberRemove(params *RaftMemberRemoveParams, opts ...Client
   Attempts to transfer leadership to a different member of the cluster. Requires admin access.
 */
 func (a *Client) RaftTransferLeadership(params *RaftTransferLeadershipParams, opts ...ClientOption) (*RaftTransferLeadershipOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewRaftTransferLeadershipParams()
@@ -227,5 +233,6 @@ func (a *Client) RaftTransferLeadership(params *RaftTransferLeadershipParams, op
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

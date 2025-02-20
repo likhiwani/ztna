@@ -17,8 +17,10 @@
 package runner
 
 import (
-	"github.com/google/uuid"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/google/uuid"
 )
 
 type Operation interface {
@@ -36,6 +38,7 @@ type BaseOperation struct {
 }
 
 func NewBaseOperation(name string, freq time.Duration) *BaseOperation {
+	logtrace.LogWithFunctionName()
 	return &BaseOperation{
 		Name:      name,
 		Id:        uuid.New(),
@@ -44,10 +47,12 @@ func NewBaseOperation(name string, freq time.Duration) *BaseOperation {
 }
 
 func (e *BaseOperation) GetName() string {
+	logtrace.LogWithFunctionName()
 	return e.Name
 }
 
 func (e *BaseOperation) GetId() uuid.UUID {
+	logtrace.LogWithFunctionName()
 	if e.Id == uuid.Nil {
 		e.Id = uuid.New()
 	}
@@ -56,10 +61,12 @@ func (e *BaseOperation) GetId() uuid.UUID {
 }
 
 func (e *BaseOperation) GetFrequency() time.Duration {
+	logtrace.LogWithFunctionName()
 	return e.Frequency
 }
 
 func (e *BaseOperation) SetFrequency(f time.Duration) error {
+	logtrace.LogWithFunctionName()
 	e.Frequency = f
 	return nil
 }

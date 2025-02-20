@@ -19,14 +19,17 @@
 package tests
 
 import (
-	"github.com/Jeffail/gabs"
-	"github.com/google/uuid"
-	"ztna-core/ztna/common/eid"
 	"net/http"
 	"testing"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/Jeffail/gabs"
+	"github.com/google/uuid"
 )
 
 func Test_PostureChecks_Domain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

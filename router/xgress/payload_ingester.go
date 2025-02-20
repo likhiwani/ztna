@@ -1,10 +1,14 @@
 package xgress
 
-import "time"
+import (
+	"time"
+	"ztna-core/ztna/logtrace"
+)
 
 var payloadIngester *PayloadIngester
 
 func InitPayloadIngester(closeNotify <-chan struct{}) {
+	logtrace.LogWithFunctionName()
 	payloadIngester = NewPayloadIngester(closeNotify)
 }
 
@@ -21,6 +25,7 @@ type PayloadIngester struct {
 }
 
 func NewPayloadIngester(closeNotify <-chan struct{}) *PayloadIngester {
+	logtrace.LogWithFunctionName()
 	pi := &PayloadIngester{
 		payloadIngest:         make(chan *payloadEntry, 16),
 		payloadSendReq:        make(chan *Xgress, 16),
@@ -34,6 +39,7 @@ func NewPayloadIngester(closeNotify <-chan struct{}) *PayloadIngester {
 }
 
 func (self *PayloadIngester) inspect(evt *receiveBufferInspectEvent, timeout <-chan time.Time) bool {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.receiveBufferInspects <- evt:
 		return true
@@ -44,6 +50,7 @@ func (self *PayloadIngester) inspect(evt *receiveBufferInspectEvent, timeout <-c
 }
 
 func (self *PayloadIngester) ingest(payload *Payload, x *Xgress) {
+	logtrace.LogWithFunctionName()
 	self.payloadIngest <- &payloadEntry{
 		payload: payload,
 		x:       x,
@@ -51,6 +58,7 @@ func (self *PayloadIngester) ingest(payload *Payload, x *Xgress) {
 }
 
 func (self *PayloadIngester) run() {
+	logtrace.LogWithFunctionName()
 	for {
 		select {
 		case payloadEntry := <-self.payloadIngest:

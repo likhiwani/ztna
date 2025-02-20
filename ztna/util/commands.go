@@ -17,11 +17,14 @@
 package util
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/spf13/cobra"
 )
 
 // NewEmptyParentCmd creates a new cobra command with no parent
 func NewEmptyParentCmd(name string, description string) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:   name,
 		Short: description,

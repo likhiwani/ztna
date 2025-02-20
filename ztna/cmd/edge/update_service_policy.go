@@ -17,6 +17,7 @@
 package edge
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -38,6 +39,7 @@ type updateServicePolicyOptions struct {
 }
 
 func newUpdateServicePolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateServicePolicyOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -70,6 +72,7 @@ func newUpdateServicePolicyCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runUpdateServicePolicy(o *updateServicePolicyOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("service-policies", o.Args[0], o.Options)
 	if err != nil {
 		return err

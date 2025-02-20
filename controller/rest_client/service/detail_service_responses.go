@@ -30,6 +30,7 @@ package service
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type DetailServiceReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *DetailServiceReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewDetailServiceOK()
@@ -78,6 +80,7 @@ func (o *DetailServiceReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewDetailServiceOK creates a DetailServiceOK with default headers values
 func NewDetailServiceOK() *DetailServiceOK {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceOK{}
 }
 
@@ -90,13 +93,16 @@ type DetailServiceOK struct {
 }
 
 func (o *DetailServiceOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /services/{id}][%d] detailServiceOK  %+v", 200, o.Payload)
 }
 func (o *DetailServiceOK) GetPayload() *rest_model.DetailServiceEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailServiceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.DetailServiceEnvelope)
 
@@ -110,6 +116,7 @@ func (o *DetailServiceOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewDetailServiceUnauthorized creates a DetailServiceUnauthorized with default headers values
 func NewDetailServiceUnauthorized() *DetailServiceUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceUnauthorized{}
 }
 
@@ -122,13 +129,16 @@ type DetailServiceUnauthorized struct {
 }
 
 func (o *DetailServiceUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /services/{id}][%d] detailServiceUnauthorized  %+v", 401, o.Payload)
 }
 func (o *DetailServiceUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailServiceUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *DetailServiceUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewDetailServiceNotFound creates a DetailServiceNotFound with default headers values
 func NewDetailServiceNotFound() *DetailServiceNotFound {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceNotFound{}
 }
 
@@ -154,13 +165,16 @@ type DetailServiceNotFound struct {
 }
 
 func (o *DetailServiceNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /services/{id}][%d] detailServiceNotFound  %+v", 404, o.Payload)
 }
 func (o *DetailServiceNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailServiceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *DetailServiceNotFound) readResponse(response runtime.ClientResponse, co
 
 // NewDetailServiceTooManyRequests creates a DetailServiceTooManyRequests with default headers values
 func NewDetailServiceTooManyRequests() *DetailServiceTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &DetailServiceTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type DetailServiceTooManyRequests struct {
 }
 
 func (o *DetailServiceTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /services/{id}][%d] detailServiceTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *DetailServiceTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *DetailServiceTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

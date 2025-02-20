@@ -17,9 +17,11 @@
 package fields
 
 import (
+	"strings"
+	logtrace "ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 type UpdatedFields interface {
@@ -38,6 +40,7 @@ var _ UpdatedFields = (UpdatedFieldsMap)(nil)
 type UpdatedFieldsMap map[string]struct{}
 
 func (self UpdatedFieldsMap) ToSlice() []string {
+	logtrace.LogWithFunctionName()
 	var result []string
 	for k := range self {
 		result = append(result, k)
@@ -46,16 +49,19 @@ func (self UpdatedFieldsMap) ToSlice() []string {
 }
 
 func (self UpdatedFieldsMap) IsUpdated(key string) bool {
+	logtrace.LogWithFunctionName()
 	_, ok := self[key]
 	return ok
 }
 
 func (self UpdatedFieldsMap) AddField(key string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	self[key] = struct{}{}
 	return self
 }
 
 func (self UpdatedFieldsMap) AddFields(fields ...string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	for _, field := range fields {
 		self[field] = struct{}{}
 	}
@@ -63,6 +69,7 @@ func (self UpdatedFieldsMap) AddFields(fields ...string) UpdatedFields {
 }
 
 func (self UpdatedFieldsMap) RemoveFields(fields ...string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	for _, field := range fields {
 		delete(self, field)
 	}
@@ -70,6 +77,7 @@ func (self UpdatedFieldsMap) RemoveFields(fields ...string) UpdatedFields {
 }
 
 func (self UpdatedFieldsMap) ConcatNestedNames() UpdatedFields {
+	logtrace.LogWithFunctionName()
 	for key, val := range self {
 		if strings.Contains(key, ".") {
 			delete(self, key)
@@ -81,6 +89,7 @@ func (self UpdatedFieldsMap) ConcatNestedNames() UpdatedFields {
 }
 
 func (self UpdatedFieldsMap) FilterMaps(mapNames ...string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	nameMap := map[string]string{}
 	for _, name := range mapNames {
 		nameMap[name] = name + "."
@@ -98,6 +107,7 @@ func (self UpdatedFieldsMap) FilterMaps(mapNames ...string) UpdatedFields {
 }
 
 func (self UpdatedFieldsMap) MapField(old, new string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	if _, ok := self[old]; ok {
 		delete(self, old)
 		self[new] = struct{}{}
@@ -106,6 +116,7 @@ func (self UpdatedFieldsMap) MapField(old, new string) UpdatedFields {
 }
 
 func UpdatedFieldsToSlice(fields UpdatedFields) ([]string, error) {
+	logtrace.LogWithFunctionName()
 	if fields == nil {
 		return nil, nil
 	}
@@ -117,6 +128,7 @@ func UpdatedFieldsToSlice(fields UpdatedFields) ([]string, error) {
 }
 
 func SliceToUpdatedFields(val []string) UpdatedFields {
+	logtrace.LogWithFunctionName()
 	if len(val) == 0 {
 		return nil
 	}

@@ -17,10 +17,12 @@
 package handler_edge_ctrl
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -29,16 +31,19 @@ type sessionHeartbeatHandler struct {
 }
 
 func NewSessionHeartbeatHandler(appEnv *env.AppEnv) *sessionHeartbeatHandler {
+	logtrace.LogWithFunctionName()
 	return &sessionHeartbeatHandler{
 		appEnv: appEnv,
 	}
 }
 
 func (h *sessionHeartbeatHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return env.ApiSessionHeartbeatType
 }
 
 func (h *sessionHeartbeatHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		req := &edge_ctrl_pb.ApiSessionHeartbeat{}
 		routerId := ch.Id()

@@ -23,6 +23,20 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"math"
+	"net/url"
+	"os"
+	"strings"
+	"time"
+	"ztna-core/ztna/common"
+	"ztna-core/ztna/common/config"
+	"ztna-core/ztna/common/pb/ctrl_pb"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/command"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+
 	"github.com/hashicorp/go-hclog"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
@@ -30,20 +44,8 @@ import (
 	"github.com/openziti/storage/boltz"
 	"github.com/openziti/transport/v2"
 	transporttls "github.com/openziti/transport/v2/tls"
-	"ztna-core/ztna/common"
-	"ztna-core/ztna/common/config"
-	"ztna-core/ztna/common/pb/ctrl_pb"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/command"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/router/xgress"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-	"math"
-	"net/url"
-	"os"
-	"strings"
-	"time"
 )
 
 const (
@@ -121,6 +123,7 @@ type Config struct {
 }
 
 func (self *Config) ToJson() (string, error) {
+	logtrace.LogWithFunctionName()
 	jsonMap, err := config.ToJsonCompatibleMap(self.Src)
 	if err != nil {
 		return "", err
@@ -140,10 +143,12 @@ type CtrlOptions struct {
 }
 
 func (config *Config) Configure(sub config.Subconfig) error {
+	logtrace.LogWithFunctionName()
 	return sub.LoadConfig(config.Src)
 }
 
 func LoadConfig(path string) (*Config, error) {
+	logtrace.LogWithFunctionName()
 	cfgBytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -727,6 +732,7 @@ func LoadConfig(path string) (*Config, error) {
 
 // isSelfSigned checks if the given certificate is self-signed.
 func isSelfSigned(cert *x509.Certificate) (bool, error) {
+	logtrace.LogWithFunctionName()
 	// Check if the Issuer and Subject fields are equal
 	if cert.Issuer.String() != cert.Subject.String() {
 		return false, nil
@@ -742,6 +748,7 @@ func isSelfSigned(cert *x509.Certificate) (bool, error) {
 }
 
 func generateDefaultSpiffeId(id identity.Identity) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	rawCerts := id.Cert().Certificate
 	certs := make([]*x509.Certificate, len(rawCerts))
 
@@ -793,6 +800,7 @@ func generateDefaultSpiffeId(id identity.Identity) (*url.URL, error) {
 // SPIFFE id looking up the chain back to the root CA is returned. If no SPIFFE id is encountered, nil is returned.
 // Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromIdentity(id identity.Identity) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	tlsCerts := id.ServerCert()
 
 	spiffeId, err := GetSpiffeIdFromTlsCertChain(tlsCerts)
@@ -821,6 +829,7 @@ func GetSpiffeIdFromIdentity(id identity.Identity) (*url.URL, error) {
 }
 
 func ValidateSpiffeId(id *identity.TokenId, spiffeId *url.URL) error {
+	logtrace.LogWithFunctionName()
 	if !strings.HasPrefix(spiffeId.Path, "/controller/") {
 		return fmt.Errorf("invalid SPIFFE id path: %s, should have /controller/ prefix", spiffeId.Path)
 	}
@@ -835,6 +844,7 @@ func ValidateSpiffeId(id *identity.TokenId, spiffeId *url.URL) error {
 // must contain 0 or 1 spiffe:// URI SAN. The first encountered SPIFFE id looking up the chain back to the root CA is returned.
 // If no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromCertChain(certs []*x509.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	var spiffeId *url.URL
 	for _, cert := range certs {
 		var err error
@@ -856,6 +866,7 @@ func GetSpiffeIdFromCertChain(certs []*x509.Certificate) (*url.URL, error) {
 // Each certificate must contain 0 or 1 spiffe:// URI SAN. The first SPIFFE id looking up the chain is returned. If
 // no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromTlsCertChain(tlsCerts []*tls.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	for _, tlsCert := range tlsCerts {
 		for i, rawCert := range tlsCert.Certificate {
 			cert, err := x509.ParseCertificate(rawCert)
@@ -883,6 +894,7 @@ func GetSpiffeIdFromTlsCertChain(tlsCerts []*tls.Certificate) (*url.URL, error) 
 // Each certificate must contain 0 or 1 spiffe:// URI SAN. The first SPIFFE id looking up the chain is returned. If
 // no SPIFFE id is encountered, nil is returned. Errors are returned for parsing and processing errors only.
 func GetSpiffeIdFromCert(cert *x509.Certificate) (*url.URL, error) {
+	logtrace.LogWithFunctionName()
 	var spiffeId *url.URL
 	for _, uriSan := range cert.URIs {
 		if uriSan.Scheme == "spiffe" {
@@ -897,6 +909,7 @@ func GetSpiffeIdFromCert(cert *x509.Certificate) (*url.URL, error) {
 }
 
 func loadTlsHandshakeRateLimiterConfig(rateLimitConfig *command.AdaptiveRateLimiterConfig, cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if value, found := cfgmap["rateLimiter"]; found {
 		if submap, ok := value.(map[interface{}]interface{}); ok {
 			if err := command.LoadAdaptiveRateLimiterConfig(rateLimitConfig, submap); err != nil {
@@ -931,6 +944,7 @@ func loadTlsHandshakeRateLimiterConfig(rateLimitConfig *command.AdaptiveRateLimi
 // certificate provided in the controller's identity server certificates. This is to avoid scenarios where
 // newListener propagated to routers who will never be able to verify the controller's certificates due to SAN issues.
 func verifyNewListenerInServerCert(controllerConfig *Config, addr transport.Address) error {
+	logtrace.LogWithFunctionName()
 	addrSplits := strings.Split(addr.String(), ":")
 	if len(addrSplits) < 3 {
 		return errors.New("could not determine newListener's host value, expected at least three segments")
@@ -983,18 +997,21 @@ type CertValidatingIdentity struct {
 }
 
 func (self *CertValidatingIdentity) ClientTLSConfig() *tls.Config {
+	logtrace.LogWithFunctionName()
 	cfg := self.Identity.ClientTLSConfig()
 	cfg.VerifyConnection = self.VerifyConnection
 	return cfg
 }
 
 func (self *CertValidatingIdentity) ServerTLSConfig() *tls.Config {
+	logtrace.LogWithFunctionName()
 	cfg := self.Identity.ServerTLSConfig()
 	cfg.VerifyConnection = self.VerifyConnection
 	return cfg
 }
 
 func (self *CertValidatingIdentity) VerifyConnection(state tls.ConnectionState) error {
+	logtrace.LogWithFunctionName()
 	if len(state.PeerCertificates) == 0 {
 		return errors.New("no peer certificates provided")
 	}

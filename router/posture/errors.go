@@ -3,6 +3,8 @@ package posture
 import (
 	"fmt"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
 )
 
@@ -13,6 +15,7 @@ type CheckError struct {
 }
 
 func (p *CheckError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("posture check %s [%s] failed due to error(s): %s", p.Name, p.Id, p.Cause.Error())
 }
 
@@ -20,6 +23,7 @@ type NoPoliciesError struct {
 }
 
 func (e *NoPoliciesError) Error() string {
+	logtrace.LogWithFunctionName()
 	return "no policies provide access"
 }
 
@@ -30,6 +34,7 @@ type PolicyAccessError struct {
 }
 
 func (p *PolicyAccessError) Error() string {
+	logtrace.LogWithFunctionName()
 	if len(p.Errors) == 0 {
 		return fmt.Sprintf("policy %s [%s] failed", p.Id, p.Name)
 	}
@@ -48,6 +53,7 @@ func (p *PolicyAccessError) Error() string {
 type PolicyAccessErrors []*PolicyAccessError
 
 func (pae *PolicyAccessErrors) Error() string {
+	logtrace.LogWithFunctionName()
 	if pae == nil || len(*pae) == 0 {
 		return "unknown policy failure"
 	}
@@ -66,6 +72,7 @@ func (pae *PolicyAccessErrors) Error() string {
 }
 
 func EvaluatePostureCheck(postureCheck *edge_ctrl_pb.DataState_PostureCheck, cache *Cache) *CheckError {
+	logtrace.LogWithFunctionName()
 	check := CtrlCheckToLogic(postureCheck)
 	return check.Evaluate(cache)
 }
@@ -79,10 +86,12 @@ type FailedValueError[V fmt.Stringer] struct {
 }
 
 func (v *FailedValueError[V]) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("the state did not match because %v, expected: %s, given: %s", v.Reason, v.ExpectedValue, v.GivenValue)
 }
 
 func (v *FailedValueError[V]) Error() string {
+	logtrace.LogWithFunctionName()
 	return v.String()
 }
 
@@ -95,6 +104,7 @@ type AllInListError[V fmt.Stringer] struct {
 }
 
 func (e *AllInListError[V]) Error() string {
+	logtrace.LogWithFunctionName()
 	var failureStrings []string
 
 	for _, failedValue := range e.FailedValues {
@@ -123,6 +133,7 @@ type AnyInListError[V fmt.Stringer] struct {
 }
 
 func (e *AnyInListError[V]) Error() string {
+	logtrace.LogWithFunctionName()
 	var failureStrings []string
 
 	for _, failedValue := range e.FailedValues {
@@ -150,12 +161,14 @@ type OneInListError[V fmt.Stringer] struct {
 }
 
 func (e *OneInListError[V]) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("none of the given values were in the valid values, given: %v, valid: %v", e.GivenValues, e.ValidValues)
 }
 
 type Str string
 
 func (s Str) String() string {
+	logtrace.LogWithFunctionName()
 	return string(s)
 }
 

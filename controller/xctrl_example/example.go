@@ -20,12 +20,14 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"time"
+	"ztna-core/ztna/controller/xctrl"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/controller/xctrl"
 	"github.com/openziti/storage/boltz"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 type example struct {
@@ -35,10 +37,12 @@ type example struct {
 }
 
 func NewExample() xctrl.Xctrl {
+	logtrace.LogWithFunctionName()
 	return &example{delay: 1, enabled: false}
 }
 
 func (example *example) LoadConfig(cfgmap map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	if value, found := cfgmap["example"]; found {
 		if submap, ok := value.(map[interface{}]interface{}); ok {
 			if value, found := submap["delay"]; found {
@@ -55,15 +59,18 @@ func (example *example) LoadConfig(cfgmap map[interface{}]interface{}) error {
 }
 
 func (example *example) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return example.enabled
 }
 
 func (example *example) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddTypedReceiveHandler(newReceiveHandler())
 	return nil
 }
 
 func (example *example) Run(ctrl channel.Channel, _ boltz.Db, done chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	go func() {
 		for {
 			select {
@@ -89,10 +96,12 @@ func (example *example) Run(ctrl channel.Channel, _ boltz.Db, done chan struct{}
 }
 
 func (example *example) NotifyOfReconnect(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	logrus.Info("control channel reconnected")
 }
 
 func (example *example) GetTraceDecoders() []channel.TraceMessageDecoder {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 

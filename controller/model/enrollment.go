@@ -19,13 +19,15 @@ package model
 import (
 	"crypto/x509"
 	"encoding/json"
-	"github.com/go-openapi/runtime"
-	"ztna-core/ztna/controller/apierror"
-	fabricApiError "ztna-core/ztna/controller/apierror"
-	"ztna-core/ztna/controller/change"
 	"io"
 	"net/http"
 	"strings"
+	"ztna-core/ztna/controller/apierror"
+	fabricApiError "ztna-core/ztna/controller/apierror"
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/go-openapi/runtime"
 )
 
 type EnrollmentResult struct {
@@ -52,10 +54,12 @@ type EnrollmentRegistryImpl struct {
 }
 
 func (registry *EnrollmentRegistryImpl) Add(processor EnrollmentProcessor) {
+	logtrace.LogWithFunctionName()
 	registry.processors = append(registry.processors, processor)
 }
 
 func (registry *EnrollmentRegistryImpl) GetByMethod(method string) EnrollmentProcessor {
+	logtrace.LogWithFunctionName()
 	for _, processor := range registry.processors {
 		if processor.CanHandle(method) {
 			return processor
@@ -87,18 +91,22 @@ type EnrollmentContextHttp struct {
 }
 
 func (context *EnrollmentContextHttp) GetToken() string {
+	logtrace.LogWithFunctionName()
 	return context.Token
 }
 
 func (context *EnrollmentContextHttp) GetParameters() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return context.Parameters
 }
 
 func (context *EnrollmentContextHttp) GetData() interface{} {
+	logtrace.LogWithFunctionName()
 	return context.Data
 }
 
 func (context *EnrollmentContextHttp) GetDataAsMap() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	data, ok := context.Data.(map[string]interface{})
 
 	if !ok {
@@ -109,10 +117,12 @@ func (context *EnrollmentContextHttp) GetDataAsMap() map[string]interface{} {
 }
 
 func (context *EnrollmentContextHttp) GetMethod() string {
+	logtrace.LogWithFunctionName()
 	return context.Method
 }
 
 func (context *EnrollmentContextHttp) GetDataAsByteArray() []byte {
+	logtrace.LogWithFunctionName()
 	data, ok := context.Data.([]byte)
 
 	if !ok {
@@ -123,18 +133,22 @@ func (context *EnrollmentContextHttp) GetDataAsByteArray() []byte {
 }
 
 func (context *EnrollmentContextHttp) GetCerts() []*x509.Certificate {
+	logtrace.LogWithFunctionName()
 	return context.Certs
 }
 
 func (context *EnrollmentContextHttp) GetHeaders() map[string]interface{} {
+	logtrace.LogWithFunctionName()
 	return context.Headers
 }
 
 func (context *EnrollmentContextHttp) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return context.ChangeContext
 }
 
 func (context *EnrollmentContextHttp) FillFromHttpRequest(request *http.Request, changeCtx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	queryValues := request.URL.Query()
 	parameters := map[string]interface{}{}
 

@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -50,6 +51,7 @@ type RaftMemberRemove struct {
 
 // Validate validates this raft member remove
 func (m *RaftMemberRemove) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateID(formats); err != nil {
@@ -63,6 +65,7 @@ func (m *RaftMemberRemove) Validate(formats strfmt.Registry) error {
 }
 
 func (m *RaftMemberRemove) validateID(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
@@ -73,11 +76,13 @@ func (m *RaftMemberRemove) validateID(formats strfmt.Registry) error {
 
 // ContextValidate validates this raft member remove based on context it is used
 func (m *RaftMemberRemove) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	return nil
 }
 
 // MarshalBinary interface implementation
 func (m *RaftMemberRemove) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -86,6 +91,7 @@ func (m *RaftMemberRemove) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *RaftMemberRemove) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res RaftMemberRemove
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

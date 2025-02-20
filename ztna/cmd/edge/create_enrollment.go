@@ -24,6 +24,7 @@ import (
 
 	"ztna-core/edge-api/rest_management_api_client/enrollment"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	"ztna-core/ztna/ztna/cmd/common"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
@@ -34,6 +35,7 @@ import (
 )
 
 func newCreateEnrollmentCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	cmd := &cobra.Command{
 		Use: "enrollment",
 	}
@@ -52,6 +54,7 @@ type createEnrollmentOptions struct {
 }
 
 func newCreateEnrollmentOtt(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createEnrollmentOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -85,6 +88,7 @@ func newCreateEnrollmentOtt(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func newCreateEnrollmentOttCa(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createEnrollmentOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -117,6 +121,7 @@ func newCreateEnrollmentOttCa(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreateEnrollmentOtt(options *createEnrollmentOptions) error {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {
@@ -162,6 +167,7 @@ func runCreateEnrollmentOtt(options *createEnrollmentOptions) error {
 }
 
 func runCreateEnrollmentOttCa(options *createEnrollmentOptions) error {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {
@@ -209,6 +215,7 @@ func runCreateEnrollmentOttCa(options *createEnrollmentOptions) error {
 }
 
 func newCreateEnrollmentUpdb(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createEnrollmentOptions{
 		Options: api.Options{
 			CommonOptions: common.CommonOptions{
@@ -241,6 +248,7 @@ func newCreateEnrollmentUpdb(out io.Writer, errOut io.Writer) *cobra.Command {
 }
 
 func runCreateEnrollmentUpdb(options *createEnrollmentOptions) error {
+	logtrace.LogWithFunctionName()
 	managementClient, err := util.NewEdgeManagementClient(options)
 
 	if err != nil {

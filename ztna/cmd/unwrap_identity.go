@@ -3,11 +3,13 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/openziti/identity"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/identity"
+	"github.com/spf13/cobra"
 )
 
 type IdentityConfigFile struct {
@@ -17,6 +19,7 @@ type IdentityConfigFile struct {
 }
 
 func NewUnwrapIdentityFileCommand(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	outCertFile := ""
 	outKeyFile := ""
 	outCaFile := ""

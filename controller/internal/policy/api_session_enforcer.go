@@ -18,13 +18,15 @@ package policy
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
+	"time"
 	"ztna-core/ztna/common/runner"
+	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/model"
-	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/sirupsen/logrus"
-	"time"
 )
 
 const (
@@ -42,6 +44,7 @@ type ApiSessionEnforcer struct {
 }
 
 func NewSessionEnforcer(appEnv *env.AppEnv, frequency time.Duration, sessionTimeout time.Duration) *ApiSessionEnforcer {
+	logtrace.LogWithFunctionName()
 	if sessionTimeout < 60*time.Second {
 		pfxlog.Logger().Panic("sessionTimeout can not be less than 60 seconds")
 	}
@@ -59,6 +62,7 @@ func NewSessionEnforcer(appEnv *env.AppEnv, frequency time.Duration, sessionTime
 }
 
 func (s *ApiSessionEnforcer) Run() error {
+	logtrace.LogWithFunctionName()
 	startTime := time.Now()
 
 	defer func() {

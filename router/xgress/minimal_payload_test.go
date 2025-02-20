@@ -4,19 +4,22 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/metrics"
-	"ztna-core/ztna/controller/idgen"
-	cmap "github.com/orcaman/concurrent-map/v2"
-	metrics2 "github.com/rcrowley/go-metrics"
-	"github.com/sirupsen/logrus"
 	"io"
 	"testing"
 	"time"
+	"ztna-core/ztna/controller/idgen"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/metrics"
+	cmap "github.com/orcaman/concurrent-map/v2"
+	metrics2 "github.com/rcrowley/go-metrics"
+	"github.com/sirupsen/logrus"
 )
 
 func newTestXgConn(bufferSize int, targetSends uint32, targetReceives uint32) *testXgConn {
+	logtrace.LogWithFunctionName()
 	return &testXgConn{
 		bufferSize:     bufferSize,
 		targetSends:    targetSends,
@@ -40,14 +43,17 @@ type testXgConn struct {
 }
 
 func (self *testXgConn) Close() error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *testXgConn) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return "test"
 }
 
 func (self *testXgConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	self.sndMsgCounter++
 	if self.targetSends == 0 {
 		time.Sleep(time.Minute)
@@ -87,6 +93,7 @@ func (self *testXgConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
 }
 
 func (self *testXgConn) WritePayload(buf []byte, m map[uint8][]byte) (int, error) {
+	logtrace.LogWithFunctionName()
 	self.rcvMsgCounter++
 	sl := buf
 	for len(sl) > 0 {
@@ -147,6 +154,7 @@ func (self *testXgConn) WritePayload(buf []byte, m map[uint8][]byte) (int, error
 }
 
 func (self *testXgConn) HandleControlMsg(controlType ControlType, headers channel.Headers, responder ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
@@ -160,6 +168,7 @@ type testIntermediary struct {
 }
 
 func (self *testIntermediary) HandleXgressReceive(payload *Payload, x *Xgress) {
+	logtrace.LogWithFunctionName()
 	m := payload.Marshall()
 	self.payloadTransformer.Tx(m, nil)
 	b, err := self.msgs.GetMarshaller()(m)
@@ -193,6 +202,7 @@ func (self *testIntermediary) HandleXgressReceive(payload *Payload, x *Xgress) {
 }
 
 func (self *testIntermediary) validateMessage(m *channel.Message) error {
+	logtrace.LogWithFunctionName()
 	circuitId, found := m.GetStringHeader(HeaderKeyCircuitId)
 	if !found {
 		return errors.New("no circuit id found")
@@ -215,6 +225,7 @@ func (self *testIntermediary) validateMessage(m *channel.Message) error {
 }
 
 func (self *testIntermediary) HandleControlReceive(control *Control, x *Xgress) {
+	logtrace.LogWithFunctionName()
 	panic("implement me")
 }
 
@@ -223,6 +234,7 @@ type testAcker struct {
 }
 
 func (self *testAcker) ack(ack *Acknowledgement, address Address) {
+	logtrace.LogWithFunctionName()
 	dest, _ := self.destinations.Get(string(address))
 	if dest != nil {
 		if err := dest.SendAcknowledgement(ack); err != nil {
@@ -236,19 +248,23 @@ func (self *testAcker) ack(ack *Acknowledgement, address Address) {
 type mockForwarder struct{}
 
 func (m mockForwarder) RetransmitPayload(srcAddr Address, payload *Payload) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (m mockForwarder) ForwardAcknowledgement(srcAddr Address, acknowledgement *Acknowledgement) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 type mockFaulter struct{}
 
 func (m mockFaulter) ReportForwardingFault(circuitId string, ctrlId string) {
+	logtrace.LogWithFunctionName()
 }
 
 func Test_MinimalPayloadMarshalling(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	logOptions := pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").NoColor()
 	pfxlog.GlobalInit(logrus.InfoLevel, logOptions)
 	pfxlog.SetFormatter(pfxlog.NewFormatter(pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").StartingToday()))
@@ -307,6 +323,7 @@ func Test_MinimalPayloadMarshalling(t *testing.T) {
 }
 
 func Test_PayloadSize(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	logOptions := pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").NoColor()
 	pfxlog.GlobalInit(logrus.InfoLevel, logOptions)
 	pfxlog.SetFormatter(pfxlog.NewFormatter(pfxlog.DefaultOptions().SetTrimPrefix("github.com/openziti/").StartingToday()))

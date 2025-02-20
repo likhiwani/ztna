@@ -17,10 +17,11 @@
 package network
 
 import (
-	config2 "ztna-core/ztna/controller/config"
-	"ztna-core/ztna/controller/model"
 	"testing"
 	"time"
+	config2 "ztna-core/ztna/controller/config"
+	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/stretchr/testify/require"
 
@@ -29,6 +30,7 @@ import (
 )
 
 func TestSimplePath2(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -90,6 +92,7 @@ func TestSimplePath2(t *testing.T) {
 }
 
 func TestTransitPath2(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -170,6 +173,7 @@ func TestTransitPath2(t *testing.T) {
 }
 
 func TestShortestPath(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -238,6 +242,7 @@ func TestShortestPath(t *testing.T) {
 }
 
 func TestShortestPathWithUntraversableRouter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -306,6 +311,7 @@ func TestShortestPathWithUntraversableRouter(t *testing.T) {
 }
 
 func TestShortestPathWithOnlyUntraversableRouter(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -346,6 +352,7 @@ func TestShortestPathWithOnlyUntraversableRouter(t *testing.T) {
 }
 
 func TestShortestPathWithUntraversableEdgeRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -386,6 +393,7 @@ func TestShortestPathWithUntraversableEdgeRouters(t *testing.T) {
 }
 
 func TestShortestPathWithUntraversableEdgeRoutersAndTraversableMiddle(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -438,6 +446,7 @@ func TestShortestPathWithUntraversableEdgeRoutersAndTraversableMiddle(t *testing
 }
 
 func TestShortestPathWithUntraversableEdgeRoutersAndUntraversableMiddle(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -485,6 +494,7 @@ func TestShortestPathWithUntraversableEdgeRoutersAndUntraversableMiddle(t *testi
 }
 
 func TestRouterCost(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -541,6 +551,7 @@ func TestRouterCost(t *testing.T) {
 }
 
 func TestMinRouterCost(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := model.NewTestContext(t)
 	defer ctx.Cleanup()
 
@@ -598,6 +609,7 @@ func TestMinRouterCost(t *testing.T) {
 }
 
 func newPathTestLink(network *Network, id string, srcR, destR *model.Router) *model.Link {
+	logtrace.LogWithFunctionName()
 	l := model.NewTestLink(id, srcR, destR)
 	l.SrcLatency = 0
 	l.DstLatency = 0

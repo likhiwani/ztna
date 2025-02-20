@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type PatchRouterReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *PatchRouterReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewPatchRouterOK()
@@ -84,6 +86,7 @@ func (o *PatchRouterReader) ReadResponse(response runtime.ClientResponse, consum
 
 // NewPatchRouterOK creates a PatchRouterOK with default headers values
 func NewPatchRouterOK() *PatchRouterOK {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterOK{}
 }
 
@@ -96,13 +99,16 @@ type PatchRouterOK struct {
 }
 
 func (o *PatchRouterOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PATCH /routers/{id}][%d] patchRouterOK  %+v", 200, o.Payload)
 }
 func (o *PatchRouterOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *PatchRouterOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -116,6 +122,7 @@ func (o *PatchRouterOK) readResponse(response runtime.ClientResponse, consumer r
 
 // NewPatchRouterBadRequest creates a PatchRouterBadRequest with default headers values
 func NewPatchRouterBadRequest() *PatchRouterBadRequest {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterBadRequest{}
 }
 
@@ -128,13 +135,16 @@ type PatchRouterBadRequest struct {
 }
 
 func (o *PatchRouterBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PATCH /routers/{id}][%d] patchRouterBadRequest  %+v", 400, o.Payload)
 }
 func (o *PatchRouterBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *PatchRouterBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -148,6 +158,7 @@ func (o *PatchRouterBadRequest) readResponse(response runtime.ClientResponse, co
 
 // NewPatchRouterUnauthorized creates a PatchRouterUnauthorized with default headers values
 func NewPatchRouterUnauthorized() *PatchRouterUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterUnauthorized{}
 }
 
@@ -160,13 +171,16 @@ type PatchRouterUnauthorized struct {
 }
 
 func (o *PatchRouterUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PATCH /routers/{id}][%d] patchRouterUnauthorized  %+v", 401, o.Payload)
 }
 func (o *PatchRouterUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *PatchRouterUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -180,6 +194,7 @@ func (o *PatchRouterUnauthorized) readResponse(response runtime.ClientResponse, 
 
 // NewPatchRouterNotFound creates a PatchRouterNotFound with default headers values
 func NewPatchRouterNotFound() *PatchRouterNotFound {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterNotFound{}
 }
 
@@ -192,13 +207,16 @@ type PatchRouterNotFound struct {
 }
 
 func (o *PatchRouterNotFound) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PATCH /routers/{id}][%d] patchRouterNotFound  %+v", 404, o.Payload)
 }
 func (o *PatchRouterNotFound) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *PatchRouterNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -212,6 +230,7 @@ func (o *PatchRouterNotFound) readResponse(response runtime.ClientResponse, cons
 
 // NewPatchRouterTooManyRequests creates a PatchRouterTooManyRequests with default headers values
 func NewPatchRouterTooManyRequests() *PatchRouterTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &PatchRouterTooManyRequests{}
 }
 
@@ -224,13 +243,16 @@ type PatchRouterTooManyRequests struct {
 }
 
 func (o *PatchRouterTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[PATCH /routers/{id}][%d] patchRouterTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *PatchRouterTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *PatchRouterTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

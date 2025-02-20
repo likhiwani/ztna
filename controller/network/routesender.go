@@ -18,16 +18,18 @@ package network
 
 import (
 	"fmt"
+	"time"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/model"
-	"time"
+	"ztna-core/ztna/logtrace"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3/protobufs"
 	"ztna-core/ztna/common/ctrl_msg"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/xt"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3/protobufs"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 )
@@ -37,10 +39,12 @@ type routeSenderController struct {
 }
 
 func newRouteSenderController() *routeSenderController {
+	logtrace.LogWithFunctionName()
 	return &routeSenderController{senders: cmap.New[*routeSender]()}
 }
 
 func (self *routeSenderController) forwardRouteResult(rs *RouteStatus) bool {
+	logtrace.LogWithFunctionName()
 	sender, found := self.senders.Get(rs.CircuitId)
 	if found {
 		sender.in <- rs
@@ -51,10 +55,12 @@ func (self *routeSenderController) forwardRouteResult(rs *RouteStatus) bool {
 }
 
 func (self *routeSenderController) addRouteSender(rs *routeSender) {
+	logtrace.LogWithFunctionName()
 	self.senders.Set(rs.circuitId, rs)
 }
 
 func (self *routeSenderController) removeRouteSender(rs *routeSender) {
+	logtrace.LogWithFunctionName()
 	self.senders.Remove(rs.circuitId)
 }
 
@@ -68,6 +74,7 @@ type routeSender struct {
 }
 
 func newRouteSender(circuitId string, timeout time.Duration, serviceCounters ServiceCounters, terminators *model.TerminatorManager) *routeSender {
+	logtrace.LogWithFunctionName()
 	return &routeSender{
 		circuitId:       circuitId,
 		timeout:         timeout,
@@ -79,6 +86,7 @@ func newRouteSender(circuitId string, timeout time.Duration, serviceCounters Ser
 }
 
 func (self *routeSender) route(attempt uint32, path *model.Path, routeMsgs []*ctrl_pb.Route, strategy xt.Strategy, terminator xt.Terminator, ctx logcontext.Context) (peerData xt.PeerData, cleanups map[string]struct{}, err CircuitError) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.ChannelLogger(logcontext.EstablishPath).Wire(ctx)
 
 	// send route messages
@@ -129,6 +137,7 @@ attendance:
 }
 
 func (self *routeSender) handleRouteSend(attempt uint32, path *model.Path, strategy xt.Strategy, status *RouteStatus, terminator xt.Terminator, logger *pfxlog.Builder) (peerData xt.PeerData, cleanups map[string]struct{}, err CircuitError) {
+	logtrace.LogWithFunctionName()
 	if status.Success == (status.ErrorCode != nil) {
 		logger.Errorf("route status success and error code differ. Success: %v ErrorCode: %v", status.Success, status.ErrorCode)
 	}
@@ -210,6 +219,7 @@ func (self *routeSender) handleRouteSend(attempt uint32, path *model.Path, strat
 }
 
 func (self *routeSender) sendRoute(r *model.Router, routeMsg *ctrl_pb.Route, ctx logcontext.Context) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.ChannelLogger(logcontext.EstablishPath).Wire(ctx).WithField("routerId", r.Id)
 
 	envelope := protobufs.MarshalTyped(routeMsg).WithTimeout(3 * time.Second)
@@ -221,6 +231,7 @@ func (self *routeSender) sendRoute(r *model.Router, routeMsg *ctrl_pb.Route, ctx
 }
 
 func (self *routeSender) cleanups(path *model.Path) map[string]struct{} {
+	logtrace.LogWithFunctionName()
 	cleanups := make(map[string]struct{})
 	for _, r := range path.Nodes {
 		success, found := self.attendance[r.Id]
@@ -246,5 +257,6 @@ type routeTimeoutError struct {
 }
 
 func (self routeTimeoutError) Error() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("timeout creating routes for [s/%s]", self.circuitId)
 }

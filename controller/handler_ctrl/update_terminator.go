@@ -18,7 +18,7 @@ package handler_ctrl
 
 import (
 	"fmt"
-	"github.com/openziti/channel/v3"
+	"math"
 	"ztna-core/ztna/common/handler_common"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/db"
@@ -26,9 +26,11 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/protobuf/proto"
-	"math"
 )
 
 type updateTerminatorHandler struct {
@@ -36,6 +38,7 @@ type updateTerminatorHandler struct {
 }
 
 func newUpdateTerminatorHandler(network *network.Network, router *model.Router) *updateTerminatorHandler {
+	logtrace.LogWithFunctionName()
 	return &updateTerminatorHandler{
 		baseHandler: baseHandler{
 			router:  router,
@@ -45,10 +48,12 @@ func newUpdateTerminatorHandler(network *network.Network, router *model.Router) 
 }
 
 func (self *updateTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(ctrl_pb.ContentType_UpdateTerminatorRequestType)
 }
 
 func (self *updateTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	request := &ctrl_pb.UpdateTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, request); err != nil {
 		log.WithError(err).Error("failed to unmarshal update terminator message")
@@ -59,6 +64,7 @@ func (self *updateTerminatorHandler) HandleReceive(msg *channel.Message, ch chan
 }
 
 func (self *updateTerminatorHandler) handleUpdateTerminator(msg *channel.Message, ch channel.Channel, request *ctrl_pb.UpdateTerminatorRequest) {
+	logtrace.LogWithFunctionName()
 	terminator, err := self.network.Terminator.Read(request.TerminatorId)
 	if err != nil {
 		handler_common.SendFailure(msg, ch, err.Error())

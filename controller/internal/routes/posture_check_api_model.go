@@ -24,6 +24,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/michaelquigley/pfxlog"
@@ -39,17 +40,20 @@ type PostureCheckLinkFactoryImpl struct {
 }
 
 func NewPostureCheckLinkFactory() *PostureCheckLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNamePostureCheck),
 	}
 }
 
 func (factory *PostureCheckLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	return links
 }
 
 func MapCreatePostureCheckToModel(postureCheck rest_model.PostureCheckCreate) *model.PostureCheck {
+	logtrace.LogWithFunctionName()
 	ret := &model.PostureCheck{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(postureCheck.Tags()),
@@ -121,6 +125,7 @@ func MapCreatePostureCheckToModel(postureCheck rest_model.PostureCheckCreate) *m
 }
 
 func MapUpdatePostureCheckToModel(id string, postureCheck rest_model.PostureCheckUpdate) *model.PostureCheck {
+	logtrace.LogWithFunctionName()
 	ret := &model.PostureCheck{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(postureCheck.Tags()),
@@ -188,6 +193,7 @@ func MapUpdatePostureCheckToModel(id string, postureCheck rest_model.PostureChec
 }
 
 func MapPatchPostureCheckToModel(id string, postureCheck rest_model.PostureCheckPatch) *model.PostureCheck {
+	logtrace.LogWithFunctionName()
 	ret := &model.PostureCheck{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(postureCheck.Tags()),
@@ -268,6 +274,7 @@ func MapPatchPostureCheckToModel(id string, postureCheck rest_model.PostureCheck
 }
 
 func MapPostureChecksToRestEntity(ae *env.AppEnv, rc *response.RequestContext, es []*model.PostureCheck) ([]interface{}, error) {
+	logtrace.LogWithFunctionName()
 	// can't use modelToApi b/c it require list of network.Entity
 	restModel := make([]interface{}, 0)
 
@@ -285,10 +292,12 @@ func MapPostureChecksToRestEntity(ae *env.AppEnv, rc *response.RequestContext, e
 }
 
 func MapPostureCheckToRestEntity(ae *env.AppEnv, rc *response.RequestContext, i *model.PostureCheck) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapPostureCheckToRestModel(ae, rc, i)
 }
 
 func MapPostureCheckToRestModel(ae *env.AppEnv, rc *response.RequestContext, i *model.PostureCheck) (rest_model.PostureCheckDetail, error) {
+	logtrace.LogWithFunctionName()
 	var ret rest_model.PostureCheckDetail
 
 	switch subType := i.SubType.(type) {
@@ -379,6 +388,7 @@ func MapPostureCheckToRestModel(ae *env.AppEnv, rc *response.RequestContext, i *
 }
 
 func setBaseEntityDetailsOnPostureCheck(check rest_model.PostureCheckDetail, i *model.PostureCheck) {
+	logtrace.LogWithFunctionName()
 	if i.RoleAttributes == nil {
 		i.RoleAttributes = []string{}
 	}
@@ -398,6 +408,7 @@ func setBaseEntityDetailsOnPostureCheck(check rest_model.PostureCheckDetail, i *
 }
 
 func GetNamedPostureCheckRoles(postureCheckHandler *model.PostureCheckManager, roles []string) rest_model.NamedRoles {
+	logtrace.LogWithFunctionName()
 	result := rest_model.NamedRoles{}
 	for _, role := range roles {
 		if strings.HasPrefix(role, "@") {

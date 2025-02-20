@@ -18,14 +18,17 @@ package tests
 
 import (
 	"fmt"
+	"testing"
+	"time"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/google/uuid"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestScp(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	allZetHostedFailed := true
 	allZetClientsFailed := true
 
@@ -78,6 +81,7 @@ func TestScp(t *testing.T) {
 }
 
 func testScp(t *testing.T, hostSelector string, hostType string, encrypted bool) bool {
+	logtrace.LogWithFunctionName()
 	encDesk := "encrypted"
 	if !encrypted {
 		encDesk = "unencrypted"

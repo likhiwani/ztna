@@ -2,15 +2,18 @@ package network
 
 import (
 	"fmt"
+	"math"
+	"time"
 	"ztna-core/ztna/common/pb/ctrl_pb"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/pkg/errors"
-	"math"
-	"time"
 )
 
 func (network *Network) CreateRouteMessages(path *model.Path, attempt uint32, circuitId string, terminator xt.Terminator, deadline time.Time) []*ctrl_pb.Route {
+	logtrace.LogWithFunctionName()
 	var routeMessages []*ctrl_pb.Route
 	remainingTime := time.Until(deadline)
 	if len(path.Links) == 0 {
@@ -93,6 +96,7 @@ func (network *Network) CreateRouteMessages(path *model.Path, attempt uint32, ci
 }
 
 func (network *Network) CreatePathWithNodes(nodes []*model.Router) (*model.Path, CircuitError) {
+	logtrace.LogWithFunctionName()
 	ingressId, err := network.sequence.NextHash()
 	if err != nil {
 		return nil, newCircuitErrWrap(CircuitFailureIdGenerationError, err)
@@ -115,6 +119,7 @@ func (network *Network) CreatePathWithNodes(nodes []*model.Router) (*model.Path,
 }
 
 func (network *Network) UpdatePath(path *model.Path) (*model.Path, error) {
+	logtrace.LogWithFunctionName()
 	srcR := path.Nodes[0]
 	dstR := path.Nodes[len(path.Nodes)-1]
 	nodes, _, err := network.shortestPath(srcR, dstR)
@@ -138,6 +143,7 @@ func (network *Network) UpdatePath(path *model.Path) (*model.Path, error) {
 }
 
 func (network *Network) shortestPath(srcR *model.Router, dstR *model.Router) ([]*model.Router, int64, error) {
+	logtrace.LogWithFunctionName()
 	if srcR == nil || dstR == nil {
 		return nil, 0, errors.New("not routable (!srcR||!dstR)")
 	}

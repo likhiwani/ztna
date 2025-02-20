@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -32,6 +33,7 @@ type AgentTransferLeadershipAction struct {
 }
 
 func NewAgentTransferLeadership(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := AgentTransferLeadershipAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -54,6 +56,7 @@ func NewAgentTransferLeadership(p common.OptionsProvider) *cobra.Command {
 }
 
 func (o *AgentTransferLeadershipAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_RaftTransferLeadershipRequestType), nil)
 
 	if len(o.Args) > 0 {

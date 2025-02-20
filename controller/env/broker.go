@@ -18,14 +18,16 @@ package env
 
 import (
 	"crypto"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/event"
 	"ztna-core/ztna/controller/model"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -63,6 +65,7 @@ type Broker struct {
 }
 
 func NewBroker(ae *AppEnv, synchronizer RouterSyncStrategy) *Broker {
+	logtrace.LogWithFunctionName()
 	broker := &Broker{
 		ae:                  ae,
 		routerSyncStrategy:  synchronizer,
@@ -86,14 +89,17 @@ func NewBroker(ae *AppEnv, synchronizer RouterSyncStrategy) *Broker {
 }
 
 func (broker *Broker) ValidateRouterDataModel() []error {
+	logtrace.LogWithFunctionName()
 	return broker.routerSyncStrategy.Validate()
 }
 
 func (broker *Broker) GetRouterDataModel() *common.RouterDataModel {
+	logtrace.LogWithFunctionName()
 	return broker.routerSyncStrategy.GetRouterDataModel()
 }
 
 func (broker *Broker) AcceptClusterEvent(clusterEvent *event.ClusterEvent) {
+	logtrace.LogWithFunctionName()
 	if clusterEvent.EventType == event.ClusterLeadershipGained {
 		broker.ae.Managers.Controller.PeersConnected(clusterEvent.Peers, false)
 	}
@@ -110,14 +116,17 @@ func (broker *Broker) AcceptClusterEvent(clusterEvent *event.ClusterEvent) {
 }
 
 func (broker *Broker) GetReceiveHandlers() []channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return broker.routerSyncStrategy.GetReceiveHandlers()
 }
 
 func (broker *Broker) InvokeRouterConnectedSynchronously() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (broker *Broker) RouterConnected(router *model.Router) {
+	logtrace.LogWithFunctionName()
 	fingerprint := ""
 	if router.Fingerprint != nil {
 		fingerprint = *router.Fingerprint
@@ -139,6 +148,7 @@ func (broker *Broker) RouterConnected(router *model.Router) {
 }
 
 func (broker *Broker) RouterDisconnected(r *model.Router) {
+	logtrace.LogWithFunctionName()
 	go func() {
 		pfxlog.Logger().WithField("routerId", r.Id).
 			WithField("routerName", r.Name).
@@ -149,6 +159,7 @@ func (broker *Broker) RouterDisconnected(r *model.Router) {
 }
 
 func (broker *Broker) apiSessionFullyAuthenticated(args ...interface{}) {
+	logtrace.LogWithFunctionName()
 	var apiSession *db.ApiSession
 	if len(args) == 1 {
 		apiSession, _ = args[0].(*db.ApiSession)
@@ -162,14 +173,17 @@ func (broker *Broker) apiSessionFullyAuthenticated(args ...interface{}) {
 }
 
 func (broker *Broker) apiSessionCertificateCreated(entity *db.ApiSessionCertificate) {
+	logtrace.LogWithFunctionName()
 	go broker.apiSessionCertificateHandler(false, entity)
 }
 
 func (broker *Broker) apiSessionCertificateDeleted(entity *db.ApiSessionCertificate) {
+	logtrace.LogWithFunctionName()
 	go broker.apiSessionCertificateHandler(true, entity)
 }
 
 func (broker *Broker) apiSessionCertificateHandler(delete bool, apiSessionCert *db.ApiSessionCertificate) {
+	logtrace.LogWithFunctionName()
 	var apiSession *db.ApiSession
 	var err error
 	err = broker.ae.GetDb().View(func(tx *bbolt.Tx) error {
@@ -189,18 +203,22 @@ func (broker *Broker) apiSessionCertificateHandler(delete bool, apiSessionCert *
 }
 
 func (broker *Broker) IsEdgeRouterOnline(id string) bool {
+	logtrace.LogWithFunctionName()
 	state := broker.GetEdgeRouterState(id)
 	return state.IsOnline
 }
 
 func (broker *Broker) GetEdgeRouterState(id string) RouterStateValues {
+	logtrace.LogWithFunctionName()
 	return broker.routerSyncStrategy.GetEdgeRouterState(id)
 }
 
 func (broker *Broker) Stop() {
+	logtrace.LogWithFunctionName()
 	broker.routerSyncStrategy.Stop()
 }
 
 func (broker *Broker) GetPublicKeys() map[string]crypto.PublicKey {
+	logtrace.LogWithFunctionName()
 	return broker.routerSyncStrategy.GetPublicKeys()
 }

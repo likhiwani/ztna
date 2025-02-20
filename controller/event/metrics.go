@@ -17,8 +17,10 @@
 package event
 
 import (
-	"github.com/openziti/metrics/metrics_pb"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/metrics/metrics_pb"
 )
 
 const (
@@ -47,6 +49,7 @@ type MetricsEventHandler interface {
 type MetricsEventHandlerF func(event *MetricsEvent)
 
 func (self MetricsEventHandlerF) AcceptMetricsEvent(event *MetricsEvent) {
+	logtrace.LogWithFunctionName()
 	self(event)
 }
 
@@ -68,6 +71,7 @@ type MetricsMessageHandlerWrapper interface {
 type MetricsMessageHandlerF func(msg *metrics_pb.MetricsMessage)
 
 func (self MetricsMessageHandlerF) AcceptMetricsMsg(msg *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	self(msg)
 }
 

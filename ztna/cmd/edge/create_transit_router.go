@@ -21,6 +21,7 @@ import (
 	"io"
 	"os"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -37,6 +38,7 @@ type createTransitRouterOptions struct {
 }
 
 func newCreateTransitRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &createTransitRouterOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut)}
 
@@ -68,6 +70,7 @@ func newCreateTransitRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runCreateTransitRouter implements the command to create a gateway on the edge controller
 func runCreateTransitRouter(o *createTransitRouterOptions) error {
+	logtrace.LogWithFunctionName()
 	entityData := gabs.New()
 	api.SetJSONValue(entityData, o.Args[0], "name")
 	api.SetJSONValue(entityData, o.cost, "cost")
@@ -90,6 +93,7 @@ func runCreateTransitRouter(o *createTransitRouterOptions) error {
 }
 
 func getTransitRouterJwt(o *createTransitRouterOptions, id string) error {
+	logtrace.LogWithFunctionName()
 	newRouter, err := DetailEntityOfType("transit-routers", id, o.OutputJSONResponse, o.Out, o.Options.Timeout, o.Options.Verbose)
 	if err != nil {
 		return err

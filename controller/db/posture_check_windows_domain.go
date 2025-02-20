@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
@@ -29,15 +31,18 @@ type PostureCheckWindowsDomains struct {
 }
 
 func newPostureCheckWindowsDomain() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckWindowsDomains{
 		Domains: []string{},
 	}
 }
 
 func (entity *PostureCheckWindowsDomains) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.Domains = bucket.GetStringList(FieldPostureCheckDomains)
 }
 
 func (entity *PostureCheckWindowsDomains) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	bucket.SetStringList(FieldPostureCheckDomains, entity.Domains, ctx.FieldChecker)
 }

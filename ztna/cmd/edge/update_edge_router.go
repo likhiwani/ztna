@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/ztna/cmd/api"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 
@@ -42,6 +43,7 @@ type updateEdgeRouterOptions struct {
 }
 
 func newUpdateEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	options := &updateEdgeRouterOptions{
 		EntityOptions: api.NewEntityOptions(out, errOut),
 	}
@@ -80,6 +82,7 @@ func newUpdateEdgeRouterCmd(out io.Writer, errOut io.Writer) *cobra.Command {
 
 // runUpdateEdgeRouter update a new edgeRouter on the Ziti Edge Controller
 func runUpdateEdgeRouter(o *updateEdgeRouterOptions) error {
+	logtrace.LogWithFunctionName()
 	id, err := mapNameToID("edge-routers", o.Args[0], o.Options)
 	if err != nil {
 		return err

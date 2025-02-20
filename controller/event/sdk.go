@@ -19,6 +19,7 @@ package event
 import (
 	"fmt"
 	"time"
+	"ztna-core/ztna/logtrace"
 )
 
 type SdkEventType string
@@ -40,6 +41,7 @@ type SdkEvent struct {
 }
 
 func (event *SdkEvent) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("%v.%v time=%v identityId=%v",
 		event.Namespace, event.EventType, event.Timestamp, event.IdentityId)
 }

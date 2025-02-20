@@ -3,6 +3,17 @@ package main
 import (
 	"embed"
 	_ "embed"
+	"os"
+	"path"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	zitilibActions "ztna-core/ztna/zititest/zitilab/actions"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/chaos"
+	"ztna-core/ztna/zititest/zitilab/models"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions"
@@ -20,15 +31,6 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	zitilibActions "ztna-core/ztna/zititest/zitilab/actions"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/chaos"
-	"ztna-core/ztna/zititest/zitilab/models"
-	"os"
-	"path"
-	"time"
 )
 
 const TargetZitiVersion = ""
@@ -39,6 +41,7 @@ var configResource embed.FS
 type scaleStrategy struct{}
 
 func (self scaleStrategy) IsScaled(entity model.Entity) bool {
+	logtrace.LogWithFunctionName()
 	if entity.GetType() == model.EntityTypeHost {
 		return entity.GetScope().HasTag("router") || entity.GetScope().HasTag("host")
 	}
@@ -46,6 +49,7 @@ func (self scaleStrategy) IsScaled(entity model.Entity) bool {
 }
 
 func (self scaleStrategy) GetEntityCount(entity model.Entity) uint32 {
+	logtrace.LogWithFunctionName()
 	if entity.GetType() == model.EntityTypeHost {
 		if entity.GetScope().HasTag("router") {
 			return 2
@@ -358,6 +362,7 @@ var m = &model.Model{
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	m.AddActivationActions("stop", "bootstrap")
 
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)

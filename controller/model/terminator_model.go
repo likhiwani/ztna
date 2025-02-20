@@ -1,10 +1,12 @@
 package model
 
 import (
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 	"go.etcd.io/bbolt"
 )
 
@@ -25,54 +27,67 @@ type Terminator struct {
 }
 
 func (entity *Terminator) GetServiceId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Service
 }
 
 func (entity *Terminator) GetRouterId() string {
+	logtrace.LogWithFunctionName()
 	return entity.Router
 }
 
 func (entity *Terminator) GetBinding() string {
+	logtrace.LogWithFunctionName()
 	return entity.Binding
 }
 
 func (entity *Terminator) GetAddress() string {
+	logtrace.LogWithFunctionName()
 	return entity.Address
 }
 
 func (entity *Terminator) GetInstanceId() string {
+	logtrace.LogWithFunctionName()
 	return entity.InstanceId
 }
 
 func (entity *Terminator) GetInstanceSecret() []byte {
+	logtrace.LogWithFunctionName()
 	return entity.InstanceSecret
 }
 
 func (entity *Terminator) GetCost() uint16 {
+	logtrace.LogWithFunctionName()
 	return entity.Cost
 }
 
 func (entity *Terminator) GetPrecedence() xt.Precedence {
+	logtrace.LogWithFunctionName()
 	return entity.Precedence
 }
 
 func (entity *Terminator) GetPeerData() xt.PeerData {
+	logtrace.LogWithFunctionName()
 	return entity.PeerData
 }
 
 func (entity *Terminator) GetHostId() string {
+	logtrace.LogWithFunctionName()
 	return entity.HostId
 }
 
 func (entity *Terminator) GetSourceCtrl() string {
+	logtrace.LogWithFunctionName()
 	return entity.SourceCtrl
 }
 
 func (entity *Terminator) toBoltEntityForUpdate(tx *bbolt.Tx, env Env, _ boltz.FieldChecker) (*db.Terminator, error) {
+	logtrace.LogWithFunctionName()
 	return entity.toBoltEntityForCreate(tx, env)
 }
 
 func (entity *Terminator) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Terminator, error) {
+	logtrace.LogWithFunctionName()
 	precedence := xt.Precedences.Default.String()
 	if entity.Precedence != nil {
 		precedence = entity.Precedence.String()
@@ -102,6 +117,7 @@ func (entity *Terminator) toBoltEntityForCreate(*bbolt.Tx, Env) (*db.Terminator,
 }
 
 func (entity *Terminator) fillFrom(_ Env, _ *bbolt.Tx, boltTerminator *db.Terminator) error {
+	logtrace.LogWithFunctionName()
 	entity.Service = boltTerminator.Service
 	entity.Router = boltTerminator.Router
 	entity.Binding = boltTerminator.Binding

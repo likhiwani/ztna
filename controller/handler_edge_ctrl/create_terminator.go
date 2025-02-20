@@ -18,8 +18,7 @@ package handler_edge_ctrl
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"math"
 	"ztna-core/ztna/common"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/db"
@@ -27,8 +26,11 @@ import (
 	"ztna-core/ztna/controller/idgen"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"google.golang.org/protobuf/proto"
-	"math"
 )
 
 type createTerminatorHandler struct {
@@ -36,6 +38,7 @@ type createTerminatorHandler struct {
 }
 
 func NewCreateTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.TypedReceiveHandler {
+	logtrace.LogWithFunctionName()
 	return &createTerminatorHandler{
 		baseRequestHandler{
 			ch:     ch,
@@ -45,14 +48,17 @@ func NewCreateTerminatorHandler(appEnv *env.AppEnv, ch channel.Channel) channel.
 }
 
 func (self *createTerminatorHandler) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return int32(edge_ctrl_pb.ContentType_CreateTerminatorRequestType)
 }
 
 func (self *createTerminatorHandler) Label() string {
+	logtrace.LogWithFunctionName()
 	return "create.terminator"
 }
 
 func (self *createTerminatorHandler) HandleReceive(msg *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	req := &edge_ctrl_pb.CreateTerminatorRequest{}
 	if err := proto.Unmarshal(msg.Body, req); err != nil {
 		pfxlog.ContextLogger(ch.Label()).WithError(err).Error("could not unmarshal CreateTerminatorRequest")
@@ -68,6 +74,7 @@ func (self *createTerminatorHandler) HandleReceive(msg *channel.Message, ch chan
 }
 
 func (self *createTerminatorHandler) CreateTerminator(ctx *CreateTerminatorRequestContext) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.ch.Label()).WithField("routerId", self.ch.Id()).WithField("token", ctx.req.SessionToken)
 
 	if !ctx.loadRouter() {
@@ -136,5 +143,6 @@ type CreateTerminatorRequestContext struct {
 }
 
 func (self *CreateTerminatorRequestContext) GetSessionToken() string {
+	logtrace.LogWithFunctionName()
 	return self.req.SessionToken
 }

@@ -18,8 +18,6 @@ package model
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
 	"ztna-core/ztna/common/eid"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/common/pb/edge_cmd_pb"
@@ -29,12 +27,17 @@ import (
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
 
 func NewTransitRouterManager(env Env) *TransitRouterManager {
+	logtrace.LogWithFunctionName()
 	manager := &TransitRouterManager{
 		baseEntityManager: newBaseEntityManager[*TransitRouter, *db.TransitRouter](env, env.GetStores().TransitRouter),
 		allowedFields: boltz.MapFieldChecker{
@@ -57,14 +60,17 @@ type TransitRouterManager struct {
 }
 
 func (self *TransitRouterManager) GetEntityTypeId() string {
+	logtrace.LogWithFunctionName()
 	return "transitRouters"
 }
 
 func (self *TransitRouterManager) newModelEntity() *TransitRouter {
+	logtrace.LogWithFunctionName()
 	return &TransitRouter{}
 }
 
 func (self *TransitRouterManager) Create(txRouter *TransitRouter, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if txRouter.Id == "" {
 		txRouter.Id = eid.New()
 	}
@@ -86,6 +92,7 @@ func (self *TransitRouterManager) Create(txRouter *TransitRouter, ctx *change.Co
 }
 
 func (self *TransitRouterManager) ApplyCreate(cmd *CreateTransitRouterCmd, ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	txRouter := cmd.router
 	enrollment := cmd.enrollment
 
@@ -109,6 +116,7 @@ func (self *TransitRouterManager) ApplyCreate(cmd *CreateTransitRouterCmd, ctx b
 }
 
 func (self *TransitRouterManager) Update(entity *TransitRouter, unrestricted bool, checker fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	curEntity, err := self.Read(entity.Id)
 
 	if err != nil {
@@ -132,6 +140,7 @@ func (self *TransitRouterManager) Update(entity *TransitRouter, unrestricted boo
 }
 
 func (self *TransitRouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*TransitRouter], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	var checker boltz.FieldChecker = cmd.UpdatedFields
 	if cmd.Flags != updateUnrestricted {
 		if checker == nil {
@@ -144,10 +153,12 @@ func (self *TransitRouterManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*
 }
 
 func (self *TransitRouterManager) ReadOneByFingerprint(fingerprint string) (*TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	return self.ReadOneByQuery(fmt.Sprintf(`%s = "%v"`, db.FieldRouterFingerprint, fingerprint))
 }
 
 func (self *TransitRouterManager) ReadOneByQuery(query string) (*TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	result, err := self.readEntityByQuery(query)
 	if err != nil {
 		return nil, err
@@ -159,12 +170,14 @@ func (self *TransitRouterManager) ReadOneByQuery(query string) (*TransitRouter, 
 }
 
 func (self *TransitRouterManager) CollectEnrollments(id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().View(func(tx *bbolt.Tx) error {
 		return self.collectEnrollmentsInTx(tx, id, collector)
 	})
 }
 
 func (self *TransitRouterManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string, collector func(entity *Enrollment) error) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.readInTx(tx, id)
 	if err != nil {
 		return err
@@ -186,6 +199,7 @@ func (self *TransitRouterManager) collectEnrollmentsInTx(tx *bbolt.Tx, id string
 }
 
 func (self *TransitRouterManager) ExtendEnrollment(router *TransitRouter, clientCsrPem []byte, serverCertCsrPem []byte, ctx *change.Context) (*ExtendedCerts, error) {
+	logtrace.LogWithFunctionName()
 	enrollmentModule := self.env.GetEnrollRegistry().GetByMethod("erott").(*EnrollModuleEr)
 
 	clientCertRaw, err := enrollmentModule.ProcessClientCsrPem(clientCsrPem, router.Id)
@@ -228,6 +242,7 @@ func (self *TransitRouterManager) ExtendEnrollment(router *TransitRouter, client
 }
 
 func (self *TransitRouterManager) ExtendEnrollmentWithVerify(router *TransitRouter, clientCsrPem []byte, serverCertCsrPem []byte, ctx *change.Context) (*ExtendedCerts, error) {
+	logtrace.LogWithFunctionName()
 	enrollmentModule := self.env.GetEnrollRegistry().GetByMethod("erott").(*EnrollModuleEr)
 
 	clientCertRaw, err := enrollmentModule.ProcessClientCsrPem(clientCsrPem, router.Id)
@@ -270,10 +285,12 @@ func (self *TransitRouterManager) ExtendEnrollmentWithVerify(router *TransitRout
 }
 
 func (self *TransitRouterManager) ReadOneByUnverifiedFingerprint(fingerprint string) (*TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	return self.ReadOneByQuery(fmt.Sprintf(`%s = "%v"`, db.FieldEdgeRouterUnverifiedFingerprint, fingerprint))
 }
 
 func (self *TransitRouterManager) ExtendEnrollmentVerify(router *TransitRouter, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	if router.UnverifiedFingerprint != nil && router.UnverifiedCertPem != nil {
 		router.Fingerprint = router.UnverifiedFingerprint
 
@@ -291,6 +308,7 @@ func (self *TransitRouterManager) ExtendEnrollmentVerify(router *TransitRouter, 
 }
 
 func (self *TransitRouterManager) TransitRouterToProtobuf(entity *TransitRouter) (*edge_cmd_pb.TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := edge_cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -312,6 +330,7 @@ func (self *TransitRouterManager) TransitRouterToProtobuf(entity *TransitRouter)
 }
 
 func (self *TransitRouterManager) Marshall(entity *TransitRouter) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	msg, err := self.TransitRouterToProtobuf(entity)
 	if err != nil {
 		return nil, err
@@ -320,6 +339,7 @@ func (self *TransitRouterManager) Marshall(entity *TransitRouter) ([]byte, error
 }
 
 func (self *TransitRouterManager) ProtobufToTransitRouter(msg *edge_cmd_pb.TransitRouter) (*TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	return &TransitRouter{
 		BaseEntity: models.BaseEntity{
 			Id:   msg.Id,
@@ -336,6 +356,7 @@ func (self *TransitRouterManager) ProtobufToTransitRouter(msg *edge_cmd_pb.Trans
 }
 
 func (self *TransitRouterManager) Unmarshall(bytes []byte) (*TransitRouter, error) {
+	logtrace.LogWithFunctionName()
 	msg := &edge_cmd_pb.TransitRouter{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err
@@ -351,10 +372,12 @@ type CreateTransitRouterCmd struct {
 }
 
 func (self *CreateTransitRouterCmd) Apply(ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	return self.manager.ApplyCreate(self, ctx)
 }
 
 func (self *CreateTransitRouterCmd) Encode() ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	transitRouterMsg, err := self.manager.TransitRouterToProtobuf(self.router)
 	if err != nil {
 		return nil, err
@@ -375,6 +398,7 @@ func (self *CreateTransitRouterCmd) Encode() ([]byte, error) {
 }
 
 func (self *CreateTransitRouterCmd) Decode(env Env, msg *edge_cmd_pb.CreateTransitRouterCmd) error {
+	logtrace.LogWithFunctionName()
 	self.manager = env.GetManagers().TransitRouter
 
 	router, err := self.manager.ProtobufToTransitRouter(msg.Router)
@@ -395,5 +419,6 @@ func (self *CreateTransitRouterCmd) Decode(env Env, msg *edge_cmd_pb.CreateTrans
 }
 
 func (self *CreateTransitRouterCmd) GetChangeContext() *change.Context {
+	logtrace.LogWithFunctionName()
 	return self.ctx
 }

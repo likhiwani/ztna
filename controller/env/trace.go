@@ -2,11 +2,14 @@ package env
 
 import (
 	"fmt"
-	cmap "github.com/orcaman/concurrent-map/v2"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	cmap "github.com/orcaman/concurrent-map/v2"
 )
 
 func NewTraceManager(shutdownNotify <-chan struct{}) *TraceManager {
+	logtrace.LogWithFunctionName()
 	result := &TraceManager{
 		traceIdentities: cmap.New[*TraceSpec](),
 		shutdownNotify:  shutdownNotify,
@@ -22,6 +25,7 @@ type TraceSpec struct {
 }
 
 func (self *TraceSpec) String() string {
+	logtrace.LogWithFunctionName()
 	return fmt.Sprintf("traceId=%v until=%v", self.TraceId, self.Until)
 }
 
@@ -31,6 +35,7 @@ type TraceManager struct {
 }
 
 func (self *TraceManager) GetIdentityTrace(identityId string) *TraceSpec {
+	logtrace.LogWithFunctionName()
 	spec, found := self.traceIdentities.Get(identityId)
 
 	if !found {
@@ -42,6 +47,7 @@ func (self *TraceManager) GetIdentityTrace(identityId string) *TraceSpec {
 }
 
 func (self *TraceManager) TraceIdentity(identity string, duration time.Duration, id string, channelMask uint32) *TraceSpec {
+	logtrace.LogWithFunctionName()
 	spec := &TraceSpec{
 		Until:       time.Now().Add(duration),
 		TraceId:     id,
@@ -53,10 +59,12 @@ func (self *TraceManager) TraceIdentity(identity string, duration time.Duration,
 }
 
 func (self *TraceManager) RemoveIdentityTrace(identity string) {
+	logtrace.LogWithFunctionName()
 	self.traceIdentities.Remove(identity)
 }
 
 func (self *TraceManager) reapExpired() {
+	logtrace.LogWithFunctionName()
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
 

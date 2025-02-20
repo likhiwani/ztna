@@ -2,14 +2,16 @@ package loop3
 
 import (
 	"encoding/binary"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/common/pb/mgmt_pb"
+	"time"
 	"ztna-core/sdk-golang/ziti"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 	"github.com/pkg/errors"
 	"github.com/rcrowley/go-metrics"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"time"
 )
 
 var registry = metrics.NewRegistry()
@@ -22,6 +24,7 @@ var BytesRxRate = metrics.NewMeter()
 var MsgLatency = metrics.NewTimer()
 
 func init() {
+	logtrace.LogWithFunctionName()
 	register := func(name string, metric interface{}) {
 		if err := registry.Register(name, metric); err != nil {
 			panic(err)
@@ -37,6 +40,7 @@ func init() {
 }
 
 func StartMetricsReporter(configFile string, metrics *Metrics, closer chan struct{}) error {
+	logtrace.LogWithFunctionName()
 	if metrics.ReportInterval == 0 {
 		return errors.New("metrics report interval must be greater than 0")
 	}
@@ -60,6 +64,7 @@ type zitiMetricsReporter struct {
 }
 
 func (r *zitiMetricsReporter) run(reportInterval time.Duration) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 	log.Infof("reporting metrics every %v", reportInterval)
 
@@ -117,6 +122,7 @@ func (r *zitiMetricsReporter) run(reportInterval time.Duration) {
 }
 
 func (r *zitiMetricsReporter) createMetricsEvent() *mgmt_pb.StreamMetricsEvent {
+	logtrace.LogWithFunctionName()
 	event := &mgmt_pb.StreamMetricsEvent{
 		Timestamp:    timestamppb.Now(),
 		SourceId:     r.clientId,
@@ -142,6 +148,7 @@ func (r *zitiMetricsReporter) createMetricsEvent() *mgmt_pb.StreamMetricsEvent {
 }
 
 func (r *zitiMetricsReporter) addMeterToEvent(event *mgmt_pb.StreamMetricsEvent, name string, metric metrics.Meter) {
+	logtrace.LogWithFunctionName()
 	r.addIntMetric(event, name, "count", metric.Count())
 	r.addFloatMetric(event, name, "mean_rate", metric.RateMean())
 	r.addFloatMetric(event, name, "m1_rate", metric.Rate1())
@@ -150,6 +157,7 @@ func (r *zitiMetricsReporter) addMeterToEvent(event *mgmt_pb.StreamMetricsEvent,
 }
 
 func (r *zitiMetricsReporter) addHistogramToEvent(event *mgmt_pb.StreamMetricsEvent, name string, metric metrics.Histogram) {
+	logtrace.LogWithFunctionName()
 	r.addIntMetric(event, name, "count", metric.Count())
 	r.addIntMetric(event, name, "min", metric.Min())
 	r.addIntMetric(event, name, "max", metric.Max())
@@ -165,6 +173,7 @@ func (r *zitiMetricsReporter) addHistogramToEvent(event *mgmt_pb.StreamMetricsEv
 }
 
 func (r *zitiMetricsReporter) addTimerToEvent(event *mgmt_pb.StreamMetricsEvent, name string, metric metrics.Timer) {
+	logtrace.LogWithFunctionName()
 	r.addIntMetric(event, name, "count", metric.Count())
 	r.addFloatMetric(event, name, "mean_rate", metric.RateMean())
 	r.addFloatMetric(event, name, "m1_rate", metric.Rate1())
@@ -184,12 +193,14 @@ func (r *zitiMetricsReporter) addTimerToEvent(event *mgmt_pb.StreamMetricsEvent,
 }
 
 func (r *zitiMetricsReporter) addIntMetric(event *mgmt_pb.StreamMetricsEvent, base, name string, val int64) {
+	logtrace.LogWithFunctionName()
 	fullName := base + "." + name
 	event.IntMetrics[fullName] = val
 	event.MetricGroup[fullName] = base
 }
 
 func (r *zitiMetricsReporter) addFloatMetric(event *mgmt_pb.StreamMetricsEvent, base, name string, val float64) {
+	logtrace.LogWithFunctionName()
 	fullName := base + "." + name
 	event.FloatMetrics[fullName] = val
 	event.MetricGroup[fullName] = base

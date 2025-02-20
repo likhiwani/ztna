@@ -22,19 +22,23 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/pkg/errors"
 
 	"ztna-core/ztna/ztna/cmd"
+
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/sirupsen/logrus"
 )
 
 func HasExistingCA(run model.Run, name string) (bool, error) {
+	logtrace.LogWithFunctionName()
 	return run.DirExists(filepath.Join(model.BuildKitDir, model.BuildPkiDir, name))
 }
 
 func EnsureCaExists(run model.Run, trustDomain string, name string) error {
+	logtrace.LogWithFunctionName()
 	if caExists, err := HasExistingCA(run, name); caExists || err != nil {
 		return err
 	}
@@ -43,6 +47,7 @@ func EnsureCaExists(run model.Run, trustDomain string, name string) error {
 }
 
 func GenerateCA(run model.Run, trustDomain string, name string) error {
+	logtrace.LogWithFunctionName()
 	var pkiOut bytes.Buffer
 	var pkiErr bytes.Buffer
 	ziticli := cmd.NewRootCommand(nil, &pkiOut, &pkiErr)
@@ -58,6 +63,7 @@ func GenerateCA(run model.Run, trustDomain string, name string) error {
 }
 
 func EnsureIntermediateCaExists(run model.Run, caName, name string) error {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("generating signing certificate [%s]", name)
 
 	if caExists, err := HasExistingCA(run, name); caExists || err != nil {
@@ -81,6 +87,7 @@ func EnsureIntermediateCaExists(run model.Run, caName, name string) error {
 }
 
 func loadInfoFile(file string) string {
+	logtrace.LogWithFunctionName()
 	data, err := os.ReadFile(file)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -92,6 +99,7 @@ func loadInfoFile(file string) string {
 }
 
 func EnsureServerCertExists(run model.Run, name string, ip string, dns []string, spiffeId string) error {
+	logtrace.LogWithFunctionName()
 	logrus.Infof("generating server certificate [%s:%s]", name, ip)
 
 	certFile := name + "-server"
@@ -144,6 +152,7 @@ func EnsureServerCertExists(run model.Run, name string, ip string, dns []string,
 }
 
 func CreateControllerCerts(run model.Run, component *model.Component, dns []string, name string) error {
+	logtrace.LogWithFunctionName()
 	trustDomain := component.GetStringVariableOr("ca.trustDomain", "ziti.test")
 	rootCaName := component.GetStringVariableOr("ca.rootName", "root")
 	if err := EnsureCaExists(run, trustDomain, rootCaName); err != nil {

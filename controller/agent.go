@@ -2,17 +2,20 @@ package controller
 
 import (
 	"fmt"
-	"ztna-core/ztna/common/pb/cmd_pb"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"net"
 	"time"
+	"ztna-core/ztna/common/pb/cmd_pb"
+	"ztna-core/ztna/logtrace"
+
+	"google.golang.org/protobuf/proto"
+
+	"ztna-core/ztna/common/handler_common"
+	"ztna-core/ztna/common/pb/mgmt_pb"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
-	"ztna-core/ztna/common/handler_common"
-	"ztna-core/ztna/common/pb/mgmt_pb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -27,10 +30,12 @@ const (
 )
 
 func (self *Controller) RegisterAgentBindHandler(bindHandler channel.BindHandler) {
+	logtrace.LogWithFunctionName()
 	self.agentBindHandlers = append(self.agentBindHandlers, bindHandler)
 }
 
 func (self *Controller) bindAgentChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddReceiveHandlerF(int32(mgmt_pb.ContentType_SnapshotDbRequestType), self.agentOpSnapshotDb)
 	binding.AddReceiveHandlerF(int32(mgmt_pb.ContentType_RaftListMembersRequestType), self.agentOpRaftList)
 	binding.AddReceiveHandlerF(int32(mgmt_pb.ContentType_RaftAddPeerRequestType), self.agentOpRaftAddPeer)
@@ -48,6 +53,7 @@ func (self *Controller) bindAgentChannel(binding channel.Binding) error {
 }
 
 func (self *Controller) HandleCustomAgentAsyncOp(conn net.Conn) error {
+	logtrace.LogWithFunctionName()
 	logrus.Debug("received agent operation request")
 
 	appIdBuf := []byte{0}
@@ -70,6 +76,7 @@ func (self *Controller) HandleCustomAgentAsyncOp(conn net.Conn) error {
 }
 
 func (self *Controller) agentOpSnapshotDb(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	fileName, _ := m.GetStringHeader(AgentSnapshotFileName)
 
 	log := pfxlog.Logger()
@@ -82,6 +89,7 @@ func (self *Controller) agentOpSnapshotDb(m *channel.Message, ch channel.Channel
 }
 
 func (self *Controller) agentOpRaftList(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.list", "controller not running in clustered mode", false)
 		return
@@ -110,6 +118,7 @@ func (self *Controller) agentOpRaftList(m *channel.Message, ch channel.Channel) 
 }
 
 func (self *Controller) agentOpRaftAddPeer(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.add-peer", "controller not running in clustered mode", false)
 		return
@@ -157,6 +166,7 @@ func (self *Controller) agentOpRaftAddPeer(m *channel.Message, ch channel.Channe
 }
 
 func (self *Controller) agentOpRaftJoinCluster(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.join", "controller not running in clustered mode", false)
 		return
@@ -195,6 +205,7 @@ func (self *Controller) agentOpRaftJoinCluster(m *channel.Message, ch channel.Ch
 }
 
 func (self *Controller) agentOpRaftRemovePeer(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.remove-peer", "controller not running in clustered mode", false)
 		return
@@ -218,6 +229,7 @@ func (self *Controller) agentOpRaftRemovePeer(m *channel.Message, ch channel.Cha
 }
 
 func (self *Controller) agentOpRaftTransferLeadership(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.transfer-leadership", "controller not running in clustered mode", false)
 		return
@@ -236,6 +248,7 @@ func (self *Controller) agentOpRaftTransferLeadership(m *channel.Message, ch cha
 }
 
 func (self *Controller) agentOpInitFromDb(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "cluster.init-from-db", "controller not running in clustered mode", false)
 		return
@@ -255,6 +268,7 @@ func (self *Controller) agentOpInitFromDb(m *channel.Message, ch channel.Channel
 }
 
 func (self *Controller) agentOpInit(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if self.raftController == nil {
 		handler_common.SendOpResult(m, ch, "init.edge", "controller not running in clustered mode", false)
 		return

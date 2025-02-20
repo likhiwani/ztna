@@ -18,10 +18,13 @@ package apierror
 
 import (
 	"fmt"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/foundation/v2/errorz"
 )
 
 func NewCouldNotParseBody(err error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CouldNotParseBodyCode,
 		Message: CouldNotParseBodyMessage,
@@ -31,6 +34,7 @@ func NewCouldNotParseBody(err error) *errorz.ApiError {
 }
 
 func NewInvalidContentType(contentType string) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidContentTypeCode,
 		Message: InvalidContentTypeMessage + ": " + contentType,
@@ -39,6 +43,7 @@ func NewInvalidContentType(contentType string) *errorz.ApiError {
 }
 
 func NewCouldNotReadBody(err error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:        CouldNotReadBodyCode,
 		Message:     CouldNotReadBodyMessage,
@@ -49,6 +54,7 @@ func NewCouldNotReadBody(err error) *errorz.ApiError {
 }
 
 func NewInvalidAuth() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidAuthCode,
 		Message: InvalidAuthMessage,
@@ -57,6 +63,7 @@ func NewInvalidAuth() *errorz.ApiError {
 }
 
 func NewInvalidAuthMethod() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidAuthMethodCode,
 		Message: InvalidAuthMethodMessage,
@@ -65,6 +72,7 @@ func NewInvalidAuthMethod() *errorz.ApiError {
 }
 
 func NewEnrollmentExpired() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    EnrollmentExpiredCode,
 		Message: EnrollmentExpiredMessage,
@@ -73,6 +81,7 @@ func NewEnrollmentExpired() *errorz.ApiError {
 }
 
 func NewCouldNotProcessCsr() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CouldNotProcessCsrCode,
 		Message: CouldNotProcessCsrMessage,
@@ -81,6 +90,7 @@ func NewCouldNotProcessCsr() *errorz.ApiError {
 }
 
 func NewEnrollmentCaNoLongValid() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    EnrollmentCaNoLongValidCode,
 		Message: EnrollmentCaNoLongValidMessage,
@@ -89,6 +99,7 @@ func NewEnrollmentCaNoLongValid() *errorz.ApiError {
 }
 
 func NewEnrollmentNoValidCas() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    EnrollmentNoValidCasCode,
 		Message: EnrollmentNoValidCasMessage,
@@ -97,6 +108,7 @@ func NewEnrollmentNoValidCas() *errorz.ApiError {
 }
 
 func NewInvalidEnrollmentToken() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidEnrollmentTokenCode,
 		Message: InvalidEnrollmentTokenMessage,
@@ -105,6 +117,7 @@ func NewInvalidEnrollmentToken() *errorz.ApiError {
 }
 
 func NewInvalidEnrollMethod() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidEnrollMethodCode,
 		Message: InvalidEnrollMethodMessage,
@@ -113,6 +126,7 @@ func NewInvalidEnrollMethod() *errorz.ApiError {
 }
 
 func NewCouldNotParseX509FromDer() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CouldNotParseX509FromDerCode,
 		Message: CouldNotParseX509FromDerMessage,
@@ -121,6 +135,7 @@ func NewCouldNotParseX509FromDer() *errorz.ApiError {
 }
 
 func NewCertFailedValidation() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CertFailedValidationCode,
 		Message: CertFailedValidationMessage,
@@ -129,6 +144,7 @@ func NewCertFailedValidation() *errorz.ApiError {
 }
 
 func NewCertInUse() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CertInUseCode,
 		Message: CertInUseMessage,
@@ -137,6 +153,7 @@ func NewCertInUse() *errorz.ApiError {
 }
 
 func NewCaAlreadyVerified() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CaAlreadyVerifiedCode,
 		Message: CaAlreadyVerifiedMessage,
@@ -145,6 +162,7 @@ func NewCaAlreadyVerified() *errorz.ApiError {
 }
 
 func NewExpectedPemBlockCertificate() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    ExpectedPemBlockCertificateCode,
 		Message: ExpectedPemBlockCertificateMessage,
@@ -153,6 +171,7 @@ func NewExpectedPemBlockCertificate() *errorz.ApiError {
 }
 
 func NewCouldNotParseDerBlock() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CouldNotParseDerBlockCode,
 		Message: CouldNotParseDerBlockMessage,
@@ -161,6 +180,7 @@ func NewCouldNotParseDerBlock() *errorz.ApiError {
 }
 
 func NewCouldNotParsePem() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CouldNotParsePemCode,
 		Message: CouldNotParsePemMessage,
@@ -169,6 +189,7 @@ func NewCouldNotParsePem() *errorz.ApiError {
 }
 
 func NewInvalidCommonName() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidCommonNameCode,
 		Message: InvalidCommonNameMessage,
@@ -177,6 +198,7 @@ func NewInvalidCommonName() *errorz.ApiError {
 }
 
 func NewFailedCertificateValidation() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    FailedCertificateValidationCode,
 		Message: FailedCertificateValidationMessage,
@@ -185,6 +207,7 @@ func NewFailedCertificateValidation() *errorz.ApiError {
 }
 
 func NewInvalidEnrollmentMissingCsr(cause error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Cause:   cause,
 		Code:    InvalidEnrollmentMissingCsrCode,
@@ -194,6 +217,7 @@ func NewInvalidEnrollmentMissingCsr(cause error) *errorz.ApiError {
 }
 
 func NewCertificateIsNotCa() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    CertificateIsNotCaCode,
 		Message: CertificateIsNotCaMessage,
@@ -202,6 +226,7 @@ func NewCertificateIsNotCa() *errorz.ApiError {
 }
 
 func NewInvalidUuid(val string) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidUuidCode,
 		Message: InvalidUuidMessage,
@@ -216,6 +241,7 @@ func NewInvalidUuid(val string) *errorz.ApiError {
 }
 
 func NewInvalidAuthenticatorProperties() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidAuthenticatorPropertiesCode,
 		Message: InvalidAuthenticatorPropertiesMessage,
@@ -224,6 +250,7 @@ func NewInvalidAuthenticatorProperties() *errorz.ApiError {
 }
 
 func NewAuthenticatorCannotBeUpdated() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    AuthenticatorCanNotBeUpdatedCode,
 		Message: AuthenticatorCanNotBeUpdatedMessage,
@@ -232,6 +259,7 @@ func NewAuthenticatorCannotBeUpdated() *errorz.ApiError {
 }
 
 func NewFabricRouterCannotBeUpdate() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    RouterCanNotBeUpdatedCode,
 		Message: RouterCanNotBeUpdatedMessage,
@@ -240,6 +268,7 @@ func NewFabricRouterCannotBeUpdate() *errorz.ApiError {
 }
 
 func NewAuthenticatorMethodMax() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    AuthenticatorMethodMaxCode,
 		Message: AuthenticatorMethodMaxMessage,
@@ -248,6 +277,7 @@ func NewAuthenticatorMethodMax() *errorz.ApiError {
 }
 
 func NewMethodNotAllowed() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MethodNotAllowedCode,
 		Message: MethodNotAllowedMessage,
@@ -256,6 +286,7 @@ func NewMethodNotAllowed() *errorz.ApiError {
 }
 
 func NewRateLimited() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    RateLimitedCode,
 		Message: RateLimitedMessage,
@@ -264,6 +295,7 @@ func NewRateLimited() *errorz.ApiError {
 }
 
 func NewTimeoutError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    TimeoutCode,
 		Message: TimeoutMessage,
@@ -272,6 +304,7 @@ func NewTimeoutError() *errorz.ApiError {
 }
 
 func NewNoEdgeRoutersAvailable() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    NoEdgeRoutersAvailableCode,
 		Message: NoEdgeRoutersAvailableMessage,
@@ -280,6 +313,7 @@ func NewNoEdgeRoutersAvailable() *errorz.ApiError {
 }
 
 func NewMissingCertClaim() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MissingCertClaimCode,
 		Message: MissingCertClaimMessage,
@@ -288,6 +322,7 @@ func NewMissingCertClaim() *errorz.ApiError {
 }
 
 func NewInvalidPosture(cause error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Cause:   cause,
 		Code:    InvalidPostureCode,
@@ -297,6 +332,7 @@ func NewInvalidPosture(cause error) *errorz.ApiError {
 }
 
 func NewMfaExistsError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MfaExistsCode,
 		Message: MfaExistsMessage,
@@ -305,6 +341,7 @@ func NewMfaExistsError() *errorz.ApiError {
 }
 
 func NewMfaEnrollmentNotStarted() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MfaEnrollmentNotStartedCode,
 		Message: MfaEnrollmentNotStartedMessage,
@@ -313,6 +350,7 @@ func NewMfaEnrollmentNotStarted() *errorz.ApiError {
 }
 
 func NewMfaNotEnrolledError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MfaNotEnrolledCode,
 		Message: MfaNotEnrolledMessage,
@@ -321,6 +359,7 @@ func NewMfaNotEnrolledError() *errorz.ApiError {
 }
 
 func NewInvalidMfaTokenError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    MfaInvalidTokenCode,
 		Message: MfaInvalidTokenMessage,
@@ -329,6 +368,7 @@ func NewInvalidMfaTokenError() *errorz.ApiError {
 }
 
 func NewEdgeRouterFailedReEnrollment(cause error) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:        EdgeRouterFailedReEnrollmentCode,
 		Message:     EdgeRouterFailedReEnrollmentMessage,
@@ -339,6 +379,7 @@ func NewEdgeRouterFailedReEnrollment(cause error) *errorz.ApiError {
 }
 
 func NewInvalidClientCertificate() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidClientCertCode,
 		Message: InvalidClientCertMessage,
@@ -347,6 +388,7 @@ func NewInvalidClientCertificate() *errorz.ApiError {
 }
 
 func NewInvalidCertificatePem() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    InvalidCertificatePemCode,
 		Message: InvalidCertificatePemMessage,
@@ -355,6 +397,7 @@ func NewInvalidCertificatePem() *errorz.ApiError {
 }
 
 func NewCanNotDeleteReferencedEntity(localEntityType, remoteEntityType string, referencingEntityTypeIds []string, fieldName string) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:        CanNotDeleteReferencedEntityCode,
 		Message:     CanNotDeleteReferencedEntityMessage,
@@ -365,6 +408,7 @@ func NewCanNotDeleteReferencedEntity(localEntityType, remoteEntityType string, r
 }
 
 func NewBadRequestFieldError(fieldError errorz.FieldError) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:        ReferencedEntityNotFoundCode,
 		Message:     ReferencedEntityNotFoundMessage,
@@ -375,6 +419,7 @@ func NewBadRequestFieldError(fieldError errorz.FieldError) *errorz.ApiError {
 }
 
 func NewEnrollmentExists(enrollmentMethod string) *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:        EnrollmentExistsCode,
 		Message:     EnrollmentExistsMessage,
@@ -385,6 +430,7 @@ func NewEnrollmentExists(enrollmentMethod string) *errorz.ApiError {
 }
 
 func NewTooManyUpdatesError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    ServerTooManyRequestsCode,
 		Message: ServerTooManyRequestsMessage,
@@ -393,6 +439,7 @@ func NewTooManyUpdatesError() *errorz.ApiError {
 }
 
 func NewNotRunningInHAModeError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    ServerNotRunningInHAModeCode,
 		Message: ServerNotRunningInHAModeMessage,
@@ -401,6 +448,7 @@ func NewNotRunningInHAModeError() *errorz.ApiError {
 }
 
 func NewClusterHasNoLeaderError() *errorz.ApiError {
+	logtrace.LogWithFunctionName()
 	return &errorz.ApiError{
 		Code:    ClusterHasNoLeaderCode,
 		Message: ClusterHasNoLeaderMessage,

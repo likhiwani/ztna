@@ -23,6 +23,7 @@ import (
 	"ztna-core/ztna/common/cert"
 	"ztna-core/ztna/controller/apierror"
 	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/logtrace"
 )
 
 const (
@@ -36,6 +37,7 @@ type EnrollModuleRouterOtt struct {
 }
 
 func NewEnrollModuleTransitRouterOtt(env Env) *EnrollModuleRouterOtt {
+	logtrace.LogWithFunctionName()
 	return &EnrollModuleRouterOtt{
 		env:                  env,
 		method:               MethodEnrollTransitRouterOtt,
@@ -44,10 +46,12 @@ func NewEnrollModuleTransitRouterOtt(env Env) *EnrollModuleRouterOtt {
 }
 
 func (module *EnrollModuleRouterOtt) CanHandle(method string) bool {
+	logtrace.LogWithFunctionName()
 	return method == module.method
 }
 
 func (module *EnrollModuleRouterOtt) Process(context EnrollmentContext) (*EnrollmentResult, error) {
+	logtrace.LogWithFunctionName()
 	enrollment, err := module.env.GetManagers().Enrollment.ReadByToken(context.GetToken())
 
 	if err != nil {

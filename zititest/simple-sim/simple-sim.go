@@ -25,9 +25,11 @@ import (
 	"time"
 	"ztna-core/edge-api/rest_model"
 	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"ztna-core/sdk-golang/ziti"
 
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/sdk-golang/ziti"
 	cmap "github.com/orcaman/concurrent-map/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -42,6 +44,7 @@ type simpleSimAction struct {
 }
 
 func newSimpleSimCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &simpleSimAction{
 		authenticated: cmap.New[time.Time](),
 	}
@@ -64,6 +67,7 @@ func newSimpleSimCmd() *cobra.Command {
 }
 
 func (self *simpleSimAction) initLogging() {
+	logtrace.LogWithFunctionName()
 	logLevel := logrus.InfoLevel
 	if self.verbose {
 		logLevel = logrus.DebugLevel
@@ -85,6 +89,7 @@ func (self *simpleSimAction) initLogging() {
 }
 
 func (self *simpleSimAction) run(_ *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	self.initLogging()
 
 	log := pfxlog.Logger()
@@ -122,6 +127,7 @@ func (self *simpleSimAction) run(_ *cobra.Command, args []string) {
 }
 
 func (self *simpleSimAction) startSimForIdentity(path string) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("config", path)
 
 	zitiConfig, err := ziti.NewConfigFromFile(path)
@@ -139,6 +145,7 @@ func (self *simpleSimAction) startSimForIdentity(path string) {
 }
 
 func (self *simpleSimAction) runSim(path string, ctx ziti.Context) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("config", path)
 
 	var lastLog time.Time
@@ -209,6 +216,7 @@ func (self *simpleSimAction) runSim(path string, ctx ziti.Context) {
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	cli := newSimpleSimCmd()
 	if err := cli.Execute(); err != nil {
 		pfxlog.Logger().Fatal(err.Error())

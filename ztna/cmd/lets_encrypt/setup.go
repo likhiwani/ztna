@@ -17,6 +17,7 @@
 package lets_encrypt
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"os"
 	"time"
 
@@ -28,6 +29,7 @@ import (
 )
 
 func setup(options *leOptions, accountsStorage *AccountsStorage) (*Account, *lego.Client) {
+	logtrace.LogWithFunctionName()
 
 	privateKey := accountsStorage.GetPrivateKey(options.keyType.Get())
 
@@ -49,6 +51,7 @@ func setup(options *leOptions, accountsStorage *AccountsStorage) (*Account, *leg
 }
 
 func newClient(options *leOptions, acc registration.User) *lego.Client {
+	logtrace.LogWithFunctionName()
 	config := lego.NewConfig(acc)
 	config.CADirURL = options.acmeserver
 
@@ -67,6 +70,7 @@ func newClient(options *leOptions, acc registration.User) *lego.Client {
 }
 
 func createNonExistingFolder(path string) error {
+	logtrace.LogWithFunctionName()
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return os.MkdirAll(path, 0o700)
 	} else if err != nil {

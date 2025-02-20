@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type ListCircuitsReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *ListCircuitsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewListCircuitsOK()
@@ -72,6 +74,7 @@ func (o *ListCircuitsReader) ReadResponse(response runtime.ClientResponse, consu
 
 // NewListCircuitsOK creates a ListCircuitsOK with default headers values
 func NewListCircuitsOK() *ListCircuitsOK {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsOK{}
 }
 
@@ -84,13 +87,16 @@ type ListCircuitsOK struct {
 }
 
 func (o *ListCircuitsOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits][%d] listCircuitsOK  %+v", 200, o.Payload)
 }
 func (o *ListCircuitsOK) GetPayload() *rest_model.ListCircuitsEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListCircuitsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.ListCircuitsEnvelope)
 
@@ -104,6 +110,7 @@ func (o *ListCircuitsOK) readResponse(response runtime.ClientResponse, consumer 
 
 // NewListCircuitsUnauthorized creates a ListCircuitsUnauthorized with default headers values
 func NewListCircuitsUnauthorized() *ListCircuitsUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsUnauthorized{}
 }
 
@@ -116,13 +123,16 @@ type ListCircuitsUnauthorized struct {
 }
 
 func (o *ListCircuitsUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits][%d] listCircuitsUnauthorized  %+v", 401, o.Payload)
 }
 func (o *ListCircuitsUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListCircuitsUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -136,6 +146,7 @@ func (o *ListCircuitsUnauthorized) readResponse(response runtime.ClientResponse,
 
 // NewListCircuitsTooManyRequests creates a ListCircuitsTooManyRequests with default headers values
 func NewListCircuitsTooManyRequests() *ListCircuitsTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &ListCircuitsTooManyRequests{}
 }
 
@@ -148,13 +159,16 @@ type ListCircuitsTooManyRequests struct {
 }
 
 func (o *ListCircuitsTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[GET /circuits][%d] listCircuitsTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *ListCircuitsTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *ListCircuitsTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

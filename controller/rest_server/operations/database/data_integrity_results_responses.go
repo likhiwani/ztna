@@ -30,6 +30,7 @@ package database
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DataIntegrityResultsOK struct {
 
 // NewDataIntegrityResultsOK creates DataIntegrityResultsOK with default headers values
 func NewDataIntegrityResultsOK() *DataIntegrityResultsOK {
+    logtrace.LogWithFunctionName()
 
 	return &DataIntegrityResultsOK{}
 }
 
 // WithPayload adds the payload to the data integrity results o k response
 func (o *DataIntegrityResultsOK) WithPayload(payload *rest_model.DataIntegrityCheckResultEnvelope) *DataIntegrityResultsOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the data integrity results o k response
 func (o *DataIntegrityResultsOK) SetPayload(payload *rest_model.DataIntegrityCheckResultEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DataIntegrityResultsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DataIntegrityResultsUnauthorized struct {
 
 // NewDataIntegrityResultsUnauthorized creates DataIntegrityResultsUnauthorized with default headers values
 func NewDataIntegrityResultsUnauthorized() *DataIntegrityResultsUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DataIntegrityResultsUnauthorized{}
 }
 
 // WithPayload adds the payload to the data integrity results unauthorized response
 func (o *DataIntegrityResultsUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DataIntegrityResultsUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the data integrity results unauthorized response
 func (o *DataIntegrityResultsUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DataIntegrityResultsUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DataIntegrityResultsTooManyRequests struct {
 
 // NewDataIntegrityResultsTooManyRequests creates DataIntegrityResultsTooManyRequests with default headers values
 func NewDataIntegrityResultsTooManyRequests() *DataIntegrityResultsTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DataIntegrityResultsTooManyRequests{}
 }
 
 // WithPayload adds the payload to the data integrity results too many requests response
 func (o *DataIntegrityResultsTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DataIntegrityResultsTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the data integrity results too many requests response
 func (o *DataIntegrityResultsTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DataIntegrityResultsTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

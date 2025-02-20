@@ -20,18 +20,21 @@ import (
 	"fmt"
 	"time"
 
+	"ztna-core/ztna/controller/change"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/models"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/lucsky/cuid"
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/change"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/models"
 	"github.com/pkg/errors"
 	"go.etcd.io/bbolt"
 )
 
 func NewApiSessionManager(env Env) *ApiSessionManager {
+	logtrace.LogWithFunctionName()
 	manager := &ApiSessionManager{
 		baseEntityManager: newBaseEntityManager[*ApiSession, *db.ApiSession](env, env.GetStores().ApiSession),
 	}
@@ -53,10 +56,12 @@ type ApiSessionManager struct {
 }
 
 func (self *ApiSessionManager) newModelEntity() *ApiSession {
+	logtrace.LogWithFunctionName()
 	return &ApiSession{}
 }
 
 func (self *ApiSessionManager) Create(ctx boltz.MutateContext, entity *ApiSession, sessionCerts []*ApiSessionCertificate) (string, error) {
+	logtrace.LogWithFunctionName()
 	var apiSessionId string
 	err := self.env.GetDb().Update(ctx, func(ctx boltz.MutateContext) error {
 		var err error
@@ -70,6 +75,7 @@ func (self *ApiSessionManager) Create(ctx boltz.MutateContext, entity *ApiSessio
 }
 
 func (self *ApiSessionManager) CreateInCtx(ctx boltz.MutateContext, entity *ApiSession, sessionCerts []*ApiSessionCertificate) (string, error) {
+	logtrace.LogWithFunctionName()
 	entity.Id = cuid.New() //use cuids which are longer than shortids but are monotonic
 	apiSessionId, err := self.createEntityInTx(ctx, entity)
 
@@ -90,6 +96,7 @@ func (self *ApiSessionManager) CreateInCtx(ctx boltz.MutateContext, entity *ApiS
 }
 
 func (self *ApiSessionManager) Read(id string) (*ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	modelApiSession := &ApiSession{}
 	if err := self.readEntity(id, modelApiSession); err != nil {
 		return nil, err
@@ -98,6 +105,7 @@ func (self *ApiSessionManager) Read(id string) (*ApiSession, error) {
 }
 
 func (self *ApiSessionManager) ReadByToken(token string) (*ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	modelApiSession := &ApiSession{}
 	tokenIndex := self.env.GetStores().ApiSession.GetTokenIndex()
 	if err := self.readEntityWithIndex("token", []byte(token), tokenIndex, modelApiSession); err != nil {
@@ -107,6 +115,7 @@ func (self *ApiSessionManager) ReadByToken(token string) (*ApiSession, error) {
 }
 
 func (self *ApiSessionManager) ReadInTx(tx *bbolt.Tx, id string) (*ApiSession, error) {
+	logtrace.LogWithFunctionName()
 	modelApiSession := &ApiSession{}
 	if err := self.readEntityInTx(tx, id, modelApiSession); err != nil {
 		return nil, err
@@ -115,28 +124,34 @@ func (self *ApiSessionManager) ReadInTx(tx *bbolt.Tx, id string) (*ApiSession, e
 }
 
 func (self *ApiSessionManager) IsUpdated(_ string) bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func (self *ApiSessionManager) Update(apiSession *ApiSession, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(apiSession, self, ctx.NewMutateContext())
 }
 
 func (self *ApiSessionManager) UpdateWithFieldChecker(apiSession *ApiSession, fieldChecker boltz.FieldChecker, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.updateEntity(apiSession, fieldChecker, ctx.NewMutateContext())
 }
 
 func (self *ApiSessionManager) MfaCompleted(apiSession *ApiSession, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	apiSession.MfaComplete = true
 
 	return self.updateEntity(apiSession, &OrFieldChecker{NewFieldChecker(db.FieldApiSessionMfaComplete), self}, ctx.NewMutateContext())
 }
 
 func (self *ApiSessionManager) Delete(id string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.deleteEntity(id, ctx)
 }
 
 func (self *ApiSessionManager) DeleteBatch(id []string, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.deleteEntityBatch(id, ctx)
 }
 
@@ -144,6 +159,7 @@ func (self *ApiSessionManager) DeleteBatch(id []string, ctx *change.Context) err
 // an API Session. This data will be used to populate information for API Sessions and will be persisted to the data
 // store at a future time in bulk.
 func (self *ApiSessionManager) MarkLastActivityById(apiSessionId string) {
+	logtrace.LogWithFunctionName()
 	self.HeartbeatCollector.Mark(apiSessionId)
 }
 
@@ -151,6 +167,7 @@ func (self *ApiSessionManager) MarkLastActivityById(apiSessionId string) {
 // Marking "last activity" will store a cached "LastUpdatedAt" value for an API Session. This data will be used to
 // populate information for API Sessions and will be persisted to the data store at a future time in bulk.
 func (self *ApiSessionManager) MarkLastActivityByTokens(tokens ...string) ([]string, []string, error) {
+	logtrace.LogWithFunctionName()
 	var notFoundTokens []string
 	store := self.env.GetStores().ApiSession
 
@@ -187,6 +204,7 @@ func (self *ApiSessionManager) MarkLastActivityByTokens(tokens ...string) ([]str
 }
 
 func (self *ApiSessionManager) heartbeatFlush(beats []*Heartbeat) {
+	logtrace.LogWithFunctionName()
 	changeCtx := change.New().SetSourceType("heartbeat.flush").SetChangeAuthorType(change.AuthorTypeController)
 	err := self.GetDb().Batch(changeCtx.NewMutateContext(), func(ctx boltz.MutateContext) error {
 		store := self.env.GetStores().ApiSession
@@ -213,6 +231,7 @@ func (self *ApiSessionManager) heartbeatFlush(beats []*Heartbeat) {
 }
 
 func (self *ApiSessionManager) Stream(query string, collect func(*ApiSession, error) error) error {
+	logtrace.LogWithFunctionName()
 	filter, err := ast.Parse(self.Store, query)
 
 	if err != nil {
@@ -233,6 +252,7 @@ func (self *ApiSessionManager) Stream(query string, collect func(*ApiSession, er
 }
 
 func (self *ApiSessionManager) StreamIds(query string, collect func(string, error) error) error {
+	logtrace.LogWithFunctionName()
 	filter, err := ast.Parse(self.Store, query)
 
 	if err != nil {
@@ -251,6 +271,7 @@ func (self *ApiSessionManager) StreamIds(query string, collect func(string, erro
 }
 
 func (self *ApiSessionManager) Query(query string) (*ApiSessionListResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &ApiSessionListResult{manager: self}
 	err := self.ListWithHandler(query, result.collect)
 	if err != nil {
@@ -260,6 +281,7 @@ func (self *ApiSessionManager) Query(query string) (*ApiSessionListResult, error
 }
 
 func (self *ApiSessionManager) VisitFingerprintsForApiSessionId(apiSessionId string, visitor func(fingerprint string) bool) error {
+	logtrace.LogWithFunctionName()
 	return self.GetDb().View(func(tx *bbolt.Tx) error {
 		apiSession, err := self.ReadInTx(tx, apiSessionId)
 		if err != nil {
@@ -271,6 +293,7 @@ func (self *ApiSessionManager) VisitFingerprintsForApiSessionId(apiSessionId str
 }
 
 func (self *ApiSessionManager) VisitFingerprintsForApiSession(tx *bbolt.Tx, identityId, apiSessionId string, visitor func(fingerprint string) bool) error {
+	logtrace.LogWithFunctionName()
 	if stopVisiting, err := self.env.GetManagers().Identity.VisitIdentityAuthenticatorFingerprints(tx, identityId, visitor); stopVisiting || err != nil {
 		return err
 	}
@@ -294,6 +317,7 @@ func (self *ApiSessionManager) VisitFingerprintsForApiSession(tx *bbolt.Tx, iden
 }
 
 func (self *ApiSessionManager) DeleteByIdentityId(identityId string, changeCtx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return self.GetEnv().GetDb().Update(changeCtx.NewMutateContext(), func(ctx boltz.MutateContext) error {
 		query := fmt.Sprintf(`%s = "%s"`, db.FieldApiSessionIdentity, identityId)
 		return self.Store.DeleteWhere(ctx, query)
@@ -301,6 +325,7 @@ func (self *ApiSessionManager) DeleteByIdentityId(identityId string, changeCtx *
 }
 
 func (self *ApiSessionManager) SetMfaPassed(apiSession *ApiSession, changeCtx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	apiSession.MfaComplete = true
 	apiSession.MfaRequired = true
 
@@ -321,6 +346,7 @@ type ApiSessionListResult struct {
 }
 
 func (result *ApiSessionListResult) collect(tx *bbolt.Tx, ids []string, queryMetaData *models.QueryMetaData) error {
+	logtrace.LogWithFunctionName()
 	result.QueryMetaData = *queryMetaData
 	for _, key := range ids {
 		ApiSession, err := result.manager.ReadInTx(tx, key)

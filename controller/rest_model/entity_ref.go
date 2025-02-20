@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -57,6 +58,7 @@ type EntityRef struct {
 
 // Validate validates this entity ref
 func (m *EntityRef) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateLinks(formats); err != nil {
@@ -70,6 +72,7 @@ func (m *EntityRef) Validate(formats strfmt.Registry) error {
 }
 
 func (m *EntityRef) validateLinks(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Links) { // not required
 		return nil
 	}
@@ -90,6 +93,7 @@ func (m *EntityRef) validateLinks(formats strfmt.Registry) error {
 
 // ContextValidate validate this entity ref based on the context it is used
 func (m *EntityRef) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateLinks(ctx, formats); err != nil {
@@ -103,6 +107,7 @@ func (m *EntityRef) ContextValidate(ctx context.Context, formats strfmt.Registry
 }
 
 func (m *EntityRef) contextValidateLinks(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := m.Links.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
@@ -118,6 +123,7 @@ func (m *EntityRef) contextValidateLinks(ctx context.Context, formats strfmt.Reg
 
 // MarshalBinary interface implementation
 func (m *EntityRef) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -126,6 +132,7 @@ func (m *EntityRef) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *EntityRef) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res EntityRef
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

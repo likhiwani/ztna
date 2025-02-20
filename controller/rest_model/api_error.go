@@ -30,6 +30,7 @@ package rest_model
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 
 	"github.com/go-openapi/errors"
@@ -66,6 +67,7 @@ type APIError struct {
 
 // Validate validates this api error
 func (m *APIError) Validate(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.validateArgs(formats); err != nil {
@@ -83,6 +85,7 @@ func (m *APIError) Validate(formats strfmt.Registry) error {
 }
 
 func (m *APIError) validateArgs(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Args) { // not required
 		return nil
 	}
@@ -102,6 +105,7 @@ func (m *APIError) validateArgs(formats strfmt.Registry) error {
 }
 
 func (m *APIError) validateCause(formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	if swag.IsZero(m.Cause) { // not required
 		return nil
 	}
@@ -122,6 +126,7 @@ func (m *APIError) validateCause(formats strfmt.Registry) error {
 
 // ContextValidate validate this api error based on the context it is used
 func (m *APIError) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	if err := m.contextValidateArgs(ctx, formats); err != nil {
@@ -139,6 +144,7 @@ func (m *APIError) ContextValidate(ctx context.Context, formats strfmt.Registry)
 }
 
 func (m *APIError) contextValidateArgs(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Args != nil {
 		if err := m.Args.ContextValidate(ctx, formats); err != nil {
@@ -155,6 +161,7 @@ func (m *APIError) contextValidateArgs(ctx context.Context, formats strfmt.Regis
 }
 
 func (m *APIError) contextValidateCause(ctx context.Context, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if m.Cause != nil {
 		if err := m.Cause.ContextValidate(ctx, formats); err != nil {
@@ -172,6 +179,7 @@ func (m *APIError) contextValidateCause(ctx context.Context, formats strfmt.Regi
 
 // MarshalBinary interface implementation
 func (m *APIError) MarshalBinary() ([]byte, error) {
+    logtrace.LogWithFunctionName()
 	if m == nil {
 		return nil, nil
 	}
@@ -180,6 +188,7 @@ func (m *APIError) MarshalBinary() ([]byte, error) {
 
 // UnmarshalBinary interface implementation
 func (m *APIError) UnmarshalBinary(b []byte) error {
+    logtrace.LogWithFunctionName()
 	var res APIError
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err

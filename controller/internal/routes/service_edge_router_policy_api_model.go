@@ -22,6 +22,7 @@ import (
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/models"
 	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/openziti/foundation/v2/stringz"
 )
@@ -35,12 +36,14 @@ type ServiceEdgeRouterPolicyLinkFactoryImpl struct {
 }
 
 func NewServiceEdgeRouterPolicyLinkFactory() *ServiceEdgeRouterPolicyLinkFactoryImpl {
+	logtrace.LogWithFunctionName()
 	return &ServiceEdgeRouterPolicyLinkFactoryImpl{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameServiceEdgeRouterPolicy),
 	}
 }
 
 func (factory *ServiceEdgeRouterPolicyLinkFactoryImpl) Links(entity models.Entity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameEdgeRouter] = factory.NewNestedLink(entity, EntityNameEdgeRouter)
 	links[EntityNameService] = factory.NewNestedLink(entity, EntityNameService)
@@ -48,6 +51,7 @@ func (factory *ServiceEdgeRouterPolicyLinkFactoryImpl) Links(entity models.Entit
 }
 
 func MapCreateServiceEdgeRouterPolicyToModel(policy *rest_model.ServiceEdgeRouterPolicyCreate) *model.ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	semantic := ""
 	if policy.Semantic != nil {
 		semantic = string(*policy.Semantic)
@@ -67,6 +71,7 @@ func MapCreateServiceEdgeRouterPolicyToModel(policy *rest_model.ServiceEdgeRoute
 }
 
 func MapUpdateServiceEdgeRouterPolicyToModel(id string, policy *rest_model.ServiceEdgeRouterPolicyUpdate) *model.ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	semantic := ""
 	if policy.Semantic != nil {
 		semantic = string(*policy.Semantic)
@@ -87,6 +92,7 @@ func MapUpdateServiceEdgeRouterPolicyToModel(id string, policy *rest_model.Servi
 }
 
 func MapPatchServiceEdgeRouterPolicyToModel(id string, policy *rest_model.ServiceEdgeRouterPolicyPatch) *model.ServiceEdgeRouterPolicy {
+	logtrace.LogWithFunctionName()
 	ret := &model.ServiceEdgeRouterPolicy{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(policy.Tags),
@@ -102,10 +108,12 @@ func MapPatchServiceEdgeRouterPolicyToModel(id string, policy *rest_model.Servic
 }
 
 func MapServiceEdgeRouterPolicyToRestEntity(ae *env.AppEnv, _ *response.RequestContext, policy *model.ServiceEdgeRouterPolicy) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	return MapServiceEdgeRouterPolicyToRestModel(ae, policy)
 }
 
 func MapServiceEdgeRouterPolicyToRestModel(ae *env.AppEnv, policy *model.ServiceEdgeRouterPolicy) (*rest_model.ServiceEdgeRouterPolicyDetail, error) {
+	logtrace.LogWithFunctionName()
 	semantic := rest_model.Semantic(policy.Semantic)
 
 	ret := &rest_model.ServiceEdgeRouterPolicyDetail{

@@ -18,8 +18,10 @@ package ascode
 
 import (
 	"errors"
-	"github.com/michaelquigley/pfxlog"
 	"reflect"
+	logtrace "ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
 )
 
 type CacheGetter func(id string) (interface{}, error)
@@ -27,6 +29,7 @@ type CacheGetter func(id string) (interface{}, error)
 var log = pfxlog.Logger()
 
 func GetItemFromCache(c map[string]interface{}, key string, fn CacheGetter) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	if key == "" {
 		return nil, errors.New("key is null, can't resolve from cache or get it from source")
 	}

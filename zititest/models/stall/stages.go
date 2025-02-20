@@ -2,19 +2,23 @@ package main
 
 import (
 	"fmt"
-	fablib_5_operation "github.com/openziti/fablab/kernel/lib/runlevel/5_operation"
-	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/zititest/zitilab/models"
-	zitilib_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
 	"strings"
 	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/zitilab/models"
+	zitilib_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
+
+	fablib_5_operation "github.com/openziti/fablab/kernel/lib/runlevel/5_operation"
+	"github.com/openziti/fablab/kernel/model"
 )
 
 func newStageFactory() model.Factory {
+	logtrace.LogWithFunctionName()
 	return &stageFactory{}
 }
 
 func (self *stageFactory) Build(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	// m.MetricsHandlers = append(m.MetricsHandlers, model.StdOutMetricsWriter{})
 
 	runPhase := fablib_5_operation.NewPhase()
@@ -65,6 +69,7 @@ func (self *stageFactory) Build(m *model.Model) error {
 }
 
 func (_ *stageFactory) listeners(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	components := m.SelectComponents(models.ServiceTag)
 	if len(components) < 1 {
 		return fmt.Errorf("no '%v' components in model", "#loop.listener")
@@ -82,6 +87,7 @@ func (_ *stageFactory) listeners(m *model.Model) error {
 }
 
 func (_ *stageFactory) dialers(m *model.Model, phase fablib_5_operation.Phase) error {
+	logtrace.LogWithFunctionName()
 	var components []*model.Component
 	components = m.SelectComponents(models.ClientTag)
 	if len(components) < 1 {

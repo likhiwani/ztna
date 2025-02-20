@@ -20,19 +20,22 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+	"ztna-core/ztna/common/pb/mgmt_pb"
+	"ztna-core/ztna/controller/rest_client/link"
+	logtrace "ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zitirest"
+	"ztna-core/ztna/zititest/zitilab/chaos"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
 	"github.com/openziti/channel/v3/protobufs"
 	"github.com/openziti/fablab/kernel/model"
-	"ztna-core/ztna/common/pb/mgmt_pb"
-	"ztna-core/ztna/controller/rest_client/link"
-	"ztna-core/ztna/zitirest"
-	"ztna-core/ztna/zititest/zitilab/chaos"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 func sowChaos(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	controllers, err := chaos.SelectRandom(run, ".ctrl", chaos.RandomOfTotal())
 	if err != nil {
 		return err
@@ -48,6 +51,7 @@ func sowChaos(run model.Run) error {
 }
 
 func validateLinks(run model.Run) error {
+	logtrace.LogWithFunctionName()
 	ctrls := run.GetModel().SelectComponents(".ctrl")
 	errC := make(chan error, len(ctrls))
 	deadline := time.Now().Add(15 * time.Minute)
@@ -67,10 +71,12 @@ func validateLinks(run model.Run) error {
 }
 
 func validateLinksForCtrlWithChan(run model.Run, c *model.Component, deadline time.Time, errC chan<- error) {
+	logtrace.LogWithFunctionName()
 	errC <- validateLinksForCtrl(run, c, deadline)
 }
 
 func validateLinksForCtrl(run model.Run, c *model.Component, deadline time.Time) error {
+	logtrace.LogWithFunctionName()
 	clients, err := chaos.EnsureLoggedIntoCtrl(run, c, time.Minute)
 	if err != nil {
 		return err
@@ -119,6 +125,7 @@ func validateLinksForCtrl(run model.Run, c *model.Component, deadline time.Time)
 }
 
 func getLinkCount(clients *zitirest.Clients) (int64, error) {
+	logtrace.LogWithFunctionName()
 	ctx, cancelF := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancelF()
 
@@ -136,6 +143,7 @@ func getLinkCount(clients *zitirest.Clients) (int64, error) {
 }
 
 func validateRouterLinks(id string, clients *zitirest.Clients) (int, error) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("ctrl", id)
 
 	closeNotify := make(chan struct{})

@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"net/http"
 	"time"
@@ -47,6 +48,7 @@ import (
 //
 // To enforce default values in parameter, use SetDefaults or WithDefaults.
 func NewDetailCircuitParams() *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitParams{
 		timeout: cr.DefaultTimeout,
 	}
@@ -55,6 +57,7 @@ func NewDetailCircuitParams() *DetailCircuitParams {
 // NewDetailCircuitParamsWithTimeout creates a new DetailCircuitParams object
 // with the ability to set a timeout on a request.
 func NewDetailCircuitParamsWithTimeout(timeout time.Duration) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitParams{
 		timeout: timeout,
 	}
@@ -63,6 +66,7 @@ func NewDetailCircuitParamsWithTimeout(timeout time.Duration) *DetailCircuitPara
 // NewDetailCircuitParamsWithContext creates a new DetailCircuitParams object
 // with the ability to set a context for a request.
 func NewDetailCircuitParamsWithContext(ctx context.Context) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitParams{
 		Context: ctx,
 	}
@@ -71,6 +75,7 @@ func NewDetailCircuitParamsWithContext(ctx context.Context) *DetailCircuitParams
 // NewDetailCircuitParamsWithHTTPClient creates a new DetailCircuitParams object
 // with the ability to set a custom HTTPClient for a request.
 func NewDetailCircuitParamsWithHTTPClient(client *http.Client) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	return &DetailCircuitParams{
 		HTTPClient: client,
 	}
@@ -98,6 +103,7 @@ type DetailCircuitParams struct {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailCircuitParams) WithDefaults() *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetDefaults()
 	return o
 }
@@ -106,55 +112,65 @@ func (o *DetailCircuitParams) WithDefaults() *DetailCircuitParams {
 //
 // All values with no default are reset to their zero value.
 func (o *DetailCircuitParams) SetDefaults() {
+    logtrace.LogWithFunctionName()
 	// no default values defined for this parameter
 }
 
 // WithTimeout adds the timeout to the detail circuit params
 func (o *DetailCircuitParams) WithTimeout(timeout time.Duration) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetTimeout(timeout)
 	return o
 }
 
 // SetTimeout adds the timeout to the detail circuit params
 func (o *DetailCircuitParams) SetTimeout(timeout time.Duration) {
+    logtrace.LogWithFunctionName()
 	o.timeout = timeout
 }
 
 // WithContext adds the context to the detail circuit params
 func (o *DetailCircuitParams) WithContext(ctx context.Context) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetContext(ctx)
 	return o
 }
 
 // SetContext adds the context to the detail circuit params
 func (o *DetailCircuitParams) SetContext(ctx context.Context) {
+    logtrace.LogWithFunctionName()
 	o.Context = ctx
 }
 
 // WithHTTPClient adds the HTTPClient to the detail circuit params
 func (o *DetailCircuitParams) WithHTTPClient(client *http.Client) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetHTTPClient(client)
 	return o
 }
 
 // SetHTTPClient adds the HTTPClient to the detail circuit params
 func (o *DetailCircuitParams) SetHTTPClient(client *http.Client) {
+    logtrace.LogWithFunctionName()
 	o.HTTPClient = client
 }
 
 // WithID adds the id to the detail circuit params
 func (o *DetailCircuitParams) WithID(id string) *DetailCircuitParams {
+    logtrace.LogWithFunctionName()
 	o.SetID(id)
 	return o
 }
 
 // SetID adds the id to the detail circuit params
 func (o *DetailCircuitParams) SetID(id string) {
+    logtrace.LogWithFunctionName()
 	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
 func (o *DetailCircuitParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	if err := r.SetTimeout(o.timeout); err != nil {
 		return err

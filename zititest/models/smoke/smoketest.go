@@ -18,6 +18,14 @@ package smoke
 
 import (
 	"embed"
+	"os"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/smoke/actions"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
 	"github.com/openziti/fablab/kernel/lib/binding"
@@ -30,12 +38,6 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/models/smoke/actions"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"os"
-	"time"
 )
 
 const ZitiEdgeTunnelVersion = "v1.2.9"
@@ -46,6 +48,7 @@ const ZitiRouterVersion = ""
 var configResource embed.FS
 
 func getUniqueId() string {
+	logtrace.LogWithFunctionName()
 	if runId := os.Getenv("GITHUB_RUN_ID"); runId != "" {
 		return "-" + runId + "." + os.Getenv("GITHUB_RUN_ATTEMPT")
 	}
@@ -339,6 +342,7 @@ var Model = &model.Model{
 }
 
 func InitBootstrapExtensions() {
+	logtrace.LogWithFunctionName()
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
 }

@@ -18,12 +18,14 @@ package xgress
 
 import (
 	"fmt"
+	"sync/atomic"
+	"time"
+	"ztna-core/ztna/common/inspect"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/emirpasic/gods/trees/btree"
 	"github.com/emirpasic/gods/utils"
 	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/common/inspect"
-	"sync/atomic"
-	"time"
 )
 
 type LinkReceiveBuffer struct {
@@ -35,6 +37,7 @@ type LinkReceiveBuffer struct {
 }
 
 func NewLinkReceiveBuffer() *LinkReceiveBuffer {
+	logtrace.LogWithFunctionName()
 	return &LinkReceiveBuffer{
 		tree:     btree.NewWith(10240, utils.Int32Comparator),
 		sequence: -1,
@@ -42,10 +45,12 @@ func NewLinkReceiveBuffer() *LinkReceiveBuffer {
 }
 
 func (buffer *LinkReceiveBuffer) Size() uint32 {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadUint32(&buffer.size)
 }
 
 func (buffer *LinkReceiveBuffer) ReceiveUnordered(payload *Payload, maxSize uint32) bool {
+	logtrace.LogWithFunctionName()
 	if payload.GetSequence() <= buffer.sequence {
 		duplicatePayloadsMeter.Mark(1)
 		return true
@@ -72,6 +77,7 @@ func (buffer *LinkReceiveBuffer) ReceiveUnordered(payload *Payload, maxSize uint
 }
 
 func (buffer *LinkReceiveBuffer) PeekHead() *Payload {
+	logtrace.LogWithFunctionName()
 	if val := buffer.tree.LeftValue(); val != nil {
 		payload := val.(*Payload)
 		if payload.Sequence == buffer.sequence+1 {
@@ -82,15 +88,18 @@ func (buffer *LinkReceiveBuffer) PeekHead() *Payload {
 }
 
 func (buffer *LinkReceiveBuffer) Remove(payload *Payload) {
+	logtrace.LogWithFunctionName()
 	buffer.tree.Remove(payload.Sequence)
 	buffer.sequence = payload.Sequence
 }
 
 func (buffer *LinkReceiveBuffer) getLastBufferSizeSent() uint32 {
+	logtrace.LogWithFunctionName()
 	return atomic.LoadUint32(&buffer.lastBufferSizeSent)
 }
 
 func (buffer *LinkReceiveBuffer) Inspect() *inspect.XgressRecvBufferDetail {
+	logtrace.LogWithFunctionName()
 	timeout := time.After(100 * time.Millisecond)
 	inspectEvent := &receiveBufferInspectEvent{
 		buffer:         buffer,
@@ -109,6 +118,7 @@ func (buffer *LinkReceiveBuffer) Inspect() *inspect.XgressRecvBufferDetail {
 }
 
 func (buffer *LinkReceiveBuffer) inspectComplete() *inspect.XgressRecvBufferDetail {
+	logtrace.LogWithFunctionName()
 	nextPayload := "none"
 	if head := buffer.tree.LeftValue(); head != nil {
 		payload := head.(*Payload)
@@ -127,6 +137,7 @@ func (buffer *LinkReceiveBuffer) inspectComplete() *inspect.XgressRecvBufferDeta
 }
 
 func (buffer *LinkReceiveBuffer) inspectIncomplete() *inspect.XgressRecvBufferDetail {
+	logtrace.LogWithFunctionName()
 	return &inspect.XgressRecvBufferDetail{
 		Size:           buffer.Size(),
 		LastSizeSent:   buffer.getLastBufferSizeSent(),
@@ -143,6 +154,7 @@ type receiveBufferInspectEvent struct {
 }
 
 func (self *receiveBufferInspectEvent) handle() {
+	logtrace.LogWithFunctionName()
 	result := self.buffer.inspectComplete()
 	self.notifyComplete <- result
 }

@@ -18,20 +18,22 @@ package xgress_edge_tunnel
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/stringz"
-	"github.com/openziti/identity"
-	"github.com/openziti/metrics"
+	"strings"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router"
 	"ztna-core/ztna/router/env"
 	"ztna-core/ztna/router/handler_edge_ctrl"
 	"ztna-core/ztna/router/state"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/stringz"
+	"github.com/openziti/identity"
+	"github.com/openziti/metrics"
 	"github.com/pkg/errors"
-	"strings"
-	"time"
 )
 
 const (
@@ -53,25 +55,30 @@ type Factory struct {
 }
 
 func (self *Factory) NotifyOfReconnect(channel.Channel) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Info("control channel reconnected, re-establishing hosted services")
 	self.tunneler.HandleReconnect()
 }
 
 func (self *Factory) GetTraceDecoders() []channel.TraceMessageDecoder {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *Factory) Enabled() bool {
+	logtrace.LogWithFunctionName()
 	return true
 }
 
 func (self *Factory) BindChannel(binding channel.Binding) error {
+	logtrace.LogWithFunctionName()
 	binding.AddTypedReceiveHandler(self.serviceListHandler)
 	binding.AddReceiveHandlerF(int32(edge_ctrl_pb.ContentType_CreateTunnelTerminatorResponseType), self.tunneler.fabricProvider.HandleTunnelResponse)
 	return nil
 }
 
 func (self *Factory) Run(env env.RouterEnv) error {
+	logtrace.LogWithFunctionName()
 	self.ctrls = env.GetNetworkControllers()
 	if self.tunneler.listenOptions != nil {
 		return self.tunneler.Start(env.GetCloseNotify())
@@ -80,10 +87,12 @@ func (self *Factory) Run(env env.RouterEnv) error {
 }
 
 func (self *Factory) LoadConfig(map[interface{}]interface{}) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func (self *Factory) DefaultRequestTimeout() time.Duration {
+	logtrace.LogWithFunctionName()
 	return self.routerConfig.Ctrl.DefaultRequestTimeout
 }
 
@@ -94,10 +103,12 @@ type XrctrlFactory interface {
 
 // NewFactory constructs a new Edge Xgress Tunnel Factory instance
 func NewFactory(env env.RouterEnv, routerConfig *router.Config, stateManager state.Manager) XrctrlFactory {
+	logtrace.LogWithFunctionName()
 	return NewFactoryWrapper(env, routerConfig, stateManager)
 }
 
 func NewV1Factory(env env.RouterEnv, routerConfig *router.Config, stateManager state.Manager) XrctrlFactory {
+	logtrace.LogWithFunctionName()
 	factory := &Factory{
 		id:              env.GetRouterId(),
 		routerConfig:    routerConfig,
@@ -112,6 +123,7 @@ func NewV1Factory(env env.RouterEnv, routerConfig *router.Config, stateManager s
 
 // CreateListener creates a new Edge Tunnel Xgress listener
 func (self *Factory) CreateListener(optionsData xgress.OptionsData) (xgress.Listener, error) {
+	logtrace.LogWithFunctionName()
 	options := &Options{}
 	if err := options.load(optionsData); err != nil {
 		return nil, err
@@ -125,6 +137,7 @@ func (self *Factory) CreateListener(optionsData xgress.OptionsData) (xgress.List
 
 // CreateDialer creates a new Edge Xgress dialer
 func (self *Factory) CreateDialer(optionsData xgress.OptionsData) (xgress.Dialer, error) {
+	logtrace.LogWithFunctionName()
 	options := &Options{}
 	if err := options.load(optionsData); err != nil {
 		return nil, err
@@ -149,6 +162,7 @@ type Options struct {
 }
 
 func (options *Options) load(data xgress.OptionsData) error {
+	logtrace.LogWithFunctionName()
 	options.mode = DefaultMode
 	options.svcPollRate = DefaultServicePollRate
 	options.resolver = DefaultDnsResolver
@@ -252,6 +266,7 @@ func (options *Options) load(data xgress.OptionsData) error {
 }
 
 func (options *Options) ToLoggableString() string {
+	logtrace.LogWithFunctionName()
 	buf := strings.Builder{}
 	buf.WriteString(fmt.Sprintf("mtu=%v\n", options.Mtu))
 	buf.WriteString(fmt.Sprintf("randomDrops=%v\n", options.RandomDrops))

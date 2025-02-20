@@ -18,16 +18,21 @@ package xgress
 
 import (
 	"encoding/binary"
-	"github.com/openziti/channel/v3"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/channel/v3"
 )
 
 type PayloadTransformer struct {
 }
 
-func (self PayloadTransformer) Rx(*channel.Message, channel.Channel) {}
+func (self PayloadTransformer) Rx(*channel.Message, channel.Channel) {
+	logtrace.LogWithFunctionName()
+}
 
 func (self PayloadTransformer) Tx(m *channel.Message, ch channel.Channel) {
+	logtrace.LogWithFunctionName()
 	if m.ContentType == channel.ContentTypeRaw && len(m.Body) > 1 {
 		if m.Body[0]&HeartbeatFlagMask != 0 && len(m.Body) > 12 {
 			now := time.Now().UnixNano()

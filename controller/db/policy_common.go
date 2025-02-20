@@ -3,16 +3,18 @@ package db
 import (
 	"context"
 	"fmt"
+	"strings"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/errorz"
 	"github.com/openziti/foundation/v2/stringz"
 	"github.com/openziti/storage/ast"
 	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/bbolt"
-	"strings"
 )
 
 type ServicePolicyEventsKeyType string
@@ -26,6 +28,7 @@ type serviceEventHandler struct {
 }
 
 func (self *serviceEventHandler) addServiceUpdatedEvent(stores *stores, tx *bbolt.Tx, serviceId []byte) {
+	logtrace.LogWithFunctionName()
 	cursor := stores.edgeService.bindIdentitiesCollection.IterateLinks(tx, serviceId, true)
 
 	for cursor != nil && cursor.IsValid() {
@@ -41,6 +44,7 @@ func (self *serviceEventHandler) addServiceUpdatedEvent(stores *stores, tx *bbol
 }
 
 func (self *serviceEventHandler) addServiceEvent(tx *bbolt.Tx, identityId, serviceId []byte, eventType ServiceEventType) {
+	logtrace.LogWithFunctionName()
 	if len(self.events) == 0 {
 		tx.OnCommit(func() {
 			ServiceEvents.dispatchEventsAsync(self.events)
@@ -68,10 +72,12 @@ type roleAttributeChangeContext struct {
 }
 
 func (self *roleAttributeChangeContext) tx() *bbolt.Tx {
+	logtrace.LogWithFunctionName()
 	return self.mutateCtx.Tx()
 }
 
 func (self *roleAttributeChangeContext) addServicePolicyEvent(identityId, serviceId []byte, policyType PolicyType, add bool) {
+	logtrace.LogWithFunctionName()
 	var eventType ServiceEventType
 	if add {
 		if policyType == PolicyTypeDial {
@@ -98,6 +104,7 @@ func (self *roleAttributeChangeContext) notifyOfPolicyChangeEvent(
 	relatedType edge_ctrl_pb.ServicePolicyRelatedEntityType,
 	isAdd bool) {
 
+	logtrace.LogWithFunctionName()
 	self.servicePolicyEvents = append(self.servicePolicyEvents, &edge_ctrl_pb.DataState_ServicePolicyChange{
 		PolicyId:          string(policyId),
 		RelatedEntityIds:  []string{string(relatedId)},
@@ -107,6 +114,7 @@ func (self *roleAttributeChangeContext) notifyOfPolicyChangeEvent(
 }
 
 func (self *roleAttributeChangeContext) processServicePolicyEvents() {
+	logtrace.LogWithFunctionName()
 	if len(self.servicePolicyEvents) > 0 {
 		self.mutateCtx.UpdateContext(func(stateCtx context.Context) context.Context {
 			eventSlice := self.servicePolicyEvents
@@ -122,6 +130,7 @@ func (self *roleAttributeChangeContext) processServicePolicyEvents() {
 }
 
 func (store *baseStore[E]) validateRoleAttributes(attributes []string, holder errorz.ErrorHolder) {
+	logtrace.LogWithFunctionName()
 	for _, attr := range attributes {
 		if strings.HasPrefix(attr, "#") {
 			holder.SetError(errorz.NewFieldError("role attributes may not be prefixed with #", "roleAttributes", attr))
@@ -135,6 +144,7 @@ func (store *baseStore[E]) validateRoleAttributes(attributes []string, holder er
 }
 
 func (store *baseStore[E]) updateServicePolicyRelatedRoles(ctx *roleAttributeChangeContext, entityId []byte, newRoleAttributes []boltz.FieldTypeAndValue) {
+	logtrace.LogWithFunctionName()
 	cursor := ctx.rolesSymbol.GetStore().IterateIds(ctx.tx(), ast.BoolNodeTrue)
 
 	entityRoles := FieldValuesToIds(newRoleAttributes)
@@ -223,6 +233,7 @@ func (store *baseStore[E]) updateServicePolicyRelatedRoles(ctx *roleAttributeCha
 }
 
 func EvaluatePolicy(ctx *roleAttributeChangeContext, policy Policy, roleAttributesSymbol boltz.EntitySetSymbol) {
+	logtrace.LogWithFunctionName()
 	policyId := []byte(policy.GetId())
 	_, semanticB := ctx.rolesSymbol.GetStore().GetSymbol(FieldSemantic).Eval(ctx.tx(), policyId)
 	semantic := string(semanticB)
@@ -264,6 +275,7 @@ func EvaluatePolicy(ctx *roleAttributeChangeContext, policy Policy, roleAttribut
 }
 
 func validateEntityIds(tx *bbolt.Tx, store boltz.Store, field string, ids []string) error {
+	logtrace.LogWithFunctionName()
 	var invalid []string
 	for _, val := range ids {
 		if !store.IsEntityPresent(tx, val) {
@@ -277,6 +289,7 @@ func validateEntityIds(tx *bbolt.Tx, store boltz.Store, field string, ids []stri
 }
 
 func UpdateRelatedRoles(ctx *roleAttributeChangeContext, entityId []byte, newRoleAttributes []boltz.FieldTypeAndValue, semanticSymbol boltz.EntitySymbol) {
+	logtrace.LogWithFunctionName()
 	cursor := ctx.rolesSymbol.GetStore().IterateIds(ctx.tx(), ast.BoolNodeTrue)
 
 	entityRoles := FieldValuesToIds(newRoleAttributes)
@@ -308,6 +321,7 @@ func UpdateRelatedRoles(ctx *roleAttributeChangeContext, entityId []byte, newRol
 }
 
 func evaluatePolicyAgainstEntity(ctx *roleAttributeChangeContext, semantic string, entityId, policyId []byte, ids, roles, roleAttributes []string, log *logrus.Entry) (bool, bool) {
+	logtrace.LogWithFunctionName()
 	if stringz.Contains(ids, string(entityId)) || stringz.Contains(roles, "all") ||
 		(strings.EqualFold(semantic, SemanticAllOf) && len(roles) > 0 && stringz.ContainsAll(roleAttributes, roles...)) ||
 		(strings.EqualFold(semantic, SemanticAnyOf) && len(roles) > 0 && stringz.ContainsAny(roleAttributes, roles...)) {
@@ -318,6 +332,7 @@ func evaluatePolicyAgainstEntity(ctx *roleAttributeChangeContext, semantic strin
 }
 
 func ProcessEntityPolicyMatched(ctx *roleAttributeChangeContext, entityId, policyId []byte, log *logrus.Entry) bool {
+	logtrace.LogWithFunctionName()
 	// first add it to the denormalize link table from the policy to the entity (ex: service policy -> identity)
 	// If it's already there (in other words, this policy didn't change in relation to the entity,
 	// we don't have any further work to do
@@ -350,6 +365,7 @@ func ProcessEntityPolicyMatched(ctx *roleAttributeChangeContext, entityId, polic
 }
 
 func ProcessEntityPolicyUnmatched(ctx *roleAttributeChangeContext, entityId, policyId []byte, log *logrus.Entry) bool {
+	logtrace.LogWithFunctionName()
 	// first remove it from the denormalize link table from the policy to the entity (ex: service policy -> identity)
 	// If wasn't there (in other words, this policy didn't change in relation to the entity, we don't have any further work to do
 	if removed, err := ctx.linkCollection.RemoveLink(ctx.tx(), policyId, entityId); ctx.SetError(err) || !removed {
@@ -395,6 +411,7 @@ type denormCheckCtx struct {
 }
 
 func validatePolicyDenormalization(ctx *denormCheckCtx) error {
+	logtrace.LogWithFunctionName()
 	tx := ctx.mutateCtx.Tx()
 
 	links := map[string]map[string]int{}
@@ -443,6 +460,7 @@ func validatePolicyDenormalization(ctx *denormCheckCtx) error {
 }
 
 func logDiscrepencies(ctx *denormCheckCtx, count int, sourceId, targetId []byte, sourceLinkCount, targetLinkCount *int32) {
+	logtrace.LogWithFunctionName()
 	oldValuesMatch := (sourceLinkCount == nil && targetLinkCount == nil) || (sourceLinkCount != nil && targetLinkCount != nil && *sourceLinkCount == *targetLinkCount)
 	if !oldValuesMatch {
 		err := errors.Errorf("%v: ismatched link counts. %v %v (%v) <-> %v %v (%v), should be both are %v", ctx.name,

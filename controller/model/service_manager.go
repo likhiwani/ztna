@@ -17,21 +17,24 @@
 package model
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/storage/boltz"
+	"time"
 	"ztna-core/ztna/common/pb/cmd_pb"
 	"ztna-core/ztna/controller/change"
 	"ztna-core/ztna/controller/command"
 	"ztna-core/ztna/controller/db"
 	"ztna-core/ztna/controller/fields"
 	"ztna-core/ztna/controller/models"
-	"github.com/orcaman/concurrent-map/v2"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/storage/boltz"
+	cmap "github.com/orcaman/concurrent-map/v2"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
-	"time"
 )
 
 func newServiceManager(env Env) *ServiceManager {
+	logtrace.LogWithFunctionName()
 	result := &ServiceManager{
 		baseEntityManager: newBaseEntityManager[*Service, *db.Service](env, env.GetStores().Service),
 		cache:             cmap.New[*Service](),
@@ -51,10 +54,12 @@ type ServiceManager struct {
 }
 
 func (self *ServiceManager) newModelEntity() *Service {
+	logtrace.LogWithFunctionName()
 	return &Service{}
 }
 
 func (self *ServiceManager) NotifyTerminatorChanged(terminator *db.Terminator) *db.Terminator {
+	logtrace.LogWithFunctionName()
 	// patched entities may not have all fields, if service is blank, load terminator
 	serviceId := terminator.Service
 	if serviceId == "" {
@@ -77,19 +82,23 @@ func (self *ServiceManager) NotifyTerminatorChanged(terminator *db.Terminator) *
 }
 
 func (self *ServiceManager) Create(entity *Service, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchCreate[*Service](self, entity, ctx)
 }
 
 func (self *ServiceManager) ApplyCreate(cmd *command.CreateEntityCommand[*Service], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	_, err := self.createEntity(cmd.Entity, ctx)
 	return err
 }
 
 func (self *ServiceManager) Update(entity *Service, updatedFields fields.UpdatedFields, ctx *change.Context) error {
+	logtrace.LogWithFunctionName()
 	return DispatchUpdate[*Service](self, entity, updatedFields, ctx)
 }
 
 func (self *ServiceManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Service], ctx boltz.MutateContext) error {
+	logtrace.LogWithFunctionName()
 	if err := self.updateEntity(cmd.Entity, cmd.UpdatedFields, ctx); err != nil {
 		return err
 	}
@@ -98,6 +107,7 @@ func (self *ServiceManager) ApplyUpdate(cmd *command.UpdateEntityCommand[*Servic
 }
 
 func (self *ServiceManager) Read(id string) (entity *Service, err error) {
+	logtrace.LogWithFunctionName()
 	err = self.GetDb().View(func(tx *bbolt.Tx) error {
 		entity, err = self.readInTx(tx, id)
 		return err
@@ -109,6 +119,7 @@ func (self *ServiceManager) Read(id string) (entity *Service, err error) {
 }
 
 func (self *ServiceManager) GetIdForName(id string) (string, error) {
+	logtrace.LogWithFunctionName()
 	var result []byte
 	err := self.GetDb().View(func(tx *bbolt.Tx) error {
 		result = self.env.GetStores().Service.GetNameIndex().Read(tx, []byte(id))
@@ -118,6 +129,7 @@ func (self *ServiceManager) GetIdForName(id string) (string, error) {
 }
 
 func (self *ServiceManager) readInTx(tx *bbolt.Tx, id string) (*Service, error) {
+	logtrace.LogWithFunctionName()
 	if service, _ := self.cache.Get(id); service != nil {
 		return service, nil
 	}
@@ -132,16 +144,19 @@ func (self *ServiceManager) readInTx(tx *bbolt.Tx, id string) (*Service, error) 
 }
 
 func (self *ServiceManager) cacheService(service *Service) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Tracef("updated service cache: %v", service.Id)
 	self.cache.Set(service.Id, service)
 }
 
 func (self *ServiceManager) RemoveFromCache(id string) {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Debugf("removed service from cache: %v", id)
 	self.cache.Remove(id)
 }
 
 func (self *ServiceManager) clearCache() {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().Debugf("clearing all services from cache")
 	for _, key := range self.cache.Keys() {
 		self.cache.Remove(key)
@@ -149,6 +164,7 @@ func (self *ServiceManager) clearCache() {
 }
 
 func (self *ServiceManager) Marshall(entity *Service) ([]byte, error) {
+	logtrace.LogWithFunctionName()
 	tags, err := cmd_pb.EncodeTags(entity.Tags)
 	if err != nil {
 		return nil, err
@@ -166,6 +182,7 @@ func (self *ServiceManager) Marshall(entity *Service) ([]byte, error) {
 }
 
 func (self *ServiceManager) Unmarshall(bytes []byte) (*Service, error) {
+	logtrace.LogWithFunctionName()
 	msg := &cmd_pb.Service{}
 	if err := proto.Unmarshal(bytes, msg); err != nil {
 		return nil, err

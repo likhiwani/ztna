@@ -18,14 +18,17 @@ package db
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltztest"
-	"ztna-core/ztna/common/eid"
-	"go.etcd.io/bbolt"
 	"testing"
 	"time"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltztest"
+	"go.etcd.io/bbolt"
 )
 
 func Test_ConfigTypeStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -34,6 +37,7 @@ func Test_ConfigTypeStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testConfigTypeCrud(*testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.CleanupAll()
 
 	configType := newConfigType("")

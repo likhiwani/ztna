@@ -18,12 +18,15 @@ package capabilities
 
 import (
 	"math/big"
+	logtrace "ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/common/pb/ctrl_pb"
+
 	"github.com/openziti/channel/v3"
 )
 
 func IsCapable(ch channel.Channel, capability int) bool {
+	logtrace.LogWithFunctionName()
 	headers := ch.Underlay().Headers()
 	if val, found := headers[int32(ctrl_pb.ControlHeaders_CapabilitiesHeader)]; found {
 		capabilitiesMask := &big.Int{}

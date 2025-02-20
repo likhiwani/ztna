@@ -20,19 +20,22 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"ztna-core/ztna/router/xgress_transport"
-	"github.com/openziti/identity"
-	"github.com/openziti/identity/dotziti"
-	"github.com/openziti/transport/v2"
-	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
-	"github.com/spf13/cobra"
 	"io"
 	"net"
 	"net/http"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress_transport"
+	"ztna-core/ztna/zititest/ziti-fabric-test/subcmd"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/identity"
+	"github.com/openziti/identity/dotziti"
+	"github.com/openziti/transport/v2"
+	"github.com/spf13/cobra"
 )
 
 func init() {
+	logtrace.LogWithFunctionName()
 	httpCmd.Flags().StringVarP(&httpCmdIdentity, "identityName", "i", "default", "dotzeet identity name")
 	httpCmd.Flags().StringVarP(&httpCmdIngress, "ingressEndpoint", "e", "tls:127.0.0.1:7002", "ingress endpoint address")
 	httpCmd.Flags().StringVar(&httpCmdHost, "host", "", "optional host header")
@@ -52,6 +55,7 @@ var httpCmdHost string
 var httpCmdInsecure bool
 
 func doHttp(cmd *cobra.Command, args []string) {
+	logtrace.LogWithFunctionName()
 	if _, id, err := dotziti.LoadIdentity(httpCmdIdentity); err == nil {
 		if ingressAddr, err := transport.ParseAddress(httpCmdIngress); err == nil {
 			tr := &http.Transport{

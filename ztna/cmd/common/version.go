@@ -17,12 +17,14 @@
 package common
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"ztna-core/ztna/common/version"
 	"github.com/spf13/cobra"
 )
 
 func NewVersionCmd() *cobra.Command {
+	logtrace.LogWithFunctionName()
 	return &cobra.Command{
 		Use:   "version",
 		Short: "Show component version",

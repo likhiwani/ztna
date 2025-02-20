@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 
 	"ztna-core/ztna/common/pb/mgmt_pb"
@@ -33,6 +34,7 @@ type AgentClusterAddAction struct {
 }
 
 func NewAgentClusterAdd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentClusterAddAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -58,6 +60,7 @@ func NewAgentClusterAdd(p common.OptionsProvider) *cobra.Command {
 }
 
 func (self *AgentClusterAddAction) makeRequest(ch channel.Channel) error {
+	logtrace.LogWithFunctionName()
 	msg := channel.NewMessage(int32(mgmt_pb.ContentType_RaftAddPeerRequestType), nil)
 	msg.PutStringHeader(controller.AgentAddrHeader, self.Args[0])
 	msg.PutBoolHeader(controller.AgentIsVoterHeader, self.Voter)

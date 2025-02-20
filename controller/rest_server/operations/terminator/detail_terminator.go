@@ -30,6 +30,7 @@ package terminator
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DetailTerminatorHandlerFunc func(DetailTerminatorParams) middleware.Respond
 
 // Handle executing the request and returning a response
 func (fn DetailTerminatorHandlerFunc) Handle(params DetailTerminatorParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DetailTerminatorHandler interface {
 
 // NewDetailTerminator creates a new http.Handler for the detail terminator operation
 func NewDetailTerminator(ctx *middleware.Context, handler DetailTerminatorHandler) *DetailTerminator {
+    logtrace.LogWithFunctionName()
 	return &DetailTerminator{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DetailTerminator struct {
 }
 
 func (o *DetailTerminator) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

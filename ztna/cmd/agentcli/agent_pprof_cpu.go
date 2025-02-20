@@ -17,6 +17,7 @@
 package agentcli
 
 import (
+	logtrace "ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 	"os"
@@ -34,6 +35,7 @@ type AgentPprofCpuAction struct {
 }
 
 func NewPprofCpuCmd(p common.OptionsProvider) *cobra.Command {
+	logtrace.LogWithFunctionName()
 	action := &AgentPprofCpuAction{
 		AgentOptions: AgentOptions{
 			CommonOptions: p(),
@@ -60,6 +62,7 @@ func NewPprofCpuCmd(p common.OptionsProvider) *cobra.Command {
 
 // Run implements the command
 func (self *AgentPprofCpuAction) Run() error {
+	logtrace.LogWithFunctionName()
 	if self.Cmd.Flags().Changed("timeout") {
 		time.AfterFunc(self.timeout, func() {
 			fmt.Println("operation timed out")

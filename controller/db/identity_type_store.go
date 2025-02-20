@@ -17,6 +17,8 @@
 package db
 
 import (
+	"ztna-core/ztna/logtrace"
+
 	"github.com/openziti/storage/boltz"
 )
 
@@ -31,10 +33,12 @@ type IdentityType struct {
 }
 
 func (entity *IdentityType) GetName() string {
+	logtrace.LogWithFunctionName()
 	return entity.Name
 }
 
 func (entity *IdentityType) GetEntityType() string {
+	logtrace.LogWithFunctionName()
 	return EntityTypeIdentityTypes
 }
 
@@ -46,6 +50,7 @@ type IdentityTypeStore interface {
 }
 
 func newIdentityTypeStore(stores *stores) *IdentityTypeStoreImpl {
+	logtrace.LogWithFunctionName()
 	store := &IdentityTypeStoreImpl{}
 	store.baseStore = newBaseStore[*IdentityType](stores, store)
 	store.InitImpl(store)
@@ -58,28 +63,34 @@ type IdentityTypeStoreImpl struct {
 }
 
 func (store *IdentityTypeStoreImpl) initializeLocal() {
+	logtrace.LogWithFunctionName()
 	store.AddExtEntitySymbols()
 	store.indexName = store.addUniqueNameField()
 }
 
 func (store *IdentityTypeStoreImpl) initializeLinked() {
+	logtrace.LogWithFunctionName()
 	// no links
 }
 
 func (store *IdentityTypeStoreImpl) GetNameIndex() boltz.ReadIndex {
+	logtrace.LogWithFunctionName()
 	return store.indexName
 }
 
 func (store *IdentityTypeStoreImpl) NewEntity() *IdentityType {
+	logtrace.LogWithFunctionName()
 	return &IdentityType{}
 }
 
 func (store *IdentityTypeStoreImpl) FillEntity(entity *IdentityType, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.LoadBaseValues(bucket)
 	entity.Name = bucket.GetStringOrError(FieldName)
 }
 
 func (store *IdentityTypeStoreImpl) PersistEntity(entity *IdentityType, ctx *boltz.PersistContext) {
+	logtrace.LogWithFunctionName()
 	entity.SetBaseValues(ctx)
 	ctx.SetString(FieldName, entity.Name)
 }

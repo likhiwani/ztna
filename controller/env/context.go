@@ -2,13 +2,15 @@ package env
 
 import (
 	"bytes"
-	"ztna-core/ztna/common/eid"
-	"ztna-core/ztna/controller/response"
 	"io"
 	"net/http"
+	"ztna-core/ztna/common/eid"
+	"ztna-core/ztna/controller/response"
+	"ztna-core/ztna/logtrace"
 )
 
 func NewRequestContext(rw http.ResponseWriter, r *http.Request) *response.RequestContext {
+	logtrace.LogWithFunctionName()
 	rid := eid.New()
 
 	body, _ := io.ReadAll(r.Body)

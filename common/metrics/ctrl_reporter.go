@@ -17,9 +17,11 @@
 package metrics
 
 import (
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/env"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/channel/v3"
-	"ztna-core/ztna/router/env"
 	"github.com/openziti/metrics"
 	"github.com/openziti/metrics/metrics_pb"
 	"google.golang.org/protobuf/proto"
@@ -31,6 +33,7 @@ type controllersReporter struct {
 }
 
 func (reporter *controllersReporter) AcceptMetrics(message *metrics_pb.MetricsMessage) {
+	logtrace.LogWithFunctionName()
 	reporter.msgs = append(reporter.msgs, message)
 
 	for len(reporter.msgs) > 0 {
@@ -74,6 +77,7 @@ func (reporter *controllersReporter) AcceptMetrics(message *metrics_pb.MetricsMe
 
 // NewControllersReporter creates a metrics handler which sends metrics messages to the controllers
 func NewControllersReporter(ctrls env.NetworkControllers) metrics.Handler {
+	logtrace.LogWithFunctionName()
 	return &controllersReporter{
 		ctrls: ctrls,
 	}

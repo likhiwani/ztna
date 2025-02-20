@@ -18,20 +18,22 @@ package xgress_edge
 
 import (
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/openziti/foundation/v2/concurrenz"
-	"github.com/openziti/foundation/v2/rate"
-	"ztna-core/sdk-golang/ziti/edge"
-	"ztna-core/ztna/common/pb/edge_ctrl_pb"
-	"ztna-core/ztna/router/xgress"
-	"ztna-core/ztna/router/xgress_common"
-	"github.com/pkg/errors"
 	"io"
 	"math"
 	"sync"
 	"sync/atomic"
 	"time"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/common/pb/edge_ctrl_pb"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/router/xgress"
+	"ztna-core/ztna/router/xgress_common"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/openziti/foundation/v2/concurrenz"
+	"github.com/openziti/foundation/v2/rate"
+	"github.com/pkg/errors"
 )
 
 // headers to pass through fabric to the other side
@@ -52,6 +54,7 @@ const (
 )
 
 func (self terminatorState) String() string {
+	logtrace.LogWithFunctionName()
 	switch self {
 	case TerminatorStateEstablishing:
 		return "establishing"
@@ -65,6 +68,7 @@ func (self terminatorState) String() string {
 }
 
 func (self terminatorState) IsWorkRequired() bool {
+	logtrace.LogWithFunctionName()
 	switch self {
 	case TerminatorStateEstablishing:
 		return true
@@ -102,6 +106,7 @@ type edgeTerminator struct {
 }
 
 func (self *edgeTerminator) replace(other *edgeTerminator) {
+	logtrace.LogWithFunctionName()
 	other.lock.Lock()
 	terminatorId := other.terminatorId
 	state := other.state.Load()
@@ -122,14 +127,17 @@ func (self *edgeTerminator) replace(other *edgeTerminator) {
 }
 
 func (self *edgeTerminator) IsEstablishing() bool {
+	logtrace.LogWithFunctionName()
 	return self.state.Load() == TerminatorStateEstablishing
 }
 
 func (self *edgeTerminator) IsDeleting() bool {
+	logtrace.LogWithFunctionName()
 	return self.state.Load() == TerminatorStateDeleting
 }
 
 func (self *edgeTerminator) setState(state terminatorState, reason string) {
+	logtrace.LogWithFunctionName()
 	if oldState := self.state.Load(); oldState != state {
 		self.state.Store(state)
 		pfxlog.Logger().WithField("terminatorId", self.terminatorId).
@@ -141,6 +149,7 @@ func (self *edgeTerminator) setState(state terminatorState, reason string) {
 }
 
 func (self *edgeTerminator) updateState(oldState, newState terminatorState, reason string) bool {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("terminatorId", self.terminatorId).
 		WithField("oldState", oldState).
 		WithField("newState", newState).
@@ -153,6 +162,7 @@ func (self *edgeTerminator) updateState(oldState, newState terminatorState, reas
 }
 
 func (self *edgeTerminator) inspect(registry *hostedServiceRegistry, fixInvalidTerminators bool, notifyCtrl bool) (*edge.InspectResult, error) {
+	logtrace.LogWithFunctionName()
 	result := &edge.InspectResult{
 		ConnId: self.MsgChannel.Id(),
 		Type:   edge.ConnTypeUnknown,
@@ -203,6 +213,7 @@ func (self *edgeTerminator) inspect(registry *hostedServiceRegistry, fixInvalidT
 }
 
 func (self *edgeTerminator) nextDialConnId() uint32 {
+	logtrace.LogWithFunctionName()
 	nextId := atomic.AddUint32(&self.edgeClientConn.idSeq, 1)
 	if nextId < math.MaxUint32/2 {
 		atomic.StoreUint32(&self.edgeClientConn.idSeq, math.MaxUint32/2)
@@ -212,6 +223,7 @@ func (self *edgeTerminator) nextDialConnId() uint32 {
 }
 
 func (self *edgeTerminator) close(registry *hostedServiceRegistry, notifySdk bool, notifyCtrl bool, reason string) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().
 		WithField("terminatorId", self.terminatorId).
 		WithField("token", self.token).
@@ -261,6 +273,7 @@ func (self *edgeTerminator) close(registry *hostedServiceRegistry, notifySdk boo
 }
 
 func (self *edgeTerminator) newConnection(connId uint32) (*edgeXgressConn, error) {
+	logtrace.LogWithFunctionName()
 	mux := self.edgeClientConn.msgMux
 	result := &edgeXgressConn{
 		mux:        mux,
@@ -276,12 +289,14 @@ func (self *edgeTerminator) newConnection(connId uint32) (*edgeXgressConn, error
 }
 
 func (self *edgeTerminator) SetRateLimitCallback(control rate.RateLimitControl) {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	self.rateLimitCallback = control
 }
 
 func (self *edgeTerminator) GetAndClearRateLimitCallback() rate.RateLimitControl {
+	logtrace.LogWithFunctionName()
 	self.lock.Lock()
 	defer self.lock.Unlock()
 	result := self.rateLimitCallback
@@ -299,6 +314,7 @@ type edgeXgressConn struct {
 }
 
 func (self *edgeXgressConn) HandleControlMsg(controlType xgress.ControlType, headers channel.Headers, responder xgress.ControlReceiver) error {
+	logtrace.LogWithFunctionName()
 	if controlType == xgress.ControlTypeTraceRouteResponse {
 		ts, _ := headers.GetUint64Header(xgress.ControlTimestamp)
 		hop, _ := headers.GetUint32Header(xgress.ControlHopCount)
@@ -343,10 +359,12 @@ func (self *edgeXgressConn) HandleControlMsg(controlType xgress.ControlType, hea
 }
 
 func (self *edgeXgressConn) LogContext() string {
+	logtrace.LogWithFunctionName()
 	return self.Channel.Label()
 }
 
 func (self *edgeXgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.ContextLogger(self.Channel.Label()).WithField("connId", self.Id())
 
 	msg := self.seq.Pop()
@@ -376,6 +394,7 @@ func (self *edgeXgressConn) ReadPayload() ([]byte, map[uint8][]byte, error) {
 }
 
 func (self *edgeXgressConn) WritePayload(p []byte, headers map[uint8][]byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	var msgUUID []byte
 	var edgeHdrs map[int32][]byte
 
@@ -410,16 +429,19 @@ func (self *edgeXgressConn) WritePayload(p []byte, headers map[uint8][]byte) (n 
 }
 
 func (self *edgeXgressConn) Close() error {
+	logtrace.LogWithFunctionName()
 	self.close(true, "close called")
 	return nil
 }
 
 func (self *edgeXgressConn) HandleMuxClose() error {
+	logtrace.LogWithFunctionName()
 	self.close(false, "channel closed")
 	return nil
 }
 
 func (self *edgeXgressConn) close(notify bool, reason string) {
+	logtrace.LogWithFunctionName()
 	if !self.closed.CompareAndSwap(false, true) {
 		// already closed
 		return
@@ -453,6 +475,7 @@ func (self *edgeXgressConn) close(notify bool, reason string) {
 }
 
 func (self *edgeXgressConn) Accept(msg *channel.Message) {
+	logtrace.LogWithFunctionName()
 	if msg.ContentType == edge.ContentTypeTraceRoute {
 		headers := channel.Headers{}
 		ts, _ := msg.GetUint64Header(edge.TimestampHeader)
@@ -487,6 +510,7 @@ func (self *edgeXgressConn) Accept(msg *channel.Message) {
 }
 
 func (self *edgeXgressConn) getHeaderMap(message *channel.Message) map[uint8][]byte {
+	logtrace.LogWithFunctionName()
 	headers := make(map[uint8][]byte)
 	msgUUID, found := message.Headers[edge.UUIDHeader]
 	if found {

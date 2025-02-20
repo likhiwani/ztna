@@ -1,3 +1,4 @@
+//go:build slowtests
 // +build slowtests
 
 package health
@@ -5,15 +6,17 @@ package health
 import (
 	"context"
 	"fmt"
-	"ztna-core/sdk-golang/ziti"
-	"ztna-core/sdk-golang/ziti/edge"
-	"github.com/stretchr/testify/require"
 	"io"
 	"net"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
+	"ztna-core/sdk-golang/ziti"
+	"ztna-core/sdk-golang/ziti/edge"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/stretchr/testify/require"
 )
 
 type svcChangeEvent struct {
@@ -22,6 +25,7 @@ type svcChangeEvent struct {
 }
 
 func newEventTracker(t *testing.T) *eventTracker {
+	logtrace.LogWithFunctionName()
 	return &eventTracker{
 		Assertions:  require.New(t),
 		events:      make(chan *svcChangeEvent, 16),
@@ -36,11 +40,13 @@ type eventTracker struct {
 }
 
 func (self *eventTracker) SendHealthEvent(pass bool) error {
+	logtrace.LogWithFunctionName()
 	self.healthSends <- pass
 	return nil
 }
 
 func (self *eventTracker) UpdateCostAndPrecedence(cost uint16, precedence edge.Precedence) error {
+	logtrace.LogWithFunctionName()
 	fmt.Printf("event cost=%v, precedence=%v\n", cost, precedence)
 	self.events <- &svcChangeEvent{
 		cost:       cost,
@@ -51,6 +57,7 @@ func (self *eventTracker) UpdateCostAndPrecedence(cost uint16, precedence edge.P
 }
 
 func (self *eventTracker) assertEvent(t time.Duration, cost uint16, p edge.Precedence) {
+	logtrace.LogWithFunctionName()
 	time.Sleep(t)
 
 	fmt.Printf("after %v expecting cost=%v, prec=%v\n", t, cost, p)
@@ -68,6 +75,7 @@ func (self *eventTracker) assertEvent(t time.Duration, cost uint16, p edge.Prece
 }
 
 func (self *eventTracker) assertHealthSend(t time.Duration, checkPassed bool) {
+	logtrace.LogWithFunctionName()
 	time.Sleep(t)
 
 	var send bool
@@ -82,6 +90,7 @@ func (self *eventTracker) assertHealthSend(t time.Duration, checkPassed bool) {
 }
 
 func (self *eventTracker) assertNoEvent(t time.Duration) {
+	logtrace.LogWithFunctionName()
 	select {
 	case <-self.events:
 		self.Fail("no events should be found")
@@ -90,6 +99,7 @@ func (self *eventTracker) assertNoEvent(t time.Duration) {
 }
 
 func (self *eventTracker) assertNoSend(t time.Duration) {
+	logtrace.LogWithFunctionName()
 	select {
 	case <-self.healthSends:
 		self.Fail("no health send should be found")
@@ -98,6 +108,7 @@ func (self *eventTracker) assertNoSend(t time.Duration) {
 }
 
 func Test_ManagerWithEventCounts(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -178,6 +189,7 @@ func Test_ManagerWithEventCounts(t *testing.T) {
 }
 
 func Test_ManagerWithDurations(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -261,6 +273,7 @@ func Test_ManagerWithDurations(t *testing.T) {
 }
 
 func newHttpCheck() *HttpCheckDefinition {
+	logtrace.LogWithFunctionName()
 	return &HttpCheckDefinition{
 		BaseCheckDefinition: BaseCheckDefinition{
 			Interval: time.Second,
@@ -276,6 +289,7 @@ func newHttpCheck() *HttpCheckDefinition {
 }
 
 func runHttpCheck(req *require.Assertions, f func(http.ResponseWriter, *http.Request)) func() {
+	logtrace.LogWithFunctionName()
 	listener, err := net.Listen("tcp", "localhost:9876")
 	req.NoError(err)
 	var handler http.HandlerFunc = f
@@ -307,6 +321,7 @@ func runHttpCheck(req *require.Assertions, f func(http.ResponseWriter, *http.Req
 }
 
 func Test_ManagerWithSimpleHttp(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -334,6 +349,7 @@ func Test_ManagerWithSimpleHttp(t *testing.T) {
 }
 
 func Test_ManagerWithHttpStatusCode(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -370,6 +386,7 @@ func Test_ManagerWithHttpStatusCode(t *testing.T) {
 }
 
 func Test_ManagerWithHttpExpectBody(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -408,6 +425,7 @@ func Test_ManagerWithHttpExpectBody(t *testing.T) {
 }
 
 func Test_ManagerWithHttpMethod(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -456,6 +474,7 @@ func Test_ManagerWithHttpMethod(t *testing.T) {
 }
 
 func Test_ManagerWithHttpBody(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 
@@ -520,6 +539,7 @@ func Test_ManagerWithHttpBody(t *testing.T) {
 }
 
 func Test_ChangeAndHealthSend(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	mgr := NewManager()
 	defer mgr.Shutdown()
 

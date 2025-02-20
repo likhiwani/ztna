@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"context"
 	"io"
 	"net/http"
@@ -46,6 +47,7 @@ import (
 //
 // There are no default values defined in the spec.
 func NewRaftMemberAddParams() RaftMemberAddParams {
+    logtrace.LogWithFunctionName()
 
 	return RaftMemberAddParams{}
 }
@@ -71,6 +73,7 @@ type RaftMemberAddParams struct {
 //
 // To ensure default values, the struct must have been initialized with NewRaftMemberAddParams() beforehand.
 func (o *RaftMemberAddParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+    logtrace.LogWithFunctionName()
 	var res []error
 
 	o.HTTPRequest = r

@@ -21,12 +21,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
 	"ztna-core/sdk-golang/ziti/edge"
 	"ztna-core/ztna/common/logcontext"
 	"ztna-core/ztna/controller/xt"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/xgress"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/pkg/errors"
 )
 
@@ -36,11 +38,13 @@ type dialer struct {
 }
 
 func (dialer *dialer) IsTerminatorValid(id string, destination string) bool {
+	logtrace.LogWithFunctionName()
 	valid, _ := dialer.InspectTerminator(id, destination, true)
 	return valid
 }
 
 func (dialer *dialer) InspectTerminator(id string, destination string, fixInvalid bool) (bool, string) {
+	logtrace.LogWithFunctionName()
 	terminatorAddress := strings.TrimPrefix(destination, "hosted:")
 	pfxlog.Logger().Debug("looking up hosted service conn")
 	terminator, found := dialer.factory.hostedServices.Get(terminatorAddress)
@@ -57,6 +61,7 @@ func (dialer *dialer) InspectTerminator(id string, destination string, fixInvali
 }
 
 func newDialer(factory *Factory, options *Options) xgress.Dialer {
+	logtrace.LogWithFunctionName()
 	txd := &dialer{
 		factory: factory,
 		options: options,
@@ -65,6 +70,7 @@ func newDialer(factory *Factory, options *Options) xgress.Dialer {
 }
 
 func (dialer *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
+	logtrace.LogWithFunctionName()
 	terminatorAddress := params.GetDestination()
 	circuitId := params.GetCircuitId()
 	log := pfxlog.ChannelLogger(logcontext.EstablishPath).Wire(params.GetLogContext()).
@@ -193,6 +199,7 @@ func (dialer *dialer) Dial(params xgress.DialParams) (xt.PeerData, error) {
 }
 
 func (dialer *dialer) Inspect(key string, timeout time.Duration) any {
+	logtrace.LogWithFunctionName()
 	if key == "sdk-terminators" {
 		return dialer.factory.hostedServices.Inspect(timeout)
 	}

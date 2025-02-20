@@ -17,9 +17,11 @@
 package config
 
 import (
-	"github.com/pkg/errors"
 	"math"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/pkg/errors"
 
 	"github.com/sirupsen/logrus"
 )
@@ -68,6 +70,7 @@ type NetworkConfig struct {
 }
 
 func DefaultNetworkConfig() *NetworkConfig {
+	logtrace.LogWithFunctionName()
 	options := &NetworkConfig{
 		CreateCircuitRetries:  DefaultOptionsCreateCircuitRetries,
 		CycleSeconds:          DefaultOptionsCycleSeconds,
@@ -99,6 +102,7 @@ func DefaultNetworkConfig() *NetworkConfig {
 }
 
 func LoadNetworkConfig(src map[interface{}]interface{}) (*NetworkConfig, error) {
+	logtrace.LogWithFunctionName()
 	options := DefaultNetworkConfig()
 
 	if value, found := src["cycleSeconds"]; found {

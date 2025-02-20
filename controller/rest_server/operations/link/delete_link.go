@@ -30,6 +30,7 @@ package link
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -40,6 +41,7 @@ type DeleteLinkHandlerFunc func(DeleteLinkParams) middleware.Responder
 
 // Handle executing the request and returning a response
 func (fn DeleteLinkHandlerFunc) Handle(params DeleteLinkParams) middleware.Responder {
+    logtrace.LogWithFunctionName()
 	return fn(params)
 }
 
@@ -50,6 +52,7 @@ type DeleteLinkHandler interface {
 
 // NewDeleteLink creates a new http.Handler for the delete link operation
 func NewDeleteLink(ctx *middleware.Context, handler DeleteLinkHandler) *DeleteLink {
+    logtrace.LogWithFunctionName()
 	return &DeleteLink{Context: ctx, Handler: handler}
 }
 
@@ -66,6 +69,7 @@ type DeleteLink struct {
 }
 
 func (o *DeleteLink) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
+    logtrace.LogWithFunctionName()
 	route, rCtx, _ := o.Context.RouteInfo(r)
 	if rCtx != nil {
 		*r = *rCtx

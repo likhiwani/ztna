@@ -24,10 +24,12 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/openziti/xweb/v2"
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/env"
 	"ztna-core/ztna/controller/oidc_auth"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/xweb/v2"
 )
 
 var _ xweb.ApiHandlerFactory = &OidcApiFactory{}
@@ -38,20 +40,24 @@ type OidcApiFactory struct {
 }
 
 func (factory OidcApiFactory) Validate(config *xweb.InstanceConfig) error {
+	logtrace.LogWithFunctionName()
 	return nil
 }
 
 func NewOidcApiFactory(appEnv *env.AppEnv) *OidcApiFactory {
+	logtrace.LogWithFunctionName()
 	return &OidcApiFactory{
 		appEnv: appEnv,
 	}
 }
 
 func (factory OidcApiFactory) Binding() string {
+	logtrace.LogWithFunctionName()
 	return OidcApiBinding
 }
 
 func (factory OidcApiFactory) New(serverConfig *xweb.ServerConfig, options map[interface{}]interface{}) (xweb.ApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	oidcApi, err := NewOidcApiHandler(serverConfig, factory.appEnv, options)
 
 	if err != nil {
@@ -74,30 +80,37 @@ type OidcApiHandler struct {
 }
 
 func (h OidcApiHandler) Binding() string {
+	logtrace.LogWithFunctionName()
 	return OidcApiBinding
 }
 
 func (h OidcApiHandler) Options() map[interface{}]interface{} {
+	logtrace.LogWithFunctionName()
 	return h.options
 }
 
 func (h OidcApiHandler) RootPath() string {
+	logtrace.LogWithFunctionName()
 	return "/oidc"
 }
 
 func (h OidcApiHandler) IsHandler(r *http.Request) bool {
+	logtrace.LogWithFunctionName()
 	return strings.HasPrefix(r.URL.Path, h.RootPath()) || r.URL.Path == oidc_auth.WellKnownOidcConfiguration
 }
 
 func (h OidcApiHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	logtrace.LogWithFunctionName()
 	h.handler.ServeHTTP(writer, request)
 }
 
 func (h OidcApiHandler) IsDefault() bool {
+	logtrace.LogWithFunctionName()
 	return false
 }
 
 func NewOidcApiHandler(serverConfig *xweb.ServerConfig, ae *env.AppEnv, options map[interface{}]interface{}) (*OidcApiHandler, error) {
+	logtrace.LogWithFunctionName()
 	oidcApi := &OidcApiHandler{
 		options: options,
 		appEnv:  ae,

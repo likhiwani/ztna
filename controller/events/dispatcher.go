@@ -18,15 +18,18 @@ package events
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltz"
-	"ztna-core/ztna/controller/db"
-	"ztna-core/ztna/controller/event"
 	"io"
 	"strings"
+	"ztna-core/ztna/controller/db"
+	"ztna-core/ztna/controller/event"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
+
+	"ztna-core/ztna/controller/network"
 
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/concurrenz"
-	"ztna-core/ztna/controller/network"
 	"github.com/pkg/errors"
 )
 
@@ -36,14 +39,17 @@ type delegatingRegistrar struct {
 }
 
 func (self *delegatingRegistrar) Register(handler interface{}, config map[string]interface{}) error {
+	logtrace.LogWithFunctionName()
 	return self.RegistrationHandler(handler, config)
 }
 
 func (self *delegatingRegistrar) Unregister(handler interface{}) {
+	logtrace.LogWithFunctionName()
 	self.UnregistrationHandler(handler)
 }
 
 func NewDispatcher(closeNotify <-chan struct{}) *Dispatcher {
+	logtrace.LogWithFunctionName()
 	result := &Dispatcher{
 		closeNotify: closeNotify,
 		entityChangeEventsDispatcher: entityChangeEventDispatcher{
@@ -118,6 +124,7 @@ type Dispatcher struct {
 }
 
 func (self *Dispatcher) InitializeNetworkEvents(n *network.Network) {
+	logtrace.LogWithFunctionName()
 	self.network = n
 	self.ctrlId = n.GetAppId()
 	self.initMetricsEvents(n)
@@ -132,6 +139,7 @@ func (self *Dispatcher) InitializeNetworkEvents(n *network.Network) {
 }
 
 func (self *Dispatcher) InitializeEdgeEvents(stores *db.Stores) {
+	logtrace.LogWithFunctionName()
 	self.stores = stores
 	self.initApiSessionEvents(self.stores)
 	self.initSessionEvents(self.stores)
@@ -151,16 +159,19 @@ func (self *Dispatcher) InitializeEdgeEvents(stores *db.Stores) {
 }
 
 func (self *Dispatcher) AddMetricsMapper(mapper event.MetricsMapper) {
+	logtrace.LogWithFunctionName()
 	self.metricsMappers.Append(mapper)
 }
 
 func (self *Dispatcher) RegisterEventType(eventType string, typeRegistrar event.TypeRegistrar) {
+	logtrace.LogWithFunctionName()
 	self.registrationHandlers.Put(eventType, typeRegistrar)
 }
 
 func (self *Dispatcher) RegisterEventTypeFunctions(eventType string,
 	registrationHandler event.RegistrationHandler,
 	unregistrationHandler event.UnregistrationHandler) {
+	logtrace.LogWithFunctionName()
 	self.RegisterEventType(eventType, &delegatingRegistrar{
 		RegistrationHandler:   registrationHandler,
 		UnregistrationHandler: unregistrationHandler,
@@ -168,14 +179,17 @@ func (self *Dispatcher) RegisterEventTypeFunctions(eventType string,
 }
 
 func (self *Dispatcher) RegisterEventHandlerFactory(eventHandlerType string, factory event.HandlerFactory) {
+	logtrace.LogWithFunctionName()
 	self.eventHandlerFactories.Put(eventHandlerType, factory)
 }
 
 func (self *Dispatcher) GetFormatterFactory(formatType string) event.FormatterFactory {
+	logtrace.LogWithFunctionName()
 	return self.formatterFactories.Get(formatType)
 }
 
 func (self *Dispatcher) RegisterFormatterFactory(formatType string, factory event.FormatterFactory) {
+	logtrace.LogWithFunctionName()
 	self.formatterFactories.Put(formatType, factory)
 }
 
@@ -201,6 +215,7 @@ events:
 
 */
 func (self *Dispatcher) WireEventHandlers(eventHandlerConfigs []*EventHandlerConfig) error {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	for _, eventHandlerConfig := range eventHandlerConfigs {
 		handler, err := self.createHandler(eventHandlerConfig.Id, eventHandlerConfig.Config)
@@ -218,6 +233,7 @@ func (self *Dispatcher) WireEventHandlers(eventHandlerConfigs []*EventHandlerCon
 }
 
 func (self *Dispatcher) createHandler(id interface{}, config map[interface{}]interface{}) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	handlerVal, ok := config["handler"]
 	if !ok {
 		return nil, errors.Errorf("no event handler defined for %v", id)
@@ -245,6 +261,7 @@ func (self *Dispatcher) createHandler(id interface{}, config map[interface{}]int
 }
 
 func (self *Dispatcher) processSubscriptions(handler interface{}, eventHandlerConfig *EventHandlerConfig) error {
+	logtrace.LogWithFunctionName()
 	subs, ok := eventHandlerConfig.Config["subscriptions"]
 
 	if !ok {
@@ -291,6 +308,7 @@ func (self *Dispatcher) processSubscriptions(handler interface{}, eventHandlerCo
 }
 
 func (self *Dispatcher) ProcessSubscriptions(handler interface{}, subscriptions []*event.Subscription) error {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger()
 	eventTypes := self.registrationHandlers.AsMap()
 
@@ -314,6 +332,7 @@ func (self *Dispatcher) ProcessSubscriptions(handler interface{}, subscriptions 
 }
 
 func (self *Dispatcher) RemoveAllSubscriptions(handler interface{}) {
+	logtrace.LogWithFunctionName()
 	for _, registrar := range self.registrationHandlers.AsMap() {
 		registrar.Unregister(handler)
 	}

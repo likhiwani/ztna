@@ -18,6 +18,17 @@ package main
 
 import (
 	"embed"
+	"os"
+	"strings"
+	"time"
+	"ztna-core/ztna/logtrace"
+	"ztna-core/ztna/zititest/models/dtls/actions"
+	"ztna-core/ztna/zititest/models/test_resources"
+	"ztna-core/ztna/zititest/zitilab"
+	"ztna-core/ztna/zititest/zitilab/actions/edge"
+	"ztna-core/ztna/zititest/zitilab/models"
+	zitilib_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/fablab"
 	"github.com/openziti/fablab/kernel/lib/actions/component"
@@ -32,21 +43,13 @@ import (
 	"github.com/openziti/fablab/kernel/lib/runlevel/6_disposal/terraform"
 	"github.com/openziti/fablab/kernel/model"
 	"github.com/openziti/fablab/resources"
-	"ztna-core/ztna/zititest/models/dtls/actions"
-	"ztna-core/ztna/zititest/models/test_resources"
-	"ztna-core/ztna/zititest/zitilab"
-	"ztna-core/ztna/zititest/zitilab/actions/edge"
-	"ztna-core/ztna/zititest/zitilab/models"
-	zitilib_5_operation "ztna-core/ztna/zititest/zitilab/runlevel/5_operation"
-	"os"
-	"strings"
-	"time"
 )
 
 //go:embed configs
 var configResource embed.FS
 
 func getUniqueId() string {
+	logtrace.LogWithFunctionName()
 	if runId := os.Getenv("GITHUB_RUN_ID"); runId != "" {
 		return "-" + runId + "." + os.Getenv("GITHUB_RUN_ATTEMPT")
 	}
@@ -204,11 +207,13 @@ var Model = &model.Model{
 }
 
 func InitBootstrapExtensions() {
+	logtrace.LogWithFunctionName()
 	model.AddBootstrapExtension(binding.AwsCredentialsLoader)
 	model.AddBootstrapExtension(aws_ssh_key.KeyManager)
 }
 
 func main() {
+	logtrace.LogWithFunctionName()
 	InitBootstrapExtensions()
 	fablab.InitModel(Model)
 	fablab.Run()

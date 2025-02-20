@@ -16,13 +16,19 @@
 
 package main
 
-import "github.com/openziti/fablab/kernel/model"
+import (
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/fablab/kernel/model"
+)
 
 func newHostsFactory() model.Factory {
+	logtrace.LogWithFunctionName()
 	return &hostsFactory{}
 }
 
 func (_ *hostsFactory) Build(m *model.Model) error {
+	logtrace.LogWithFunctionName()
 	for _, host := range m.SelectHosts("*") {
 		if host.InstanceType == "" {
 			host.InstanceType = "t2.micro"

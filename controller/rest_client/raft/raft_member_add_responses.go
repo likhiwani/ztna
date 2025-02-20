@@ -30,6 +30,7 @@ package raft
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 	"io"
 
@@ -46,6 +47,7 @@ type RaftMemberAddReader struct {
 
 // ReadResponse reads a server response into the received o.
 func (o *RaftMemberAddReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
+    logtrace.LogWithFunctionName()
 	switch response.Code() {
 	case 200:
 		result := NewRaftMemberAddOK()
@@ -78,6 +80,7 @@ func (o *RaftMemberAddReader) ReadResponse(response runtime.ClientResponse, cons
 
 // NewRaftMemberAddOK creates a RaftMemberAddOK with default headers values
 func NewRaftMemberAddOK() *RaftMemberAddOK {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddOK{}
 }
 
@@ -90,13 +93,16 @@ type RaftMemberAddOK struct {
 }
 
 func (o *RaftMemberAddOK) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/add-member][%d] raftMemberAddOK  %+v", 200, o.Payload)
 }
 func (o *RaftMemberAddOK) GetPayload() *rest_model.Empty {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberAddOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.Empty)
 
@@ -110,6 +116,7 @@ func (o *RaftMemberAddOK) readResponse(response runtime.ClientResponse, consumer
 
 // NewRaftMemberAddBadRequest creates a RaftMemberAddBadRequest with default headers values
 func NewRaftMemberAddBadRequest() *RaftMemberAddBadRequest {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddBadRequest{}
 }
 
@@ -122,13 +129,16 @@ type RaftMemberAddBadRequest struct {
 }
 
 func (o *RaftMemberAddBadRequest) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/add-member][%d] raftMemberAddBadRequest  %+v", 400, o.Payload)
 }
 func (o *RaftMemberAddBadRequest) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberAddBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -142,6 +152,7 @@ func (o *RaftMemberAddBadRequest) readResponse(response runtime.ClientResponse, 
 
 // NewRaftMemberAddUnauthorized creates a RaftMemberAddUnauthorized with default headers values
 func NewRaftMemberAddUnauthorized() *RaftMemberAddUnauthorized {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddUnauthorized{}
 }
 
@@ -154,13 +165,16 @@ type RaftMemberAddUnauthorized struct {
 }
 
 func (o *RaftMemberAddUnauthorized) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/add-member][%d] raftMemberAddUnauthorized  %+v", 401, o.Payload)
 }
 func (o *RaftMemberAddUnauthorized) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberAddUnauthorized) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 
@@ -174,6 +188,7 @@ func (o *RaftMemberAddUnauthorized) readResponse(response runtime.ClientResponse
 
 // NewRaftMemberAddTooManyRequests creates a RaftMemberAddTooManyRequests with default headers values
 func NewRaftMemberAddTooManyRequests() *RaftMemberAddTooManyRequests {
+    logtrace.LogWithFunctionName()
 	return &RaftMemberAddTooManyRequests{}
 }
 
@@ -186,13 +201,16 @@ type RaftMemberAddTooManyRequests struct {
 }
 
 func (o *RaftMemberAddTooManyRequests) Error() string {
+    logtrace.LogWithFunctionName()
 	return fmt.Sprintf("[POST /raft/add-member][%d] raftMemberAddTooManyRequests  %+v", 429, o.Payload)
 }
 func (o *RaftMemberAddTooManyRequests) GetPayload() *rest_model.APIErrorEnvelope {
+    logtrace.LogWithFunctionName()
 	return o.Payload
 }
 
 func (o *RaftMemberAddTooManyRequests) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+    logtrace.LogWithFunctionName()
 
 	o.Payload = new(rest_model.APIErrorEnvelope)
 

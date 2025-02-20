@@ -19,12 +19,14 @@ package model
 import (
 	"sync/atomic"
 	"testing"
+	"ztna-core/ztna/logtrace"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // A simple test to check for failure of alignment on atomic operations for 64 bit variables in a struct
 func Test64BitAlignment(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("One of the variables that was tested is not properly 64-bit aligned.")
@@ -39,6 +41,7 @@ func Test64BitAlignment(t *testing.T) {
 }
 
 func TestLifecycle(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	linkController := NewLinkManager(nil)
 
 	r0 := NewRouter("r0", "", "", 0, true)
@@ -72,6 +75,7 @@ func TestLifecycle(t *testing.T) {
 }
 
 func TestNeighbors(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	linkController := NewLinkManager(nil)
 
 	r0 := NewRouterForTest("r0", "", nil, nil, 0, true)

@@ -5,8 +5,10 @@ import (
 	"os"
 	"testing"
 
+	"ztna-core/ztna/logtrace"
 	cmdhelper "ztna-core/ztna/ztna/cmd/helpers"
 	"ztna-core/ztna/ztna/constants"
+
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"
 )
@@ -108,6 +110,7 @@ type Forwarder struct {
 /* END Controller config template structure */
 
 func createRouterConfig(args []string, routerOptions *CreateConfigRouterOptions, keys map[string]string) (RouterConfig, *ConfigTemplateValues) {
+	logtrace.LogWithFunctionName()
 	// Create and run the CLI command
 	setEnvByMap(keys)
 	cmd := NewCmdCreateConfigRouter(routerOptions)
@@ -127,6 +130,7 @@ func createRouterConfig(args []string, routerOptions *CreateConfigRouterOptions,
 }
 
 func clearEnvAndInitializeTestData() *CreateConfigRouterOptions {
+	logtrace.LogWithFunctionName()
 	unsetZitiEnv()
 	routerOptions := &CreateConfigRouterOptions{}
 	routerOptions.Output = defaultOutput
@@ -135,6 +139,7 @@ func clearEnvAndInitializeTestData() *CreateConfigRouterOptions {
 }
 
 func TestSetZitiRouterIdentityCertDefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Ensure env variable is not set
 	_ = os.Setenv(constants.ZitiRouterIdentityCertVarName, "")
 
@@ -148,6 +153,7 @@ func TestSetZitiRouterIdentityCertDefault(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityCertCustom(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedCustom := "My/Custom/Path/for/PKI/RouterTest.cert"
 	// Set the env variable which is used to populate this value
 	_ = os.Setenv(constants.ZitiRouterIdentityCertVarName, expectedCustom)
@@ -160,6 +166,7 @@ func TestSetZitiRouterIdentityCertCustom(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityServerCertDefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Ensure env variable is not set
 	_ = os.Setenv(constants.ZitiRouterIdentityServerCertVarName, "")
 
@@ -173,6 +180,7 @@ func TestSetZitiRouterIdentityServerCertDefault(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityServerCertCustom(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedCustom := "My/Custom/Path/for/PKI/RouterTest.server.chain.cert"
 	// Set the env variable which is used to populate this value
 	_ = os.Setenv(constants.ZitiRouterIdentityServerCertVarName, expectedCustom)
@@ -185,6 +193,7 @@ func TestSetZitiRouterIdentityServerCertCustom(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityKeyCertDefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Ensure env variable is not set
 	_ = os.Setenv(constants.ZitiRouterIdentityKeyVarDescription, "")
 
@@ -198,6 +207,7 @@ func TestSetZitiRouterIdentityKeyCertDefault(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityKeyCustom(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedCustom := "My/Custom/Path/for/PKI/RouterTest.key"
 	// Set the env variable which is used to populate this value
 	_ = os.Setenv(constants.ZitiRouterIdentityKeyVarName, expectedCustom)
@@ -210,6 +220,7 @@ func TestSetZitiRouterIdentityKeyCustom(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityKeyCADefault(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Ensure env variable is not set
 	_ = os.Setenv(constants.ZitiRouterIdentityCAVarName, "")
 
@@ -223,6 +234,7 @@ func TestSetZitiRouterIdentityKeyCADefault(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentityCACustom(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	expectedCustom := "My/Custom/Path/for/PKI/RouterTest.cas"
 	// Set the env variable which is used to populate this value
 	_ = os.Setenv(constants.ZitiRouterIdentityCAVarName, expectedCustom)
@@ -235,6 +247,7 @@ func TestSetZitiRouterIdentityCACustom(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentitySetsAllIdentitiesAndRouterName(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	clearEnvAndInitializeTestData()
 	expectedName := "MyRouterName"
@@ -262,6 +275,7 @@ func TestSetZitiRouterIdentitySetsAllIdentitiesAndRouterName(t *testing.T) {
 }
 
 func TestSetZitiRouterIdentitySetsAllIdentitiesAndRouterNameToHostWhenBlank(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	// Setup
 	clearEnvAndInitializeTestData()
 	expectedName, _ := os.Hostname()
@@ -289,6 +303,7 @@ func TestSetZitiRouterIdentitySetsAllIdentitiesAndRouterNameToHostWhenBlank(t *t
 }
 
 func TestAltServerCerts(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	clearEnvAndInitializeTestData()
 	certPath := "/path/to/cert"
 	keyPath := "/path/to/key"

@@ -30,6 +30,7 @@ package router
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"fmt"
 
 	"github.com/go-openapi/runtime"
@@ -38,6 +39,7 @@ import (
 
 // New creates a new router API client.
 func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
+    logtrace.LogWithFunctionName()
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -77,6 +79,7 @@ type ClientService interface {
   Create a router resource. Requires admin access.
 */
 func (a *Client) CreateRouter(params *CreateRouterParams, opts ...ClientOption) (*CreateRouterCreated, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewCreateRouterParams()
@@ -117,6 +120,7 @@ func (a *Client) CreateRouter(params *CreateRouterParams, opts ...ClientOption) 
   Delete a router by id. Requires admin access.
 */
 func (a *Client) DeleteRouter(params *DeleteRouterParams, opts ...ClientOption) (*DeleteRouterOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDeleteRouterParams()
@@ -157,6 +161,7 @@ func (a *Client) DeleteRouter(params *DeleteRouterParams, opts ...ClientOption) 
   Retrieves a single router by id. Requires admin access.
 */
 func (a *Client) DetailRouter(params *DetailRouterParams, opts ...ClientOption) (*DetailRouterOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewDetailRouterParams()
@@ -198,6 +203,7 @@ func (a *Client) DetailRouter(params *DetailRouterParams, opts ...ClientOption) 
 
 */
 func (a *Client) ListRouterTerminators(params *ListRouterTerminatorsParams, opts ...ClientOption) (*ListRouterTerminatorsOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListRouterTerminatorsParams()
@@ -239,6 +245,7 @@ func (a *Client) ListRouterTerminators(params *ListRouterTerminatorsParams, opts
 
 */
 func (a *Client) ListRouters(params *ListRoutersParams, opts ...ClientOption) (*ListRoutersOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewListRoutersParams()
@@ -279,6 +286,7 @@ func (a *Client) ListRouters(params *ListRoutersParams, opts ...ClientOption) (*
   Update the supplied fields on a router. Requires admin access.
 */
 func (a *Client) PatchRouter(params *PatchRouterParams, opts ...ClientOption) (*PatchRouterOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewPatchRouterParams()
@@ -319,6 +327,7 @@ func (a *Client) PatchRouter(params *PatchRouterParams, opts ...ClientOption) (*
   Update all fields on a router by id. Requires admin access.
 */
 func (a *Client) UpdateRouter(params *UpdateRouterParams, opts ...ClientOption) (*UpdateRouterOK, error) {
+    logtrace.LogWithFunctionName()
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewUpdateRouterParams()
@@ -355,5 +364,6 @@ func (a *Client) UpdateRouter(params *UpdateRouterParams, opts ...ClientOption) 
 
 // SetTransport changes the transport on the client
 func (a *Client) SetTransport(transport runtime.ClientTransport) {
+    logtrace.LogWithFunctionName()
 	a.transport = transport
 }

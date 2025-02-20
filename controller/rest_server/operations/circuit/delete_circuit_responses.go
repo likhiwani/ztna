@@ -30,6 +30,7 @@ package circuit
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"ztna-core/ztna/logtrace"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -54,23 +55,27 @@ type DeleteCircuitOK struct {
 
 // NewDeleteCircuitOK creates DeleteCircuitOK with default headers values
 func NewDeleteCircuitOK() *DeleteCircuitOK {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteCircuitOK{}
 }
 
 // WithPayload adds the payload to the delete circuit o k response
 func (o *DeleteCircuitOK) WithPayload(payload *rest_model.Empty) *DeleteCircuitOK {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete circuit o k response
 func (o *DeleteCircuitOK) SetPayload(payload *rest_model.Empty) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteCircuitOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -98,23 +103,27 @@ type DeleteCircuitBadRequest struct {
 
 // NewDeleteCircuitBadRequest creates DeleteCircuitBadRequest with default headers values
 func NewDeleteCircuitBadRequest() *DeleteCircuitBadRequest {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteCircuitBadRequest{}
 }
 
 // WithPayload adds the payload to the delete circuit bad request response
 func (o *DeleteCircuitBadRequest) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteCircuitBadRequest {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete circuit bad request response
 func (o *DeleteCircuitBadRequest) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteCircuitBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(400)
 	if o.Payload != nil {
@@ -142,23 +151,27 @@ type DeleteCircuitUnauthorized struct {
 
 // NewDeleteCircuitUnauthorized creates DeleteCircuitUnauthorized with default headers values
 func NewDeleteCircuitUnauthorized() *DeleteCircuitUnauthorized {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteCircuitUnauthorized{}
 }
 
 // WithPayload adds the payload to the delete circuit unauthorized response
 func (o *DeleteCircuitUnauthorized) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteCircuitUnauthorized {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete circuit unauthorized response
 func (o *DeleteCircuitUnauthorized) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteCircuitUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(401)
 	if o.Payload != nil {
@@ -186,23 +199,27 @@ type DeleteCircuitConflict struct {
 
 // NewDeleteCircuitConflict creates DeleteCircuitConflict with default headers values
 func NewDeleteCircuitConflict() *DeleteCircuitConflict {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteCircuitConflict{}
 }
 
 // WithPayload adds the payload to the delete circuit conflict response
 func (o *DeleteCircuitConflict) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteCircuitConflict {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete circuit conflict response
 func (o *DeleteCircuitConflict) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteCircuitConflict) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(409)
 	if o.Payload != nil {
@@ -230,23 +247,27 @@ type DeleteCircuitTooManyRequests struct {
 
 // NewDeleteCircuitTooManyRequests creates DeleteCircuitTooManyRequests with default headers values
 func NewDeleteCircuitTooManyRequests() *DeleteCircuitTooManyRequests {
+    logtrace.LogWithFunctionName()
 
 	return &DeleteCircuitTooManyRequests{}
 }
 
 // WithPayload adds the payload to the delete circuit too many requests response
 func (o *DeleteCircuitTooManyRequests) WithPayload(payload *rest_model.APIErrorEnvelope) *DeleteCircuitTooManyRequests {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete circuit too many requests response
 func (o *DeleteCircuitTooManyRequests) SetPayload(payload *rest_model.APIErrorEnvelope) {
+    logtrace.LogWithFunctionName()
 	o.Payload = payload
 }
 
 // WriteResponse to the client
 func (o *DeleteCircuitTooManyRequests) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+    logtrace.LogWithFunctionName()
 
 	rw.WriteHeader(429)
 	if o.Payload != nil {

@@ -27,14 +27,16 @@ import (
 	"syscall"
 	"time"
 	"ztna-core/edge-api/rest_model"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/tunnel"
 	"ztna-core/ztna/tunnel/dns"
 	"ztna-core/ztna/tunnel/entities"
 	"ztna-core/ztna/tunnel/health"
 
+	"ztna-core/sdk-golang/ziti"
+
 	"github.com/michaelquigley/pfxlog"
 	"github.com/openziti/foundation/v2/stringz"
-	"ztna-core/sdk-golang/ziti"
 	"github.com/pkg/errors"
 	logrus "github.com/sirupsen/logrus"
 )
@@ -47,6 +49,7 @@ var destPortVar = "$" + tunnel.DestinationPortKey
 var destHostnameVar = "$" + tunnel.DestinationHostname
 
 func NewServiceListenerGroup(interceptor Interceptor, resolver dns.Resolver) *ServiceListenerGroup {
+	logtrace.LogWithFunctionName()
 	return &ServiceListenerGroup{
 		interceptor:    interceptor,
 		resolver:       resolver,
@@ -65,6 +68,7 @@ type ServiceListenerGroup struct {
 }
 
 func (self *ServiceListenerGroup) NewServiceListener() *ServiceListener {
+	logtrace.LogWithFunctionName()
 	result := &ServiceListener{
 		interceptor:    self.interceptor,
 		resolver:       self.resolver,
@@ -78,6 +82,7 @@ func (self *ServiceListenerGroup) NewServiceListener() *ServiceListener {
 }
 
 func (self *ServiceListenerGroup) WaitForShutdown() {
+	logtrace.LogWithFunctionName()
 	sig := make(chan os.Signal, 1) //signal.Notify expects a buffered chan of at least 1
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 
@@ -94,6 +99,7 @@ func (self *ServiceListenerGroup) WaitForShutdown() {
 }
 
 func NewServiceListener(interceptor Interceptor, resolver dns.Resolver) *ServiceListener {
+	logtrace.LogWithFunctionName()
 	return &ServiceListener{
 		interceptor:    interceptor,
 		resolver:       resolver,
@@ -115,6 +121,7 @@ type ServiceListener struct {
 }
 
 func (self *ServiceListener) WaitForShutdown() {
+	logtrace.LogWithFunctionName()
 	sig := make(chan os.Signal, 1) //signal.Notify expects a buffered chan of at least 1
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 
@@ -128,6 +135,7 @@ func (self *ServiceListener) WaitForShutdown() {
 }
 
 func (self *ServiceListener) stop() {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -137,10 +145,12 @@ func (self *ServiceListener) stop() {
 }
 
 func (self *ServiceListener) HandleProviderReady(provider tunnel.FabricProvider) {
+	logtrace.LogWithFunctionName()
 	self.provider = provider
 }
 
 func (self *ServiceListener) HandleServicesChange(eventType ziti.ServiceEventType, service *rest_model.ServiceDetail) {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -170,6 +180,7 @@ func (self *ServiceListener) HandleServicesChange(eventType ziti.ServiceEventTyp
 }
 
 func (self *ServiceListener) Reset() {
+	logtrace.LogWithFunctionName()
 	self.Lock()
 	defer self.Unlock()
 
@@ -179,6 +190,7 @@ func (self *ServiceListener) Reset() {
 }
 
 func (self *ServiceListener) addService(svc *entities.Service) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger().WithField("serviceId", *svc.ID).WithField("serviceName", *svc.Name)
 
 	svc.DialTimeout = 5 * time.Second
@@ -271,6 +283,7 @@ func (self *ServiceListener) addService(svc *entities.Service) {
 }
 
 func (self *ServiceListener) removeService(svc *entities.Service) {
+	logtrace.LogWithFunctionName()
 	log := pfxlog.Logger()
 
 	previousService := self.services[*svc.ID]
@@ -290,6 +303,7 @@ func (self *ServiceListener) removeService(svc *entities.Service) {
 }
 
 func (self *ServiceListener) host(svc *entities.Service, tracker AddressTracker) {
+	logtrace.LogWithFunctionName()
 	logger := pfxlog.Logger().WithField("service", *svc.Name)
 
 	currentIdentity, err := self.provider.GetCurrentIdentityWithBackoff()
@@ -337,6 +351,7 @@ func (self *ServiceListener) host(svc *entities.Service, tracker AddressTracker)
 }
 
 func (self *ServiceListener) configureSourceAddrProvider(svc *entities.Service) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	if template := svc.GetSourceIpTemplate(); template != "" {
 		svc.SourceAddrProvider, err = self.getTemplatingProvider(template)
@@ -345,6 +360,7 @@ func (self *ServiceListener) configureSourceAddrProvider(svc *entities.Service) 
 }
 
 func (self *ServiceListener) configureDialIdentityProvider(svc *entities.Service) error {
+	logtrace.LogWithFunctionName()
 	var err error
 	if template := svc.GetDialIdentityTemplate(); template != "" {
 		svc.DialIdentityProvider, err = self.getTemplatingProvider(template)
@@ -353,6 +369,7 @@ func (self *ServiceListener) configureDialIdentityProvider(svc *entities.Service
 }
 
 func (self *ServiceListener) getTemplatingProvider(template string) (entities.TemplateFunc, error) {
+	logtrace.LogWithFunctionName()
 	if template == sourceIpVar+":"+sourcePortVar {
 		return func(sourceAddr, _ net.Addr) string {
 			return sourceAddr.String()
@@ -392,6 +409,7 @@ func (self *ServiceListener) getTemplatingProvider(template string) (entities.Te
 }
 
 func replaceTemplatized(input string, currentIdentity *rest_model.IdentityDetail) (string, error) {
+	logtrace.LogWithFunctionName()
 	input = strings.ReplaceAll(input, "$tunneler_id.name", *currentIdentity.Name)
 	start := "$tunneler_id.appData["
 	for {
@@ -429,12 +447,14 @@ type AddressTracker interface {
 type addrTracker map[string]int
 
 func (self addrTracker) AddAddress(addr string) {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("adding %v from address tracker: %+v", addr, self)
 	useCnt := self[addr]
 	self[addr] = useCnt + 1
 }
 
 func (self addrTracker) RemoveAddress(addr string) bool {
+	logtrace.LogWithFunctionName()
 	logrus.Debugf("trying to remove %v from address tracker: %+v", addr, self)
 	useCnt := self[addr]
 	if useCnt <= 1 {

@@ -20,11 +20,13 @@ import (
 	"ztna-core/ztna/controller/api"
 	"ztna-core/ztna/controller/model"
 	"ztna-core/ztna/controller/network"
+	"ztna-core/ztna/logtrace"
 
 	"ztna-core/ztna/controller/rest_model"
 
-	"github.com/openziti/foundation/v2/stringz"
 	"ztna-core/ztna/controller/models"
+
+	"github.com/openziti/foundation/v2/stringz"
 )
 
 const EntityNameRouter = "routers"
@@ -36,18 +38,21 @@ type RouterLinkFactoryIml struct {
 }
 
 func NewRouterLinkFactory() *RouterLinkFactoryIml {
+	logtrace.LogWithFunctionName()
 	return &RouterLinkFactoryIml{
 		BasicLinkFactory: *NewBasicLinkFactory(EntityNameRouter),
 	}
 }
 
 func (factory *RouterLinkFactoryIml) Links(entity LinkEntity) rest_model.Links {
+	logtrace.LogWithFunctionName()
 	links := factory.BasicLinkFactory.Links(entity)
 	links[EntityNameTerminator] = factory.NewNestedLink(entity, EntityNameTerminator)
 	return links
 }
 
 func MapCreateRouterToModel(router *rest_model.RouterCreate) *model.Router {
+	logtrace.LogWithFunctionName()
 	ret := &model.Router{
 		BaseEntity: models.BaseEntity{
 			Id:   stringz.OrEmpty(router.ID),
@@ -64,6 +69,7 @@ func MapCreateRouterToModel(router *rest_model.RouterCreate) *model.Router {
 }
 
 func MapUpdateRouterToModel(id string, router *rest_model.RouterUpdate) *model.Router {
+	logtrace.LogWithFunctionName()
 	ret := &model.Router{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -80,6 +86,7 @@ func MapUpdateRouterToModel(id string, router *rest_model.RouterUpdate) *model.R
 }
 
 func MapPatchRouterToModel(id string, router *rest_model.RouterPatch) *model.Router {
+	logtrace.LogWithFunctionName()
 	ret := &model.Router{
 		BaseEntity: models.BaseEntity{
 			Tags: TagsOrDefault(router.Tags),
@@ -98,6 +105,7 @@ func MapPatchRouterToModel(id string, router *rest_model.RouterPatch) *model.Rou
 type RouterModelMapper struct{}
 
 func (RouterModelMapper) ToApi(n *network.Network, _ api.RequestContext, router *model.Router) (interface{}, error) {
+	logtrace.LogWithFunctionName()
 	connected := n.GetConnectedRouter(router.Id)
 	var restVersionInfo *rest_model.VersionInfo
 	if connected != nil && connected.VersionInfo != nil {

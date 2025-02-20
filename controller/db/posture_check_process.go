@@ -17,8 +17,10 @@
 package db
 
 import (
-	"github.com/openziti/storage/boltz"
 	"strings"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltz"
 )
 
 const (
@@ -36,6 +38,7 @@ type PostureCheckProcess struct {
 }
 
 func newPostureCheckProcess() PostureCheckSubType {
+	logtrace.LogWithFunctionName()
 	return &PostureCheckProcess{
 		OperatingSystem: "",
 		Path:            "",
@@ -45,6 +48,7 @@ func newPostureCheckProcess() PostureCheckSubType {
 }
 
 func (entity *PostureCheckProcess) LoadValues(bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 	entity.OperatingSystem = bucket.GetStringOrError(FieldPostureCheckProcessOs)
 	entity.Path = bucket.GetStringOrError(FieldPostureCheckProcessPath)
 	entity.Hashes = bucket.GetStringList(FieldPostureCheckProcessHashes)
@@ -52,6 +56,7 @@ func (entity *PostureCheckProcess) LoadValues(bucket *boltz.TypedBucket) {
 }
 
 func (entity *PostureCheckProcess) SetValues(ctx *boltz.PersistContext, bucket *boltz.TypedBucket) {
+	logtrace.LogWithFunctionName()
 
 	entity.Fingerprint = strings.ToLower(entity.Fingerprint)
 

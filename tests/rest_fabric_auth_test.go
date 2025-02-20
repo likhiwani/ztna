@@ -4,13 +4,16 @@ package tests
 
 import (
 	"fmt"
-	id "github.com/openziti/identity"
 	"net/http"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	id "github.com/openziti/identity"
 )
 
 func Test_FabricAuthNoCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -22,6 +25,7 @@ func Test_FabricAuthNoCert(t *testing.T) {
 }
 
 func Test_FabricAuthWithCertFromDifferentChain(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()
@@ -40,6 +44,7 @@ func Test_FabricAuthWithCertFromDifferentChain(t *testing.T) {
 }
 
 func Test_ListFabricServicesWithValidCert(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewFabricTestContext(t)
 	defer ctx.Teardown()
 	ctx.StartServer()

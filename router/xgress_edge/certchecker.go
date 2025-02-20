@@ -19,18 +19,20 @@ package xgress_edge
 import (
 	"crypto/x509"
 	"fmt"
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
+	"sync/atomic"
+	"time"
 	"ztna-core/ztna/common/pb/edge_ctrl_pb"
 	"ztna-core/ztna/controller/env"
+	"ztna-core/ztna/logtrace"
 	"ztna-core/ztna/router/enroll"
-	"ztna-core/ztna/router/internal/edgerouter"
 	routerEnv "ztna-core/ztna/router/env"
+	"ztna-core/ztna/router/internal/edgerouter"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
 	"github.com/openziti/identity"
 	"github.com/pkg/errors"
 	"google.golang.org/protobuf/proto"
-	"sync/atomic"
-	"time"
 )
 
 const DefaultTimeoutDuration = 35 * time.Second
@@ -59,6 +61,7 @@ type CertExpirationChecker struct {
 }
 
 func NewCertExpirationChecker(id *identity.TokenId, edgeConfig *edgerouter.Config, ctrls routerEnv.NetworkControllers, closeNotify <-chan struct{}) *CertExpirationChecker {
+	logtrace.LogWithFunctionName()
 	ret := &CertExpirationChecker{
 		id:              id,
 		closeNotify:     closeNotify,
@@ -74,22 +77,27 @@ func NewCertExpirationChecker(id *identity.TokenId, edgeConfig *edgerouter.Confi
 }
 
 func (self *CertExpirationChecker) IsRequestingCompareAndSwap(expected bool, value bool) bool {
+	logtrace.LogWithFunctionName()
 	return self.isRequesting.CompareAndSwap(expected, value)
 }
 
 func (self *CertExpirationChecker) IsRequesting() bool {
+	logtrace.LogWithFunctionName()
 	return self.isRequesting.Load()
 }
 
 func (self *CertExpirationChecker) SetIsRequesting(value bool) {
+	logtrace.LogWithFunctionName()
 	self.isRequesting.Store(value)
 }
 
 func (self *CertExpirationChecker) CertsUpdated() {
+	logtrace.LogWithFunctionName()
 	self.certsUpdated <- struct{}{}
 }
 
 func (self *CertExpirationChecker) Run() error {
+	logtrace.LogWithFunctionName()
 	if !self.isRunning.CompareAndSwap(false, true) {
 		return errors.New("already running")
 	}
@@ -137,6 +145,7 @@ func (self *CertExpirationChecker) Run() error {
 }
 
 func (self *CertExpirationChecker) AnyCtrlChannelWithTimeout(timeout time.Duration) (channel.Channel, bool) {
+	logtrace.LogWithFunctionName()
 	startTime := time.Now()
 	interval := 500 * time.Millisecond
 	for {
@@ -162,6 +171,7 @@ func (self *CertExpirationChecker) AnyCtrlChannelWithTimeout(timeout time.Durati
 }
 
 func (self *CertExpirationChecker) ExtendEnrollment() error {
+	logtrace.LogWithFunctionName()
 	if !self.extender.IsRequestingCompareAndSwap(false, true) {
 		return fmt.Errorf("could not send enrollment extension request, a request has already been sent")
 	}
@@ -218,6 +228,7 @@ func (self *CertExpirationChecker) ExtendEnrollment() error {
 }
 
 func (self *CertExpirationChecker) getWaitTime() (time.Duration, error) {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 
 	if self.id.Cert().Leaf.NotAfter.Before(now) || self.id.Cert().Leaf.NotAfter == now {

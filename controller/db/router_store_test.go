@@ -18,9 +18,11 @@ package db
 
 import (
 	"fmt"
-	"github.com/openziti/storage/boltztest"
 	"testing"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/openziti/storage/boltztest"
 
 	"github.com/google/uuid"
 
@@ -30,6 +32,7 @@ import (
 )
 
 func Test_RouterStore(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx := NewTestContext(t)
 	defer ctx.Cleanup()
 	ctx.Init()
@@ -42,6 +45,7 @@ func Test_RouterStore(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateInvalidRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -61,6 +65,7 @@ func (ctx *TestContext) testCreateInvalidRouters(t *testing.T) {
 }
 
 func (ctx *TestContext) testCreateRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	defer ctx.cleanupAll()
 
@@ -81,6 +86,7 @@ type routerTestEntities struct {
 }
 
 func (ctx *TestContext) createRouterTestEntities() *routerTestEntities {
+	logtrace.LogWithFunctionName()
 	router1 := ctx.requireNewRouter()
 	router2 := ctx.requireNewRouter()
 	service := ctx.requireNewService()
@@ -106,6 +112,7 @@ func (ctx *TestContext) createRouterTestEntities() *routerTestEntities {
 }
 
 func (ctx *TestContext) testLoadQueryRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.cleanupAll()
 
@@ -134,6 +141,7 @@ func (ctx *TestContext) testLoadQueryRouters(t *testing.T) {
 }
 
 func (ctx *TestContext) testUpdateRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.cleanupAll()
 
@@ -173,6 +181,7 @@ func (ctx *TestContext) testUpdateRouters(t *testing.T) {
 }
 
 func (ctx *TestContext) testDeleteRouters(t *testing.T) {
+	logtrace.LogWithFunctionName()
 	ctx.NextTest(t)
 	ctx.cleanupAll()
 	entities := ctx.createRouterTestEntities()

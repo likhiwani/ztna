@@ -17,14 +17,16 @@
 package mesh
 
 import (
-	"github.com/michaelquigley/pfxlog"
-	"github.com/openziti/channel/v3"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 	"io"
 	"net"
 	"sync/atomic"
 	"time"
+	"ztna-core/ztna/logtrace"
+
+	"github.com/michaelquigley/pfxlog"
+	"github.com/openziti/channel/v3"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 // raftPeerConn presents a net.Conn API over a channel. This allows us to multiplex raft traffic as well
@@ -42,10 +44,12 @@ type raftPeerConn struct {
 }
 
 func (self *raftPeerConn) ContentType() int32 {
+	logtrace.LogWithFunctionName()
 	return RaftDataType
 }
 
 func (self *raftPeerConn) HandleReceive(m *channel.Message, _ channel.Channel) {
+	logtrace.LogWithFunctionName()
 	select {
 	case self.readC <- m.Body:
 		//logrus.Infof("received %v bytes from raft peer %v", len(m.Body), self.peer.Id)
@@ -55,6 +59,7 @@ func (self *raftPeerConn) HandleReceive(m *channel.Message, _ channel.Channel) {
 }
 
 func (self *raftPeerConn) Read(b []byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	leftOverLen := len(self.leftOver)
 	if leftOverLen > 0 {
 		copy(b, self.leftOver)
@@ -105,6 +110,7 @@ func (self *raftPeerConn) Read(b []byte) (n int, err error) {
 }
 
 func (self *raftPeerConn) Write(b []byte) (n int, err error) {
+	logtrace.LogWithFunctionName()
 	if self.closed.Load() {
 		return 0, errors.New("connection closed")
 	}
@@ -122,11 +128,13 @@ func (self *raftPeerConn) Write(b []byte) (n int, err error) {
 }
 
 func (self *raftPeerConn) Close() error {
+	logtrace.LogWithFunctionName()
 	pfxlog.Logger().WithField("peerId", self.peer.Id).Info("close called on peer connection")
 	return self.peer.closeRaftConn(self, 5*time.Second)
 }
 
 func (self *raftPeerConn) close() bool {
+	logtrace.LogWithFunctionName()
 	if self.closed.CompareAndSwap(false, true) {
 		pfxlog.Logger().WithField("peerId", self.peer.Channel.Id()).Info("closing raft peer connection")
 		close(self.closeNotify)
@@ -136,10 +144,12 @@ func (self *raftPeerConn) close() bool {
 }
 
 func (self *raftPeerConn) LocalAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return self.localAddr
 }
 
 func (self *raftPeerConn) RemoteAddr() net.Addr {
+	logtrace.LogWithFunctionName()
 	return &meshAddr{
 		network: "mesh",
 		addr:    string(self.peer.Address),
@@ -147,6 +157,7 @@ func (self *raftPeerConn) RemoteAddr() net.Addr {
 }
 
 func (self *raftPeerConn) SetDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	if t.After(now) {
 		duration := t.Sub(now)
@@ -160,6 +171,7 @@ func (self *raftPeerConn) SetDeadline(t time.Time) error {
 }
 
 func (self *raftPeerConn) SetReadDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	now := time.Now()
 	if t.After(now) {
 		duration := t.Sub(now)
@@ -171,6 +183,7 @@ func (self *raftPeerConn) SetReadDeadline(t time.Time) error {
 }
 
 func (self *raftPeerConn) SetWriteDeadline(t time.Time) error {
+	logtrace.LogWithFunctionName()
 	self.writeDeadline = t
 	return nil
 }
